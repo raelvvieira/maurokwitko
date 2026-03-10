@@ -387,7 +387,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       ebooks: mapBooks(ebooksHook.ebooks),
       livros: mapBooks(livrosHook.livros),
       markLessonComplete, toggleLike, setCurrentCourseId,
-      toggleAdmin, setSidebarCollapsed, setSidebarMobileOpen,
+      setSidebarCollapsed, setSidebarMobileOpen,
       addDiscount, removeDiscount, toggleDiscountActive,
       addAlbum, removeAlbum, addTrackToAlbum, removeTrackFromAlbum,
       addCourseCategory, removeCourseCategory, addVideoToCategory, removeVideoFromCategory,

@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, BookOpen, Headphones, FileText, Trophy, Users, PenSquare, Sparkles, ChevronLeft, ChevronRight, Shield, Tag, X } from 'lucide-react';
+import { Home, BookOpen, Headphones, FileText, Trophy, Users, PenSquare, Sparkles, ChevronLeft, ChevronRight, Shield, Tag, X, Radio } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,7 +7,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 const navItems = [
   { to: '/', icon: Home, label: 'Home' },
   { to: '/courses', icon: BookOpen, label: 'Cursos' },
-  { to: '/library', icon: Headphones, label: 'Biblioteca' },
+  { to: '/library', icon: Headphones, label: 'Hinos' },
+  { to: '/biblioteca', icon: FileText, label: 'Biblioteca' },
+  { to: '/radio', icon: Radio, label: 'Rádio' },
   { to: '/materials', icon: FileText, label: 'Materiais' },
   { to: '/ranking', icon: Trophy, label: 'Ranking' },
   { to: '/community', icon: Users, label: 'Comunidade' },
@@ -32,7 +34,7 @@ const GlassSidebar = () => {
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shrink-0">
           <Sparkles className="w-5 h-5 text-primary-foreground" />
         </div>
-        {!collapsed && <span className="text-lg font-bold text-gradient">EduFlow</span>}
+        {!collapsed && <span className="text-sm font-bold text-gradient leading-tight">Clube de Estudos<br/>Dr. Mauro Kwitko</span>}
       </div>
 
       <nav className="flex-1 px-2 space-y-1 overflow-y-auto">

@@ -14,8 +14,8 @@ const Library = () => {
   return (
     <div className="max-w-4xl space-y-6">
       <div>
-        <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2"><Headphones className="w-5 h-5 md:w-6 md:h-6 text-primary" /> Biblioteca de Áudio</h1>
-        <p className="text-sm text-muted-foreground mt-1">Músicas e podcasts para estudar com foco</p>
+        <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2"><Headphones className="w-5 h-5 md:w-6 md:h-6 text-primary" /> Hinos</h1>
+        <p className="text-sm text-muted-foreground mt-1">Hinos e áudios para edificação</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

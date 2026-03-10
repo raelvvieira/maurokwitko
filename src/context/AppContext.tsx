@@ -286,7 +286,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [lessons, setLessons] = useState(defaultLessons);
   const [posts, setPosts] = useState(defaultPosts);
   const [ranking] = useState(defaultRanking);
-  const [isAdmin, setIsAdmin] = useState(true);
+  const { user, isAdmin, signOut } = useAuth();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [sidebarMobileOpen, setSidebarMobileOpen] = useState(false);
 

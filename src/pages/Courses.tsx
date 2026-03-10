@@ -1,46 +1,74 @@
-import { useApp } from '@/context/AppContext';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Clock, Users } from 'lucide-react';
+import { BookOpen, Play, X } from 'lucide-react';
+
+const courses = [
+  { id: '1', title: 'Aula 1 - Introdução ao Estudo', youtubeId: 'dQw4w9WgXcQ', description: 'Apresentação do curso e fundamentos iniciais.' },
+  { id: '2', title: 'Aula 2 - Fundamentos Bíblicos', youtubeId: 'dQw4w9WgXcQ', description: 'Base bíblica para o estudo aprofundado.' },
+  { id: '3', title: 'Aula 3 - Vida de Oração', youtubeId: 'dQw4w9WgXcQ', description: 'A importância da oração na caminhada cristã.' },
+  { id: '4', title: 'Aula 4 - Cura e Libertação', youtubeId: 'dQw4w9WgXcQ', description: 'Princípios de cura interior e libertação.' },
+  { id: '5', title: 'Aula 5 - Batalha Espiritual', youtubeId: 'dQw4w9WgXcQ', description: 'Como enfrentar as batalhas espirituais.' },
+  { id: '6', title: 'Aula 6 - Discipulado', youtubeId: 'dQw4w9WgXcQ', description: 'Formação de discípulos e liderança.' },
+];
 
 const Courses = () => {
-  const { courses } = useApp();
-  const navigate = useNavigate();
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
   return (
     <div className="max-w-6xl space-y-6">
       <div>
-        <h1 className="text-xl md:text-2xl font-bold">Meus Cursos</h1>
-        <p className="text-sm text-muted-foreground mt-1">Continue de onde parou</p>
+        <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
+          <BookOpen className="w-5 h-5 md:w-6 md:h-6 text-primary" /> Cursos
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">Aulas em vídeo do Dr. Mauro Kwitko</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {courses.map((course, i) => (
-          <motion.button
+          <motion.div
             key={course.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            onClick={() => navigate(`/courses/${course.id}`)}
-            className="glass-card text-left group"
+            transition={{ delay: i * 0.08 }}
+            className="glass-card flex flex-col cursor-pointer group"
+            onClick={() => setActiveVideo(course.youtubeId)}
           >
-            <div className="w-full h-36 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center mb-4">
-              <BookOpen className="w-10 h-10 text-primary/40 group-hover:scale-110 transition-transform" />
+            <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-4 bg-muted">
+              <img
+                src={`https://img.youtube.com/vi/${course.youtubeId}/hqdefault.jpg`}
+                alt={course.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Play className="w-5 h-5 text-primary-foreground ml-0.5" />
+                </div>
+              </div>
             </div>
-            <span className="inline-block text-xs font-medium px-2.5 py-0.5 rounded-full bg-primary/10 text-primary mb-2">{course.category}</span>
             <h3 className="text-base font-semibold mb-1">{course.title}</h3>
-            <p className="text-sm text-muted-foreground mb-3">{course.instructor}</p>
-            <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-              <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {course.totalLessons} aulas</span>
-              <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {course.completedLessons} concluídas</span>
-            </div>
-            <div className="h-1.5 rounded-full bg-secondary">
-              <div className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all" style={{ width: `${course.progress}%` }} />
-            </div>
-            <p className="text-xs text-right mt-1 text-muted-foreground">{course.progress}%</p>
-          </motion.button>
+            <p className="text-sm text-muted-foreground flex-1">{course.description}</p>
+          </motion.div>
         ))}
       </div>
+
+      {/* Video Modal */}
+      {activeVideo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={() => setActiveVideo(null)}>
+          <div className="relative w-full max-w-3xl mx-4" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setActiveVideo(null)} className="absolute -top-10 right-0 text-white hover:text-primary transition-colors">
+              <X className="w-6 h-6" />
+            </button>
+            <div className="aspect-video rounded-xl overflow-hidden">
+              <iframe
+                src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1`}
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                className="w-full h-full"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

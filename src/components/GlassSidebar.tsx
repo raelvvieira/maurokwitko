@@ -34,7 +34,7 @@ const GlassSidebar = () => {
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shrink-0">
           <Sparkles className="w-5 h-5 text-primary-foreground" />
         </div>
-        {!collapsed && <span className="text-lg font-bold text-gradient">EduFlow</span>}
+        {!collapsed && <span className="text-sm font-bold text-gradient leading-tight">Clube de Estudos<br/>Dr. Mauro Kwitko</span>}
       </div>
 
       <nav className="flex-1 px-2 space-y-1 overflow-y-auto">

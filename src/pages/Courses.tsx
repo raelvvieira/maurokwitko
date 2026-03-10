@@ -1,21 +1,14 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Play, X } from 'lucide-react';
-
-const courses = [
-  { id: '1', title: 'Aula 1 - Introdução ao Estudo', youtubeId: 'dQw4w9WgXcQ', description: 'Apresentação do curso e fundamentos iniciais.' },
-  { id: '2', title: 'Aula 2 - Fundamentos Bíblicos', youtubeId: 'dQw4w9WgXcQ', description: 'Base bíblica para o estudo aprofundado.' },
-  { id: '3', title: 'Aula 3 - Vida de Oração', youtubeId: 'dQw4w9WgXcQ', description: 'A importância da oração na caminhada cristã.' },
-  { id: '4', title: 'Aula 4 - Cura e Libertação', youtubeId: 'dQw4w9WgXcQ', description: 'Princípios de cura interior e libertação.' },
-  { id: '5', title: 'Aula 5 - Batalha Espiritual', youtubeId: 'dQw4w9WgXcQ', description: 'Como enfrentar as batalhas espirituais.' },
-  { id: '6', title: 'Aula 6 - Discipulado', youtubeId: 'dQw4w9WgXcQ', description: 'Formação de discípulos e liderança.' },
-];
+import { BookOpen, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useApp } from '@/context/AppContext';
 
 const Courses = () => {
+  const { courseCategories } = useApp();
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
   return (
-    <div className="max-w-6xl space-y-6">
+    <div className="max-w-[1400px] space-y-8">
       <div>
         <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
           <BookOpen className="w-5 h-5 md:w-6 md:h-6 text-primary" /> Cursos
@@ -23,33 +16,13 @@ const Courses = () => {
         <p className="text-sm text-muted-foreground mt-1">Aulas em vídeo do Dr. Mauro Kwitko</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {courses.map((course, i) => (
-          <motion.div
-            key={course.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.08 }}
-            className="glass-card flex flex-col cursor-pointer group"
-            onClick={() => setActiveVideo(course.youtubeId)}
-          >
-            <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-4 bg-muted">
-              <img
-                src={`https://img.youtube.com/vi/${course.youtubeId}/hqdefault.jpg`}
-                alt={course.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
-                <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Play className="w-5 h-5 text-primary-foreground ml-0.5" />
-                </div>
-              </div>
-            </div>
-            <h3 className="text-base font-semibold mb-1">{course.title}</h3>
-            <p className="text-sm text-muted-foreground flex-1">{course.description}</p>
-          </motion.div>
-        ))}
-      </div>
+      {courseCategories.length === 0 && (
+        <div className="glass-card text-center text-sm text-muted-foreground py-12">Nenhuma categoria de curso disponível ainda.</div>
+      )}
+
+      {courseCategories.map((cat) => (
+        <CategoryRow key={cat.id} name={cat.name} videos={cat.videos} onPlay={setActiveVideo} />
+      ))}
 
       {/* Video Modal */}
       {activeVideo && (
@@ -72,5 +45,64 @@ const Courses = () => {
     </div>
   );
 };
+
+function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: string; title: string; youtubeId: string; description: string }[]; onPlay: (id: string) => void }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (dir: 'left' | 'right') => {
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollBy({ left: dir === 'left' ? -300 : 300, behavior: 'smooth' });
+  };
+
+  if (videos.length === 0) return null;
+
+  return (
+    <div className="space-y-3">
+      <h2 className="text-lg font-bold">{name}</h2>
+      <div className="relative group">
+        <button
+          onClick={() => scroll('left')}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-card/80 border border-border shadow flex items-center justify-center text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style={{ scrollSnapType: 'x mandatory' }}>
+          {videos.map((video, i) => (
+            <motion.div
+              key={video.id}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.06 }}
+              className="glass-card flex-shrink-0 w-64 cursor-pointer group/card"
+              style={{ scrollSnapAlign: 'start' }}
+              onClick={() => onPlay(video.youtubeId)}
+            >
+              <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-3 bg-muted">
+                <img
+                  src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`}
+                  alt={video.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover/card:bg-black/40 transition-colors">
+                  <div className="w-10 h-10 rounded-full bg-primary/90 flex items-center justify-center group-hover/card:scale-110 transition-transform">
+                    <Play className="w-4 h-4 text-primary-foreground ml-0.5" />
+                  </div>
+                </div>
+              </div>
+              <h3 className="text-sm font-semibold mb-1 truncate">{video.title}</h3>
+              <p className="text-xs text-muted-foreground line-clamp-2">{video.description}</p>
+            </motion.div>
+          ))}
+        </div>
+        <button
+          onClick={() => scroll('right')}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-card/80 border border-border shadow flex items-center justify-center text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default Courses;

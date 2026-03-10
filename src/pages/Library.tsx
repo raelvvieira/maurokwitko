@@ -1,41 +1,81 @@
-import { motion } from 'framer-motion';
-import { Headphones, Play } from 'lucide-react';
-
-const tracks = [
-  { title: 'Focus Flow - Lo-Fi Study', artist: 'ChillBeats', duration: '3:45' },
-  { title: 'Deep Work Ambient', artist: 'StudyVibes', duration: '5:20' },
-  { title: 'Morning Motivation Mix', artist: 'EduFlow Radio', duration: '4:10' },
-  { title: 'Coding in the Rain', artist: 'DevBeats', duration: '6:15' },
-  { title: 'Concentration Station', artist: 'BrainWaves', duration: '4:55' },
-  { title: 'Midnight Study Session', artist: 'NightOwl', duration: '7:30' },
-];
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Headphones, Disc3, Play, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { useApp } from '@/context/AppContext';
 
 const Library = () => {
+  const { albums } = useApp();
+  const [openAlbum, setOpenAlbum] = useState<string | null>(null);
+
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="max-w-5xl space-y-6">
       <div>
-        <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2"><Headphones className="w-5 h-5 md:w-6 md:h-6 text-primary" /> Hinos</h1>
+        <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
+          <Headphones className="w-5 h-5 md:w-6 md:h-6 text-primary" /> Hinos
+        </h1>
         <p className="text-sm text-muted-foreground mt-1">Hinos e áudios para edificação</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {tracks.map((track, i) => (
-          <motion.div
-            key={track.title}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.08 }}
-            className="glass-card flex items-center gap-4 cursor-pointer group"
-          >
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center shrink-0 group-hover:from-primary/20 group-hover:to-accent/20 transition-colors">
-              <Play className="w-5 h-5 text-primary" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold truncate">{track.title}</p>
-              <p className="text-xs text-muted-foreground">{track.artist} · {track.duration}</p>
-            </div>
-          </motion.div>
-        ))}
+      {albums.length === 0 && (
+        <div className="glass-card text-center text-sm text-muted-foreground py-12">Nenhum álbum disponível ainda.</div>
+      )}
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+        {albums.map((album, i) => {
+          const isOpen = openAlbum === album.id;
+          return (
+            <motion.div
+              key={album.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08 }}
+              className={`glass-card flex flex-col cursor-pointer ${isOpen ? 'col-span-2 sm:col-span-3 lg:col-span-4' : ''}`}
+            >
+              <div
+                className="flex flex-col items-center"
+                onClick={() => setOpenAlbum(isOpen ? null : album.id)}
+              >
+                <div className={`w-full aspect-square rounded-xl bg-gradient-to-br ${album.coverColor} flex items-center justify-center mb-3`}>
+                  <Disc3 className="w-16 h-16 text-foreground/20" />
+                </div>
+                <h3 className="text-sm font-semibold text-center mb-1">{album.title}</h3>
+                <p className="text-xs text-muted-foreground">{album.tracks.length} faixas</p>
+                <div className="mt-2">
+                  {isOpen ? <ChevronUp className="w-4 h-4 text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
+                </div>
+              </div>
+
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="overflow-hidden mt-4 space-y-2"
+                  >
+                    {album.tracks.map((track, ti) => (
+                      <div key={track.id} className="flex items-center justify-between px-3 py-2 rounded-lg bg-secondary/30">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <span className="text-xs text-muted-foreground w-5">{ti + 1}</span>
+                          <span className="text-sm truncate">{track.title}</span>
+                        </div>
+                        <a
+                          href={track.youtubeUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={e => e.stopPropagation()}
+                          className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline shrink-0"
+                        >
+                          <Play className="w-3 h-3" /> Tocar
+                        </a>
+                      </div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );

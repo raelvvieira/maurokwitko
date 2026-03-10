@@ -12,7 +12,8 @@ import Ranking from "./pages/Ranking";
 import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import Library from "./pages/Library";
-import Biblioteca from "./pages/Biblioteca";
+import Ebooks from "./pages/Ebooks";
+import Livros from "./pages/Livros";
 import RadioPage from "./pages/Radio";
 import Materials from "./pages/Materials";
 import Blog from "./pages/Blog";
@@ -38,7 +39,8 @@ const App = () => (
               <Route path="/community" element={<Community />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/library" element={<Library />} />
-              <Route path="/biblioteca" element={<Biblioteca />} />
+              <Route path="/ebooks" element={<Ebooks />} />
+              <Route path="/livros" element={<Livros />} />
               <Route path="/radio" element={<RadioPage />} />
               <Route path="/materials" element={<Materials />} />
               <Route path="/blog" element={<Blog />} />

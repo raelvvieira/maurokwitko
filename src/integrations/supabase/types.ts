@@ -14,7 +14,268 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      album_tracks: {
+        Row: {
+          album_id: string
+          created_at: string
+          id: string
+          position: number
+          title: string
+          youtube_url: string
+        }
+        Insert: {
+          album_id: string
+          created_at?: string
+          id?: string
+          position?: number
+          title: string
+          youtube_url: string
+        }
+        Update: {
+          album_id?: string
+          created_at?: string
+          id?: string
+          position?: number
+          title?: string
+          youtube_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "album_tracks_album_id_fkey"
+            columns: ["album_id"]
+            isOneToOne: false
+            referencedRelation: "albums"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      albums: {
+        Row: {
+          cover_color: string
+          created_at: string
+          id: string
+          title: string
+        }
+        Insert: {
+          cover_color?: string
+          created_at?: string
+          id?: string
+          title: string
+        }
+        Update: {
+          cover_color?: string
+          created_at?: string
+          id?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          author: string
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          title: string
+        }
+        Insert: {
+          author?: string
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          title: string
+        }
+        Update: {
+          author?: string
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      course_categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      course_videos: {
+        Row: {
+          category_id: string
+          created_at: string
+          description: string
+          id: string
+          position: number
+          title: string
+          youtube_id: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          description?: string
+          id?: string
+          position?: number
+          title: string
+          youtube_id: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          position?: number
+          title?: string
+          youtube_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_videos_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "course_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      discounts: {
+        Row: {
+          active: boolean
+          coupon_code: string
+          course_ids: string[]
+          created_at: string
+          description: string
+          expires_at: string
+          id: string
+          percentage: number
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          coupon_code: string
+          course_ids?: string[]
+          created_at?: string
+          description?: string
+          expires_at: string
+          id?: string
+          percentage?: number
+          title: string
+        }
+        Update: {
+          active?: boolean
+          coupon_code?: string
+          course_ids?: string[]
+          created_at?: string
+          description?: string
+          expires_at?: string
+          id?: string
+          percentage?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      ebooks: {
+        Row: {
+          author: string
+          created_at: string
+          description: string
+          id: string
+          pages: number
+          title: string
+          url: string
+        }
+        Insert: {
+          author?: string
+          created_at?: string
+          description?: string
+          id?: string
+          pages?: number
+          title: string
+          url?: string
+        }
+        Update: {
+          author?: string
+          created_at?: string
+          description?: string
+          id?: string
+          pages?: number
+          title?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      livros: {
+        Row: {
+          author: string
+          created_at: string
+          description: string
+          id: string
+          pages: number
+          title: string
+          url: string
+        }
+        Insert: {
+          author?: string
+          created_at?: string
+          description?: string
+          id?: string
+          pages?: number
+          title: string
+          url?: string
+        }
+        Update: {
+          author?: string
+          created_at?: string
+          description?: string
+          id?: string
+          pages?: number
+          title?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      materials: {
+        Row: {
+          created_at: string
+          id: string
+          size: string
+          title: string
+          type: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          size?: string
+          title: string
+          type?: string
+          url?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          size?: string
+          title?: string
+          type?: string
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

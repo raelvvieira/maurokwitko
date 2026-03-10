@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, BookOpen, Headphones, FileText, Trophy, Users, PenSquare, Sparkles, ChevronLeft, ChevronRight, Shield, Tag, X } from 'lucide-react';
+import { Home, BookOpen, Headphones, FileText, Trophy, Users, PenSquare, Sparkles, ChevronLeft, ChevronRight, Shield, Tag, X, Radio } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { motion, AnimatePresence } from 'framer-motion';

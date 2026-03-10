@@ -1,6 +1,21 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import {
+  useAlbums,
+  useCourseCategories,
+  useBlogPosts,
+  useMaterials,
+  useEbooks,
+  useLivros,
+  useDiscounts,
+  type AlbumWithTracks,
+  type CategoryWithVideos,
+  type BlogPostRow,
+  type MaterialRow,
+  type BookRow,
+  type DiscountRow,
+} from '@/hooks/useSupabaseData';
 
-// ── Types ──────────────────────────────────────────────
+// ── Legacy Types ───────────────────────────────────────
 
 export interface AlbumTrack {
   id: string;
@@ -53,18 +68,6 @@ export interface BookItem {
   description: string;
   pages: number;
   url: string;
-}
-
-export interface MediaItem {
-  id: string;
-  title: string;
-  description: string;
-  type: 'video' | 'audio' | 'document';
-  category: 'courses' | 'library' | 'materials';
-  url: string;
-  youtubeId?: string;
-  fileName?: string;
-  createdAt: string;
 }
 
 export interface Discount {
@@ -129,7 +132,6 @@ interface Course {
 // ── State Interface ────────────────────────────────────
 
 interface AppState {
-  // Legacy
   courses: Course[];
   currentCourseId: string | null;
   lessons: Lesson[];
@@ -139,10 +141,8 @@ interface AppState {
   isAdmin: boolean;
   sidebarCollapsed: boolean;
   sidebarMobileOpen: boolean;
-  mediaItems: MediaItem[];
   discounts: Discount[];
 
-  // New content
   albums: Album[];
   courseCategories: CourseCategory[];
   blogPosts: BlogPost[];
@@ -150,20 +150,16 @@ interface AppState {
   ebooks: BookItem[];
   livros: BookItem[];
 
-  // Legacy actions
   markLessonComplete: (lessonId: string) => void;
   toggleLike: (postId: string) => void;
   setCurrentCourseId: (id: string | null) => void;
   toggleAdmin: () => void;
   setSidebarCollapsed: (v: boolean) => void;
   setSidebarMobileOpen: (v: boolean) => void;
-  addMediaItem: (item: Omit<MediaItem, 'id' | 'createdAt'>) => void;
-  removeMediaItem: (id: string) => void;
   addDiscount: (item: Omit<Discount, 'id'>) => void;
   removeDiscount: (id: string) => void;
   toggleDiscountActive: (id: string) => void;
 
-  // New actions
   addAlbum: (album: Omit<Album, 'id'>) => void;
   removeAlbum: (id: string) => void;
   addTrackToAlbum: (albumId: string, track: Omit<AlbumTrack, 'id'>) => void;
@@ -186,7 +182,7 @@ interface AppState {
   removeLivro: (id: string) => void;
 }
 
-// ── Defaults ───────────────────────────────────────────
+// ── Defaults (legacy, non-DB) ─────────────────────────
 
 const defaultCourses: Course[] = [
   { id: '1', title: 'React Avançado & Patterns', instructor: 'Ana Silva', thumbnail: '', progress: 72, totalLessons: 24, completedLessons: 17, category: 'Desenvolvimento' },
@@ -223,75 +219,53 @@ const defaultRanking: RankingUser[] = [
   { position: 8, name: 'Beatriz Costa', avatar: '', score: 7200, growth: -1, streak: 8 },
 ];
 
-const defaultDiscounts: Discount[] = [
-  { id: 'd1', title: 'Desconto de Boas-Vindas', description: 'Para novos alunos', percentage: 20, courseIds: [], couponCode: 'WELCOME20', expiresAt: '2026-04-30', active: true },
-  { id: 'd2', title: 'Combo React + TypeScript', description: 'Desconto especial no combo', percentage: 35, courseIds: ['1', '4'], couponCode: 'COMBO35', expiresAt: '2026-03-31', active: true },
-  { id: 'd3', title: 'Black Friday Antecipada', description: 'Acesso vitalício com super desconto', percentage: 50, courseIds: [], couponCode: 'BLACK50', expiresAt: '2026-05-15', active: false },
-];
+// ── Mappers (DB row → App type) ───────────────────────
 
-const defaultAlbums: Album[] = [
-  {
-    id: 'a1', title: 'Hinos de Adoração Vol. 1', coverColor: 'from-blue-500/30 to-purple-500/30',
-    tracks: [
-      { id: 't1', title: 'Hino 1 - Graça Infinita', youtubeUrl: 'https://youtube.com/watch?v=dQw4w9WgXcQ' },
-      { id: 't2', title: 'Hino 2 - Poder da Oração', youtubeUrl: 'https://youtube.com/watch?v=dQw4w9WgXcQ' },
-      { id: 't3', title: 'Hino 3 - Louvor Eterno', youtubeUrl: 'https://youtube.com/watch?v=dQw4w9WgXcQ' },
-    ]
-  },
-  {
-    id: 'a2', title: 'Hinos de Louvor Vol. 2', coverColor: 'from-amber-500/30 to-red-500/30',
-    tracks: [
-      { id: 't4', title: 'Hino 1 - Cântico Novo', youtubeUrl: 'https://youtube.com/watch?v=dQw4w9WgXcQ' },
-      { id: 't5', title: 'Hino 2 - Alegria do Senhor', youtubeUrl: 'https://youtube.com/watch?v=dQw4w9WgXcQ' },
-    ]
-  },
-];
+function mapBlogPosts(rows: BlogPostRow[]): BlogPost[] {
+  return rows.map(r => ({
+    id: r.id,
+    title: r.title,
+    content: r.content,
+    imageUrl: r.image_url ?? undefined,
+    author: r.author,
+    createdAt: r.created_at,
+  }));
+}
 
-const defaultCategories: CourseCategory[] = [
-  {
-    id: 'cat1', name: 'Cura e Libertação',
-    videos: [
-      { id: 'v1', title: 'Introdução à Cura Interior', youtubeId: 'dQw4w9WgXcQ', description: 'Fundamentos da cura interior.' },
-      { id: 'v2', title: 'Processo de Libertação', youtubeId: 'dQw4w9WgXcQ', description: 'Etapas do processo de libertação.' },
-      { id: 'v3', title: 'Oração de Cura', youtubeId: 'dQw4w9WgXcQ', description: 'Como orar pela cura.' },
-    ]
-  },
-  {
-    id: 'cat2', name: 'Batalha Espiritual',
-    videos: [
-      { id: 'v4', title: 'Armadura de Deus', youtubeId: 'dQw4w9WgXcQ', description: 'A armadura espiritual completa.' },
-      { id: 'v5', title: 'Estratégias de Guerra', youtubeId: 'dQw4w9WgXcQ', description: 'Táticas bíblicas de guerra espiritual.' },
-    ]
-  },
-  {
-    id: 'cat3', name: 'Discipulado',
-    videos: [
-      { id: 'v6', title: 'Fundamentos do Discipulado', youtubeId: 'dQw4w9WgXcQ', description: 'O que é ser discípulo.' },
-      { id: 'v7', title: 'Formando Líderes', youtubeId: 'dQw4w9WgXcQ', description: 'Princípios de liderança cristã.' },
-    ]
-  },
-];
+function mapMaterials(rows: MaterialRow[]): MaterialItem[] {
+  return rows.map(r => ({
+    id: r.id,
+    title: r.title,
+    type: r.type,
+    size: r.size,
+    url: r.url,
+    createdAt: r.created_at,
+  }));
+}
 
-const defaultEbooks: BookItem[] = [
-  { id: 'e1', title: 'O Poder da Oração', author: 'Dr. Mauro Kwitko', description: 'E-book sobre o poder transformador da oração.', pages: 120, url: '#' },
-  { id: 'e2', title: 'Cura Interior - Guia Prático', author: 'Dr. Mauro Kwitko', description: 'Guia digital para cura interior.', pages: 85, url: '#' },
-];
+function mapBooks(rows: BookRow[]): BookItem[] {
+  return rows.map(r => ({
+    id: r.id,
+    title: r.title,
+    author: r.author,
+    description: r.description,
+    pages: r.pages,
+    url: r.url,
+  }));
+}
 
-const defaultLivros: BookItem[] = [
-  { id: 'b1', title: 'Batalha Espiritual', author: 'Dr. Mauro Kwitko', description: 'Estratégias bíblicas para a batalha espiritual.', pages: 350, url: '#' },
-  { id: 'b2', title: 'Vida Cristã Vitoriosa', author: 'Dr. Mauro Kwitko', description: 'Princípios para viver uma vida cristã plena.', pages: 280, url: '#' },
-  { id: 'b3', title: 'Fé e Ciência', author: 'Dr. Mauro Kwitko', description: 'A harmonia entre fé e ciência.', pages: 300, url: '#' },
-];
-
-const defaultBlogPosts: BlogPost[] = [
-  { id: 'bp1', title: 'A Importância da Oração Diária', content: 'A oração é o alicerce da vida cristã. Neste artigo, exploramos como a prática diária da oração transforma nossa relação com Deus.', author: 'Dr. Mauro Kwitko', createdAt: '2026-03-01' },
-  { id: 'bp2', title: 'Cura Interior: Primeiros Passos', content: 'Entenda os fundamentos da cura interior e como iniciar esse processo de transformação em sua vida.', author: 'Dr. Mauro Kwitko', createdAt: '2026-02-25' },
-];
-
-const defaultMaterials: MaterialItem[] = [
-  { id: 'm1', title: 'Guia de Oração', type: 'PDF', size: '2.4 MB', url: '#', createdAt: '2026-03-01' },
-  { id: 'm2', title: 'Roteiro de Estudo Bíblico', type: 'PDF', size: '1.1 MB', url: '#', createdAt: '2026-02-20' },
-];
+function mapDiscounts(rows: DiscountRow[]): Discount[] {
+  return rows.map(r => ({
+    id: r.id,
+    title: r.title,
+    description: r.description,
+    percentage: r.percentage,
+    courseIds: r.course_ids,
+    couponCode: r.coupon_code,
+    expiresAt: r.expires_at,
+    active: r.active,
+  }));
+}
 
 // ── Context ────────────────────────────────────────────
 
@@ -304,6 +278,7 @@ export const useApp = () => {
 };
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
+  // Legacy local state
   const [courses, setCourses] = useState(defaultCourses);
   const [currentCourseId, setCurrentCourseId] = useState<string | null>(null);
   const [lessons, setLessons] = useState(defaultLessons);
@@ -312,15 +287,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [sidebarMobileOpen, setSidebarMobileOpen] = useState(false);
-  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
-  const [discounts, setDiscounts] = useState<Discount[]>(defaultDiscounts);
 
-  const [albums, setAlbums] = useState<Album[]>(defaultAlbums);
-  const [courseCategories, setCourseCategories] = useState<CourseCategory[]>(defaultCategories);
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>(defaultBlogPosts);
-  const [materialItems, setMaterialItems] = useState<MaterialItem[]>(defaultMaterials);
-  const [ebooks, setEbooks] = useState<BookItem[]>(defaultEbooks);
-  const [livros, setLivros] = useState<BookItem[]>(defaultLivros);
+  // Supabase hooks
+  const albumsHook = useAlbums();
+  const categoriesHook = useCourseCategories();
+  const blogHook = useBlogPosts();
+  const materialsHook = useMaterials();
+  const ebooksHook = useEbooks();
+  const livrosHook = useLivros();
+  const discountsHook = useDiscounts();
 
   const profile: UserProfile = {
     name: 'Alex Martins', email: 'alex@email.com', avatar: '',
@@ -344,59 +319,74 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const toggleAdmin = () => setIsAdmin(prev => !prev);
 
-  // Media (legacy)
-  const addMediaItem = (item: Omit<MediaItem, 'id' | 'createdAt'>) => {
-    setMediaItems(prev => [...prev, { ...item, id: crypto.randomUUID(), createdAt: new Date().toISOString() }]);
+  // ── DB-backed actions ─────────────────────────────────
+
+  const addAlbum = (album: Omit<Album, 'id'>) => {
+    albumsHook.addAlbum.mutate({ title: album.title, coverColor: album.coverColor });
   };
-  const removeMediaItem = (id: string) => setMediaItems(prev => prev.filter(m => m.id !== id));
-
-  // Discounts
-  const addDiscount = (item: Omit<Discount, 'id'>) => setDiscounts(prev => [...prev, { ...item, id: crypto.randomUUID() }]);
-  const removeDiscount = (id: string) => setDiscounts(prev => prev.filter(d => d.id !== id));
-  const toggleDiscountActive = (id: string) => setDiscounts(prev => prev.map(d => d.id === id ? { ...d, active: !d.active } : d));
-
-  // Albums
-  const addAlbum = (album: Omit<Album, 'id'>) => setAlbums(prev => [...prev, { ...album, id: crypto.randomUUID() }]);
-  const removeAlbum = (id: string) => setAlbums(prev => prev.filter(a => a.id !== id));
+  const removeAlbum = (id: string) => albumsHook.removeAlbum.mutate(id);
   const addTrackToAlbum = (albumId: string, track: Omit<AlbumTrack, 'id'>) => {
-    setAlbums(prev => prev.map(a => a.id === albumId ? { ...a, tracks: [...a.tracks, { ...track, id: crypto.randomUUID() }] } : a));
+    albumsHook.addTrack.mutate({ albumId, title: track.title, youtubeUrl: track.youtubeUrl });
   };
   const removeTrackFromAlbum = (albumId: string, trackId: string) => {
-    setAlbums(prev => prev.map(a => a.id === albumId ? { ...a, tracks: a.tracks.filter(t => t.id !== trackId) } : a));
+    albumsHook.removeTrack.mutate({ albumId, trackId });
   };
 
-  // Course Categories
-  const addCourseCategory = (name: string) => setCourseCategories(prev => [...prev, { id: crypto.randomUUID(), name, videos: [] }]);
-  const removeCourseCategory = (id: string) => setCourseCategories(prev => prev.filter(c => c.id !== id));
+  const addCourseCategory = (name: string) => categoriesHook.addCategory.mutate(name);
+  const removeCourseCategory = (id: string) => categoriesHook.removeCategory.mutate(id);
   const addVideoToCategory = (categoryId: string, video: Omit<CourseVideo, 'id'>) => {
-    setCourseCategories(prev => prev.map(c => c.id === categoryId ? { ...c, videos: [...c.videos, { ...video, id: crypto.randomUUID() }] } : c));
+    categoriesHook.addVideo.mutate({ categoryId, title: video.title, youtubeId: video.youtubeId, description: video.description });
   };
   const removeVideoFromCategory = (categoryId: string, videoId: string) => {
-    setCourseCategories(prev => prev.map(c => c.id === categoryId ? { ...c, videos: c.videos.filter(v => v.id !== videoId) } : c));
+    categoriesHook.removeVideo.mutate({ categoryId, videoId });
   };
 
-  // Blog
-  const addBlogPost = (post: Omit<BlogPost, 'id' | 'createdAt'>) => setBlogPosts(prev => [{ ...post, id: crypto.randomUUID(), createdAt: new Date().toISOString() }, ...prev]);
-  const removeBlogPost = (id: string) => setBlogPosts(prev => prev.filter(p => p.id !== id));
+  const addBlogPost = (post: Omit<BlogPost, 'id' | 'createdAt'>) => {
+    blogHook.addBlogPost.mutate({ title: post.title, content: post.content, image_url: post.imageUrl ?? null, author: post.author });
+  };
+  const removeBlogPost = (id: string) => blogHook.removeBlogPost.mutate(id);
 
-  // Materials
-  const addMaterialItem = (item: Omit<MaterialItem, 'id' | 'createdAt'>) => setMaterialItems(prev => [...prev, { ...item, id: crypto.randomUUID(), createdAt: new Date().toISOString() }]);
-  const removeMaterialItem = (id: string) => setMaterialItems(prev => prev.filter(m => m.id !== id));
+  const addMaterialItem = (item: Omit<MaterialItem, 'id' | 'createdAt'>) => {
+    materialsHook.addMaterial.mutate({ title: item.title, type: item.type, size: item.size, url: item.url });
+  };
+  const removeMaterialItem = (id: string) => materialsHook.removeMaterial.mutate(id);
 
-  // Books
-  const addEbook = (item: Omit<BookItem, 'id'>) => setEbooks(prev => [...prev, { ...item, id: crypto.randomUUID() }]);
-  const removeEbook = (id: string) => setEbooks(prev => prev.filter(e => e.id !== id));
-  const addLivro = (item: Omit<BookItem, 'id'>) => setLivros(prev => [...prev, { ...item, id: crypto.randomUUID() }]);
-  const removeLivro = (id: string) => setLivros(prev => prev.filter(l => l.id !== id));
+  const addEbook = (item: Omit<BookItem, 'id'>) => {
+    ebooksHook.addEbook.mutate({ title: item.title, author: item.author, description: item.description, pages: item.pages, url: item.url });
+  };
+  const removeEbook = (id: string) => ebooksHook.removeEbook.mutate(id);
+
+  const addLivro = (item: Omit<BookItem, 'id'>) => {
+    livrosHook.addLivro.mutate({ title: item.title, author: item.author, description: item.description, pages: item.pages, url: item.url });
+  };
+  const removeLivro = (id: string) => livrosHook.removeLivro.mutate(id);
+
+  const addDiscount = (item: Omit<Discount, 'id'>) => {
+    discountsHook.addDiscount.mutate({
+      title: item.title, description: item.description, percentage: item.percentage,
+      course_ids: item.courseIds, coupon_code: item.couponCode, expires_at: item.expiresAt, active: item.active,
+    });
+  };
+  const removeDiscount = (id: string) => discountsHook.removeDiscount.mutate(id);
+  const toggleDiscountActive = (id: string) => {
+    const disc = discountsHook.discounts.find(d => d.id === id);
+    if (disc) discountsHook.updateDiscount.mutate({ id, active: !disc.active });
+  };
 
   return (
     <AppContext.Provider value={{
       courses, currentCourseId, lessons, posts, profile, ranking,
-      isAdmin, sidebarCollapsed, sidebarMobileOpen, mediaItems, discounts,
-      albums, courseCategories, blogPosts, materialItems, ebooks, livros,
+      isAdmin, sidebarCollapsed, sidebarMobileOpen,
+      discounts: mapDiscounts(discountsHook.discounts),
+      albums: albumsHook.albums,
+      courseCategories: categoriesHook.courseCategories,
+      blogPosts: mapBlogPosts(blogHook.blogPosts),
+      materialItems: mapMaterials(materialsHook.materials),
+      ebooks: mapBooks(ebooksHook.ebooks),
+      livros: mapBooks(livrosHook.livros),
       markLessonComplete, toggleLike, setCurrentCourseId,
       toggleAdmin, setSidebarCollapsed, setSidebarMobileOpen,
-      addMediaItem, removeMediaItem, addDiscount, removeDiscount, toggleDiscountActive,
+      addDiscount, removeDiscount, toggleDiscountActive,
       addAlbum, removeAlbum, addTrackToAlbum, removeTrackFromAlbum,
       addCourseCategory, removeCourseCategory, addVideoToCategory, removeVideoFromCategory,
       addBlogPost, removeBlogPost, addMaterialItem, removeMaterialItem,

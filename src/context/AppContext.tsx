@@ -140,8 +140,10 @@ interface AppState {
   profile: UserProfile;
   ranking: RankingUser[];
   isAdmin: boolean;
+  userEmail: string | null;
   sidebarCollapsed: boolean;
   sidebarMobileOpen: boolean;
+  signOut: () => Promise<any>;
   discounts: Discount[];
 
   albums: Album[];

@@ -1,25 +1,8 @@
-import { useApp, MediaItem } from '@/context/AppContext';
+import { useApp } from '@/context/AppContext';
 import { motion } from 'framer-motion';
-import { Upload, Trash2, Film, Music, FileText, Youtube, Play, X } from 'lucide-react';
-import { useState, useRef, useCallback } from 'react';
-
-const categoryLabels: Record<string, string> = {
-  courses: 'Cursos',
-  library: 'Biblioteca',
-  materials: 'Materiais',
-};
-
-const typeIcons: Record<string, React.ElementType> = {
-  video: Film,
-  audio: Music,
-  document: FileText,
-};
-
-const getFileType = (file: File): 'video' | 'audio' | 'document' => {
-  if (file.type.startsWith('video/')) return 'video';
-  if (file.type.startsWith('audio/')) return 'audio';
-  return 'document';
-};
+import { Trash2, Plus, Youtube, Disc3, FileText, PenSquare, BookMarked, BookOpen, FolderPlus, Image as ImageIcon } from 'lucide-react';
+import { useState } from 'react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 const getYoutubeId = (url: string): string | null => {
   const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|.*&v=))([^&#?]*)/);
@@ -27,32 +10,7 @@ const getYoutubeId = (url: string): string | null => {
 };
 
 const Admin = () => {
-  const { mediaItems, addMediaItem, removeMediaItem, isAdmin } = useApp();
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState<'courses' | 'library' | 'materials'>('courses');
-  const [youtubeUrl, setYoutubeUrl] = useState('');
-  const [dragOver, setDragOver] = useState(false);
-  const [previewItem, setPreviewItem] = useState<MediaItem | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  const handleFile = useCallback((file: File) => {
-    const type = getFileType(file);
-    const url = URL.createObjectURL(file);
-    if (!title) setTitle(file.name.replace(/\.[^/.]+$/, ''));
-    addMediaItem({ title: title || file.name.replace(/\.[^/.]+$/, ''), description, type, category, url, fileName: file.name });
-    setTitle('');
-    setDescription('');
-  }, [title, description, category, addMediaItem]);
-
-  const handleYoutube = () => {
-    const ytId = getYoutubeId(youtubeUrl);
-    if (!ytId || !title) return;
-    addMediaItem({ title, description, type: 'video', category, url: youtubeUrl, youtubeId: ytId });
-    setTitle('');
-    setDescription('');
-    setYoutubeUrl('');
-  };
+  const { isAdmin } = useApp();
 
   if (!isAdmin) {
     return (
@@ -69,119 +27,281 @@ const Admin = () => {
     <div className="max-w-5xl space-y-6">
       <div>
         <h1 className="text-xl md:text-2xl font-bold">Administração</h1>
-        <p className="text-sm text-muted-foreground mt-1">Upload e gerenciamento de conteúdo</p>
+        <p className="text-sm text-muted-foreground mt-1">Gerenciamento de conteúdo da plataforma</p>
       </div>
 
-      {/* Upload form */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card space-y-4">
-        <h2 className="text-sm font-semibold">Novo Upload</h2>
+      <Tabs defaultValue="hinos" className="w-full">
+        <TabsList className="w-full flex flex-wrap h-auto gap-1">
+          <TabsTrigger value="hinos">Hinos</TabsTrigger>
+          <TabsTrigger value="cursos">Cursos</TabsTrigger>
+          <TabsTrigger value="ebooks">E-books</TabsTrigger>
+          <TabsTrigger value="livros">Livros</TabsTrigger>
+          <TabsTrigger value="materiais">Materiais</TabsTrigger>
+          <TabsTrigger value="blog">Blog</TabsTrigger>
+        </TabsList>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="text-xs text-muted-foreground mb-1 block">Título</label>
-            <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Nome do conteúdo" className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
-          </div>
-          <div>
-            <label className="text-xs text-muted-foreground mb-1 block">Categoria</label>
-            <select value={category} onChange={e => setCategory(e.target.value as any)} className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none">
-              <option value="courses">Cursos</option>
-              <option value="library">Biblioteca</option>
-              <option value="materials">Materiais</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label className="text-xs text-muted-foreground mb-1 block">Descrição</label>
-          <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Descrição opcional..." rows={2} className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none" />
-        </div>
-
-        {/* Drag and drop */}
-        <div
-          onDragOver={e => { e.preventDefault(); setDragOver(true); }}
-          onDragLeave={() => setDragOver(false)}
-          onDrop={e => { e.preventDefault(); setDragOver(false); const f = e.dataTransfer.files[0]; if (f) handleFile(f); }}
-          onClick={() => fileRef.current?.click()}
-          className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${dragOver ? 'border-primary bg-primary/5' : 'border-border/50 hover:border-primary/30'}`}
-        >
-          <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-          <p className="text-sm text-muted-foreground">Arraste um arquivo ou clique para selecionar</p>
-          <p className="text-xs text-muted-foreground mt-1">Vídeo, áudio ou documento</p>
-          <input ref={fileRef} type="file" accept="video/*,audio/*,.pdf,.doc,.docx,.zip,.md,.txt" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ''; }} />
-        </div>
-
-        {/* YouTube */}
-        <div className="flex flex-col sm:flex-row gap-2">
-          <div className="flex-1 relative">
-            <Youtube className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <input value={youtubeUrl} onChange={e => setYoutubeUrl(e.target.value)} placeholder="Cole a URL do YouTube..." className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
-          </div>
-          <button onClick={handleYoutube} disabled={!youtubeUrl || !title} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold disabled:opacity-50 hover:shadow-lg transition-shadow">
-            Adicionar Vídeo
-          </button>
-        </div>
-      </motion.div>
-
-      {/* Media list */}
-      <div className="space-y-3">
-        <h2 className="text-sm font-semibold">Conteúdo Enviado ({mediaItems.length})</h2>
-        {mediaItems.length === 0 && (
-          <div className="glass-card text-center text-sm text-muted-foreground py-8">
-            Nenhum conteúdo enviado ainda.
-          </div>
-        )}
-        {mediaItems.map((item, i) => {
-          const Icon = typeIcons[item.type];
-          return (
-            <motion.div key={item.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="glass-card flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                <Icon className="w-5 h-5 text-primary" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold truncate">{item.title}</p>
-                <p className="text-xs text-muted-foreground">{categoryLabels[item.category]} · {item.type} · {new Date(item.createdAt).toLocaleDateString('pt-BR')}</p>
-              </div>
-              <button onClick={() => setPreviewItem(item)} className="p-2 rounded-xl hover:bg-secondary/50 text-muted-foreground hover:text-foreground transition-colors">
-                <Play className="w-4 h-4" />
-              </button>
-              <button onClick={() => removeMediaItem(item.id)} className="p-2 rounded-xl hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors">
-                <Trash2 className="w-4 h-4" />
-              </button>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Preview modal */}
-      {previewItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={() => setPreviewItem(null)}>
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="glass-card w-full max-w-2xl relative" onClick={e => e.stopPropagation()}>
-            <button onClick={() => setPreviewItem(null)} className="absolute top-3 right-3 p-1 rounded-lg hover:bg-secondary/50 text-muted-foreground"><X className="w-5 h-5" /></button>
-            <h3 className="text-base font-semibold mb-3">{previewItem.title}</h3>
-
-            {previewItem.type === 'video' && previewItem.youtubeId && (
-              <div className="aspect-video rounded-xl overflow-hidden">
-                <iframe src={`https://www.youtube.com/embed/${previewItem.youtubeId}`} className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
-              </div>
-            )}
-            {previewItem.type === 'video' && !previewItem.youtubeId && (
-              <video src={previewItem.url} controls className="w-full rounded-xl" />
-            )}
-            {previewItem.type === 'audio' && (
-              <audio src={previewItem.url} controls className="w-full mt-2" />
-            )}
-            {previewItem.type === 'document' && (
-              <div className="text-center py-8">
-                <FileText className="w-12 h-12 mx-auto text-muted-foreground mb-2" />
-                <p className="text-sm text-muted-foreground">{previewItem.fileName}</p>
-                <a href={previewItem.url} download={previewItem.fileName} className="inline-block mt-3 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-medium">Download</a>
-              </div>
-            )}
-          </motion.div>
-        </div>
-      )}
+        <TabsContent value="hinos"><HinosAdmin /></TabsContent>
+        <TabsContent value="cursos"><CursosAdmin /></TabsContent>
+        <TabsContent value="ebooks"><EbooksAdmin /></TabsContent>
+        <TabsContent value="livros"><LivrosAdmin /></TabsContent>
+        <TabsContent value="materiais"><MateriaisAdmin /></TabsContent>
+        <TabsContent value="blog"><BlogAdmin /></TabsContent>
+      </Tabs>
     </div>
   );
 };
+
+// ── Hinos Admin ────────────────────────────────────────
+
+function HinosAdmin() {
+  const { albums, addAlbum, removeAlbum, addTrackToAlbum, removeTrackFromAlbum } = useApp();
+  const [albumTitle, setAlbumTitle] = useState('');
+  const [trackTitle, setTrackTitle] = useState('');
+  const [trackUrl, setTrackUrl] = useState('');
+  const [selectedAlbum, setSelectedAlbum] = useState('');
+
+  const colors = ['from-blue-500/30 to-purple-500/30', 'from-amber-500/30 to-red-500/30', 'from-green-500/30 to-teal-500/30', 'from-pink-500/30 to-rose-500/30'];
+
+  return (
+    <div className="space-y-4 mt-4">
+      <div className="glass-card space-y-3">
+        <h3 className="text-sm font-semibold flex items-center gap-2"><Disc3 className="w-4 h-4" /> Novo Álbum (CD)</h3>
+        <div className="flex gap-2">
+          <input value={albumTitle} onChange={e => setAlbumTitle(e.target.value)} placeholder="Nome do álbum" className="flex-1 px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+          <button onClick={() => { if (albumTitle) { addAlbum({ title: albumTitle, coverColor: colors[albums.length % colors.length], tracks: [] }); setAlbumTitle(''); } }} className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold"><Plus className="w-4 h-4" /></button>
+        </div>
+      </div>
+
+      <div className="glass-card space-y-3">
+        <h3 className="text-sm font-semibold">Adicionar Faixa a Álbum</h3>
+        <select value={selectedAlbum} onChange={e => setSelectedAlbum(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm">
+          <option value="">Selecione um álbum</option>
+          {albums.map(a => <option key={a.id} value={a.id}>{a.title}</option>)}
+        </select>
+        <input value={trackTitle} onChange={e => setTrackTitle(e.target.value)} placeholder="Nome da faixa" className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        <div className="flex gap-2">
+          <input value={trackUrl} onChange={e => setTrackUrl(e.target.value)} placeholder="URL do YouTube" className="flex-1 px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+          <button onClick={() => { if (selectedAlbum && trackTitle && trackUrl) { addTrackToAlbum(selectedAlbum, { title: trackTitle, youtubeUrl: trackUrl }); setTrackTitle(''); setTrackUrl(''); } }} className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold">Adicionar</button>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <h3 className="text-sm font-semibold">Álbuns ({albums.length})</h3>
+        {albums.map(album => (
+          <div key={album.id} className="glass-card">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-semibold">{album.title}</span>
+              <button onClick={() => removeAlbum(album.id)} className="p-1 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+            </div>
+            {album.tracks.map(track => (
+              <div key={track.id} className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-secondary/20 mb-1 text-sm">
+                <span className="truncate">{track.title}</span>
+                <button onClick={() => removeTrackFromAlbum(album.id, track.id)} className="p-1 text-muted-foreground hover:text-destructive"><Trash2 className="w-3 h-3" /></button>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Cursos Admin ───────────────────────────────────────
+
+function CursosAdmin() {
+  const { courseCategories, addCourseCategory, removeCourseCategory, addVideoToCategory, removeVideoFromCategory } = useApp();
+  const [catName, setCatName] = useState('');
+  const [selectedCat, setSelectedCat] = useState('');
+  const [videoTitle, setVideoTitle] = useState('');
+  const [videoUrl, setVideoUrl] = useState('');
+  const [videoDesc, setVideoDesc] = useState('');
+
+  return (
+    <div className="space-y-4 mt-4">
+      <div className="glass-card space-y-3">
+        <h3 className="text-sm font-semibold flex items-center gap-2"><FolderPlus className="w-4 h-4" /> Nova Categoria</h3>
+        <div className="flex gap-2">
+          <input value={catName} onChange={e => setCatName(e.target.value)} placeholder="Nome da categoria" className="flex-1 px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+          <button onClick={() => { if (catName) { addCourseCategory(catName); setCatName(''); } }} className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold"><Plus className="w-4 h-4" /></button>
+        </div>
+      </div>
+
+      <div className="glass-card space-y-3">
+        <h3 className="text-sm font-semibold flex items-center gap-2"><Youtube className="w-4 h-4" /> Adicionar Vídeo</h3>
+        <select value={selectedCat} onChange={e => setSelectedCat(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm">
+          <option value="">Selecione uma categoria</option>
+          {courseCategories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </select>
+        <input value={videoTitle} onChange={e => setVideoTitle(e.target.value)} placeholder="Título do vídeo" className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        <input value={videoDesc} onChange={e => setVideoDesc(e.target.value)} placeholder="Descrição" className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        <div className="flex gap-2">
+          <input value={videoUrl} onChange={e => setVideoUrl(e.target.value)} placeholder="URL do YouTube" className="flex-1 px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+          <button onClick={() => {
+            const ytId = getYoutubeId(videoUrl);
+            if (selectedCat && videoTitle && ytId) {
+              addVideoToCategory(selectedCat, { title: videoTitle, youtubeId: ytId, description: videoDesc });
+              setVideoTitle(''); setVideoUrl(''); setVideoDesc('');
+            }
+          }} className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold">Adicionar</button>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <h3 className="text-sm font-semibold">Categorias ({courseCategories.length})</h3>
+        {courseCategories.map(cat => (
+          <div key={cat.id} className="glass-card">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-semibold">{cat.name} ({cat.videos.length} vídeos)</span>
+              <button onClick={() => removeCourseCategory(cat.id)} className="p-1 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+            </div>
+            {cat.videos.map(v => (
+              <div key={v.id} className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-secondary/20 mb-1 text-sm">
+                <span className="truncate">{v.title}</span>
+                <button onClick={() => removeVideoFromCategory(cat.id, v.id)} className="p-1 text-muted-foreground hover:text-destructive"><Trash2 className="w-3 h-3" /></button>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── E-books Admin ──────────────────────────────────────
+
+function EbooksAdmin() {
+  const { ebooks, addEbook, removeEbook } = useApp();
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [url, setUrl] = useState('');
+  const [pages, setPages] = useState('');
+
+  return (
+    <div className="space-y-4 mt-4">
+      <div className="glass-card space-y-3">
+        <h3 className="text-sm font-semibold flex items-center gap-2"><BookMarked className="w-4 h-4" /> Novo E-book</h3>
+        <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Título" className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        <input value={desc} onChange={e => setDesc(e.target.value)} placeholder="Descrição" className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        <div className="flex gap-2">
+          <input value={url} onChange={e => setUrl(e.target.value)} placeholder="URL de acesso" className="flex-1 px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+          <input value={pages} onChange={e => setPages(e.target.value)} placeholder="Páginas" type="number" className="w-24 px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        </div>
+        <button onClick={() => { if (title) { addEbook({ title, author: 'Dr. Mauro Kwitko', description: desc, pages: Number(pages) || 0, url }); setTitle(''); setDesc(''); setUrl(''); setPages(''); } }} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold">Adicionar E-book</button>
+      </div>
+      <div className="space-y-2">
+        {ebooks.map(e => (
+          <div key={e.id} className="glass-card flex items-center justify-between">
+            <span className="text-sm font-semibold">{e.title}</span>
+            <button onClick={() => removeEbook(e.id)} className="p-1 text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Livros Admin ───────────────────────────────────────
+
+function LivrosAdmin() {
+  const { livros, addLivro, removeLivro } = useApp();
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [url, setUrl] = useState('');
+  const [pages, setPages] = useState('');
+
+  return (
+    <div className="space-y-4 mt-4">
+      <div className="glass-card space-y-3">
+        <h3 className="text-sm font-semibold flex items-center gap-2"><BookOpen className="w-4 h-4" /> Novo Livro</h3>
+        <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Título" className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        <input value={desc} onChange={e => setDesc(e.target.value)} placeholder="Descrição" className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        <div className="flex gap-2">
+          <input value={url} onChange={e => setUrl(e.target.value)} placeholder="URL de compra" className="flex-1 px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+          <input value={pages} onChange={e => setPages(e.target.value)} placeholder="Páginas" type="number" className="w-24 px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        </div>
+        <button onClick={() => { if (title) { addLivro({ title, author: 'Dr. Mauro Kwitko', description: desc, pages: Number(pages) || 0, url }); setTitle(''); setDesc(''); setUrl(''); setPages(''); } }} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold">Adicionar Livro</button>
+      </div>
+      <div className="space-y-2">
+        {livros.map(l => (
+          <div key={l.id} className="glass-card flex items-center justify-between">
+            <span className="text-sm font-semibold">{l.title}</span>
+            <button onClick={() => removeLivro(l.id)} className="p-1 text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Materiais Admin ────────────────────────────────────
+
+function MateriaisAdmin() {
+  const { materialItems, addMaterialItem, removeMaterialItem } = useApp();
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState('PDF');
+  const [size, setSize] = useState('');
+  const [url, setUrl] = useState('');
+
+  return (
+    <div className="space-y-4 mt-4">
+      <div className="glass-card space-y-3">
+        <h3 className="text-sm font-semibold flex items-center gap-2"><FileText className="w-4 h-4" /> Novo Material</h3>
+        <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Título" className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        <div className="flex gap-2">
+          <input value={type} onChange={e => setType(e.target.value)} placeholder="Tipo (PDF, DOC...)" className="w-32 px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+          <input value={size} onChange={e => setSize(e.target.value)} placeholder="Tamanho (ex: 2.4 MB)" className="w-40 px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+          <input value={url} onChange={e => setUrl(e.target.value)} placeholder="URL do arquivo" className="flex-1 px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        </div>
+        <button onClick={() => { if (title) { addMaterialItem({ title, type, size, url }); setTitle(''); setType('PDF'); setSize(''); setUrl(''); } }} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold">Adicionar Material</button>
+      </div>
+      <div className="space-y-2">
+        {materialItems.map(m => (
+          <div key={m.id} className="glass-card flex items-center justify-between">
+            <div>
+              <span className="text-sm font-semibold">{m.title}</span>
+              <span className="text-xs text-muted-foreground ml-2">{m.type} · {m.size}</span>
+            </div>
+            <button onClick={() => removeMaterialItem(m.id)} className="p-1 text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Blog Admin ─────────────────────────────────────────
+
+function BlogAdmin() {
+  const { blogPosts, addBlogPost, removeBlogPost } = useApp();
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+
+  return (
+    <div className="space-y-4 mt-4">
+      <div className="glass-card space-y-3">
+        <h3 className="text-sm font-semibold flex items-center gap-2"><PenSquare className="w-4 h-4" /> Novo Post</h3>
+        <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Título do post" className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        <textarea value={content} onChange={e => setContent(e.target.value)} placeholder="Conteúdo do post..." rows={4} className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none" />
+        <div className="flex gap-2 items-center">
+          <ImageIcon className="w-4 h-4 text-muted-foreground shrink-0" />
+          <input value={imageUrl} onChange={e => setImageUrl(e.target.value)} placeholder="URL da imagem (opcional)" className="flex-1 px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        </div>
+        <button onClick={() => { if (title && content) { addBlogPost({ title, content, imageUrl: imageUrl || undefined, author: 'Dr. Mauro Kwitko' }); setTitle(''); setContent(''); setImageUrl(''); } }} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold">Publicar Post</button>
+      </div>
+      <div className="space-y-2">
+        {blogPosts.map(p => (
+          <div key={p.id} className="glass-card flex items-center justify-between">
+            <div>
+              <span className="text-sm font-semibold">{p.title}</span>
+              <span className="text-xs text-muted-foreground ml-2">{new Date(p.createdAt).toLocaleDateString('pt-BR')}</span>
+            </div>
+            <button onClick={() => removeBlogPost(p.id)} className="p-1 text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default Admin;

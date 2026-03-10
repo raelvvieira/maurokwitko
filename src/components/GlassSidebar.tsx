@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, BookOpen, Headphones, FileText, Trophy, Users, PenSquare, Sparkles, ChevronLeft, ChevronRight, Shield, Tag, X, Radio } from 'lucide-react';
+import { Home, BookOpen, Headphones, FileText, Trophy, Users, PenSquare, Sparkles, ChevronLeft, ChevronRight, Shield, Tag, X, Radio, BookMarked, ShoppingCart } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,7 +8,8 @@ const navItems = [
   { to: '/', icon: Home, label: 'Home' },
   { to: '/courses', icon: BookOpen, label: 'Cursos' },
   { to: '/library', icon: Headphones, label: 'Hinos' },
-  { to: '/biblioteca', icon: FileText, label: 'Biblioteca' },
+  { to: '/ebooks', icon: BookMarked, label: 'E-books' },
+  { to: '/livros', icon: ShoppingCart, label: 'Livros' },
   { to: '/radio', icon: Radio, label: 'Rádio' },
   { to: '/materials', icon: FileText, label: 'Materiais' },
   { to: '/ranking', icon: Trophy, label: 'Ranking' },
@@ -60,7 +61,7 @@ const GlassSidebar = () => {
 
         {isAdmin && (
           <>
-            <div className={`my-2 mx-2 border-t border-border/50`} />
+            <div className="my-2 mx-2 border-t border-border/50" />
             {adminItems.map(({ to, icon: Icon, label }) => (
               <NavLink
                 key={to}
@@ -82,16 +83,6 @@ const GlassSidebar = () => {
           </>
         )}
       </nav>
-
-      {!collapsed && (
-        <div className="p-4 mx-3 mb-4 glass-card">
-          <p className="text-xs font-semibold text-foreground mb-1">Upgrade Pro</p>
-          <p className="text-xs text-muted-foreground mb-3">Acesso ilimitado a todos os cursos</p>
-          <button className="w-full py-2 rounded-lg bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs font-semibold transition-transform hover:scale-[1.02]">
-            Atualizar Agora
-          </button>
-        </div>
-      )}
 
       {/* Collapse toggle - desktop only */}
       {!isMobile && (

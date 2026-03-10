@@ -14,6 +14,8 @@ import Profile from "./pages/Profile";
 import Library from "./pages/Library";
 import Materials from "./pages/Materials";
 import Blog from "./pages/Blog";
+import Admin from "./pages/Admin";
+import Discounts from "./pages/Discounts";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +38,8 @@ const App = () => (
               <Route path="/library" element={<Library />} />
               <Route path="/materials" element={<Materials />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/discounts" element={<Discounts />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

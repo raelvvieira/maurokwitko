@@ -54,6 +54,29 @@ interface Track {
   duration: string;
 }
 
+export interface MediaItem {
+  id: string;
+  title: string;
+  description: string;
+  type: 'video' | 'audio' | 'document';
+  category: 'courses' | 'library' | 'materials';
+  url: string;
+  youtubeId?: string;
+  fileName?: string;
+  createdAt: string;
+}
+
+export interface Discount {
+  id: string;
+  title: string;
+  description: string;
+  percentage: number;
+  courseIds: string[];
+  couponCode: string;
+  expiresAt: string;
+  active: boolean;
+}
+
 interface AppState {
   courses: Course[];
   currentCourseId: string | null;
@@ -64,10 +87,23 @@ interface AppState {
   currentTrack: Track;
   isPlaying: boolean;
   playerProgress: number;
+  isAdmin: boolean;
+  sidebarCollapsed: boolean;
+  sidebarMobileOpen: boolean;
+  mediaItems: MediaItem[];
+  discounts: Discount[];
   markLessonComplete: (lessonId: string) => void;
   toggleLike: (postId: string) => void;
   togglePlay: () => void;
   setCurrentCourseId: (id: string | null) => void;
+  toggleAdmin: () => void;
+  setSidebarCollapsed: (v: boolean) => void;
+  setSidebarMobileOpen: (v: boolean) => void;
+  addMediaItem: (item: Omit<MediaItem, 'id' | 'createdAt'>) => void;
+  removeMediaItem: (id: string) => void;
+  addDiscount: (item: Omit<Discount, 'id'>) => void;
+  removeDiscount: (id: string) => void;
+  toggleDiscountActive: (id: string) => void;
 }
 
 const defaultCourses: Course[] = [
@@ -105,6 +141,12 @@ const defaultRanking: RankingUser[] = [
   { position: 8, name: 'Beatriz Costa', avatar: '', score: 7200, growth: -1, streak: 8 },
 ];
 
+const defaultDiscounts: Discount[] = [
+  { id: 'd1', title: 'Desconto de Boas-Vindas', description: 'Para novos alunos em qualquer curso', percentage: 20, courseIds: [], couponCode: 'WELCOME20', expiresAt: '2026-04-30', active: true },
+  { id: 'd2', title: 'Combo React + TypeScript', description: 'Desconto especial no combo de cursos', percentage: 35, courseIds: ['1', '4'], couponCode: 'COMBO35', expiresAt: '2026-03-31', active: true },
+  { id: 'd3', title: 'Black Friday Antecipada', description: 'Acesso vitalício com super desconto', percentage: 50, courseIds: [], couponCode: 'BLACK50', expiresAt: '2026-05-15', active: false },
+];
+
 const AppContext = createContext<AppState | null>(null);
 
 export const useApp = () => {
@@ -121,6 +163,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [ranking, setRanking] = useState(defaultRanking);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playerProgress, setPlayerProgress] = useState(35);
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarMobileOpen, setSidebarMobileOpen] = useState(false);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+  const [discounts, setDiscounts] = useState<Discount[]>(defaultDiscounts);
 
   const profile: UserProfile = {
     name: 'Alex Martins',
@@ -140,12 +187,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const markLessonComplete = (lessonId: string) => {
     setLessons(prev => prev.map(l => l.id === lessonId ? { ...l, completed: true } : l));
-    // Update ranking score
     setRanking(prev => prev.map(r => r.name === 'Você' ? { ...r, score: r.score + 50 } : r)
       .sort((a, b) => b.score - a.score)
       .map((r, i) => ({ ...r, position: i + 1 }))
     );
-    // Update course progress
     setCourses(prev => prev.map(c => {
       if (c.id === '1') {
         const newCompleted = c.completedLessons + 1;
@@ -160,11 +205,36 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const togglePlay = () => setIsPlaying(prev => !prev);
+  const toggleAdmin = () => setIsAdmin(prev => !prev);
+
+  const addMediaItem = (item: Omit<MediaItem, 'id' | 'createdAt'>) => {
+    setMediaItems(prev => [...prev, { ...item, id: crypto.randomUUID(), createdAt: new Date().toISOString() }]);
+  };
+
+  const removeMediaItem = (id: string) => {
+    setMediaItems(prev => prev.filter(m => m.id !== id));
+  };
+
+  const addDiscount = (item: Omit<Discount, 'id'>) => {
+    setDiscounts(prev => [...prev, { ...item, id: crypto.randomUUID() }]);
+  };
+
+  const removeDiscount = (id: string) => {
+    setDiscounts(prev => prev.filter(d => d.id !== id));
+  };
+
+  const toggleDiscountActive = (id: string) => {
+    setDiscounts(prev => prev.map(d => d.id === id ? { ...d, active: !d.active } : d));
+  };
 
   return (
     <AppContext.Provider value={{
       courses, currentCourseId, lessons, posts, profile, ranking, currentTrack,
-      isPlaying, playerProgress, markLessonComplete, toggleLike, togglePlay, setCurrentCourseId
+      isPlaying, playerProgress, isAdmin, sidebarCollapsed, sidebarMobileOpen,
+      mediaItems, discounts,
+      markLessonComplete, toggleLike, togglePlay, setCurrentCourseId,
+      toggleAdmin, setSidebarCollapsed, setSidebarMobileOpen,
+      addMediaItem, removeMediaItem, addDiscount, removeDiscount, toggleDiscountActive,
     }}>
       {children}
     </AppContext.Provider>

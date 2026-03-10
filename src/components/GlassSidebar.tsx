@@ -7,7 +7,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 const navItems = [
   { to: '/', icon: Home, label: 'Home' },
   { to: '/courses', icon: BookOpen, label: 'Cursos' },
-  { to: '/library', icon: Headphones, label: 'Biblioteca' },
+  { to: '/library', icon: Headphones, label: 'Hinos' },
+  { to: '/biblioteca', icon: FileText, label: 'Biblioteca' },
+  { to: '/radio', icon: Radio, label: 'Rádio' },
   { to: '/materials', icon: FileText, label: 'Materiais' },
   { to: '/ranking', icon: Trophy, label: 'Ranking' },
   { to: '/community', icon: Users, label: 'Comunidade' },

@@ -156,7 +156,6 @@ interface AppState {
   markLessonComplete: (lessonId: string) => void;
   toggleLike: (postId: string) => void;
   setCurrentCourseId: (id: string | null) => void;
-  toggleAdmin: () => void;
   setSidebarCollapsed: (v: boolean) => void;
   setSidebarMobileOpen: (v: boolean) => void;
   addDiscount: (item: Omit<Discount, 'id'>) => void;

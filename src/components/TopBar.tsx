@@ -1,10 +1,10 @@
-import { Search, Bell, User, Menu } from 'lucide-react';
+import { Search, Bell, User, Menu, LogOut } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const TopBar = () => {
-  const { profile, setSidebarMobileOpen } = useApp();
+  const { profile, userEmail, setSidebarMobileOpen, signOut } = useApp();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
@@ -41,10 +41,18 @@ const TopBar = () => {
           </div>
           {!isMobile && (
             <div className="text-left">
-              <p className="text-sm font-semibold leading-tight">{profile.name}</p>
+              <p className="text-sm font-semibold leading-tight">{userEmail?.split('@')[0] ?? profile.name}</p>
               <p className="text-xs text-muted-foreground">#{profile.rank} Ranking</p>
             </div>
           )}
+        </button>
+
+        <button
+          onClick={() => signOut()}
+          className="p-2 rounded-xl hover:bg-destructive/10 transition-colors"
+          title="Sair"
+        >
+          <LogOut className="w-4 h-4 text-muted-foreground hover:text-destructive" />
         </button>
       </div>
     </header>

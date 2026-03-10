@@ -14,6 +14,7 @@ import {
   type BookRow,
   type DiscountRow,
 } from '@/hooks/useSupabaseData';
+import { useAuth } from '@/hooks/useAuth';
 
 // ── Legacy Types ───────────────────────────────────────
 
@@ -139,8 +140,10 @@ interface AppState {
   profile: UserProfile;
   ranking: RankingUser[];
   isAdmin: boolean;
+  userEmail: string | null;
   sidebarCollapsed: boolean;
   sidebarMobileOpen: boolean;
+  signOut: () => Promise<any>;
   discounts: Discount[];
 
   albums: Album[];
@@ -153,7 +156,6 @@ interface AppState {
   markLessonComplete: (lessonId: string) => void;
   toggleLike: (postId: string) => void;
   setCurrentCourseId: (id: string | null) => void;
-  toggleAdmin: () => void;
   setSidebarCollapsed: (v: boolean) => void;
   setSidebarMobileOpen: (v: boolean) => void;
   addDiscount: (item: Omit<Discount, 'id'>) => void;
@@ -284,7 +286,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [lessons, setLessons] = useState(defaultLessons);
   const [posts, setPosts] = useState(defaultPosts);
   const [ranking] = useState(defaultRanking);
-  const [isAdmin, setIsAdmin] = useState(true);
+  const { user, isAdmin, signOut } = useAuth();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [sidebarMobileOpen, setSidebarMobileOpen] = useState(false);
 
@@ -317,7 +319,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setPosts(prev => prev.map(p => p.id === postId ? { ...p, liked: !p.liked, likes: p.liked ? p.likes - 1 : p.likes + 1 } : p));
   };
 
-  const toggleAdmin = () => setIsAdmin(prev => !prev);
+  
 
   // ── DB-backed actions ─────────────────────────────────
 
@@ -376,7 +378,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AppContext.Provider value={{
       courses, currentCourseId, lessons, posts, profile, ranking,
-      isAdmin, sidebarCollapsed, sidebarMobileOpen,
+      isAdmin, userEmail: user?.email ?? null, sidebarCollapsed, sidebarMobileOpen, signOut,
       discounts: mapDiscounts(discountsHook.discounts),
       albums: albumsHook.albums,
       courseCategories: categoriesHook.courseCategories,
@@ -385,7 +387,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       ebooks: mapBooks(ebooksHook.ebooks),
       livros: mapBooks(livrosHook.livros),
       markLessonComplete, toggleLike, setCurrentCourseId,
-      toggleAdmin, setSidebarCollapsed, setSidebarMobileOpen,
+      setSidebarCollapsed, setSidebarMobileOpen,
       addDiscount, removeDiscount, toggleDiscountActive,
       addAlbum, removeAlbum, addTrackToAlbum, removeTrackFromAlbum,
       addCourseCategory, removeCourseCategory, addVideoToCategory, removeVideoFromCategory,

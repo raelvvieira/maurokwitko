@@ -21,12 +21,12 @@ const Ranking = () => {
   return (
     <div className="max-w-4xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><Trophy className="w-6 h-6 text-gold" /> Ranking Global</h1>
+        <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2"><Trophy className="w-5 h-5 md:w-6 md:h-6 text-gold" /> Ranking Global</h1>
         <p className="text-sm text-muted-foreground mt-1">Baseado em progresso dos cursos e atividade na comunidade</p>
       </div>
 
       {/* Top 3 podium */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {ranking.slice(0, 3).map((user, i) => (
           <motion.div
             key={user.name}
@@ -56,15 +56,15 @@ const Ranking = () => {
       </div>
 
       {/* Full table */}
-      <div className="glass-card p-0 overflow-hidden">
-        <table className="w-full">
+      <div className="glass-card p-0 overflow-x-auto">
+        <table className="w-full min-w-[500px]">
           <thead>
             <tr className="border-b border-border/50 text-xs text-muted-foreground">
-              <th className="text-left px-5 py-3 font-medium">#</th>
-              <th className="text-left px-5 py-3 font-medium">Usuário</th>
-              <th className="text-right px-5 py-3 font-medium">Score</th>
-              <th className="text-right px-5 py-3 font-medium">Crescimento</th>
-              <th className="text-right px-5 py-3 font-medium">Streak</th>
+              <th className="text-left px-4 md:px-5 py-3 font-medium">#</th>
+              <th className="text-left px-4 md:px-5 py-3 font-medium">Usuário</th>
+              <th className="text-right px-4 md:px-5 py-3 font-medium">Score</th>
+              <th className="text-right px-4 md:px-5 py-3 font-medium">Crescimento</th>
+              <th className="text-right px-4 md:px-5 py-3 font-medium">Streak</th>
             </tr>
           </thead>
           <tbody>
@@ -76,19 +76,19 @@ const Ranking = () => {
                 transition={{ delay: i * 0.05 }}
                 className={`border-b border-border/30 last:border-0 ${user.name === 'Você' ? 'bg-primary/5' : ''} hover:bg-secondary/30 transition-colors`}
               >
-                <td className="px-5 py-3 text-sm font-bold">{user.position}</td>
-                <td className="px-5 py-3">
+                <td className="px-4 md:px-5 py-3 text-sm font-bold">{user.position}</td>
+                <td className="px-4 md:px-5 py-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-xs font-bold">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-xs font-bold shrink-0">
                       {user.name.charAt(0)}
                     </div>
                     <span className={`text-sm font-medium ${user.name === 'Você' ? 'text-primary' : ''}`}>{user.name}</span>
-                    {getBadge(user.position)}
+                    <span className="hidden sm:inline">{getBadge(user.position)}</span>
                   </div>
                 </td>
-                <td className="px-5 py-3 text-right text-sm font-semibold">{user.score.toLocaleString()}</td>
-                <td className="px-5 py-3 text-right">{getGrowthIcon(user.growth)}</td>
-                <td className="px-5 py-3 text-right">
+                <td className="px-4 md:px-5 py-3 text-right text-sm font-semibold">{user.score.toLocaleString()}</td>
+                <td className="px-4 md:px-5 py-3 text-right">{getGrowthIcon(user.growth)}</td>
+                <td className="px-4 md:px-5 py-3 text-right">
                   <span className="flex items-center justify-end gap-1 text-xs text-muted-foreground">
                     <Flame className="w-3 h-3 text-destructive" /> {user.streak}
                   </span>

@@ -31,27 +31,27 @@ const Dashboard = () => {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${heroSlides[slide].color} p-8 min-h-[200px] flex flex-col justify-end`}
+        className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${heroSlides[slide].color} p-6 md:p-8 min-h-[160px] md:min-h-[200px] flex flex-col justify-end`}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
         <div className="relative z-10">
-          <h1 className="text-3xl font-bold text-primary-foreground mb-2">{heroSlides[slide].title}</h1>
-          <p className="text-primary-foreground/80 mb-4">{heroSlides[slide].subtitle}</p>
+          <h1 className="text-xl md:text-3xl font-bold text-primary-foreground mb-2">{heroSlides[slide].title}</h1>
+          <p className="text-sm md:text-base text-primary-foreground/80 mb-4">{heroSlides[slide].subtitle}</p>
           <button
             onClick={() => navigate('/courses')}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary-foreground/20 backdrop-blur text-primary-foreground text-sm font-semibold hover:bg-primary-foreground/30 transition-colors"
+            className="inline-flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 rounded-xl bg-primary-foreground/20 backdrop-blur text-primary-foreground text-sm font-semibold hover:bg-primary-foreground/30 transition-colors"
           >
             Explorar <ArrowRight className="w-4 h-4" />
           </button>
         </div>
-        <div className="absolute bottom-4 right-6 flex gap-2 z-10">
+        <div className="absolute bottom-4 right-4 md:right-6 flex gap-2 z-10">
           <button onClick={() => setSlide(s => (s - 1 + heroSlides.length) % heroSlides.length)} className="p-1.5 rounded-full bg-primary-foreground/20 backdrop-blur text-primary-foreground hover:bg-primary-foreground/30"><ChevronLeft className="w-4 h-4" /></button>
           <button onClick={() => setSlide(s => (s + 1) % heroSlides.length)} className="p-1.5 rounded-full bg-primary-foreground/20 backdrop-blur text-primary-foreground hover:bg-primary-foreground/30"><ChevronRight className="w-4 h-4" /></button>
         </div>
       </motion.div>
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         {[
           { icon: BookOpen, label: 'Cursos Ativos', value: courses.length.toString(), color: 'text-primary' },
           { icon: Trophy, label: 'Posição Ranking', value: `#${userRank?.position ?? '-'}`, color: 'text-gold' },
@@ -63,13 +63,13 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="glass-card flex items-center gap-4"
+            className="glass-card flex items-center gap-3 md:gap-4"
           >
-            <div className={`w-10 h-10 rounded-xl bg-secondary flex items-center justify-center ${stat.color}`}>
-              <stat.icon className="w-5 h-5" />
+            <div className={`w-9 h-9 md:w-10 md:h-10 rounded-xl bg-secondary flex items-center justify-center ${stat.color}`}>
+              <stat.icon className="w-4 h-4 md:w-5 md:h-5" />
             </div>
             <div>
-              <p className="text-2xl font-bold">{stat.value}</p>
+              <p className="text-lg md:text-2xl font-bold">{stat.value}</p>
               <p className="text-xs text-muted-foreground">{stat.label}</p>
             </div>
           </motion.div>
@@ -77,9 +77,8 @@ const Dashboard = () => {
       </div>
 
       {/* Progress + Ranking preview */}
-      <div className="grid grid-cols-5 gap-6">
-        {/* Progress circles */}
-        <div className="col-span-2 glass-card">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+        <div className="md:col-span-2 glass-card">
           <h2 className="text-sm font-semibold mb-4">Progresso Geral</h2>
           <div className="flex items-center justify-center gap-8">
             <RadialProgress value={overallProgress} label="Cursos" size={120} />
@@ -87,8 +86,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Continue learning */}
-        <div className="col-span-3 glass-card">
+        <div className="md:col-span-3 glass-card">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold">Continue Aprendendo</h2>
             <button onClick={() => navigate('/courses')} className="text-xs text-primary font-medium hover:underline">Ver todos</button>
@@ -107,7 +105,7 @@ const Dashboard = () => {
                   <p className="text-sm font-medium truncate">{course.title}</p>
                   <p className="text-xs text-muted-foreground">{course.instructor} · {course.completedLessons}/{course.totalLessons} aulas</p>
                 </div>
-                <div className="w-16">
+                <div className="w-16 hidden sm:block">
                   <div className="h-1.5 rounded-full bg-secondary">
                     <div className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all" style={{ width: `${course.progress}%` }} />
                   </div>

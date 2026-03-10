@@ -10,11 +10,11 @@ const Courses = () => {
   return (
     <div className="max-w-6xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Meus Cursos</h1>
+        <h1 className="text-xl md:text-2xl font-bold">Meus Cursos</h1>
         <p className="text-sm text-muted-foreground mt-1">Continue de onde parou</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {courses.map((course, i) => (
           <motion.button
             key={course.id}

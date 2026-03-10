@@ -18,9 +18,9 @@ const CourseDetail = () => {
         <ArrowLeft className="w-4 h-4" /> Voltar aos Cursos
       </button>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Video area */}
-        <div className="col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-4">
           <div className="glass-card p-0 overflow-hidden">
             <div className="aspect-video bg-gradient-to-br from-foreground/5 to-foreground/10 flex items-center justify-center relative">
               <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
@@ -48,12 +48,12 @@ const CourseDetail = () => {
 
           {/* Tabs */}
           <div className="glass-card">
-            <div className="flex gap-1 mb-4 p-1 bg-secondary/50 rounded-xl w-fit">
+            <div className="flex gap-1 mb-4 p-1 bg-secondary/50 rounded-xl w-fit overflow-x-auto">
               {tabs.map(tab => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab ? 'bg-primary-foreground shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                  className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all whitespace-nowrap ${activeTab === tab ? 'bg-primary-foreground shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                 >
                   {tab}
                 </button>
@@ -106,7 +106,7 @@ const CourseDetail = () => {
         <div className="glass-card h-fit max-h-[80vh] overflow-y-auto">
           <h3 className="text-sm font-semibold mb-3">Aulas do Curso</h3>
           <div className="space-y-1">
-            {lessons.map((lesson, i) => (
+            {lessons.map((lesson) => (
               <button
                 key={lesson.id}
                 onClick={() => setCurrentLesson(lesson)}

@@ -2,14 +2,21 @@ import { Outlet } from 'react-router-dom';
 import GlassSidebar from './GlassSidebar';
 import TopBar from './TopBar';
 import FloatingPlayer from './FloatingPlayer';
+import { useApp } from '@/context/AppContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const AppShell = () => {
+  const { sidebarCollapsed } = useApp();
+  const isMobile = useIsMobile();
+
+  const marginLeft = isMobile ? 'ml-0' : sidebarCollapsed ? 'ml-16' : 'ml-64';
+
   return (
     <div className="min-h-screen mesh-gradient">
       <GlassSidebar />
-      <div className="ml-64 pb-20">
+      <div className={`${marginLeft} pb-20 transition-all duration-300`}>
         <TopBar />
-        <main className="p-6">
+        <main className="p-4 md:p-6">
           <Outlet />
         </main>
       </div>

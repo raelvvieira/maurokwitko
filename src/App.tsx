@@ -12,6 +12,8 @@ import Ranking from "./pages/Ranking";
 import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import Library from "./pages/Library";
+import Biblioteca from "./pages/Biblioteca";
+import RadioPage from "./pages/Radio";
 import Materials from "./pages/Materials";
 import Blog from "./pages/Blog";
 import Admin from "./pages/Admin";

@@ -378,7 +378,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AppContext.Provider value={{
       courses, currentCourseId, lessons, posts, profile, ranking,
-      isAdmin, sidebarCollapsed, sidebarMobileOpen,
+      isAdmin, userEmail: user?.email ?? null, sidebarCollapsed, sidebarMobileOpen, signOut,
       discounts: mapDiscounts(discountsHook.discounts),
       albums: albumsHook.albums,
       courseCategories: categoriesHook.courseCategories,

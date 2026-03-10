@@ -14,6 +14,7 @@ import {
   type BookRow,
   type DiscountRow,
 } from '@/hooks/useSupabaseData';
+import { useAuth } from '@/hooks/useAuth';
 
 // ── Legacy Types ───────────────────────────────────────
 

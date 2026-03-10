@@ -140,7 +140,7 @@ function useSimpleCrud<T extends { id: string }>(
     queryFn: async () => {
       const { data, error } = await supabase.from(table).select('*').order(orderBy, { ascending: table === 'blog_posts' ? false : true });
       if (error) throw error;
-      return data as T[];
+      return data as unknown as T[];
     },
   });
 

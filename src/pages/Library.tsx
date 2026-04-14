@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Headphones, Disc3, Play, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { Headphones, Disc3, Play, ChevronDown, ChevronUp, ExternalLink, X } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+
+const getVideoId = (url: string) => {
+  const match = url.match(/(?:embed\/|watch\?v=|youtu\.be\/)([^&?/]+)/);
+  return match ? match[1] : '';
+};
 
 const Library = () => {
   const { albums } = useApp();
   const [openAlbum, setOpenAlbum] = useState<string | null>(null);
+  const [activeTrack, setActiveTrack] = useState<{ title: string; url: string } | null>(null);
 
   return (
     <div className="max-w-5xl space-y-6">
@@ -53,23 +60,47 @@ const Library = () => {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden mt-4 space-y-2"
                   >
-                    {album.tracks.map((track, ti) => (
-                      <div key={track.id} className="flex items-center justify-between px-3 py-2 rounded-lg bg-secondary/30">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <span className="text-xs text-muted-foreground w-5">{ti + 1}</span>
-                          <span className="text-sm truncate">{track.title}</span>
+                    {album.tracks.map((track, ti) => {
+                      const videoId = getVideoId(track.youtubeUrl);
+                      const thumbnail = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
+                      return (
+                        <div key={track.id} className="flex items-center justify-between px-3 py-2 rounded-lg bg-secondary/30 gap-3">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <span className="text-xs text-muted-foreground w-5 shrink-0">{ti + 1}</span>
+                            {thumbnail && (
+                              <img
+                                src={thumbnail}
+                                alt={track.title}
+                                className="w-14 h-10 rounded object-cover shrink-0"
+                                loading="lazy"
+                              />
+                            )}
+                            <span className="text-sm truncate">{track.title}</span>
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <button
+                              onClick={e => {
+                                e.stopPropagation();
+                                setActiveTrack({ title: track.title, url: track.youtubeUrl });
+                              }}
+                              className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+                            >
+                              <Play className="w-3 h-3" /> Tocar
+                            </button>
+                            <a
+                              href={track.youtubeUrl.replace('/embed/', '/watch?v=')}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={e => e.stopPropagation()}
+                              className="text-muted-foreground hover:text-foreground"
+                              title="Abrir no YouTube"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </div>
                         </div>
-                        <a
-                          href={track.youtubeUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={e => e.stopPropagation()}
-                          className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline shrink-0"
-                        >
-                          <Play className="w-3 h-3" /> Tocar
-                        </a>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -77,6 +108,28 @@ const Library = () => {
           );
         })}
       </div>
+
+      {/* Video Player Dialog */}
+      <Dialog open={!!activeTrack} onOpenChange={(open) => !open && setActiveTrack(null)}>
+        <DialogContent className="sm:max-w-2xl p-0 overflow-hidden bg-background border-border">
+          <DialogTitle className="px-4 pt-4 text-sm font-semibold truncate">
+            {activeTrack?.title}
+          </DialogTitle>
+          <div className="w-full aspect-video">
+            {activeTrack && (
+              <iframe
+                src={activeTrack.url}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+                className="w-full h-full"
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -14,6 +14,7 @@ import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import Library from "./pages/Library";
 import Ebooks from "./pages/Ebooks";
+import EbookReader from "./pages/EbookReader";
 import BlogPost from "./pages/BlogPost";
 import Livros from "./pages/Livros";
 import RadioPage from "./pages/Radio";
@@ -51,6 +52,7 @@ function AuthGate() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/library" element={<Library />} />
           <Route path="/ebooks" element={<Ebooks />} />
+          <Route path="/ebooks/:id" element={<EbookReader />} />
           <Route path="/livros" element={<Livros />} />
           <Route path="/radio" element={<RadioPage />} />
           <Route path="/materials" element={<Materials />} />

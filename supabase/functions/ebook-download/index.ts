@@ -12,7 +12,6 @@ Deno.serve(async (req) => {
 
   const url = new URL(req.url);
   const ebookId = url.searchParams.get("id");
-  const mode = url.searchParams.get("mode"); // "url" returns JSON instead of redirect
 
   if (!ebookId) {
     return new Response(JSON.stringify({ error: "Missing id" }), {
@@ -39,12 +38,12 @@ Deno.serve(async (req) => {
     });
   }
 
-  let fileUrl = ebook.url;
+  let downloadUrl = ebook.url;
 
-  // Check if it's a storage URL and generate a signed URL
+  // If it's a storage URL, generate a signed URL
   const storageBase = `${Deno.env.get("SUPABASE_URL")}/storage/v1/object/public/`;
-  if (fileUrl.startsWith(storageBase)) {
-    const path = fileUrl.replace(storageBase, "");
+  if (downloadUrl.startsWith(storageBase)) {
+    const path = downloadUrl.replace(storageBase, "");
     const bucketEnd = path.indexOf("/");
     const bucket = path.substring(0, bucketEnd);
     const filePath = path.substring(bucketEnd + 1);
@@ -59,21 +58,33 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-
-    fileUrl = signed.signedUrl;
+    downloadUrl = signed.signedUrl;
   }
 
-  // If mode=url, return JSON with the URL instead of redirecting
-  if (mode === "url") {
-    return new Response(JSON.stringify({ url: fileUrl, title: ebook.title }), {
+  // Fetch the PDF content and proxy it with download headers
+  try {
+    const pdfResponse = await fetch(downloadUrl);
+    if (!pdfResponse.ok) {
+      return new Response(JSON.stringify({ error: "Failed to fetch PDF" }), {
+        status: 502,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const filename = `${ebook.title || "ebook"}.pdf`.replace(/[^a-zA-Z0-9àáâãéêíóôõúç\s._-]/gi, "");
+
+    return new Response(pdfResponse.body, {
       status: 200,
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="${filename}"`,
+      },
+    });
+  } catch (e) {
+    return new Response(JSON.stringify({ error: "Download failed" }), {
+      status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
-
-  // Default: redirect
-  return new Response(null, {
-    status: 302,
-    headers: { ...corsHeaders, Location: fileUrl },
-  });
 });

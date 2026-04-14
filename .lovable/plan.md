@@ -1,38 +1,18 @@
 
 
-## Plan: Substituir todos os dados de vídeos com os IDs corretos da planilha
+## Plano: Ajustar tamanhos da capa do álbum e miniaturas dos hinos
 
-### Problema
-Os IDs de vídeo no banco são fabricados e não correspondem aos vídeos reais. Apenas 1 de ~90 vídeos tem o ID correto.
+### Mudanças em `src/pages/Library.tsx`
 
-### Solução
+1. **Capa do álbum menor**: Trocar `w-full aspect-square` por um tamanho fixo menor (ex: `w-32 h-32` ou `w-40 h-40`) para que a capa não ocupe toda a largura do card. Também reduzir o ícone `Disc3` proporcionalmente.
 
-#### 1. Limpar e reinserir `course_videos`
+2. **Miniaturas dos hinos maiores**: Aumentar de `w-14 h-10` para `w-20 h-14` (ou similar) nas thumbnails das faixas, dando mais destaque visual.
 
-Deletar todos os registros e inserir os dados corretos da planilha, com URLs no formato embed:
+3. **Harmonização geral**: Centralizar melhor o layout do card quando aberto, ajustar padding e espaçamento para que capa menor + lista de faixas fiquem visualmente equilibrados.
 
-- **LIVES GRAVADAS** -- 20 vídeos (linhas 7-25 da planilha)
-- **AULAS GRAVADAS - LIVROS DR. MAURO** -- 10 vídeos (linhas 26-35)
-- **CURSO DE REFORMA INTIMA COM DR. MAURO** -- 60 vídeos (linhas 36-95)
+### Detalhes técnicos
 
-Cada `youtu.be/ID` sera convertido para `https://www.youtube.com/embed/ID`, removendo escapes de markdown (`\_` -> `_`).
-
-#### 2. Limpar e reinserir `album_tracks`
-
-- **HINOS DE PAZ** -- 11 faixas (linhas 96-106)
-- **HINOS DE FE** -- 12 faixas (linhas 107-118)
-- **HINOS DE AMOR** -- 10 faixas (linhas 119-128)
-
-Mesma conversao de URL para formato embed.
-
-#### 3. Nenhuma mudanca de codigo
-
-O `Courses.tsx` ja usa a URL do banco diretamente no `src` do iframe. O codigo esta correto.
-
-### Execucao tecnica
-
-- Usar INSERT tool para DELETE + INSERT dos dados (nao migration, pois sao dados e nao schema)
-- Manter os `category_id` e `album_id` existentes
-- Coluna `position` seguira a ordem da planilha
-- Descricoes da planilha serao preservadas; onde nao houver, string vazia
+- Linha 45: `w-full aspect-square` → `w-32 h-32 mx-auto` (capa centralizada e menor)
+- Linha 46: `w-16 h-16` → `w-10 h-10` (ícone menor)
+- Linha 74: `w-14 h-10` → `w-20 h-14` (thumbnails maiores)
 

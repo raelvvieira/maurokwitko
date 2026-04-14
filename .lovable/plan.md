@@ -1,18 +1,41 @@
 
 
-## Plano: Ajustar tamanhos da capa do álbum e miniaturas dos hinos
+## Plano: Adicionar E-books PDF com capas na plataforma
 
-### Mudanças em `src/pages/Library.tsx`
+### Contexto
+O ZIP contém PDFs cujos nomes de arquivo sao os titulos. A tabela `ebooks` atual tem campos `title`, `author`, `description`, `pages`, `url` mas nenhum campo para imagem de capa. Os 2 registros existentes sao placeholders.
 
-1. **Capa do álbum menor**: Trocar `w-full aspect-square` por um tamanho fixo menor (ex: `w-32 h-32` ou `w-40 h-40`) para que a capa não ocupe toda a largura do card. Também reduzir o ícone `Disc3` proporcionalmente.
+### Etapas
 
-2. **Miniaturas dos hinos maiores**: Aumentar de `w-14 h-10` para `w-20 h-14` (ou similar) nas thumbnails das faixas, dando mais destaque visual.
+#### 1. Criar bucket de storage `ebooks`
+Migration SQL para criar um bucket publico `ebooks` com policy de leitura publica. Subpastas: `pdfs/` para os arquivos e `covers/` para as capas.
 
-3. **Harmonização geral**: Centralizar melhor o layout do card quando aberto, ajustar padding e espaçamento para que capa menor + lista de faixas fiquem visualmente equilibrados.
+#### 2. Adicionar coluna `cover_url` na tabela `ebooks`
+Migration para adicionar `cover_url TEXT DEFAULT NULL` a tabela ebooks.
 
-### Detalhes técnicos
+#### 3. Extrair, processar e fazer upload dos PDFs
+- Descompactar o ZIP
+- Para cada PDF: extrair a primeira pagina como imagem JPG (usando `pdftoppm`)
+- Fazer upload de cada PDF e sua capa para o bucket `ebooks` via Supabase Storage
+- Gerar URLs publicas
 
-- Linha 45: `w-full aspect-square` → `w-32 h-32 mx-auto` (capa centralizada e menor)
-- Linha 46: `w-16 h-16` → `w-10 h-10` (ícone menor)
-- Linha 74: `w-14 h-10` → `w-20 h-14` (thumbnails maiores)
+#### 4. Limpar dados antigos e inserir os novos
+- Deletar os 2 registros placeholder existentes
+- Inserir um registro por PDF com: titulo (nome do arquivo sem .pdf), author = "Dr. Mauro Kwitko", url = URL publica do PDF, cover_url = URL publica da imagem da capa
+
+#### 5. Atualizar `Ebooks.tsx` para exibir a capa
+Trocar o placeholder gradient+icone pela imagem real da capa:
+```
+<img src={book.cover_url} className="w-full aspect-[3/4] rounded-xl object-cover" />
+```
+Com fallback para o icone caso nao tenha capa.
+
+#### 6. Atualizar types/hooks
+Adicionar `cover_url` ao `BookRow` interface em `useSupabaseData.ts`.
+
+### Detalhes tecnicos
+- Bucket criado via migration SQL em `storage.buckets` + policies em `storage.objects`
+- Upload dos arquivos via script Python/shell usando a API REST do Supabase com service role key
+- Capas geradas com `pdftoppm` (ja disponivel no sandbox)
+- Coluna `cover_url` nullable para manter compatibilidade com registros sem capa
 

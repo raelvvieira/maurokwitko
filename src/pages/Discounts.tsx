@@ -1,79 +1,50 @@
-import { useApp } from '@/context/AppContext';
 import { motion } from 'framer-motion';
-import { Tag, Copy, Clock, CheckCircle } from 'lucide-react';
-import { useState } from 'react';
+import { Tag, ArrowRight, ShoppingCart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Discounts = () => {
-  const { discounts, courses } = useApp();
-  const [copiedId, setCopiedId] = useState<string | null>(null);
-
-  const copyCode = (id: string, code: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
-  };
-
-  const activeDiscounts = discounts.filter(d => d.active);
-  const expiredDiscounts = discounts.filter(d => !d.active);
+  const navigate = useNavigate();
 
   return (
     <div className="max-w-4xl space-y-6">
       <div>
-        <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2"><Tag className="w-5 h-5 md:w-6 md:h-6 text-primary" /> Descontos</h1>
-        <p className="text-sm text-muted-foreground mt-1">Cupons e promoções disponíveis</p>
+        <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
+          <Tag className="w-5 h-5 md:w-6 md:h-6 text-primary" /> Descontos
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">Promoções exclusivas para membros do Clube</p>
       </div>
 
-      {activeDiscounts.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {activeDiscounts.map((d, i) => (
-            <motion.div key={d.id} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className="glass-card relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-gradient-to-l from-primary to-accent text-primary-foreground text-xs font-bold px-4 py-1 rounded-bl-xl">
-                {d.percentage}% OFF
-              </div>
-              <h3 className="text-base font-bold mb-1 pr-16">{d.title}</h3>
-              <p className="text-sm text-muted-foreground mb-3">{d.description}</p>
-
-              {d.courseIds.length > 0 && (
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {d.courseIds.map(cid => {
-                    const course = courses.find(c => c.id === cid);
-                    return course ? (
-                      <span key={cid} className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">{course.title}</span>
-                    ) : null;
-                  })}
-                </div>
-              )}
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Clock className="w-3 h-3" />
-                  Expira em {new Date(d.expiresAt).toLocaleDateString('pt-BR')}
-                </div>
-                <button
-                  onClick={() => copyCode(d.id, d.couponCode)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary/60 text-xs font-mono font-semibold hover:bg-secondary transition-colors"
-                >
-                  {copiedId === d.id ? <><CheckCircle className="w-3 h-3 text-success" /> Copiado!</> : <><Copy className="w-3 h-3" /> {d.couponCode}</>}
-                </button>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      )}
-
-      {expiredDiscounts.length > 0 && (
-        <>
-          <h2 className="text-sm font-semibold text-muted-foreground">Inativos</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-60">
-            {expiredDiscounts.map(d => (
-              <div key={d.id} className="glass-card">
-                <h3 className="text-sm font-semibold">{d.title}</h3>
-                <p className="text-xs text-muted-foreground">{d.percentage}% OFF · {d.couponCode}</p>
-              </div>
-            ))}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="glass-card border-accent/30 bg-accent/5"
+      >
+        <div className="flex items-start gap-4">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center shrink-0">
+            <ShoppingCart className="w-7 h-7 text-accent" />
           </div>
-        </>
-      )}
+          <div>
+            <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">
+              20% de desconto nos livros físicos!
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-2">
+              Como membro do Clube de Estudos, você tem acesso a um desconto exclusivo de <strong className="text-foreground">20%</strong> em todos os livros físicos do Dr. Mauro Kwitko disponíveis na loja da <strong className="text-foreground">Editora BesouroBox</strong>.
+            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+              Para aproveitar, basta acessar a página de livros, escolher os que deseja, adicionar ao carrinho na BesouroBox e aplicar o cupom{' '}
+              <span className="inline-block bg-accent/20 text-accent font-mono font-bold px-2 py-0.5 rounded text-sm">MAURO20</span>{' '}
+              no checkout.
+            </p>
+            <button
+              onClick={() => navigate('/livros')}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-accent to-primary text-primary-foreground text-sm font-semibold hover:scale-[1.02] transition-transform"
+            >
+              Ver Livros <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 };

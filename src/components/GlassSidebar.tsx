@@ -35,7 +35,7 @@ const GlassSidebar = () => {
         <img
           src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png"
           alt="Clube de Estudos Dr. Mauro Kwitko"
-          className={`${collapsed ? 'w-10 h-10' : 'h-14'} object-contain shrink-0`}
+          className={`${collapsed ? 'w-12 h-12' : 'h-[4.2rem]'} object-contain shrink-0`}
         />
       </div>
 

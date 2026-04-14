@@ -1,8 +1,9 @@
 import { useApp } from '@/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, TrendingUp, BookOpen, Trophy, Flame, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, BookOpen, Trophy, ChevronLeft, ChevronRight, Users, MessageSquare } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { Progress } from '@/components/ui/progress';
 
 const heroSlides = [
   { title: 'Domine React Avançado', subtitle: 'Patterns, Performance e Arquitetura profissional', color: 'from-primary to-accent' },
@@ -11,7 +12,7 @@ const heroSlides = [
 ];
 
 const Dashboard = () => {
-  const { courses, profile, ranking } = useApp();
+  const { courses, profile, ranking, posts } = useApp();
   const navigate = useNavigate();
   const [slide, setSlide] = useState(0);
 
@@ -21,7 +22,9 @@ const Dashboard = () => {
   }, []);
 
   const userRank = ranking.find(r => r.name === 'Você');
-  const overallProgress = Math.round(courses.reduce((a, c) => a + c.progress, 0) / courses.length);
+  const totalLessons = courses.reduce((a, c) => a + c.totalLessons, 0);
+  const completedLessons = courses.reduce((a, c) => a + c.completedLessons, 0);
+  const progressPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
 
   return (
     <div className="space-y-6 max-w-6xl">
@@ -56,6 +59,7 @@ const Dashboard = () => {
           </a>
         </div>
       </motion.div>
+
       {/* Hero Carousel */}
       <motion.div
         key={slide}
@@ -81,99 +85,87 @@ const Dashboard = () => {
         </div>
       </motion.div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-        {[
-          { icon: BookOpen, label: 'Cursos Ativos', value: courses.length.toString(), color: 'text-primary' },
-          { icon: Trophy, label: 'Posição Ranking', value: `#${userRank?.position ?? '-'}`, color: 'text-gold' },
-          { icon: Flame, label: 'Dias de Streak', value: profile.streak.toString(), color: 'text-destructive' },
-          { icon: TrendingUp, label: 'Score Total', value: profile.totalScore.toLocaleString(), color: 'text-success' },
-        ].map((stat, i) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className="glass-card flex items-center gap-3 md:gap-4"
-          >
-            <div className={`w-9 h-9 md:w-10 md:h-10 rounded-xl bg-secondary flex items-center justify-center ${stat.color}`}>
-              <stat.icon className="w-4 h-4 md:w-5 md:h-5" />
+      {/* Progress + Ranking */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+              <BookOpen className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <p className="text-lg md:text-2xl font-bold">{stat.value}</p>
-              <p className="text-xs text-muted-foreground">{stat.label}</p>
+              <p className="text-sm font-semibold">Progresso de Aulas</p>
+              <p className="text-xs text-muted-foreground">{completedLessons} de {totalLessons} aulas assistidas</p>
             </div>
-          </motion.div>
-        ))}
+          </div>
+          <Progress value={progressPercent} className="h-2.5" />
+          <p className="text-right text-xs text-muted-foreground mt-1.5">{progressPercent}%</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="glass-card">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gold/10 flex items-center justify-center">
+              <Trophy className="w-5 h-5 text-gold" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold">Sua Posição no Ranking</p>
+              <p className="text-2xl font-bold text-primary">#{userRank?.position ?? '-'}</p>
+              <p className="text-xs text-muted-foreground">{userRank?.score.toLocaleString() ?? 0} pontos</p>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
-      {/* Progress + Ranking preview */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-        <div className="md:col-span-2 glass-card">
-          <h2 className="text-sm font-semibold mb-4">Progresso Geral</h2>
-          <div className="flex items-center justify-center gap-8">
-            <RadialProgress value={overallProgress} label="Cursos" size={120} />
-            <RadialProgress value={userRank ? Math.round((userRank.score / 10000) * 100) : 0} label="Ranking" size={120} color="accent" />
-          </div>
+      {/* Continue Aprendendo */}
+      <div className="glass-card">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-semibold flex items-center gap-2"><BookOpen className="w-4 h-4 text-primary" /> Continue Aprendendo</h2>
+          <button onClick={() => navigate('/courses')} className="text-xs text-primary font-medium hover:underline">Ver todos</button>
         </div>
-
-        <div className="md:col-span-3 glass-card">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold">Continue Aprendendo</h2>
-            <button onClick={() => navigate('/courses')} className="text-xs text-primary font-medium hover:underline">Ver todos</button>
-          </div>
-          <div className="space-y-3">
-            {courses.slice(0, 3).map(course => (
-              <button
-                key={course.id}
-                onClick={() => navigate(`/courses/${course.id}`)}
-                className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-secondary/50 transition-colors text-left"
-              >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center shrink-0">
-                  <BookOpen className="w-5 h-5 text-primary" />
+        <div className="space-y-3">
+          {courses.slice(0, 5).map(course => (
+            <button
+              key={course.id}
+              onClick={() => navigate(`/courses/${course.id}`)}
+              className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-secondary/50 transition-colors text-left"
+            >
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center shrink-0">
+                <BookOpen className="w-4 h-4 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">{course.title}</p>
+                <p className="text-xs text-muted-foreground">{course.completedLessons}/{course.totalLessons} aulas</p>
+              </div>
+              <div className="w-14 hidden sm:block">
+                <div className="h-1.5 rounded-full bg-secondary">
+                  <div className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all" style={{ width: `${course.progress}%` }} />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{course.title}</p>
-                  <p className="text-xs text-muted-foreground">{course.instructor} · {course.completedLessons}/{course.totalLessons} aulas</p>
-                </div>
-                <div className="w-16 hidden sm:block">
-                  <div className="h-1.5 rounded-full bg-secondary">
-                    <div className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all" style={{ width: `${course.progress}%` }} />
-                  </div>
-                  <p className="text-xs text-muted-foreground text-right mt-1">{course.progress}%</p>
-                </div>
-              </button>
-            ))}
-          </div>
+                <p className="text-xs text-muted-foreground text-right mt-1">{course.progress}%</p>
+              </div>
+            </button>
+          ))}
         </div>
       </div>
 
-
-    </div>
-  );
-};
-
-const RadialProgress = ({ value, label, size = 100, color = 'primary' }: { value: number; label: string; size?: number; color?: string }) => {
-  const radius = (size - 12) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (value / 100) * circumference;
-
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="hsl(var(--secondary))" strokeWidth="8" />
-        <circle
-          cx={size / 2} cy={size / 2} r={radius} fill="none"
-          stroke={`hsl(var(--${color}))`}
-          strokeWidth="8" strokeLinecap="round"
-          strokeDasharray={circumference} strokeDashoffset={offset}
-          className="transition-all duration-700"
-        />
-      </svg>
-      <div className="absolute flex flex-col items-center" style={{ marginTop: size / 2 - 16 }}>
-        <span className="text-xl font-bold">{value}%</span>
+      {/* Últimos Comentários da Comunidade */}
+      <div className="glass-card">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-semibold flex items-center gap-2"><Users className="w-4 h-4 text-primary" /> Últimos Comentários</h2>
+          <button onClick={() => navigate('/community')} className="text-xs text-primary font-medium hover:underline">Ver comunidade</button>
+        </div>
+        <div className="space-y-3">
+          {posts.slice(0, 5).map(post => (
+            <div key={post.id} className="flex items-start gap-3 p-3 rounded-xl hover:bg-secondary/30 transition-colors">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-xs font-bold shrink-0">
+                {post.author.charAt(0)}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-semibold">{post.author} <span className="font-normal text-muted-foreground">· {post.time}</span></p>
+                <p className="text-sm text-muted-foreground line-clamp-2">{post.content}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-      <p className="text-xs text-muted-foreground font-medium">{label}</p>
     </div>
   );
 };

@@ -1,28 +1,40 @@
 import { useApp } from '@/context/AppContext';
 import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown, Minus, Trophy, Flame, Medal } from 'lucide-react';
+import { Trophy, Medal, BookOpen, Download, MessageSquare, Heart } from 'lucide-react';
+
+const pointCriteria = [
+  { icon: BookOpen, label: 'Assistir aulas', points: '10 pts/aula', color: 'text-primary' },
+  { icon: Download, label: 'Baixar e-books', points: '5 pts/download', color: 'text-accent' },
+  { icon: MessageSquare, label: 'Publicar relatos', points: '15 pts/publicação', color: 'text-success' },
+  { icon: Heart, label: 'Comentar posts', points: '5 pts/comentário', color: 'text-destructive' },
+];
 
 const Ranking = () => {
   const { ranking } = useApp();
 
-  const getBadge = (pos: number) => {
-    if (pos === 1) return <span className="badge-gold px-2 py-0.5 rounded-full text-xs font-bold">🥇 Ouro</span>;
-    if (pos === 2) return <span className="badge-silver px-2 py-0.5 rounded-full text-xs font-bold">🥈 Prata</span>;
-    if (pos === 3) return <span className="badge-bronze px-2 py-0.5 rounded-full text-xs font-bold">🥉 Bronze</span>;
-    return null;
-  };
-
-  const getGrowthIcon = (g: number) => {
-    if (g > 0) return <span className="flex items-center gap-1 text-success text-xs font-medium"><TrendingUp className="w-3 h-3" /> +{g}%</span>;
-    if (g < 0) return <span className="flex items-center gap-1 text-destructive text-xs font-medium"><TrendingDown className="w-3 h-3" /> {g}%</span>;
-    return <span className="flex items-center gap-1 text-muted-foreground text-xs"><Minus className="w-3 h-3" /> 0%</span>;
-  };
-
   return (
     <div className="max-w-4xl space-y-6">
       <div>
-        <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2"><Trophy className="w-5 h-5 md:w-6 md:h-6 text-gold" /> Ranking Global</h1>
-        <p className="text-sm text-muted-foreground mt-1">Baseado em progresso dos cursos e atividade na comunidade</p>
+        <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
+          <Trophy className="w-5 h-5 md:w-6 md:h-6 text-gold" /> Ranking Geral
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">Os participantes mais engajados com o Clube</p>
+      </div>
+
+      {/* Como ganhar pontos */}
+      <div className="glass-card">
+        <h2 className="text-sm font-semibold mb-3">Como ganhar pontos</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {pointCriteria.map(c => (
+            <div key={c.label} className="flex items-center gap-2.5 p-3 rounded-xl bg-secondary/50">
+              <c.icon className={`w-5 h-5 ${c.color} shrink-0`} />
+              <div>
+                <p className="text-xs font-semibold">{c.label}</p>
+                <p className="text-xs text-muted-foreground">{c.points}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Top 3 podium */}
@@ -44,27 +56,21 @@ const Ranking = () => {
             </div>
             <p className="font-semibold text-sm">{user.name}</p>
             <p className="text-2xl font-bold my-1">{user.score.toLocaleString()}</p>
-            <div className="flex items-center justify-center gap-2">
-              {getBadge(user.position)}
-              {getGrowthIcon(user.growth)}
-            </div>
-            <div className="flex items-center justify-center gap-1 mt-2 text-xs text-muted-foreground">
-              <Flame className="w-3 h-3 text-destructive" /> {user.streak} dias
-            </div>
+            {user.position === 1 && <span className="badge-gold px-2 py-0.5 rounded-full text-xs font-bold">🥇 Ouro</span>}
+            {user.position === 2 && <span className="badge-silver px-2 py-0.5 rounded-full text-xs font-bold">🥈 Prata</span>}
+            {user.position === 3 && <span className="badge-bronze px-2 py-0.5 rounded-full text-xs font-bold">🥉 Bronze</span>}
           </motion.div>
         ))}
       </div>
 
       {/* Full table */}
       <div className="glass-card p-0 overflow-x-auto">
-        <table className="w-full min-w-[500px]">
+        <table className="w-full min-w-[400px]">
           <thead>
             <tr className="border-b border-border/50 text-xs text-muted-foreground">
               <th className="text-left px-4 md:px-5 py-3 font-medium">#</th>
               <th className="text-left px-4 md:px-5 py-3 font-medium">Usuário</th>
               <th className="text-right px-4 md:px-5 py-3 font-medium">Score</th>
-              <th className="text-right px-4 md:px-5 py-3 font-medium">Crescimento</th>
-              <th className="text-right px-4 md:px-5 py-3 font-medium">Streak</th>
             </tr>
           </thead>
           <tbody>
@@ -83,16 +89,9 @@ const Ranking = () => {
                       {user.name.charAt(0)}
                     </div>
                     <span className={`text-sm font-medium ${user.name === 'Você' ? 'text-primary' : ''}`}>{user.name}</span>
-                    <span className="hidden sm:inline">{getBadge(user.position)}</span>
                   </div>
                 </td>
                 <td className="px-4 md:px-5 py-3 text-right text-sm font-semibold">{user.score.toLocaleString()}</td>
-                <td className="px-4 md:px-5 py-3 text-right">{getGrowthIcon(user.growth)}</td>
-                <td className="px-4 md:px-5 py-3 text-right">
-                  <span className="flex items-center justify-end gap-1 text-xs text-muted-foreground">
-                    <Flame className="w-3 h-3 text-destructive" /> {user.streak}
-                  </span>
-                </td>
               </motion.tr>
             ))}
           </tbody>

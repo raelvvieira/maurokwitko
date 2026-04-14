@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Headphones, Disc3, Play, ChevronDown, ChevronUp, ExternalLink, X } from 'lucide-react';
+import { Headphones, Disc3, Play, ChevronDown, ChevronUp } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 
@@ -75,29 +75,17 @@ const Library = () => {
                                 loading="lazy"
                               />
                             )}
-                            <span className="text-sm truncate">{track.title}</span>
+                            <span className="text-sm break-words">{track.title}</span>
                           </div>
-                          <div className="flex items-center gap-2 shrink-0">
-                            <button
-                              onClick={e => {
-                                e.stopPropagation();
-                                setActiveTrack({ title: track.title, url: track.youtubeUrl });
-                              }}
-                              className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
-                            >
-                              <Play className="w-3 h-3" /> Tocar
-                            </button>
-                            <a
-                              href={track.youtubeUrl.replace('/embed/', '/watch?v=')}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={e => e.stopPropagation()}
-                              className="text-muted-foreground hover:text-foreground"
-                              title="Abrir no YouTube"
-                            >
-                              <ExternalLink className="w-3 h-3" />
-                            </a>
-                          </div>
+                          <button
+                            onClick={e => {
+                              e.stopPropagation();
+                              setActiveTrack({ title: track.title, url: track.youtubeUrl });
+                            }}
+                            className="shrink-0 p-1.5 rounded-full hover:bg-primary/10 text-primary"
+                          >
+                            <Play className="w-4 h-4" />
+                          </button>
                         </div>
                       );
                     })}

@@ -1,25 +1,12 @@
 import { useApp } from '@/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, BookOpen, Trophy, ChevronLeft, ChevronRight, Users, MessageSquare } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { ArrowRight, BookOpen, Trophy, Users } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-
-const heroSlides = [
-  { title: 'Domine React Avançado', subtitle: 'Patterns, Performance e Arquitetura profissional', color: 'from-primary to-accent' },
-  { title: 'Novo: Design System', subtitle: 'Aprenda a criar sistemas de design escaláveis', color: 'from-accent to-success' },
-  { title: 'Desafio 30 Dias', subtitle: 'Participe e suba no ranking global', color: 'from-primary to-purple-500' },
-];
 
 const Dashboard = () => {
   const { courses, profile, ranking, posts } = useApp();
   const navigate = useNavigate();
-  const [slide, setSlide] = useState(0);
-
-  useEffect(() => {
-    const t = setInterval(() => setSlide(s => (s + 1) % heroSlides.length), 5000);
-    return () => clearInterval(t);
-  }, []);
 
   const userRank = ranking.find(r => r.name === 'Você');
   const totalLessons = courses.reduce((a, c) => a + c.totalLessons, 0);
@@ -60,28 +47,25 @@ const Dashboard = () => {
         </div>
       </motion.div>
 
-      {/* Hero Carousel */}
+      {/* Banner Curso de Formação */}
       <motion.div
-        key={slide}
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${heroSlides[slide].color} p-6 md:p-8 min-h-[160px] md:min-h-[200px] flex flex-col justify-end`}
+        transition={{ duration: 0.5, delay: 0.15 }}
+        className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary to-accent p-6 md:p-8 min-h-[160px] md:min-h-[200px] flex flex-col justify-end"
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
         <div className="relative z-10">
-          <h1 className="text-xl md:text-3xl font-bold text-primary-foreground mb-2">{heroSlides[slide].title}</h1>
-          <p className="text-sm md:text-base text-primary-foreground/80 mb-4">{heroSlides[slide].subtitle}</p>
-          <button
-            onClick={() => navigate('/courses')}
+          <h1 className="text-xl md:text-3xl font-bold text-primary-foreground mb-2">Curso de Formação em Psicoterapia Reencarnacionista</h1>
+          <p className="text-sm md:text-base text-primary-foreground/80 mb-4">Formação profissional completa com certificação reconhecida</p>
+          <a
+            href="https://www.maurokwitko.com.br/curso-de-formacao/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 rounded-xl bg-primary-foreground/20 backdrop-blur text-primary-foreground text-sm font-semibold hover:bg-primary-foreground/30 transition-colors"
           >
-            Explorar <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-        <div className="absolute bottom-4 right-4 md:right-6 flex gap-2 z-10">
-          <button onClick={() => setSlide(s => (s - 1 + heroSlides.length) % heroSlides.length)} className="p-1.5 rounded-full bg-primary-foreground/20 backdrop-blur text-primary-foreground hover:bg-primary-foreground/30"><ChevronLeft className="w-4 h-4" /></button>
-          <button onClick={() => setSlide(s => (s + 1) % heroSlides.length)} className="p-1.5 rounded-full bg-primary-foreground/20 backdrop-blur text-primary-foreground hover:bg-primary-foreground/30"><ChevronRight className="w-4 h-4" /></button>
+            Veja próximas turmas <ArrowRight className="w-4 h-4" />
+          </a>
         </div>
       </motion.div>
 

@@ -1,28 +1,18 @@
 
 
-## Plano: Substituir conteudo da pagina Livros com dados reais da BesouroBox
+## Plano: Adicionar banner promocional na página de Livros
 
-### Mudanca unica: reescrever `src/pages/Livros.tsx`
+### Mudança única: `src/pages/Livros.tsx`
 
-Remover a dependencia do contexto/banco e usar um array estatico com os 7 livros. Cada livro tera: titulo, preco, URL da capa (extraida da BesouroBox), e link de compra.
+Inserir um banner estilizado entre o subtítulo e o grid de livros com:
 
-**Dados completos com imagens extraidas:**
+- Destaque visual: fundo gradiente (accent/primary) com bordas arredondadas, ícone de desconto
+- Cupom em destaque: texto `MAURO20` com estilo de código/badge para fácil identificação
+- Copy reformulada e clara:
+  - **Título**: "20% de desconto em todos os livros!"
+  - **Instrução**: "Use o cupom **MAURO20** no checkout da BesouroBox. Basta clicar em Comprar, adicionar ao carrinho e aplicar o cupom na hora do pagamento."
+- Estilo `glass-card` com borda accent para manter consistência visual
 
-| # | Capa | Preco |
-|---|------|-------|
-| 1 | `...90_tratando_fobia_panico_e_depressao...cc9de4bf...png` | R$ 69,90 |
-| 2 | `...doutor_eu_ouco_vozes_1747_1_277ba97f...png` | R$ 69,90 |
-| 3 | `...20_casos_de_regressao...497b7076...jpg` | R$ 69,90 |
-| 4 | `...terapia_de_regressao_perguntas_e_respostas_1997_1_75719c28...jpg` | R$ 69,90 |
-| 5 | `...como_aproveitar_a_sua_encarnacao_1823_1_469e6467...png` | R$ 49,90 |
-| 6 | `...como_evoluir_espiritualmente...1673_1_a7e92ca8...png` | R$ 64,90 |
-| 7 | `...a_fascinante_vida_de_mirta_kassov...1689_1_35d6c315...png` | R$ 54,90 |
-
-**Layout:**
-- Grid: `grid-cols-2 lg:grid-cols-3`
-- Card com imagem de capa (aspect-[3/4], object-contain, bg-muted), titulo, preco em destaque, botao "Comprar" abrindo em nova aba
-- Estilo glass-card consistente com o resto do site
-- Animacao framer-motion mantida
-
-**Nenhuma mudanca de banco de dados** -- os dados ficam hardcoded no componente.
+### Posição no layout
+Entre a `<p>` do subtítulo (linha ~62) e o `<div className="grid ...">` (linha ~68).
 

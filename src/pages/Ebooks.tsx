@@ -31,9 +31,9 @@ const Ebooks = () => {
             transition={{ delay: i * 0.08 }}
             className="glass-card flex flex-col"
           >
-            <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-4">
+            <div className="w-full aspect-[210/297] rounded-xl overflow-hidden mb-4 bg-muted">
               {book.cover_url ? (
-                <img src={book.cover_url} alt={book.title} className="w-full h-full object-cover" />
+                <img src={book.cover_url} alt={book.title} className="w-full h-full object-contain" />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                   <BookMarked className="w-12 h-12 text-primary/40" />

@@ -31,11 +31,11 @@ const GlassSidebar = () => {
 
   const sidebarContent = (
     <aside className={`fixed left-0 top-0 bottom-0 ${width} glass-strong z-40 flex flex-col transition-all duration-300`}>
-      <div className={`p-4 flex items-center ${collapsed ? 'justify-center' : 'gap-3 px-6'}`}>
+      <div className={`p-4 flex items-center justify-center ${collapsed ? '' : 'px-6'}`}>
         <img
           src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png"
           alt="Clube de Estudos Dr. Mauro Kwitko"
-          className={`${collapsed ? 'w-9 h-9' : 'h-10'} object-contain shrink-0`}
+          className={`${collapsed ? 'w-10 h-10' : 'h-14'} object-contain shrink-0`}
         />
       </div>
 

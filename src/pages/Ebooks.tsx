@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { BookMarked, ExternalLink } from 'lucide-react';
+import { BookMarked, ExternalLink, Tag } from 'lucide-react';
 import { useEbooks } from '@/hooks/useSupabaseData';
 
 const Ebooks = () => {
@@ -13,6 +13,27 @@ const Ebooks = () => {
         </h1>
         <p className="text-sm text-muted-foreground mt-1">E-books digitais do Dr. Mauro Kwitko</p>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="glass-card border-accent/30 bg-accent/5 flex flex-col sm:flex-row items-center gap-4"
+      >
+        <div className="flex items-center gap-3">
+          <Tag className="w-8 h-8 text-accent shrink-0" />
+          <div>
+            <h3 className="text-base md:text-lg font-bold text-foreground">
+              20% de desconto em todos os e-books!
+            </h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              Clique em <strong>Ler E-book</strong>, monte seu carrinho na BesouroBox e aplique o cupom
+              {' '}<span className="inline-block bg-accent/20 text-accent font-mono font-bold px-2 py-0.5 rounded text-sm">MAURO20</span>{' '}
+              no checkout para receber o desconto.
+            </p>
+          </div>
+        </div>
+      </motion.div>
 
       {isLoading && (
         <div className="glass-card text-center text-sm text-muted-foreground py-12">Carregando...</div>

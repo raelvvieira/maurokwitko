@@ -1,8 +1,10 @@
 import { useApp } from '@/context/AppContext';
 import { motion } from 'framer-motion';
-import { Trash2, Plus, Youtube, Disc3, FileText, PenSquare, BookMarked, BookOpen, FolderPlus, Image as ImageIcon } from 'lucide-react';
+import { Trash2, Plus, Youtube, Disc3, FileText, PenSquare, BookMarked, BookOpen, FolderPlus, Image as ImageIcon, Bell, Send } from 'lucide-react';
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { supabase } from '@/integrations/supabase/client';
 
 const getYoutubeId = (url: string): string | null => {
   const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|.*&v=))([^&#?]*)/);
@@ -38,6 +40,7 @@ const Admin = () => {
           <TabsTrigger value="livros">Livros</TabsTrigger>
           <TabsTrigger value="materiais">Materiais</TabsTrigger>
           <TabsTrigger value="blog">Blog</TabsTrigger>
+          <TabsTrigger value="notificacoes">Notificações</TabsTrigger>
         </TabsList>
 
         <TabsContent value="hinos"><HinosAdmin /></TabsContent>
@@ -46,6 +49,7 @@ const Admin = () => {
         <TabsContent value="livros"><LivrosAdmin /></TabsContent>
         <TabsContent value="materiais"><MateriaisAdmin /></TabsContent>
         <TabsContent value="blog"><BlogAdmin /></TabsContent>
+        <TabsContent value="notificacoes"><NotificacoesAdmin /></TabsContent>
       </Tabs>
     </div>
   );

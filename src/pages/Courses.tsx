@@ -33,10 +33,12 @@ const Courses = () => {
             </button>
             <div className="aspect-video rounded-xl overflow-hidden">
               <iframe
-                src={`https://www.youtube-nocookie.com/embed/${activeVideo}?autoplay=1&rel=0`}
-                allow="autoplay; encrypted-media"
+                src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1&rel=0`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
-                referrerPolicy="no-referrer"
                 className="w-full h-full"
               />
             </div>

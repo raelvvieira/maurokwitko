@@ -212,6 +212,7 @@ export interface BookRow {
   description: string;
   pages: number;
   url: string;
+  cover_url: string | null;
 }
 
 export function useEbooks() {

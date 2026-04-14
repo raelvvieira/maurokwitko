@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { BookMarked, ExternalLink, Tag, ArrowRight } from 'lucide-react';
+import { BookMarked, Download, BookOpen, Tag, ArrowRight } from 'lucide-react';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import { useNavigate } from 'react-router-dom';
 
@@ -72,14 +72,20 @@ const Ebooks = () => {
             <h3 className="text-sm md:text-base font-semibold mb-1 line-clamp-3">{book.title}</h3>
             <p className="text-xs text-muted-foreground mb-1">{book.author} · {book.pages} páginas</p>
             {book.description && <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4 flex-1 line-clamp-2">{book.description}</p>}
-            <a
-              href={`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ebook-redirect?id=${book.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-2 md:py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs md:text-sm font-semibold text-center flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform mt-auto"
-            >
-              Ler E-book <ExternalLink className="w-3 h-3 md:w-4 md:h-4" />
-            </a>
+            <div className="flex gap-2 mt-auto">
+              <button
+                onClick={() => navigate(`/ebooks/${book.id}`)}
+                className="flex-1 py-2 md:py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs md:text-sm font-semibold text-center flex items-center justify-center gap-1.5 hover:scale-[1.02] transition-transform"
+              >
+                <BookOpen className="w-3 h-3 md:w-4 md:h-4" /> Ler
+              </button>
+              <a
+                href={`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ebook-download?id=${book.id}`}
+                className="flex-1 py-2 md:py-2.5 rounded-xl border border-primary/30 text-primary text-xs md:text-sm font-semibold text-center flex items-center justify-center gap-1.5 hover:bg-primary/5 transition-colors"
+              >
+                <Download className="w-3 h-3 md:w-4 md:h-4" /> Baixar
+              </a>
+            </div>
           </motion.div>
         ))}
       </div>

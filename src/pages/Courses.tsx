@@ -5,7 +5,7 @@ import { useApp } from '@/context/AppContext';
 
 const Courses = () => {
   const { courseCategories } = useApp();
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
 
   return (
     <div className="max-w-[1400px] space-y-8">

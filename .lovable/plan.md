@@ -1,15 +1,21 @@
 
 
-## Plano: Ajustar faixas dos Hinos no mobile
+## Plano: Substituir carrossel por banner único do Curso de Formação
 
-### Mudança única: `src/pages/Library.tsx`
+### Mudança única: `src/pages/Dashboard.tsx`
 
-**1. Título da faixa visível por completo**
-- Linha 78: trocar `truncate` por `break-words` para o título fazer wrap em várias linhas no mobile
+**Remover:**
+- Array `heroSlides` (linhas 8-12)
+- Estado `slide` e `useEffect` do auto-slide (linhas 17, 19-22)
+- Imports não usados: `ChevronLeft`, `ChevronRight`, `useState`, `useEffect`
+- Bloco do Hero Carousel inteiro (linhas 63-86)
 
-**2. Simplificar ações: apenas ícone Play**
-- Linhas 80-100: remover o texto "Tocar", remover o link/ícone `ExternalLink` do YouTube
-- Manter apenas o botão com ícone `Play` (tamanho `w-4 h-4`) que abre o player
+**Adicionar no lugar** um banner estático:
+- Título: "Curso de Formação em Psicoterapia Reencarnacionista"
+- Subtítulo curto descritivo
+- Botão CTA: "Veja próximas turmas →" abrindo `https://www.maurokwitko.com.br/curso-de-formacao/` em nova aba
+- Estilo: mesmo gradiente `from-primary to-accent`, rounded-2xl, sem setas de navegação
 
-- Remover import de `ExternalLink` (linha 3)
+### Arquivos editados
+- `src/pages/Dashboard.tsx`
 

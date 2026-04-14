@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { BookOpen, ShoppingCart } from 'lucide-react';
+import { BookOpen, ShoppingCart, Tag } from 'lucide-react';
 
 const BOOKS = [
   {

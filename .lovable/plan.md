@@ -1,48 +1,38 @@
 
 
-## Plan: Converter URLs do YouTube para formato embed
+## Plan: Substituir todos os dados de vídeos com os IDs corretos da planilha
 
-### Situação atual
-- **`course_videos.youtube_id`**: armazena apenas o ID (ex: `0xX9ivjPvA8`) — o componente monta a URL de embed no código
-- **`album_tracks.youtube_url`**: armazena URLs `youtu.be/...` (placeholders) — não está no formato embed
+### Problema
+Os IDs de vídeo no banco são fabricados e não correspondem aos vídeos reais. Apenas 1 de ~90 vídeos tem o ID correto.
 
-### Mudanças necessárias
+### Solução
 
-#### 1. Migration SQL — converter dados nas duas tabelas
+#### 1. Limpar e reinserir `course_videos`
 
-**`course_videos.youtube_id`**: transformar IDs puros em URLs embed completas:
-```
-0xX9ivjPvA8 → https://www.youtube.com/embed/0xX9ivjPvA8
-```
+Deletar todos os registros e inserir os dados corretos da planilha, com URLs no formato embed:
 
-**`album_tracks.youtube_url`**: transformar URLs `youtu.be/ID` em embed:
-```
-https://youtu.be/abc1paz01 → https://www.youtube.com/embed/abc1paz01
-```
+- **LIVES GRAVADAS** -- 20 vídeos (linhas 7-25 da planilha)
+- **AULAS GRAVADAS - LIVROS DR. MAURO** -- 10 vídeos (linhas 26-35)
+- **CURSO DE REFORMA INTIMA COM DR. MAURO** -- 60 vídeos (linhas 36-95)
 
-A migration usará `UPDATE ... SET` com expressões regex para extrair o ID e reconstruir a URL no formato embed. URLs já no formato embed serão ignoradas.
+Cada `youtu.be/ID` sera convertido para `https://www.youtube.com/embed/ID`, removendo escapes de markdown (`\_` -> `_`).
 
-#### 2. Código — usar URL do banco diretamente
+#### 2. Limpar e reinserir `album_tracks`
 
-| Arquivo | Mudança |
-|---------|---------|
-| `src/pages/Courses.tsx` | `src` do iframe passa a ser `activeVideo` direto (sem montar URL). Thumbnail e link fallback extraem o ID da URL embed |
-| `src/context/AppContext.tsx` | Tipo `CourseVideo.youtubeId` continua string — agora é URL completa |
-| `src/hooks/useSupabaseData.ts` | Sem mudança na lógica de fetch (campo `youtube_id` já é mapeado) |
-| `src/pages/Admin.tsx` | Ao adicionar vídeo, salvar já no formato embed (`https://www.youtube.com/embed/ID`) |
+- **HINOS DE PAZ** -- 11 faixas (linhas 96-106)
+- **HINOS DE FE** -- 12 faixas (linhas 107-118)
+- **HINOS DE AMOR** -- 10 faixas (linhas 119-128)
 
-#### 3. Detalhes do iframe (conforme especificado)
-```tsx
-<iframe
-  src={videoUrl}  // direto do banco
-  title="YouTube video player"
-  frameBorder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-  referrerPolicy="strict-origin-when-cross-origin"
-  allowFullScreen
-  className="w-full h-full"
-/>
-```
+Mesma conversao de URL para formato embed.
 
-Sem `width`/`height` fixos — dimensões controladas por CSS (`aspect-video` + `w-full h-full`).
+#### 3. Nenhuma mudanca de codigo
+
+O `Courses.tsx` ja usa a URL do banco diretamente no `src` do iframe. O codigo esta correto.
+
+### Execucao tecnica
+
+- Usar INSERT tool para DELETE + INSERT dos dados (nao migration, pois sao dados e nao schema)
+- Manter os `category_id` e `album_id` existentes
+- Coluna `position` seguira a ordem da planilha
+- Descricoes da planilha serao preservadas; onde nao houver, string vazia
 

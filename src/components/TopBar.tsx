@@ -1,7 +1,8 @@
-import { Search, Bell, User, Menu, LogOut } from 'lucide-react';
+import { Search, User, Menu, LogOut } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
+import NotificationDropdown from '@/components/NotificationDropdown';
 
 const TopBar = () => {
   const { profile, userEmail, setSidebarMobileOpen, signOut } = useApp();
@@ -27,10 +28,7 @@ const TopBar = () => {
       </div>
 
       <div className="flex items-center gap-2 md:gap-4 ml-2">
-        <button className="relative p-2 rounded-xl hover:bg-secondary/60 transition-colors">
-          <Bell className="w-5 h-5 text-muted-foreground" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-destructive" />
-        </button>
+        <NotificationDropdown />
 
         <button
           onClick={() => navigate('/profile')}

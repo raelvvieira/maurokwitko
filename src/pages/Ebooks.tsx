@@ -73,7 +73,7 @@ const Ebooks = () => {
             <p className="text-xs text-muted-foreground mb-1">{book.author} · {book.pages} páginas</p>
             {book.description && <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4 flex-1 line-clamp-2">{book.description}</p>}
             <a
-              href={book.url}
+              href={`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ebook-redirect?id=${book.id}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full py-2 md:py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs md:text-sm font-semibold text-center flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform mt-auto"

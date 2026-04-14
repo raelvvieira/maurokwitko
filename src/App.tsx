@@ -22,6 +22,7 @@ import Materials from "./pages/Materials";
 import Blog from "./pages/Blog";
 import Admin from "./pages/Admin";
 import Discounts from "./pages/Discounts";
+import Notifications from "./pages/Notifications";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
@@ -60,6 +61,7 @@ function AuthGate() {
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/discounts" element={<Discounts />} />
+          <Route path="/notificacoes" element={<Notifications />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

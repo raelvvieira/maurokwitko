@@ -1,28 +1,32 @@
 
 
-## Plano: Corrigir abertura de e-books bloqueados pelo navegador
-
-### Problema
-O Chrome (ou extensão de ad blocker) está bloqueando URLs diretas do domínio `supabase.co`. Quando o usuário clica em "Ler E-book", o link aponta para um arquivo no storage do backend e o navegador bloqueia.
-
-### Solução: Edge function proxy para download
-Criar uma edge function que gera uma URL assinada temporária e redireciona o usuário, evitando que o navegador bloqueie o domínio.
+## Plano: Leitor de PDF nativo + botão de download nos E-books
 
 ### Mudanças
 
-**1. Nova edge function `ebook-redirect`**
-- Recebe o `id` do e-book como query param
-- Busca a URL do arquivo no banco
-- Se for uma URL do storage, gera uma signed URL temporária (1h)
-- Retorna um redirect 302 para essa URL
+**1. Nova edge function `ebook-download` (`supabase/functions/ebook-download/index.ts`)**
+- Igual ao `ebook-redirect`, mas retorna o PDF com header `Content-Disposition: attachment` para forçar download
+- Faz proxy do conteúdo (fetch do signed URL e retorna o body) em vez de redirect 302
 
-**2. Atualizar `src/pages/Ebooks.tsx`**
-- Trocar o `href={book.url}` por um link que aponta para a edge function: `${SUPABASE_URL}/functions/v1/ebook-redirect?id=${book.id}`
+**2. Nova página `EbookReader` (`src/pages/EbookReader.tsx`)**
+- Recebe o ID do e-book via rota `/ebooks/:id`
+- Busca a URL do PDF via edge function `ebook-redirect` (fetch com `redirect: 'manual'` para pegar a URL do header Location)
+- Renderiza o PDF inline usando `<iframe>` ou `<embed>` com a URL assinada obtida
+- Botão de voltar para `/ebooks`
 
-### Alternativa mais simples
-Se os e-books forem links externos (não armazenados no storage), o problema é puramente do ad blocker do usuário. Nesse caso, podemos apenas adicionar uma mensagem de fallback orientando o usuário a desativar o bloqueador.
+**3. Nova rota em `src/App.tsx`**
+- Adicionar `<Route path="/ebooks/:id" element={<EbookReader />} />`
+
+**4. Atualizar `src/pages/Ebooks.tsx`**
+- Botão "Ler E-book" → `navigate('/ebooks/' + book.id)` (abre leitor nativo na app)
+- Novo botão "Baixar E-book" → link para edge function `ebook-download?id=...` com ícone de download
+
+**5. Atualizar edge function `ebook-redirect`**
+- Adicionar suporte a query param `?mode=url` que retorna JSON `{ url: "..." }` em vez de 302, para o leitor poder obter a URL sem redirect
 
 ### Arquivos
-- `supabase/functions/ebook-redirect/index.ts` (novo)
-- `src/pages/Ebooks.tsx`
+- `supabase/functions/ebook-redirect/index.ts` (atualizar — adicionar modo JSON)
+- `src/pages/EbookReader.tsx` (novo)
+- `src/pages/Ebooks.tsx` (dois botões)
+- `src/App.tsx` (nova rota)
 

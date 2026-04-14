@@ -139,7 +139,7 @@ function CursosAdmin() {
           <button onClick={() => {
             const ytId = getYoutubeId(videoUrl);
             if (selectedCat && videoTitle && ytId) {
-              addVideoToCategory(selectedCat, { title: videoTitle, youtubeId: ytId, description: videoDesc });
+              addVideoToCategory(selectedCat, { title: videoTitle, youtubeId: `https://www.youtube.com/embed/${ytId}`, description: videoDesc });
               setVideoTitle(''); setVideoUrl(''); setVideoDesc('');
             }
           }} className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold">Adicionar</button>

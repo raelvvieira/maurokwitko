@@ -3,9 +3,14 @@ import { motion } from 'framer-motion';
 import { BookOpen, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 
+const extractVideoId = (embedUrl: string): string => {
+  const match = embedUrl.match(/\/embed\/([^?&#]+)/);
+  return match?.[1] ?? '';
+};
+
 const Courses = () => {
   const { courseCategories } = useApp();
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
 
   return (
     <div className="max-w-[1400px] space-y-8">
@@ -21,19 +26,19 @@ const Courses = () => {
       )}
 
       {courseCategories.map((cat) => (
-        <CategoryRow key={cat.id} name={cat.name} videos={cat.videos} onPlay={setActiveVideo} />
+        <CategoryRow key={cat.id} name={cat.name} videos={cat.videos} onPlay={setActiveVideoUrl} />
       ))}
 
       {/* Video Modal */}
-      {activeVideo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={() => setActiveVideo(null)}>
+      {activeVideoUrl && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={() => setActiveVideoUrl(null)}>
           <div className="relative w-full max-w-3xl mx-4" onClick={e => e.stopPropagation()}>
-            <button onClick={() => setActiveVideo(null)} className="absolute -top-10 right-0 text-white hover:text-primary transition-colors">
+            <button onClick={() => setActiveVideoUrl(null)} className="absolute -top-10 right-0 text-white hover:text-primary transition-colors">
               <X className="w-6 h-6" />
             </button>
             <div className="aspect-video rounded-xl overflow-hidden">
               <iframe
-                src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1&rel=0`}
+                src={activeVideoUrl}
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -43,7 +48,7 @@ const Courses = () => {
               />
             </div>
             <a
-              href={`https://www.youtube.com/watch?v=${activeVideo}`}
+              href={`https://www.youtube.com/watch?v=${extractVideoId(activeVideoUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-3 inline-flex items-center gap-2 text-sm text-white/80 hover:text-primary transition-colors"
@@ -57,7 +62,7 @@ const Courses = () => {
   );
 };
 
-function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: string; title: string; youtubeId: string; description: string }[]; onPlay: (id: string) => void }) {
+function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: string; title: string; youtubeId: string; description: string }[]; onPlay: (url: string) => void }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: 'left' | 'right') => {
@@ -78,32 +83,35 @@ function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: str
           <ChevronLeft className="w-4 h-4" />
         </button>
         <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style={{ scrollSnapType: 'x mandatory' }}>
-          {videos.map((video, i) => (
-            <motion.div
-              key={video.id}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.06 }}
-              className="glass-card flex-shrink-0 w-64 cursor-pointer group/card"
-              style={{ scrollSnapAlign: 'start' }}
-              onClick={() => onPlay(video.youtubeId)}
-            >
-              <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-3 bg-muted">
-                <img
-                  src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`}
-                  alt={video.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover/card:bg-black/40 transition-colors">
-                  <div className="w-10 h-10 rounded-full bg-primary/90 flex items-center justify-center group-hover/card:scale-110 transition-transform">
-                    <Play className="w-4 h-4 text-primary-foreground ml-0.5" />
+          {videos.map((video, i) => {
+            const videoId = extractVideoId(video.youtubeId);
+            return (
+              <motion.div
+                key={video.id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.06 }}
+                className="glass-card flex-shrink-0 w-64 cursor-pointer group/card"
+                style={{ scrollSnapAlign: 'start' }}
+                onClick={() => onPlay(video.youtubeId)}
+              >
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-3 bg-muted">
+                  <img
+                    src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+                    alt={video.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover/card:bg-black/40 transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-primary/90 flex items-center justify-center group-hover/card:scale-110 transition-transform">
+                      <Play className="w-4 h-4 text-primary-foreground ml-0.5" />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <h3 className="text-sm font-semibold mb-1 truncate">{video.title}</h3>
-              <p className="text-xs text-muted-foreground line-clamp-2">{video.description}</p>
-            </motion.div>
-          ))}
+                <h3 className="text-sm font-semibold mb-1 truncate">{video.title}</h3>
+                <p className="text-xs text-muted-foreground line-clamp-2">{video.description}</p>
+              </motion.div>
+            );
+          })}
         </div>
         <button
           onClick={() => scroll('right')}

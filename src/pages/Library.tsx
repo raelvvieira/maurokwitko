@@ -42,8 +42,8 @@ const Library = () => {
                 className="flex flex-col items-center"
                 onClick={() => setOpenAlbum(isOpen ? null : album.id)}
               >
-                <div className={`w-full aspect-square rounded-xl bg-gradient-to-br ${album.coverColor} flex items-center justify-center mb-3`}>
-                  <Disc3 className="w-16 h-16 text-foreground/20" />
+                <div className={`w-32 h-32 mx-auto rounded-xl bg-gradient-to-br ${album.coverColor} flex items-center justify-center mb-3`}>
+                  <Disc3 className="w-10 h-10 text-foreground/20" />
                 </div>
                 <h3 className="text-sm font-semibold text-center mb-1">{album.title}</h3>
                 <p className="text-xs text-muted-foreground">{album.tracks.length} faixas</p>
@@ -71,7 +71,7 @@ const Library = () => {
                               <img
                                 src={thumbnail}
                                 alt={track.title}
-                                className="w-14 h-10 rounded object-cover shrink-0"
+                                className="w-20 h-14 rounded object-cover shrink-0"
                                 loading="lazy"
                               />
                             )}

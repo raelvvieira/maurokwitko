@@ -1,15 +1,8 @@
 import { useApp } from '@/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, BookOpen, Trophy, ChevronLeft, ChevronRight, Users, MessageSquare } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { ArrowRight, BookOpen, Trophy, Users } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-
-const heroSlides = [
-  { title: 'Domine React Avançado', subtitle: 'Patterns, Performance e Arquitetura profissional', color: 'from-primary to-accent' },
-  { title: 'Novo: Design System', subtitle: 'Aprenda a criar sistemas de design escaláveis', color: 'from-accent to-success' },
-  { title: 'Desafio 30 Dias', subtitle: 'Participe e suba no ranking global', color: 'from-primary to-purple-500' },
-];
 
 const Dashboard = () => {
   const { courses, profile, ranking, posts } = useApp();

@@ -35,7 +35,7 @@ const Login = () => {
       >
         <div className="glass-card space-y-6">
           <div className="text-center space-y-2">
-            <img src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png" alt="Dr. Mauro Kwitko" className="w-14 h-14 object-contain rounded-2xl mx-auto" />
+            <img src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png" alt="Dr. Mauro Kwitko" className="w-42 h-42 object-contain rounded-2xl mx-auto" />
             <h1 className="text-lg font-bold">Clube de Estudos</h1>
             <p className="text-sm text-muted-foreground">Dr. Mauro Kwitko</p>
           </div>

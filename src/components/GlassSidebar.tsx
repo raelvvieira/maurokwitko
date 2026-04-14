@@ -32,10 +32,11 @@ const GlassSidebar = () => {
   const sidebarContent = (
     <aside className={`fixed left-0 top-0 bottom-0 ${width} glass-strong z-40 flex flex-col transition-all duration-300`}>
       <div className={`p-4 flex items-center ${collapsed ? 'justify-center' : 'gap-3 px-6'}`}>
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shrink-0">
-          <Sparkles className="w-5 h-5 text-primary-foreground" />
-        </div>
-        {!collapsed && <span className="text-sm font-bold text-gradient leading-tight">Clube de Estudos<br/>Dr. Mauro Kwitko</span>}
+        <img
+          src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png"
+          alt="Clube de Estudos Dr. Mauro Kwitko"
+          className={`${collapsed ? 'w-9 h-9' : 'h-10'} object-contain shrink-0`}
+        />
       </div>
 
       <nav className="flex-1 px-2 space-y-1 overflow-y-auto">

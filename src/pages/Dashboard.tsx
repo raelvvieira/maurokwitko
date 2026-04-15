@@ -1,16 +1,38 @@
 import { useApp } from '@/context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, BookOpen, Trophy, Users } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { useUserVideoViews } from '@/hooks/useSupabaseData';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+
+interface RecentPost {
+  id: string;
+  user_name: string;
+  content: string;
+  created_at: string;
+}
 
 const Dashboard = () => {
-  const { courseCategories, ranking, posts } = useApp();
+  const { courseCategories, ranking } = useApp();
   const { user } = useAuth();
   const { views } = useUserVideoViews(user?.id);
   const navigate = useNavigate();
+  const [recentPosts, setRecentPosts] = useState<RecentPost[]>([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const { data } = await supabase
+        .from('community_posts')
+        .select('id, user_name, content, created_at')
+        .order('created_at', { ascending: false })
+        .limit(5);
+      if (data) setRecentPosts(data);
+    };
+    fetchPosts();
+  }, []);
 
   const userRank = ranking.find(r => r.name === 'Você');
 

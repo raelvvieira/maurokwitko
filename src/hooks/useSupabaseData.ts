@@ -244,3 +244,35 @@ export function useDiscounts() {
   const { data, isLoading, add, remove, update } = useSimpleCrud<DiscountRow>('discounts', 'discounts');
   return { discounts: data, isLoading, addDiscount: add, removeDiscount: remove, updateDiscount: update };
 }
+
+// ── User Video Views ──────────────────────────────────
+
+export function useUserVideoViews(userId: string | undefined) {
+  const qc = useQueryClient();
+
+  const { data: views = [], isLoading } = useQuery({
+    queryKey: ['user_video_views', userId],
+    enabled: !!userId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('user_video_views')
+        .select('*')
+        .eq('user_id', userId!)
+        .order('watched_at', { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const markVideoWatched = useMutation({
+    mutationFn: async (videoId: string) => {
+      const { error } = await supabase
+        .from('user_video_views')
+        .upsert({ user_id: userId!, video_id: videoId }, { onConflict: 'user_id,video_id' });
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['user_video_views', userId] }),
+  });
+
+  return { views, isLoading, markVideoWatched };
+}

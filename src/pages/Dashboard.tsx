@@ -3,14 +3,33 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, BookOpen, Trophy, Users } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { useUserVideoViews } from '@/hooks/useSupabaseData';
+import { useAuth } from '@/hooks/useAuth';
 
 const Dashboard = () => {
-  const { courses, profile, ranking, posts } = useApp();
+  const { courseCategories, ranking, posts } = useApp();
+  const { user } = useAuth();
+  const { views } = useUserVideoViews(user?.id);
   const navigate = useNavigate();
 
   const userRank = ranking.find(r => r.name === 'Você');
-  const totalLessons = courses.reduce((a, c) => a + c.totalLessons, 0);
-  const completedLessons = courses.reduce((a, c) => a + c.completedLessons, 0);
+
+  // Build "Continue Aprendendo" from real course categories + user views
+  const allVideos = courseCategories.flatMap(cat => cat.videos);
+  const watchedVideoIds = new Set(views.map(v => v.video_id));
+  const watchedVideos = allVideos.filter(v => watchedVideoIds.has(v.id));
+
+  // Build category progress
+  const categoryProgress = courseCategories
+    .map(cat => {
+      const total = cat.videos.length;
+      const completed = cat.videos.filter(v => watchedVideoIds.has(v.id)).length;
+      return { id: cat.id, name: cat.name, total, completed, progress: total > 0 ? Math.round((completed / total) * 100) : 0 };
+    })
+    .filter(c => c.completed > 0);
+
+  const totalLessons = allVideos.length;
+  const completedLessons = watchedVideoIds.size;
   const progressPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
 
   return (
@@ -105,29 +124,33 @@ const Dashboard = () => {
           <h2 className="text-sm font-semibold flex items-center gap-2"><BookOpen className="w-4 h-4 text-primary" /> Continue Aprendendo</h2>
           <button onClick={() => navigate('/courses')} className="text-xs text-primary font-medium hover:underline">Ver todos</button>
         </div>
-        <div className="space-y-3">
-          {courses.slice(0, 5).map(course => (
-            <button
-              key={course.id}
-              onClick={() => navigate(`/courses/${course.id}`)}
-              className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-secondary/50 transition-colors text-left"
-            >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center shrink-0">
-                <BookOpen className="w-4 h-4 text-primary" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{course.title}</p>
-                <p className="text-xs text-muted-foreground">{course.completedLessons}/{course.totalLessons} aulas</p>
-              </div>
-              <div className="w-14 hidden sm:block">
-                <div className="h-1.5 rounded-full bg-secondary">
-                  <div className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all" style={{ width: `${course.progress}%` }} />
+        {categoryProgress.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-6">Nenhuma aula assistida ainda. Acesse os cursos para começar!</p>
+        ) : (
+          <div className="space-y-3">
+            {categoryProgress.slice(0, 5).map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => navigate('/courses')}
+                className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-secondary/50 transition-colors text-left"
+              >
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center shrink-0">
+                  <BookOpen className="w-4 h-4 text-primary" />
                 </div>
-                <p className="text-xs text-muted-foreground text-right mt-1">{course.progress}%</p>
-              </div>
-            </button>
-          ))}
-        </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">{cat.name}</p>
+                  <p className="text-xs text-muted-foreground">{cat.completed}/{cat.total} aulas</p>
+                </div>
+                <div className="w-14 hidden sm:block">
+                  <div className="h-1.5 rounded-full bg-secondary">
+                    <div className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all" style={{ width: `${cat.progress}%` }} />
+                  </div>
+                  <p className="text-xs text-muted-foreground text-right mt-1">{cat.progress}%</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Últimos Comentários da Comunidade */}

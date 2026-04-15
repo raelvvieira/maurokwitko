@@ -2,6 +2,8 @@ import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
+import { useUserVideoViews } from '@/hooks/useSupabaseData';
+import { useAuth } from '@/hooks/useAuth';
 
 const extractVideoId = (embedUrl: string): string => {
   const match = embedUrl.match(/\/embed\/([^?&#]+)/);
@@ -10,7 +12,16 @@ const extractVideoId = (embedUrl: string): string => {
 
 const Courses = () => {
   const { courseCategories } = useApp();
+  const { user } = useAuth();
+  const { markVideoWatched } = useUserVideoViews(user?.id);
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
+
+  const handlePlay = (videoId: string, url: string) => {
+    setActiveVideoUrl(url);
+    if (user) {
+      markVideoWatched.mutate(videoId);
+    }
+  };
 
   return (
     <div className="max-w-[1400px] space-y-8">
@@ -26,7 +37,7 @@ const Courses = () => {
       )}
 
       {courseCategories.map((cat) => (
-        <CategoryRow key={cat.id} name={cat.name} videos={cat.videos} onPlay={setActiveVideoUrl} />
+        <CategoryRow key={cat.id} name={cat.name} videos={cat.videos} onPlay={handlePlay} />
       ))}
 
       {/* Video Modal */}
@@ -62,7 +73,7 @@ const Courses = () => {
   );
 };
 
-function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: string; title: string; youtubeId: string; description: string }[]; onPlay: (url: string) => void }) {
+function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: string; title: string; youtubeId: string; description: string }[]; onPlay: (videoId: string, url: string) => void }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: 'left' | 'right') => {
@@ -91,9 +102,9 @@ function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: str
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
-                className="glass-card flex-shrink-0 w-52 md:w-64 cursor-pointer group/card"
+                className="glass-card flex-shrink-0 w-56 md:w-72 cursor-pointer group/card"
                 style={{ scrollSnapAlign: 'start' }}
-                onClick={() => onPlay(video.youtubeId)}
+                onClick={() => onPlay(video.id, video.youtubeId)}
               >
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-3 bg-muted">
                   <img
@@ -107,7 +118,7 @@ function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: str
                     </div>
                   </div>
                 </div>
-                <h3 className="text-sm font-semibold mb-1 line-clamp-2 min-h-[2.5rem]">{video.title}</h3>
+                <h3 className="text-sm font-semibold mb-1 min-h-[3.5rem]">{video.title}</h3>
                 <p className="text-xs text-muted-foreground line-clamp-2">{video.description}</p>
               </motion.div>
             );

@@ -79,7 +79,7 @@ const Livros = () => {
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         {BOOKS.map((book, i) => (
           <motion.div
             key={book.title}
@@ -88,7 +88,7 @@ const Livros = () => {
             transition={{ delay: i * 0.08 }}
             className="glass-card flex flex-col"
           >
-            <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-4 bg-muted">
+            <div className="w-full aspect-[2/3] rounded-lg overflow-hidden mb-3 bg-muted">
               <img
                 src={book.cover}
                 alt={book.title}

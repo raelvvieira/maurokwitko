@@ -104,7 +104,7 @@ function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: str
                 transition={{ delay: i * 0.06 }}
                 className="glass-card flex-shrink-0 w-56 md:w-72 cursor-pointer group/card"
                 style={{ scrollSnapAlign: 'start' }}
-                onClick={() => onPlay(video.youtubeId)}
+                onClick={() => onPlay(video.id, video.youtubeId)}
               >
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-3 bg-muted">
                   <img

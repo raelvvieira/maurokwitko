@@ -27,7 +27,7 @@ const RadioPage = () => {
     <div className="max-w-4xl space-y-6">
       <div>
         <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
-          <RadioIcon className="w-5 h-5 md:w-6 md:h-6 text-primary" /> Rádio
+          <RadioIcon className="w-5 h-5 md:w-6 md:h-6 text-primary" /> Programas de Rádio com o Dr. Mauro
         </h1>
         <p className="text-sm text-muted-foreground mt-1">Ouça os programas do Dr. Mauro Kwitko</p>
       </div>

@@ -1,16 +1,38 @@
 import { useApp } from '@/context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, BookOpen, Trophy, Users } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { useUserVideoViews } from '@/hooks/useSupabaseData';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+
+interface RecentPost {
+  id: string;
+  user_name: string;
+  content: string;
+  created_at: string;
+}
 
 const Dashboard = () => {
-  const { courseCategories, ranking, posts } = useApp();
+  const { courseCategories, ranking } = useApp();
   const { user } = useAuth();
   const { views } = useUserVideoViews(user?.id);
   const navigate = useNavigate();
+  const [recentPosts, setRecentPosts] = useState<RecentPost[]>([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const { data } = await supabase
+        .from('community_posts')
+        .select('id, user_name, content, created_at')
+        .order('created_at', { ascending: false })
+        .limit(5);
+      if (data) setRecentPosts(data);
+    };
+    fetchPosts();
+  }, []);
 
   const userRank = ranking.find(r => r.name === 'Você');
 
@@ -159,22 +181,39 @@ const Dashboard = () => {
           <h2 className="text-sm font-semibold flex items-center gap-2"><Users className="w-4 h-4 text-primary" /> Últimos Comentários</h2>
           <button onClick={() => navigate('/community')} className="text-xs text-primary font-medium hover:underline">Ver comunidade</button>
         </div>
-        <div className="space-y-3">
-          {posts.slice(0, 5).map(post => (
-            <div key={post.id} className="flex items-start gap-3 p-3 rounded-xl hover:bg-secondary/30 transition-colors">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-xs font-bold shrink-0">
-                {post.author.charAt(0)}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold">{post.author} <span className="font-normal text-muted-foreground">· {post.time}</span></p>
-                <p className="text-sm text-muted-foreground line-clamp-2">{post.content}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        {recentPosts.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-4">Nenhum comentário ainda.</p>
+        ) : (
+          <div className="space-y-3">
+            {recentPosts.map(post => {
+              const timeAgo = getTimeAgo(post.created_at);
+              return (
+                <div key={post.id} className="flex items-start gap-3 p-3 rounded-xl hover:bg-secondary/30 transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-xs font-bold shrink-0">
+                    {post.user_name.charAt(0)}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-semibold">{post.user_name} <span className="font-normal text-muted-foreground">· {timeAgo}</span></p>
+                    <p className="text-sm text-muted-foreground line-clamp-2">{post.content}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
 };
+
+function getTimeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins}min atrás`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours}h atrás`;
+  const days = Math.floor(hours / 24);
+  return `${days}d atrás`;
+}
 
 export default Dashboard;

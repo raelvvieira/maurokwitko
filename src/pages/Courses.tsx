@@ -73,7 +73,7 @@ const Courses = () => {
   );
 };
 
-function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: string; title: string; youtubeId: string; description: string }[]; onPlay: (url: string) => void }) {
+function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: string; title: string; youtubeId: string; description: string }[]; onPlay: (videoId: string, url: string) => void }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: 'left' | 'right') => {

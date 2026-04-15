@@ -8,30 +8,7 @@ const BOOKS = [
     cover: 'https://images.tcdn.com.br/img/img_prod/1347031/90_tratando_fobia_panico_e_depressao_com_terapia_de_regressao_1835_1_cc9de4bf3e9a613e5167d32816bfb1a9.png',
     link: 'https://www.besourobox.com.br/espiritualista/tratando-fobia-panico-e-depressao-com-terapia-de-regressao-ed-3',
   },
-  {
-    title: 'Doutor, Eu Ouço Vozes!',
-    price: 'R$ 69,90',
-    cover: 'https://images.tcdn.com.br/img/img_prod/1347031/90_doutor_eu_ouco_vozes_1747_1_277ba97ffd4f02f6d711cdf0eb940a01.png',
-    link: 'https://www.besourobox.com.br/espiritualista/doutor-eu-ouco-vozes',
-  },
-  {
-    title: '20 Casos de Regressão: Histórias Reais de Pessoas que Recordaram Vidas Passadas – Ed. 7',
-    price: 'R$ 69,90',
-    cover: 'https://images.tcdn.com.br/img/img_prod/1347031/20_casos_de_regressao_historias_reais_de_pessoas_que_recordaram_vidas_passadas_1865_1_497b70762423fd4a00df8d2428976c1e.jpg',
-    link: 'https://www.besourobox.com.br/espiritismo/20-casos-de-regressao',
-  },
-  {
-    title: 'Terapia de Regressão: Perguntas e Respostas',
-    price: 'R$ 69,90',
-    cover: 'https://images.tcdn.com.br/img/img_prod/1347031/90_terapia_de_regressao_perguntas_e_respostas_1997_1_75719c28e45bc5bb1d1928d3b3aadd0d.jpg',
-    link: 'https://www.besourobox.com.br/autoconhecimento/terapia-de-regressao/terapia-de-regressao-perguntas-e-respostas',
-  },
-  {
-    title: 'Como Aproveitar a Sua Encarnação',
-    price: 'R$ 49,90',
-    cover: 'https://images.tcdn.com.br/img/img_prod/1347031/como_aproveitar_a_sua_encarnacao_1823_1_469e6467ab4f3e0367bdc6c740207ce0.png',
-    link: 'https://www.besourobox.com.br/espiritualista/como-aproveitar-a-sua-encarnacao',
-  },
+  
   {
     title: 'Como Evoluir Espiritualmente em um Mundo de Drogas',
     price: 'R$ 64,90',

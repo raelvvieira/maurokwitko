@@ -9,6 +9,12 @@ const getVideoId = (url: string) => {
   return match ? match[1] : '';
 };
 
+const PLAYLIST_MAP: Record<string, string> = {
+  'HINOS DE PAZ': 'https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg1lkiGi6HLMAJhCq7NLfk7X',
+  'HINOS DE AMOR': 'https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg2Pn2UzVXanS5k7_8beIBVy',
+  'HINOS DE FÉ': 'https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg26AzCi0oOcrNZVir0SOc1j',
+};
+
 const Library = () => {
   const { albums } = useApp();
   const [openAlbum, setOpenAlbum] = useState<string | null>(null);
@@ -60,6 +66,21 @@ const Library = () => {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden mt-4 space-y-2"
                   >
+                    {PLAYLIST_MAP[album.title.toUpperCase()] && (
+                      <div
+                        className="flex items-center justify-between px-3 py-2 rounded-lg bg-primary/10 gap-3 cursor-pointer hover:bg-primary/20 transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveTrack({ title: `${album.title} — Todas as faixas`, url: PLAYLIST_MAP[album.title.toUpperCase()] });
+                        }}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <span className="text-xs text-primary font-bold w-5 shrink-0">▶</span>
+                          <span className="text-sm font-semibold text-primary">Ouvir Todas em Sequência</span>
+                        </div>
+                        <Play className="w-4 h-4 text-primary shrink-0" />
+                      </div>
+                    )}
                     {album.tracks.map((track, ti) => {
                       const videoId = getVideoId(track.youtubeUrl);
                       const thumbnail = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';

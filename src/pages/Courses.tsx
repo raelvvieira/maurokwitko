@@ -27,7 +27,7 @@ const Courses = () => {
     <div className="max-w-[1400px] space-y-8">
       <div>
         <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
-          <BookOpen className="w-5 h-5 md:w-6 md:h-6 text-primary" /> Cursos
+          <BookOpen className="w-5 h-5 md:w-6 md:h-6 text-primary" /> Aulas
         </h1>
         <p className="text-sm text-muted-foreground mt-1">Aulas em vídeo do Dr. Mauro Kwitko</p>
       </div>

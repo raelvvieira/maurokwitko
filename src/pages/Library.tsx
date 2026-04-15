@@ -9,6 +9,12 @@ const getVideoId = (url: string) => {
   return match ? match[1] : '';
 };
 
+const PLAYLIST_MAP: Record<string, string> = {
+  'HINOS DE PAZ': 'https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg1lkiGi6HLMAJhCq7NLfk7X',
+  'HINOS DE AMOR': 'https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg2Pn2UzVXanS5k7_8beIBVy',
+  'HINOS DE FÉ': 'https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg26AzCi0oOcrNZVir0SOc1j',
+};
+
 const Library = () => {
   const { albums } = useApp();
   const [openAlbum, setOpenAlbum] = useState<string | null>(null);

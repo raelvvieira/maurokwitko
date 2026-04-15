@@ -66,6 +66,21 @@ const Library = () => {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden mt-4 space-y-2"
                   >
+                    {PLAYLIST_MAP[album.title.toUpperCase()] && (
+                      <div
+                        className="flex items-center justify-between px-3 py-2 rounded-lg bg-primary/10 gap-3 cursor-pointer hover:bg-primary/20 transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveTrack({ title: `${album.title} — Todas as faixas`, url: PLAYLIST_MAP[album.title.toUpperCase()] });
+                        }}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <span className="text-xs text-primary font-bold w-5 shrink-0">▶</span>
+                          <span className="text-sm font-semibold text-primary">Ouvir Todas em Sequência</span>
+                        </div>
+                        <Play className="w-4 h-4 text-primary shrink-0" />
+                      </div>
+                    )}
                     {album.tracks.map((track, ti) => {
                       const videoId = getVideoId(track.youtubeUrl);
                       const thumbnail = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';

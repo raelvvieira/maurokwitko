@@ -2,6 +2,8 @@ import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
+import { useUserVideoViews } from '@/hooks/useSupabaseData';
+import { useAuth } from '@/hooks/useAuth';
 
 const extractVideoId = (embedUrl: string): string => {
   const match = embedUrl.match(/\/embed\/([^?&#]+)/);
@@ -10,7 +12,16 @@ const extractVideoId = (embedUrl: string): string => {
 
 const Courses = () => {
   const { courseCategories } = useApp();
+  const { user } = useAuth();
+  const { markVideoWatched } = useUserVideoViews(user?.id);
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
+
+  const handlePlay = (videoId: string, url: string) => {
+    setActiveVideoUrl(url);
+    if (user) {
+      markVideoWatched.mutate(videoId);
+    }
+  };
 
   return (
     <div className="max-w-[1400px] space-y-8">
@@ -26,7 +37,7 @@ const Courses = () => {
       )}
 
       {courseCategories.map((cat) => (
-        <CategoryRow key={cat.id} name={cat.name} videos={cat.videos} onPlay={setActiveVideoUrl} />
+        <CategoryRow key={cat.id} name={cat.name} videos={cat.videos} onPlay={handlePlay} />
       ))}
 
       {/* Video Modal */}

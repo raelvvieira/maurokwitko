@@ -16,7 +16,7 @@ const Ranking = () => {
     <div className="max-w-4xl space-y-6">
       <div>
         <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
-          <Trophy className="w-5 h-5 md:w-6 md:h-6 text-gold" /> Ranking Geral
+          <Trophy className="w-5 h-5 md:w-6 md:h-6 text-gold" /> Alunos Engajados
         </h1>
         <p className="text-sm text-muted-foreground mt-1">Os participantes mais engajados com o Clube</p>
       </div>

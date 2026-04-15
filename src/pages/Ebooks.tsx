@@ -51,7 +51,7 @@ const Ebooks = () => {
         <div className="glass-card text-center text-sm text-muted-foreground py-12">Nenhum e-book disponível ainda.</div>
       )}
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         {ebooks.map((book, i) => (
           <motion.div
             key={book.id}
@@ -60,7 +60,7 @@ const Ebooks = () => {
             transition={{ delay: i * 0.08 }}
             className="glass-card flex flex-col"
           >
-            <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-3 md:mb-4 bg-muted">
+            <div className="w-full aspect-[2/3] rounded-lg overflow-hidden mb-2 md:mb-3 bg-muted">
               {book.cover_url ? (
                 <img src={book.cover_url} alt={book.title} className="w-full h-full object-contain" />
               ) : (

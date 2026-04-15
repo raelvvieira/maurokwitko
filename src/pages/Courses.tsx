@@ -91,7 +91,7 @@ function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: str
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
-                className="glass-card flex-shrink-0 w-52 md:w-64 cursor-pointer group/card"
+                className="glass-card flex-shrink-0 w-56 md:w-72 cursor-pointer group/card"
                 style={{ scrollSnapAlign: 'start' }}
                 onClick={() => onPlay(video.youtubeId)}
               >
@@ -107,7 +107,7 @@ function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: str
                     </div>
                   </div>
                 </div>
-                <h3 className="text-sm font-semibold mb-1 line-clamp-2 min-h-[2.5rem]">{video.title}</h3>
+                <h3 className="text-sm font-semibold mb-1 min-h-[3.5rem]">{video.title}</h3>
                 <p className="text-xs text-muted-foreground line-clamp-2">{video.description}</p>
               </motion.div>
             );

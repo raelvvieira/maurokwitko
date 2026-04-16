@@ -9,7 +9,7 @@ const navItems = [
   { to: '/courses', icon: BookOpen, label: 'Aulas' },
   { to: '/library', icon: Headphones, label: 'Hinos' },
   { to: '/ebooks', icon: BookMarked, label: 'E-books' },
-  { to: '/livros', icon: ShoppingCart, label: 'Livros' },
+  { to: '/livros', icon: ShoppingCart, label: 'Livros Físicos' },
   { to: '/radio', icon: Radio, label: 'Rádio' },
   { to: '/materials', icon: FileText, label: 'Materiais' },
   { to: '/ranking', icon: Trophy, label: 'Ranking' },

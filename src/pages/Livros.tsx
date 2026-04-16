@@ -21,6 +21,18 @@ const BOOKS = [
     cover: 'https://images.tcdn.com.br/img/img_prod/1347031/a_fascinante_vida_de_mirta_kassov_as_licoes_e_os_aprendizados_de_um_terapeuta_de_regressao_1689_1_35d6c3157a9b1cd262fdbe912a73de6c.png',
     link: 'https://www.besourobox.com.br/espiritualista/fascinante-vida-de-mirta-kassov-as-licoes-e-os-aprendizados-de-um-terapeuta-de-regressao-a',
   },
+  {
+    title: '20 Casos de Regressão (Ed. 7)',
+    price: 'R$ 69,90',
+    cover: 'https://images.tcdn.com.br/img/img_prod/1347031/90_20_casos_de_regressao_historias_reais_de_pessoas_que_recordaram_vidas_passadas_1865_1_497b70762423fd4a00df8d2428976c1e.jpg',
+    link: 'https://www.besourobox.com.br/espiritismo/20-casos-de-regressao',
+  },
+  {
+    title: 'Terapia de Regressão: Perguntas e Respostas',
+    price: 'R$ 69,90',
+    cover: 'https://images.tcdn.com.br/img/img_prod/1347031/90_terapia_de_regressao_perguntas_e_respostas_1997_1_75719c28e45bc5bb1d1928d3b3aadd0d.jpg',
+    link: 'https://www.besourobox.com.br/autoconhecimento/terapia-de-regressao/terapia-de-regressao-perguntas-e-respostas',
+  },
 ];
 
 const Livros = () => {

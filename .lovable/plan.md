@@ -1,30 +1,26 @@
 
 
-## Plano: Ajustes de menu, conteúdo e funcionalidades
+## Plano: Atualizar e-book "A Cura da Solidão" e adicionar 2 livros físicos
 
-### 1. Renomear "Cursos" para "Aulas" no menu lateral
-Alterar o label em `src/components/GlassSidebar.tsx` (linha 9) e o título em `src/pages/Courses.tsx` (linha 30).
+### 1. Substituir o PDF do e-book "A Cura da Solidão"
+O e-book já existe no banco (id `03dda85b-4134-4392-a44c-a6fe89ff0942`). Vou:
+- Copiar o PDF enviado (`user-uploads://A_Cura_da_Solidão.pdf`) para o bucket `ebooks/pdfs/` no Storage com o mesmo nome do arquivo atual (`a_cura_da_solid_o.pdf`), substituindo o existente.
+- A `url` na tabela `ebooks` já aponta para esse caminho, então não precisa alterar o registro.
 
-### 2. Renomear categoria no banco de dados
-Executar migration SQL para atualizar o nome da categoria:
-```sql
-UPDATE course_categories SET name = 'CURSO DE REFORMA ÍNTIMA COM DR. MAURO KWITKO'
-WHERE id = 'a1000000-0000-0000-0000-000000000003';
-```
+### 2. Adicionar 2 livros físicos em `src/pages/Livros.tsx`
+Adicionar ao array estático `BOOKS`:
 
-### 3. Adicionar "Ouvir Todas" nos álbuns de Hinos
-Em `src/pages/Library.tsx`, adicionar antes da lista de faixas uma linha especial "Ouvir Todas em Sequência" com ícone de Play. Ao clicar, abre o player com a URL da playlist do YouTube correspondente. Mapeamento por título do álbum:
-- HINOS DE PAZ → `https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg1lkiGi6HLMAJhCq7NLfk7X`
-- HINOS DE AMOR → `https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg2Pn2UzVXanS5k7_8beIBVy`
-- HINOS DE FÉ → `https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg26AzCi0oOcrNZVir0SOc1j`
+**a) 20 Casos de Regressão (Ed. 7)**
+- Preço: R$ 69,90
+- Capa: `https://images.tcdn.com.br/img/img_prod/1347031/90_20_casos_de_regressao_historias_reais_de_pessoas_que_recordaram_vidas_passadas_1865_1_497b70762423fd4a00df8d2428976c1e.jpg`
+- Link: `https://www.besourobox.com.br/espiritismo/20-casos-de-regressao`
 
-### 4. Remover 2 livros da lista estática
-Em `src/pages/Livros.tsx`, remover os objetos "Doutor, Eu Ouço Vozes!" e "Como Aproveitar a Sua Encarnação" do array `BOOKS`.
+**b) Terapia de Regressão: Perguntas e Respostas**
+- Preço: R$ 69,90
+- Capa: `https://images.tcdn.com.br/img/img_prod/1347031/90_terapia_de_regressao_perguntas_e_respostas_1997_1_75719c28e45bc5bb1d1928d3b3aadd0d.jpg`
+- Link: `https://www.besourobox.com.br/autoconhecimento/terapia-de-regressao/terapia-de-regressao-perguntas-e-respostas`
 
 ### Arquivos alterados
-- `src/components/GlassSidebar.tsx` — label "Aulas"
-- `src/pages/Courses.tsx` — título "Aulas"
-- `src/pages/Library.tsx` — botão "Ouvir Todas" com playlists
-- `src/pages/Livros.tsx` — remover 2 livros
-- Migration SQL — renomear categoria
+- Storage: upload do PDF `ebooks/pdfs/a_cura_da_solid_o.pdf` (substituição)
+- `src/pages/Livros.tsx` — adicionar 2 entradas ao array `BOOKS`
 

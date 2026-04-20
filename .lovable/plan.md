@@ -1,112 +1,112 @@
 
 
-## Plano: Site institucional Dr. Mauro Kwitko (Home)
+## Plano: Home institucional v2 + Menu superior expandido
 
-Criar um site institucional **público** (sem login obrigatório) inspirado na referência do Stitch, mantendo o Clube de Estudos atual intacto e acessível via botão "Login" no canto superior direito.
+Reescrever a Home pública incorporando a copy original do site atual (em versão refinada), acrescentando carrosséis de livros/e-books animados, galeria visual com as fotos enviadas, e expandir o menu superior com submenu em "Cursos" + novos itens "Quem Sou Eu" e "Grupos de Apoio".
 
-### Arquitetura de rotas
+### 1. Header — novo menu superior
 
-Reestruturar `App.tsx` para separar **rotas públicas** (site institucional) de **rotas privadas** (clube):
+Substituir os links âncora atuais por uma navegação que reflete a estrutura do site original:
 
 ```text
-PÚBLICAS (sem login):
-  /                      → Home institucional (NOVA)
-  /sobre                 → (futuro)
-  /cursos-publico        → (futuro)
-  /livros-publico        → (futuro)
-  /hinos-publico         → (futuro)
-  /artigos               → (futuro)
-  /login                 → Tela de login do clube
-  /reset-password        → (já existe)
-
-PRIVADAS (clube — exigem login):
-  /app                   → Dashboard
-  /app/courses           → Cursos
-  /app/livros, /app/library, etc.
-  (todas as rotas atuais migram para o prefixo /app)
+Quem Sou Eu          → âncora #quem-sou-eu
+Cursos ▾             → DROPDOWN com 2 itens (sem páginas dedicadas ainda):
+                         • Formação em Psicoterapia Reencarnacionista (#formacao)
+                         • Curso On-line: A Psicologia da Reencarnação (#curso-online)
+Livros e E-books     → âncora #livros
+Hinos Espirituais    → âncora #hinos
+Grupos de Apoio      → âncora #grupos
+Artigos              → âncora #artigos
 ```
 
-Após login bem-sucedido, redireciona para `/app`. O link "Login" no header público leva a `/login`. O botão "Sair" no clube volta para `/`.
+- Botão "Entrar no Clube" mantido à direita.
+- Submenu desktop: dropdown leve (hover/click) com transição fade — usando estado local + Framer Motion (sem dependência nova).
+- Mobile: drawer lateral mostra "Cursos" expansível (accordion) com os mesmos 2 sub-itens.
+- Os dois sub-itens de Cursos são apenas âncoras/links visuais nesta entrega (não criamos páginas dedicadas).
 
-### Home institucional — seções (esta entrega)
+### 2. Home — nova estrutura de seções
 
-Layout single-page com header fixo + 6 seções:
+```text
+1. Hero (mantido, com leve refinamento da copy)
+2. Quem Sou Eu (NOVO — bio expandida do site original)
+3. Bibliografia: Livros (CARROSSEL infinito automático lento)
+4. E-books do Clube (CARROSSEL infinito — capas reais via useEbooks)
+5. Formação em Psicoterapia Reencarnacionista (card destaque escuro)
+6. Hinos Espirituais (NOVO — card duplo com capas dos hinários)
+7. Grupos de Apoio (NOVO — card simples convidando ao contato)
+8. Galeria (NOVO — mosaico com fotos enviadas: AULAS TEÓRICAS, AULAS PRÁTICAS, ENCONTRO ABPR, TURMA, EVOLUÇÃO CONSCIENCIAL)
+9. Citação destacada (mantida)
+10. Artigos Recentes (mantido)
+11. Contato (NOVO — bloco simples com CTA WhatsApp/e-mail)
+```
 
-1. **Header transparente fixo**
-   - Esquerda: logo + "Dr. Mauro Kwitko"
-   - Centro: nav (Home, Cursos, Livros, Hinos, Artigos) — links âncora ou placeholders nas próximas entregas
-   - Direita: botão "Entrar no Clube" (estilo primário, leva a `/login`)
+**Observação:** o card "Curso On-line: A Psicologia da Reencarnação" foi REMOVIDO conforme pedido.
 
-2. **Hero**
-   - Tag pequena: "30+ ANOS DE EXCELÊNCIA CLÍNICA"
-   - Título grande: "Ciência e **Despertar Espiritual**" (palavra "Despertar Espiritual" em itálico/destaque slate)
-   - Subtítulo: bio curta sobre integrar Psicoterapia de Regressão à psicologia clínica
-   - 2 botões: "Conheça o Método" (primário) + "Pesquisas Recentes" (secundário)
-   - À direita: foto de perfil em moldura arredondada com sombra suave (https://i.ibb.co/MDn6WZRV/DR-MAURO-1.png)
+### 3. Detalhes por seção nova/revisada
 
-3. **Citação destacada**
-   - Bloco centralizado com aspas + frase: *"Curar não é apenas a ausência de sintomas, mas a presença de sentido encontrado na jornada da alma através do tempo."*
-   - Atribuição: "— DR. MAURO KWITKO"
+**Quem Sou Eu (#quem-sou-eu)** — substitui a antiga seção "Sabedoria da Experiência":
+- Foto principal (DR-MAURO-1) + título "Olá, sou Dr. Mauro" 
+- Texto: "Há cerca de 30 anos venho me dedicando a orientar pessoas, no consultório, nas palestras e nos cursos, a recordarem que somos Espíritos encarnados com finalidades próprias a cada um."
+- Lista de credenciais com ícones check:
+  - Fundador e patrono da Associação Brasileira de Psicoterapia Reencarnacionista (ABPR)
+  - Mais de 20.000 Investigações do Inconsciente (Regressões) realizadas
+  - Mais de 60 turmas formadas no Curso de Psicoterapia Reencarnacionista
+  - 19 livros publicados (físicos e e-books)
+- Stats grandes mantidos (20k+ Atendimentos / 19 Livros / 60+ Turmas)
 
-4. **Card "Curso de Formação em Psicoterapia Reencarnacionista"**
-   - Card escuro (slate `#1a2530`) destacado, com tag "INSCRIÇÕES ABERTAS"
-   - Título + descrição do curso
-   - 3 bullets com check: "Técnicas Avançadas de Regressão", "Anatomia Espiritual & Karma", "Casos Clínicos & Supervisão"
-   - Botão "Entrar para a Lista de Espera"
-   - Imagem ilustrativa à direita (placeholder cósmico via gradiente, sem dependência externa)
+**Carrossel de Livros (#livros)** — auto-scroll horizontal infinito:
+- Trilha duplicada com `motion.div` animando `x` em loop linear (~40s, pausa no hover).
+- Mostra TODOS os 5 livros de `BOOKS` repetidos para efeito infinito.
+- Cards menores (w-44/w-52), capa + título, link externo BesouroBox.
+- Header da seção: "Aprenda Com Meus Livros" + link "Ver bibliografia completa".
 
-5. **Últimas Publicações**
-   - Título "Últimas Publicações" + link "Ver Bibliografia Completa →"
-   - Grid de 3 livros usando os dados reais de `BOOKS` em `src/pages/Livros.tsx` (capas BesouroBox)
-   - Cada card: capa grande + título + "Saiba Mais →" (link para a página do livro na BesouroBox)
+**Carrossel de E-books** (linha separada logo abaixo):
+- Mesma mecânica de auto-scroll, puxando capas via `useEbooks()`.
+- Como `useEbooks` requer Supabase (e a Home é pública), usamos um fetch direto e silencioso: `supabase.from('ebooks').select('id,title,cover_url').limit(20)` — capas/títulos são públicos. Se vazio, oculta a faixa.
+- Cards apontam para `/login` com aviso "Disponível no Clube" no hover.
 
-6. **A Sabedoria da Experiência (bio)**
-   - Mosaico 2x2 à esquerda com fotos: ABPR (https://i.ibb.co/358FCytk/DR-MAURO-2.jpg), foto palestrando, e dois placeholders neutros (consultório/livros)
-   - À direita: título "A Sabedoria da Experiência" + 2 parágrafos de bio + 2 stats grandes ("15k+ Horas Clínicas" / "12 Livros Publicados")
-   - Link "Conheça mais sobre sua trajetória →"
+**Hinos Espirituais (#hinos)**:
+- Bloco com 2 capas grandes: HINOS DE AMOR e HINOS DE FÉ (URLs fornecidas).
+- Texto: "Mensagens espirituais vindas do Astral para lembrarmos que somos gotas de luz aqui na Terra."
+- CTA "Ouvir no Clube" → `/login`.
 
-7. **Artigos Recentes**
-   - 3 cards com placeholder de imagem + categoria + data + título + "Ler artigo →"
-   - Conteúdo placeholder (nesta entrega são estáticos; integraremos com a tabela de blog em entrega futura)
+**Grupos de Apoio (#grupos)**:
+- Card simples com ícone + texto curto: "Encontros de estudo e troca entre praticantes da Psicoterapia Reencarnacionista."
+- Botão "Entre em contato" (link `mailto:` ou WhatsApp — placeholder).
 
-8. **Footer escuro**
-   - Coluna 1: marca + tagline
-   - Coluna 2: Navegação (links do menu)
-   - Coluna 3: Horários do consultório
-   - Coluna 4: Newsletter (input + botão verde "Inscrever-se") — visual apenas nesta entrega
-   - Linha inferior: copyright + redes sociais
+**Galeria visual** (entre Grupos e Citação):
+- Mosaico 3 colunas no desktop / 2 no mobile com 6 imagens fornecidas (AULAS TEÓRICAS, AULAS PRÁTICAS, DR-MAURO-2, DR-MAURO-CURSO-DE-FORMAÇÃO, ENCONTRO-NACIONAL-ABPR, TURMA-CURSO-FORMACAO, EVOLUCAO-CONSCIENCIAL).
+- Hover sutil com zoom + overlay com legenda.
 
-### Design system
+**Contato (final, antes do footer)**:
+- "Entre em contato comigo. Vamos conversar!"
+- Botão grande "Enviar mensagem" → âncora ou `mailto:`.
 
-- **Reaproveita** tokens do clube (slate `#506274`, glassmorphism, fontes Plus Jakarta Sans / Inter) para coerência visual.
-- **Diferencia** do app interno: layout largo (max-w-6xl), respiração maior, sem sidebar, header fixo translúcido com blur ao scroll.
-- **Acento verde** (`hsl(142 71% 45%)` já presente como `--success`) para CTAs principais (alinhado ao verde da referência sem destoar da paleta slate).
-- Tipografia: títulos em peso 700-800 com tracking apertado; corpo em 400-500 com leading generoso.
+### 4. Implementação técnica do carrossel infinito
 
-### Arquivos
+Componente `<MarqueeRow items={...} renderItem={...} duration={40} />`:
+- Container `overflow-hidden`.
+- Trilha = `[...items, ...items]` em flex, animada com `motion.div` `animate={{ x: ['0%', '-50%'] }}` em loop linear.
+- `whileHover` para pausar (via state ou `animationPlayState`).
+- Reutilizado para livros e e-books.
+
+### 5. Arquivos
 
 **Novos:**
-- `src/pages/public/Home.tsx` — página institucional completa
-- `src/components/public/PublicHeader.tsx` — header fixo com nav e botão Login
-- `src/components/public/PublicFooter.tsx` — footer escuro
-- `src/components/public/PublicLayout.tsx` — wrapper com header + outlet + footer (para futuras páginas públicas)
+- `src/components/public/Marquee.tsx` — carrossel infinito reutilizável.
+- `src/components/public/CoursesDropdown.tsx` — dropdown desktop "Cursos" (e accordion equivalente no drawer mobile).
 
 **Alterados:**
-- `src/App.tsx` — separar rotas públicas/privadas, mover clube para prefixo `/app`, adicionar `/login` como rota pública dedicada
-- `src/components/GlassSidebar.tsx` e qualquer `<Link to="/">` interno do clube — apontar para `/app`
-- `src/pages/Login.tsx` — após login redirecionar para `/app` (em vez de `/`); adicionar link "← Voltar ao site" no topo
-- `src/components/AppShell.tsx` — botão "Sair" leva para `/` após signOut
+- `src/components/public/PublicHeader.tsx` — nova nav (Quem Sou Eu, Cursos▾, Livros e E-books, Hinos Espirituais, Grupos de Apoio, Artigos), drawer mobile com Cursos expansível.
+- `src/pages/public/Home.tsx` — reestruturação completa conforme seções acima; remoção do card "Curso On-line"; adição de Marquees, galeria, hinos, grupos, contato; copy refinada do site original.
 
-### Detalhes técnicos
+**Sem mudanças:** rotas, Supabase, footer (mantém o atual), PublicLayout.
 
-- Imagens do Mauro consumidas direto das URLs i.ibb.co fornecidas (sem download para o repo nesta etapa).
-- Capas dos livros: import da constante `BOOKS` do `Livros.tsx` (ou extração para `src/data/books.ts` compartilhado entre clube e site).
-- Animações sutis com framer-motion (já instalado): fade-up nas seções ao entrar no viewport.
-- Responsivo: hero empilha no mobile (foto acima do texto), grids reduzem colunas, header vira hamburger no `md:hidden`.
-- SEO básico: `<title>` e `<meta description>` via `index.html` ajustados para "Dr. Mauro Kwitko — Psicoterapia de Regressão".
-- Sem mudanças no Supabase nesta entrega.
+### 6. Notas
 
-### Próximas entregas (não nesta)
-
-Páginas Sobre, Cursos público, Livros público, Hinos público (preview de álbuns), Artigos (lista pública do blog) — cada uma em conversa separada conforme você pediu.
+- Imagens do Mauro e capas de hinários consumidas via URLs i.ibb.co.
+- E-books reais puxados publicamente do Supabase (`ebooks.cover_url` já é URL pública do bucket).
+- Animações suaves (Framer Motion já presente). Sem novas dependências.
+- Responsivo: marquees viram 1 linha no mobile, galeria 2 colunas, dropdown vira accordion.
+- Sem mudanças no Clube (`/app/*`).
 

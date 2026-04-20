@@ -102,7 +102,7 @@ const Home = () => {
             <div className="absolute -inset-6 bg-gradient-to-br from-primary/20 via-accent/10 to-transparent rounded-[2.5rem] blur-2xl" />
             <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-2xl">
               <img
-                src="https://i.ibb.co/MDn6WZRV/DR-MAURO-1.png"
+                src="https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg"
                 alt="Dr. Mauro Kwitko"
                 className="w-full h-full object-cover"
               />
@@ -110,6 +110,134 @@ const Home = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* LIVROS — Marquee */}
+      <section id="livros" className="py-20 md:py-28">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 mb-12">
+          <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4">
+            <div>
+              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Bibliografia</span>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Aprenda Com Meus Livros</h2>
+              <p className="text-muted-foreground mt-3 max-w-xl">
+                Quase 30 anos de experiência clínica condensados em obras que orientam o caminho da reforma íntima.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+
+        <Marquee
+          items={BOOKS}
+          duration={60}
+          renderItem={(book) => (
+            <a
+              href={book.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block w-[160px] md:w-[200px]"
+            >
+              <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1">
+                <img
+                  src={book.cover}
+                  alt={book.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="mt-3 text-xs md:text-sm font-semibold leading-snug line-clamp-2">{book.title}</h3>
+              <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
+                Saiba Mais <ArrowRight className="w-3 h-3" />
+              </span>
+            </a>
+          )}
+        />
+      </section>
+
+      {/* FORMAÇÃO — Course CTA */}
+      <section id="formacao" className="py-20 md:py-28 bg-secondary/30 border-y border-border/40">
+        <div className="max-w-6xl mx-auto px-4 md:px-6">
+          <motion.div
+            {...fadeUp}
+            className="relative rounded-3xl overflow-hidden bg-background border border-border/60 shadow-sm p-8 md:p-14 lg:p-16 grid md:grid-cols-2 gap-10 md:gap-14 items-center"
+          >
+            <div className="relative space-y-6">
+              <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-bold tracking-wider uppercase">
+                Inscrições Abertas
+              </span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
+                Formação em <span className="italic font-serif text-primary">Psicoterapia Reencarnacionista</span>
+              </h2>
+              <p className="text-muted-foreground leading-relaxed max-w-md">
+                Uma nova visão psicológica baseada na Reencarnação, para que possamos realmente aproveitar a encarnação. Formação completa para terapeutas integrarem a Terapia de Regressão à prática clínica.
+              </p>
+              <ul className="space-y-3 pt-2">
+                {['Técnicas Avançadas de Regressão', 'Anatomia Espiritual & Karma', 'Casos Clínicos & Supervisão'].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm text-foreground/80">
+                    <span className="mt-0.5 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <Check className="w-3 h-3 text-primary" />
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => navigate('/formacao')}
+                className="inline-flex items-center gap-2 mt-4 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm hover:shadow-md"
+              >
+                Conhecer a Formação <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="relative aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden bg-secondary">
+              <img
+                src="https://i.ibb.co/bjyq508N/DR-MAURO-CURSO-DE-FORMA-O.jpg"
+                alt="Curso de Formação"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* E-books do Clube */}
+      {ebooks.length > 0 && (
+        <section className="py-20 md:py-28">
+          <div className="max-w-6xl mx-auto px-4 md:px-6 mb-10">
+            <motion.div {...fadeUp}>
+              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">E-books</span>
+              <h3 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Disponíveis no Clube de Estudos</h3>
+              <p className="text-muted-foreground mt-3 max-w-xl text-sm md:text-base">
+                Acesse a biblioteca completa de e-books como membro do Clube.
+              </p>
+            </motion.div>
+          </div>
+
+          <Marquee
+            items={ebooks}
+            duration={50}
+            renderItem={(eb) => (
+              <button
+                onClick={() => navigate('/login')}
+                className="group block w-[160px] md:w-[200px] text-left"
+              >
+                <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1">
+                  {eb.cover_url && (
+                    <img
+                      src={eb.cover_url}
+                      alt={eb.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/40 backdrop-blur-0 group-hover:backdrop-blur-sm transition-all flex items-center justify-center">
+                    <span className="opacity-0 group-hover:opacity-100 text-white text-[11px] font-bold tracking-wider uppercase transition-opacity">
+                      Disponível no Clube
+                    </span>
+                  </div>
+                </div>
+                <h4 className="mt-3 text-xs font-semibold leading-snug line-clamp-2">{eb.title}</h4>
+              </button>
+            )}
+          />
+        </section>
+      )}
 
       {/* QUEM SOU EU */}
       <section id="quem-sou-eu" className="py-20 md:py-28 bg-secondary/30 border-y border-border/40">
@@ -161,131 +289,6 @@ const Home = () => {
                 <p className="text-2xl md:text-3xl font-bold tracking-tight">60+</p>
                 <p className="text-xs text-muted-foreground mt-1">Turmas</p>
               </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* LIVROS — Marquee */}
-      <section id="livros" className="py-20 md:py-28">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 mb-12">
-          <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4">
-            <div>
-              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Bibliografia</span>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Aprenda Com Meus Livros</h2>
-              <p className="text-muted-foreground mt-3 max-w-xl">
-                Quase 30 anos de experiência clínica condensados em obras que orientam o caminho da reforma íntima.
-              </p>
-            </div>
-          </motion.div>
-        </div>
-
-        <Marquee
-          items={BOOKS}
-          duration={60}
-          renderItem={(book) => (
-            <a
-              href={book.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block w-[160px] md:w-[200px]"
-            >
-              <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1">
-                <img
-                  src={book.cover}
-                  alt={book.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              </div>
-              <h3 className="mt-3 text-xs md:text-sm font-semibold leading-snug line-clamp-2">{book.title}</h3>
-              <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
-                Saiba Mais <ArrowRight className="w-3 h-3" />
-              </span>
-            </a>
-          )}
-        />
-
-        {/* E-books do Clube */}
-        {ebooks.length > 0 && (
-          <div className="mt-16 md:mt-20">
-            <div className="max-w-6xl mx-auto px-4 md:px-6 mb-8">
-              <motion.div {...fadeUp}>
-                <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">E-books</span>
-                <h3 className="text-2xl md:text-3xl font-bold tracking-tight mt-2">Disponíveis no Clube de Estudos</h3>
-                <p className="text-muted-foreground mt-2 max-w-xl text-sm md:text-base">
-                  Acesse a biblioteca completa de e-books como membro do Clube.
-                </p>
-              </motion.div>
-            </div>
-
-            <Marquee
-              items={ebooks}
-              duration={50}
-              renderItem={(eb) => (
-                <button
-                  onClick={() => navigate('/login')}
-                  className="group block w-[160px] md:w-[200px] text-left"
-                >
-                  <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1">
-                    {eb.cover_url && (
-                      <img
-                        src={eb.cover_url}
-                        alt={eb.title}
-                        className="absolute inset-0 w-full h-full object-cover"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/40 backdrop-blur-0 group-hover:backdrop-blur-sm transition-all flex items-center justify-center">
-                      <span className="opacity-0 group-hover:opacity-100 text-white text-[11px] font-bold tracking-wider uppercase transition-opacity">
-                        Disponível no Clube
-                      </span>
-                    </div>
-                  </div>
-                  <h4 className="mt-3 text-xs font-semibold leading-snug line-clamp-2">{eb.title}</h4>
-                </button>
-              )}
-            />
-          </div>
-        )}
-      </section>
-
-      {/* FORMAÇÃO — Course CTA (minimal, on-brand) */}
-      <section id="formacao" className="py-20 md:py-28 bg-secondary/30 border-y border-border/40">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <motion.div
-            {...fadeUp}
-            className="relative rounded-3xl overflow-hidden bg-background border border-border/60 shadow-sm p-8 md:p-14 lg:p-16 grid md:grid-cols-2 gap-10 md:gap-14 items-center"
-          >
-            <div className="relative space-y-6">
-              <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-bold tracking-wider uppercase">
-                Inscrições Abertas
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-                Formação em <span className="italic font-serif text-primary">Psicoterapia Reencarnacionista</span>
-              </h2>
-              <p className="text-muted-foreground leading-relaxed max-w-md">
-                Uma nova visão psicológica baseada na Reencarnação, para que possamos realmente aproveitar a encarnação. Formação completa para terapeutas integrarem a Terapia de Regressão à prática clínica.
-              </p>
-              <ul className="space-y-3 pt-2">
-                {['Técnicas Avançadas de Regressão', 'Anatomia Espiritual & Karma', 'Casos Clínicos & Supervisão'].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm text-foreground/80">
-                    <span className="mt-0.5 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <Check className="w-3 h-3 text-primary" />
-                    </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <button className="inline-flex items-center gap-2 mt-4 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm hover:shadow-md">
-                Entrar para a Lista de Espera <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="relative aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden bg-secondary">
-              <img
-                src="https://i.ibb.co/bjyq508N/DR-MAURO-CURSO-DE-FORMA-O.jpg"
-                alt="Curso de Formação"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
             </div>
           </motion.div>
         </div>

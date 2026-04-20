@@ -1,9 +1,8 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { BookOpen, Play, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
-import { useUserVideoViews } from '@/hooks/useSupabaseData';
-import { useAuth } from '@/hooks/useAuth';
 
 const extractVideoId = (embedUrl: string): string => {
   const match = embedUrl.match(/\/embed\/([^?&#]+)/);
@@ -12,15 +11,10 @@ const extractVideoId = (embedUrl: string): string => {
 
 const Courses = () => {
   const { courseCategories } = useApp();
-  const { user } = useAuth();
-  const { markVideoWatched } = useUserVideoViews(user?.id);
-  const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const handlePlay = (videoId: string, url: string) => {
-    setActiveVideoUrl(url);
-    if (user) {
-      markVideoWatched.mutate(videoId);
-    }
+  const handlePlay = (categoryId: string, videoId: string) => {
+    navigate(`/watch/course/${categoryId}/${videoId}`);
   };
 
   return (
@@ -37,43 +31,13 @@ const Courses = () => {
       )}
 
       {courseCategories.map((cat) => (
-        <CategoryRow key={cat.id} name={cat.name} videos={cat.videos} onPlay={handlePlay} />
+        <CategoryRow key={cat.id} categoryId={cat.id} name={cat.name} videos={cat.videos} onPlay={handlePlay} />
       ))}
-
-      {/* Video Modal */}
-      {activeVideoUrl && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={() => setActiveVideoUrl(null)}>
-          <div className="relative w-full max-w-3xl mx-4" onClick={e => e.stopPropagation()}>
-            <button onClick={() => setActiveVideoUrl(null)} className="absolute -top-10 right-0 text-white hover:text-primary transition-colors">
-              <X className="w-6 h-6" />
-            </button>
-            <div className="aspect-video rounded-xl overflow-hidden">
-              <iframe
-                src={activeVideoUrl}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
-            <a
-              href={`https://www.youtube.com/watch?v=${extractVideoId(activeVideoUrl)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-flex items-center gap-2 text-sm text-white/80 hover:text-primary transition-colors"
-            >
-              <Play className="w-4 h-4" /> Assistir no YouTube ↗
-            </a>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
-function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: string; title: string; youtubeId: string; description: string }[]; onPlay: (videoId: string, url: string) => void }) {
+function CategoryRow({ categoryId, name, videos, onPlay }: { categoryId: string; name: string; videos: { id: string; title: string; youtubeId: string; description: string }[]; onPlay: (categoryId: string, videoId: string) => void }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: 'left' | 'right') => {
@@ -104,7 +68,7 @@ function CategoryRow({ name, videos, onPlay }: { name: string; videos: { id: str
                 transition={{ delay: i * 0.06 }}
                 className="glass-card flex-shrink-0 w-56 md:w-72 cursor-pointer group/card"
                 style={{ scrollSnapAlign: 'start' }}
-                onClick={() => onPlay(video.id, video.youtubeId)}
+                onClick={() => onPlay(categoryId, video.id)}
               >
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-3 bg-muted">
                   <img

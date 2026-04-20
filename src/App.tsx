@@ -65,7 +65,7 @@ function AuthGate() {
         <Route element={<AppShell />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/courses" element={<Courses />} />
-          <Route path="/courses/:id" element={<CourseDetail />} />
+          <Route path="/watch/:source/:contextId/:videoId" element={<CourseDetail />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/community" element={<Community />} />
           <Route path="/profile" element={<Profile />} />

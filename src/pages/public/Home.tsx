@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { ArrowRight, Check, Quote, Calendar, Music, Users, Mail, MessageCircle } from 'lucide-react';
+import { ArrowRight, Check, Quote, Calendar, Mail, MessageCircle } from 'lucide-react';
 import { BOOKS } from '@/data/books';
 import { supabase } from '@/integrations/supabase/client';
 import { Marquee } from '@/components/public/Marquee';
@@ -188,10 +188,10 @@ const Home = () => {
               href={book.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block w-44 md:w-52"
+              className="group block w-[200px] md:w-[220px]"
             >
-              <div className="aspect-[2/3] rounded-2xl overflow-hidden bg-white shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1">
-                <img src={book.cover} alt={book.title} className="w-full h-full object-contain p-3" />
+              <div className="aspect-[2/3] rounded-2xl overflow-hidden bg-white shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1 flex items-center justify-center">
+                <img src={book.cover} alt={book.title} className="w-full h-full object-cover" />
               </div>
               <h3 className="mt-3 text-xs md:text-sm font-semibold leading-snug line-clamp-2">{book.title}</h3>
               <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
@@ -220,11 +220,11 @@ const Home = () => {
               renderItem={(eb) => (
                 <button
                   onClick={() => navigate('/login')}
-                  className="group block w-36 md:w-44 text-left"
+                  className="group block w-[200px] md:w-[220px] text-left"
                 >
                   <div className="aspect-[210/297] rounded-xl overflow-hidden bg-muted shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1 relative">
                     {eb.cover_url && (
-                      <img src={eb.cover_url} alt={eb.title} className="w-full h-full object-contain" />
+                      <img src={eb.cover_url} alt={eb.title} className="w-full h-full object-cover" />
                     )}
                     <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/40 backdrop-blur-0 group-hover:backdrop-blur-sm transition-all flex items-center justify-center">
                       <span className="opacity-0 group-hover:opacity-100 text-white text-[11px] font-bold tracking-wider uppercase transition-opacity">
@@ -240,118 +240,45 @@ const Home = () => {
         )}
       </section>
 
-      {/* FORMAÇÃO — Course CTA */}
+      {/* FORMAÇÃO — Course CTA (minimal, on-brand) */}
       <section id="formacao" className="py-20 md:py-28 bg-secondary/30 border-y border-border/40">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
           <motion.div
             {...fadeUp}
-            className="relative rounded-3xl overflow-hidden bg-[hsl(210_25%_14%)] text-white p-8 md:p-14 lg:p-16 grid md:grid-cols-2 gap-10 items-center"
+            className="relative rounded-3xl overflow-hidden bg-background border border-border/60 shadow-sm p-8 md:p-14 lg:p-16 grid md:grid-cols-2 gap-10 md:gap-14 items-center"
           >
-            <div
-              className="absolute inset-0 opacity-40 pointer-events-none"
-              style={{
-                background:
-                  'radial-gradient(circle at 80% 20%, hsl(var(--primary) / 0.5), transparent 50%), radial-gradient(circle at 20% 80%, hsl(var(--accent) / 0.4), transparent 50%)',
-              }}
-            />
             <div className="relative space-y-6">
-              <span className="inline-block px-3 py-1 rounded-full bg-success/20 text-success text-[11px] font-bold tracking-wider uppercase">
+              <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-bold tracking-wider uppercase">
                 Inscrições Abertas
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-                Formação em Psicoterapia Reencarnacionista
+                Formação em <span className="italic font-serif text-primary">Psicoterapia Reencarnacionista</span>
               </h2>
-              <p className="text-white/70 leading-relaxed max-w-md">
+              <p className="text-muted-foreground leading-relaxed max-w-md">
                 Uma nova visão psicológica baseada na Reencarnação, para que possamos realmente aproveitar a encarnação. Formação completa para terapeutas integrarem a Terapia de Regressão à prática clínica.
               </p>
               <ul className="space-y-3 pt-2">
                 {['Técnicas Avançadas de Regressão', 'Anatomia Espiritual & Karma', 'Casos Clínicos & Supervisão'].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm text-white/85">
-                    <span className="mt-0.5 w-5 h-5 rounded-full bg-success/20 flex items-center justify-center shrink-0">
-                      <Check className="w-3 h-3 text-success" />
+                  <li key={item} className="flex items-start gap-3 text-sm text-foreground/80">
+                    <span className="mt-0.5 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <Check className="w-3 h-3 text-primary" />
                     </span>
                     {item}
                   </li>
                 ))}
               </ul>
-              <button className="inline-flex items-center gap-2 mt-4 px-6 py-3 rounded-full bg-success text-success-foreground text-sm font-semibold hover:bg-success/90 transition-colors">
+              <button className="inline-flex items-center gap-2 mt-4 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm hover:shadow-md">
                 Entrar para a Lista de Espera <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="relative aspect-square md:aspect-auto md:h-[420px] rounded-2xl overflow-hidden">
+            <div className="relative aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden bg-secondary">
               <img
                 src="https://i.ibb.co/bjyq508N/DR-MAURO-CURSO-DE-FORMA-O.jpg"
                 alt="Curso de Formação"
                 className="absolute inset-0 w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[hsl(210_25%_14%)] via-transparent to-transparent" />
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* HINOS ESPIRITUAIS */}
-      <section id="hinos" className="py-20 md:py-28">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Hinos Espirituais</span>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Mensagens vindas do Astral</h2>
-            <p className="text-muted-foreground mt-4 leading-relaxed">
-              Para lembrarmos que somos gotas de luz aqui na Terra. Cantos que tocam a alma e renovam a fé na jornada espiritual.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-6 md:gap-10 max-w-4xl mx-auto">
-            {[
-              { title: 'Hinos de Amor', cover: 'https://i.ibb.co/3YF3FBRC/HINOS-DE-AMOR.png' },
-              { title: 'Hinos de Fé', cover: 'https://i.ibb.co/zhyNrXVj/HINOS-DE-F.png' },
-            ].map((album, i) => (
-              <motion.button
-                key={album.title}
-                onClick={() => navigate('/login')}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group text-left"
-              >
-                <div className="aspect-square rounded-3xl overflow-hidden bg-secondary shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1 relative">
-                  <img src={album.cover} alt={album.title} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                    <span className="inline-flex items-center gap-2 text-white text-sm font-semibold">
-                      <Music className="w-4 h-4" /> Ouvir no Clube
-                    </span>
-                  </div>
-                </div>
-                <h3 className="mt-4 text-xl font-bold tracking-tight">{album.title}</h3>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* GRUPOS DE APOIO */}
-      <section id="grupos" className="py-20 md:py-28 bg-secondary/30 border-y border-border/40">
-        <div className="max-w-4xl mx-auto px-4 md:px-6">
-          <motion.div
-            {...fadeUp}
-            className="rounded-3xl bg-background border border-border/60 p-8 md:p-12 lg:p-14 text-center shadow-sm"
-          >
-            <div className="inline-flex w-14 h-14 rounded-2xl bg-primary/10 items-center justify-center mb-6">
-              <Users className="w-7 h-7 text-primary" />
-            </div>
-            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Comunidade</span>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Grupos de Apoio</h2>
-            <p className="text-muted-foreground mt-5 leading-relaxed max-w-xl mx-auto">
-              Encontros de estudo e troca entre praticantes da Psicoterapia Reencarnacionista. Um espaço para aprofundar o conhecimento e caminhar acompanhado.
-            </p>
-            <a
-              href="mailto:contato@maurokwitko.com.br"
-              className="inline-flex items-center gap-2 mt-7 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
-            >
-              <MessageCircle className="w-4 h-4" /> Entre em contato
-            </a>
           </motion.div>
         </div>
       </section>

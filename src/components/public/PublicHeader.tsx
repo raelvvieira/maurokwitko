@@ -12,8 +12,6 @@ const NAV: { label: string; href?: string; children?: typeof COURSES }[] = [
   { label: 'Quem Sou Eu', href: '#quem-sou-eu' },
   { label: 'Cursos', children: COURSES },
   { label: 'Livros e E-books', href: '#livros' },
-  { label: 'Hinos Espirituais', href: '#hinos' },
-  { label: 'Grupos de Apoio', href: '#grupos' },
   { label: 'Artigos', href: '#artigos' },
 ];
 

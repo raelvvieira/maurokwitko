@@ -9,9 +9,10 @@ const COURSES = [
 ];
 
 const NAV: { label: string; href?: string; children?: typeof COURSES }[] = [
+  { label: 'Home', href: '/' },
   { label: 'Quem Sou Eu', href: '/quem-sou-eu' },
   { label: 'Cursos', children: COURSES },
-  { label: 'Livros e E-books', href: '/#livros' },
+  { label: 'Livros e E-books', href: '/livros-e-ebooks' },
   { label: 'Artigos', href: '/#artigos' },
 ];
 
@@ -37,19 +38,13 @@ const PublicHeader = () => {
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between gap-4">
-        <Link to="/" className="flex items-center gap-2.5 shrink-0">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 h-20 md:h-28 flex items-center justify-between gap-4">
+        <Link to="/" className="flex items-center shrink-0">
           <img
             src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png"
             alt="Dr. Mauro Kwitko"
-            className="h-10 md:h-12 w-auto object-contain"
+            className="h-16 md:h-24 w-auto object-contain"
           />
-          <div className="hidden sm:block leading-tight">
-            <p className="text-sm md:text-[15px] font-bold tracking-tight">Dr. Mauro Kwitko</p>
-            <p className="text-[10px] md:text-[11px] text-muted-foreground tracking-wide uppercase">
-              Psicoterapia de Regressão
-            </p>
-          </div>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-7">

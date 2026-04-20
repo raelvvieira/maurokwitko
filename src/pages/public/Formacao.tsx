@@ -105,11 +105,11 @@ const Formacao = () => {
               olhar reencarnacionista para auxiliar na cura e na evolução espiritual.
             </p>
           </motion.div>
-          <motion.div {...fadeUp} className="rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] bg-muted">
+          <motion.div {...fadeUp} className="rounded-3xl overflow-hidden shadow-2xl aspect-[3/4] max-w-md mx-auto md:max-w-none w-full bg-muted">
             <img
               src="https://i.ibb.co/bjyq508N/DR-MAURO-CURSO-DE-FORMA-O.jpg"
               alt="Dr. Mauro Kwitko ministrando o Curso de Formação"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-top"
             />
           </motion.div>
         </div>
@@ -190,7 +190,9 @@ const Formacao = () => {
 
           <motion.div {...fadeUp} className="mt-12 text-center">
             <a
-              href="mailto:contato@maurokwitko.com.br?subject=Quero o programa completo do Curso de Formação"
+              href="https://maurokwitko.com.br/wp-content/uploads/2022/09/PROGRAMA-DO-CURSO.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl"
             >
               <Download className="w-4 h-4" /> Quero baixar o programa completo!
@@ -220,8 +222,11 @@ const Formacao = () => {
                 key={c.titulo}
                 {...fadeUp}
                 transition={{ ...fadeUp.transition, delay: i * 0.06 }}
-                className="rounded-2xl border border-border/60 bg-card p-6"
+                className="rounded-2xl border border-border/60 bg-card p-6 hover:shadow-lg hover:border-primary/40 transition-all"
               >
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+                  <c.icon className="w-6 h-6" />
+                </div>
                 <h3 className="font-semibold text-base mb-2">{c.titulo}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
               </motion.div>
@@ -251,21 +256,24 @@ const Formacao = () => {
             {TURMAS.map((t, i) => (
               <motion.a
                 key={t.local}
-                href="#"
+                href={t.link}
+                target="_blank"
+                rel="noopener noreferrer"
                 {...fadeUp}
                 transition={{ ...fadeUp.transition, delay: i * 0.06 }}
-                className="group flex items-center justify-between gap-4 rounded-2xl border border-border/60 bg-card p-6 hover:border-primary hover:shadow-lg transition-all"
+                className="group flex items-center justify-between gap-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-6 hover:border-emerald-500 hover:shadow-lg hover:bg-emerald-100/70 transition-all"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    <MapPin className="w-5 h-5" />
+                  <div className="w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <WhatsAppIcon className="w-6 h-6" />
                   </div>
-                  <div>
-                    <p className="font-semibold text-base">Turma de {t.local}</p>
-                    <p className="text-sm text-muted-foreground">{t.data}</p>
+                  <div className="text-left">
+                    <p className="font-semibold text-base text-emerald-950">Turma de {t.local}</p>
+                    <p className="text-sm text-emerald-800/80">{t.data}</p>
+                    <p className="text-[11px] text-emerald-700 mt-0.5">Toque para entrar no grupo do WhatsApp</p>
                   </div>
                 </div>
-                <span className="text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="text-sm font-medium text-emerald-700 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                   Entrar →
                 </span>
               </motion.a>

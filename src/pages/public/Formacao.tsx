@@ -73,18 +73,18 @@ const MODULOS = [
 ];
 
 const CRITERIOS = [
-  { titulo: 'Profissional da Saúde Oficial', desc: 'Médicos, psiquiatras, psicólogos, nutricionistas, fisioterapeutas, enfermeiros etc.' },
-  { titulo: 'Profissional da Saúde Alternativa', desc: 'Terapeutas florais, reikianos, astrólogos, numerólogos, massoterapeutas etc.' },
-  { titulo: 'Estudante na área da saúde', desc: 'Cursando áreas oficiais ou alternativas com objetivo de tornar-se profissional.' },
-  { titulo: 'Trabalhadores de Instituições Religiosas', desc: 'Médiuns atuantes em Centro Espírita ou Espiritualista.' },
-  { titulo: 'Profissional da Educação', desc: 'Professores, pedagogos, psicopedagogos etc.' },
+  { icon: Stethoscope, titulo: 'Profissional da Saúde Oficial', desc: 'Médicos, psiquiatras, psicólogos, nutricionistas, fisioterapeutas, enfermeiros etc.' },
+  { icon: Leaf, titulo: 'Profissional da Saúde Alternativa', desc: 'Terapeutas florais, reikianos, astrólogos, numerólogos, massoterapeutas etc.' },
+  { icon: GraduationCap, titulo: 'Estudante na área da saúde', desc: 'Cursando áreas oficiais ou alternativas com objetivo de tornar-se profissional.' },
+  { icon: HeartHandshake, titulo: 'Trabalhadores de Instituições Religiosas', desc: 'Médiuns atuantes em Centro Espírita ou Espiritualista.' },
+  { icon: School, titulo: 'Profissional da Educação', desc: 'Professores, pedagogos, psicopedagogos etc.' },
 ];
 
 const TURMAS = [
-  { local: 'Rio de Janeiro', data: 'Abril 2026' },
-  { local: 'Porto Alegre', data: 'Abril 2026' },
-  { local: 'Ceará', data: '2026' },
-  { local: 'Sergipe', data: '2026' },
+  { local: 'Rio de Janeiro', data: 'Abril 2026', link: 'https://chat.whatsapp.com/D2yhIa0pwqU789zytvfYKC' },
+  { local: 'Porto Alegre', data: 'Abril 2026', link: 'https://chat.whatsapp.com/Cx0Z343wotY9FQrhKeBnXB' },
+  { local: 'Ceará', data: '2026', link: 'https://chat.whatsapp.com/GOh1fdZaV1o0nh3xLb8dXz' },
+  { local: 'Sergipe', data: '2026', link: 'https://chat.whatsapp.com/LUDMdTpihjS8LZ2fV8W7bC' },
 ];
 
 const Formacao = () => {

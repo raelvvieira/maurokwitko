@@ -14,7 +14,7 @@ const Courses = () => {
   const navigate = useNavigate();
 
   const handlePlay = (categoryId: string, videoId: string) => {
-    navigate(`/watch/course/${categoryId}/${videoId}`);
+    navigate(`/app/watch/course/${categoryId}/${videoId}`);
   };
 
   return (

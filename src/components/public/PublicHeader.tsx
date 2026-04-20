@@ -4,15 +4,15 @@ import { Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const COURSES = [
-  { label: 'Formação em Psicoterapia Reencarnacionista', href: '#formacao' },
-  { label: 'Curso On-line: A Psicologia da Reencarnação', href: '#curso-online' },
+  { label: 'Formação em Psicoterapia Reencarnacionista', href: '/formacao' },
+  { label: 'Curso On-line: A Psicologia da Reencarnação', href: '/#curso-online' },
 ];
 
 const NAV: { label: string; href?: string; children?: typeof COURSES }[] = [
-  { label: 'Quem Sou Eu', href: '#quem-sou-eu' },
+  { label: 'Quem Sou Eu', href: '/quem-sou-eu' },
   { label: 'Cursos', children: COURSES },
-  { label: 'Livros e E-books', href: '#livros' },
-  { label: 'Artigos', href: '#artigos' },
+  { label: 'Livros e E-books', href: '/#livros' },
+  { label: 'Artigos', href: '/#artigos' },
 ];
 
 const PublicHeader = () => {

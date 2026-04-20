@@ -1,9 +1,8 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { BookOpen, Play, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
-import { useUserVideoViews } from '@/hooks/useSupabaseData';
-import { useAuth } from '@/hooks/useAuth';
 
 const extractVideoId = (embedUrl: string): string => {
   const match = embedUrl.match(/\/embed\/([^?&#]+)/);
@@ -12,15 +11,10 @@ const extractVideoId = (embedUrl: string): string => {
 
 const Courses = () => {
   const { courseCategories } = useApp();
-  const { user } = useAuth();
-  const { markVideoWatched } = useUserVideoViews(user?.id);
-  const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const handlePlay = (videoId: string, url: string) => {
-    setActiveVideoUrl(url);
-    if (user) {
-      markVideoWatched.mutate(videoId);
-    }
+  const handlePlay = (categoryId: string, videoId: string) => {
+    navigate(`/watch/course/${categoryId}/${videoId}`);
   };
 
   return (

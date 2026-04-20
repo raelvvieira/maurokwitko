@@ -1,0 +1,263 @@
+import { motion } from 'framer-motion';
+import { BookOpen, Users, Sparkles, Download, Check, MapPin } from 'lucide-react';
+
+const fadeUp = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: '-80px' },
+  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+};
+
+const PILARES = [
+  'Infância, continuação da vida passada',
+  'A finalidade e o aproveitamento da encarnação',
+  'As armadilhas e os gatilhos terrenos como ferramentas de evolução',
+  'Como promover a nossa Reforma Íntima',
+  'O que é o Livre Arbítrio',
+];
+
+const MODULOS = [
+  {
+    icon: BookOpen,
+    img: 'https://i.ibb.co/MDJBY2J0/AULAS-TE-RICAS.jpg',
+    label: 'Aulas Teóricas',
+    items: [
+      'O que é a Psicoterapia Reencarnacionista',
+      'A Investigação do Inconsciente (“Regressões”)',
+      'Os níveis do ego',
+      'A Ilusão dos Rótulos das Cascas (Maya)',
+      'Somos o Todo e suas micro-manifestações',
+    ],
+  },
+  {
+    icon: Users,
+    img: 'https://i.ibb.co/HDQbPzRX/AULAS-PR-TICAS.jpg',
+    label: 'Aulas Práticas',
+    items: [
+      'Grupos de Prática de Investigação do Inconsciente',
+      'Simulação de Plano Astral',
+      'As gotinhas do Mar',
+      'O Encontro consigo mesmo',
+      'Rodadas de inferioridades e de virtudes',
+    ],
+  },
+  {
+    icon: Sparkles,
+    img: 'https://i.ibb.co/6JTKCKpx/EVOLU-O-CONSCIENCIAL.jpg',
+    label: 'Evolução Consciencial',
+    items: [
+      'A Personalidade Congênita',
+      'A Programação para a atual encarnação',
+      'O Livre-Arbítrio pré-reencarnatório',
+      'O Livre-Arbítrio durante a encarnação',
+      'Como libertar-se de si mesmo e alcançar o ego ancião',
+    ],
+  },
+];
+
+const CRITERIOS = [
+  { titulo: 'Profissional da Saúde Oficial', desc: 'Médicos, psiquiatras, psicólogos, nutricionistas, fisioterapeutas, enfermeiros etc.' },
+  { titulo: 'Profissional da Saúde Alternativa', desc: 'Terapeutas florais, reikianos, astrólogos, numerólogos, massoterapeutas etc.' },
+  { titulo: 'Estudante na área da saúde', desc: 'Cursando áreas oficiais ou alternativas com objetivo de tornar-se profissional.' },
+  { titulo: 'Trabalhadores de Instituições Religiosas', desc: 'Médiuns atuantes em Centro Espírita ou Espiritualista.' },
+  { titulo: 'Profissional da Educação', desc: 'Professores, pedagogos, psicopedagogos etc.' },
+];
+
+const TURMAS = [
+  { local: 'Rio de Janeiro', data: 'Abril 2026' },
+  { local: 'Porto Alegre', data: 'Abril 2026' },
+  { local: 'Ceará', data: '2026' },
+  { local: 'Sergipe', data: '2026' },
+];
+
+const Formacao = () => {
+  return (
+    <div className="bg-background">
+      {/* Hero */}
+      <section className="pt-32 pb-16 md:pt-40 md:pb-24 px-4 md:px-6">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          <motion.div {...fadeUp}>
+            <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-4">
+              Curso de Formação
+            </span>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-6">
+              Curso de Formação em <span className="text-primary">Psicoterapia Reencarnacionista</span>
+            </h1>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Forme-se em uma escola psicoterapêutica que une psicologia, psiquiatria e o
+              olhar reencarnacionista para auxiliar na cura e na evolução espiritual.
+            </p>
+          </motion.div>
+          <motion.div {...fadeUp} className="rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] bg-muted">
+            <img
+              src="https://i.ibb.co/bjyq508N/DR-MAURO-CURSO-DE-FORMA-O.jpg"
+              alt="Dr. Mauro Kwitko ministrando o Curso de Formação"
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* O que é */}
+      <section className="py-16 md:py-24 px-4 md:px-6 bg-secondary/30">
+        <div className="max-w-4xl mx-auto">
+          <motion.div {...fadeUp}>
+            <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
+              O que é
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
+              Um olhar reencarnacionista sobre a vida
+            </h2>
+            <p className="text-base md:text-lg text-foreground/80 leading-relaxed mb-8">
+              O Curso de Formação em Psicoterapia Reencarnacionista visa formar profissionais
+              capazes de auxiliar a todos a enxergarem a vida sob o olhar reencarnacionista.
+              A partir desta visão, podemos perceber que somos como somos porque nascemos
+              assim, trazendo uma bagagem de outras vidas que precisa ser trabalhada para que
+              possamos nos curar e evoluir espiritualmente.
+            </p>
+            <ul className="space-y-3">
+              {PILARES.map((p) => (
+                <li key={p} className="flex gap-3 items-start">
+                  <span className="mt-1 w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                    <Check className="w-3 h-3" />
+                  </span>
+                  <span className="text-base text-foreground/80">{p}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Conteúdo do Curso */}
+      <section className="py-16 md:py-24 px-4 md:px-6">
+        <div className="max-w-7xl mx-auto">
+          <motion.div {...fadeUp} className="text-center mb-12">
+            <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
+              Conteúdo do Curso
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+              Três pilares de aprendizado
+            </h2>
+          </motion.div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {MODULOS.map((m, i) => (
+              <motion.div
+                key={m.label}
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: i * 0.1 }}
+                className="rounded-2xl border border-border/60 bg-card overflow-hidden hover:shadow-xl transition-shadow"
+              >
+                <div className="aspect-[16/10] overflow-hidden bg-muted">
+                  <img src={m.img} alt={m.label} className="w-full h-full object-cover" />
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                      <m.icon className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-lg font-bold">{m.label}</h3>
+                  </div>
+                  <ul className="space-y-2">
+                    {m.items.map((it) => (
+                      <li key={it} className="flex gap-2 items-start text-sm text-foreground/75">
+                        <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                        <span>{it}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div {...fadeUp} className="mt-12 text-center">
+            <a
+              href="mailto:contato@maurokwitko.com.br?subject=Quero o programa completo do Curso de Formação"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl"
+            >
+              <Download className="w-4 h-4" /> Quero baixar o programa completo!
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Critérios */}
+      <section className="py-16 md:py-24 px-4 md:px-6 bg-secondary/30">
+        <div className="max-w-7xl mx-auto">
+          <motion.div {...fadeUp} className="max-w-3xl mb-12">
+            <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
+              Critérios para Inscrição
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+              Quem pode se inscrever
+            </h2>
+            <p className="text-base text-muted-foreground leading-relaxed">
+              Para habilitar-se a realizar o Curso de Formação, o(a) candidato(a) deve
+              enquadrar-se em pelo menos um dos critérios abaixo:
+            </p>
+          </motion.div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {CRITERIOS.map((c, i) => (
+              <motion.div
+                key={c.titulo}
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: i * 0.06 }}
+                className="rounded-2xl border border-border/60 bg-card p-6"
+              >
+                <h3 className="font-semibold text-base mb-2">{c.titulo}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Turmas */}
+      <section className="py-20 md:py-28 px-4 md:px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div {...fadeUp} className="text-center mb-12">
+            <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
+              Tenho interesse, como me inscrever?
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+              Entre no grupo da turma do seu estado
+            </h2>
+            <p className="text-base text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+              Se você se enquadra em pelo menos um dos critérios e tem interesse em tornar-se
+              um psicoterapeuta reencarnacionista, escolha um dos grupos abertos abaixo. São
+              espaços sem compromisso, organizados por turma e estado, para tirar dúvidas e
+              receber mais informações.
+            </p>
+          </motion.div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {TURMAS.map((t, i) => (
+              <motion.a
+                key={t.local}
+                href="#"
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: i * 0.06 }}
+                className="group flex items-center justify-between gap-4 rounded-2xl border border-border/60 bg-card p-6 hover:border-primary hover:shadow-lg transition-all"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    <MapPin className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-base">Turma de {t.local}</p>
+                    <p className="text-sm text-muted-foreground">{t.data}</p>
+                  </div>
+                </div>
+                <span className="text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                  Entrar →
+                </span>
+              </motion.a>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Formacao;

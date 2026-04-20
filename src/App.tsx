@@ -9,6 +9,8 @@ import { useAuth } from "./hooks/useAuth";
 import AppShell from "./components/AppShell";
 import PublicLayout from "./components/public/PublicLayout";
 import Home from "./pages/public/Home";
+import QuemSouEu from "./pages/public/QuemSouEu";
+import Formacao from "./pages/public/Formacao";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
@@ -103,6 +105,8 @@ const App = () => (
           {/* Public site */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/quem-sou-eu" element={<QuemSouEu />} />
+            <Route path="/formacao" element={<Formacao />} />
           </Route>
           <Route path="/login" element={<LoginRoute />} />
           <Route path="/reset-password" element={<ResetPassword />} />

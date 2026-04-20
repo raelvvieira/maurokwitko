@@ -79,14 +79,14 @@ const PublicHeader = () => {
                     >
                       <div className="rounded-2xl bg-background/95 backdrop-blur-xl border border-border/60 shadow-xl p-2">
                         {item.children.map((sub) => (
-                          <a
+                          <Link
                             key={sub.href}
-                            href={sub.href}
+                            to={sub.href}
                             onClick={() => setCoursesOpen(false)}
                             className="block px-4 py-3 rounded-xl text-sm font-medium text-foreground/80 hover:bg-secondary/70 hover:text-foreground transition-colors"
                           >
                             {sub.label}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </motion.div>
@@ -94,13 +94,13 @@ const PublicHeader = () => {
                 </AnimatePresence>
               </div>
             ) : (
-              <a
+              <Link
                 key={item.label}
-                href={item.href}
+                to={item.href!}
                 className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
               >
                 {item.label}
-              </a>
+              </Link>
             )
           )}
         </nav>
@@ -165,28 +165,28 @@ const PublicHeader = () => {
                             className="overflow-hidden pl-3"
                           >
                             {item.children.map((sub) => (
-                              <a
+                              <Link
                                 key={sub.href}
-                                href={sub.href}
+                                to={sub.href}
                                 onClick={() => setOpen(false)}
                                 className="block px-3 py-2.5 rounded-lg text-[13px] text-foreground/70 hover:bg-secondary/60"
                               >
                                 {sub.label}
-                              </a>
+                              </Link>
                             ))}
                           </motion.div>
                         )}
                       </AnimatePresence>
                     </div>
                   ) : (
-                    <a
+                    <Link
                       key={item.label}
-                      href={item.href}
+                      to={item.href!}
                       onClick={() => setOpen(false)}
                       className="px-3 py-3 rounded-xl text-sm font-medium text-foreground/80 hover:bg-secondary/60 transition-colors"
                     >
                       {item.label}
-                    </a>
+                    </Link>
                   )
                 )}
               </nav>

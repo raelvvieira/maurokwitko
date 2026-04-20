@@ -284,6 +284,54 @@ export type Database = {
         }
         Relationships: []
       }
+      legacy_active_users: {
+        Row: {
+          cancelled_at: string | null
+          course_name: string | null
+          email: string
+          enrolled_at: string | null
+          enrollment_status: string | null
+          expires_at: string | null
+          external_id: string | null
+          id: string
+          imported_at: string
+          last_access_at: string | null
+          name: string | null
+          phone: string | null
+          watched_percentage: number | null
+        }
+        Insert: {
+          cancelled_at?: string | null
+          course_name?: string | null
+          email: string
+          enrolled_at?: string | null
+          enrollment_status?: string | null
+          expires_at?: string | null
+          external_id?: string | null
+          id?: string
+          imported_at?: string
+          last_access_at?: string | null
+          name?: string | null
+          phone?: string | null
+          watched_percentage?: number | null
+        }
+        Update: {
+          cancelled_at?: string | null
+          course_name?: string | null
+          email?: string
+          enrolled_at?: string | null
+          enrollment_status?: string | null
+          expires_at?: string | null
+          external_id?: string | null
+          id?: string
+          imported_at?: string
+          last_access_at?: string | null
+          name?: string | null
+          phone?: string | null
+          watched_percentage?: number | null
+        }
+        Relationships: []
+      }
       livros: {
         Row: {
           author: string

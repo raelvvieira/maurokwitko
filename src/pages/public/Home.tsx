@@ -188,10 +188,14 @@ const Home = () => {
               href={book.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block w-[200px] md:w-[220px]"
+              className="group block w-[160px] md:w-[200px]"
             >
-              <div className="aspect-[2/3] rounded-2xl overflow-hidden bg-white shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1 flex items-center justify-center">
-                <img src={book.cover} alt={book.title} className="w-full h-full object-cover" />
+              <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1">
+                <img
+                  src={book.cover}
+                  alt={book.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
               </div>
               <h3 className="mt-3 text-xs md:text-sm font-semibold leading-snug line-clamp-2">{book.title}</h3>
               <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
@@ -220,11 +224,15 @@ const Home = () => {
               renderItem={(eb) => (
                 <button
                   onClick={() => navigate('/login')}
-                  className="group block w-[200px] md:w-[220px] text-left"
+                  className="group block w-[160px] md:w-[200px] text-left"
                 >
-                  <div className="aspect-[210/297] rounded-xl overflow-hidden bg-muted shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1 relative">
+                  <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1">
                     {eb.cover_url && (
-                      <img src={eb.cover_url} alt={eb.title} className="w-full h-full object-cover" />
+                      <img
+                        src={eb.cover_url}
+                        alt={eb.title}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
                     )}
                     <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/40 backdrop-blur-0 group-hover:backdrop-blur-sm transition-all flex items-center justify-center">
                       <span className="opacity-0 group-hover:opacity-100 text-white text-[11px] font-bold tracking-wider uppercase transition-opacity">

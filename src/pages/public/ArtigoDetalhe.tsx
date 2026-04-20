@@ -52,6 +52,27 @@ const ArtigoDetalhe = () => {
                   </ul>
                 );
               }
+              if (para.startsWith('__SUB__')) {
+                return (
+                  <h2 key={idx} className="text-2xl md:text-3xl font-bold tracking-tight text-foreground pt-4">
+                    {para.replace('__SUB__', '')}
+                  </h2>
+                );
+              }
+              if (para.startsWith('__QUOTE__')) {
+                const parts = para.replace('__QUOTE__', '').split('||');
+                return (
+                  <blockquote
+                    key={idx}
+                    className="border-l-4 border-primary/60 bg-primary/5 rounded-r-2xl px-6 py-5 italic text-foreground/90"
+                  >
+                    <p>{parts[0]}</p>
+                    {parts[1] && (
+                      <footer className="mt-2 text-sm not-italic font-semibold text-primary">— {parts[1]}</footer>
+                    )}
+                  </blockquote>
+                );
+              }
               return (
                 <p key={idx} className={idx === 0 ? 'text-lg md:text-xl text-foreground' : ''}>
                   {para}

@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Check, Quote, Calendar } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowRight, Check, Quote, Calendar, Music, Users, Mail, MessageCircle } from 'lucide-react';
 import { BOOKS } from '@/data/books';
+import { supabase } from '@/integrations/supabase/client';
+import { Marquee } from '@/components/public/Marquee';
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -31,9 +34,31 @@ const ARTICLES = [
   },
 ];
 
+const GALLERY = [
+  { src: 'https://i.ibb.co/MDJBY2J0/AULAS-TE-RICAS.jpg', label: 'Aulas Teóricas' },
+  { src: 'https://i.ibb.co/HDQbPzRX/AULAS-PR-TICAS.jpg', label: 'Aulas Práticas' },
+  { src: 'https://i.ibb.co/bjyq508N/DR-MAURO-CURSO-DE-FORMA-O.jpg', label: 'Curso de Formação' },
+  { src: 'https://i.ibb.co/ksCJ5Jbw/ENCONTRO-NACIONAL-DA-ABPR.jpg', label: 'Encontro Nacional ABPR' },
+  { src: 'https://i.ibb.co/hJ0mBLYW/TURMA-DO-CURSO-DE-FORMA-O.jpg', label: 'Turma do Curso' },
+  { src: 'https://i.ibb.co/6JTKCKpx/EVOLU-O-CONSCIENCIAL.jpg', label: 'Evolução Consciencial' },
+];
+
+type Ebook = { id: string; title: string; cover_url: string | null };
+
 const Home = () => {
   const navigate = useNavigate();
-  const featuredBooks = BOOKS.slice(0, 3);
+  const [ebooks, setEbooks] = useState<Ebook[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from('ebooks')
+      .select('id,title,cover_url')
+      .not('cover_url', 'is', null)
+      .limit(20)
+      .then(({ data }) => {
+        if (data) setEbooks(data as Ebook[]);
+      });
+  }, []);
 
   return (
     <div id="home" className="overflow-hidden">
@@ -54,7 +79,7 @@ const Home = () => {
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <a
-                href="#cursos"
+                href="#formacao"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
               >
                 Conheça o Método <ArrowRight className="w-4 h-4" />
@@ -86,21 +111,137 @@ const Home = () => {
         </div>
       </section>
 
-      {/* QUOTE */}
-      <section className="py-16 md:py-24 border-y border-border/40 bg-secondary/30">
-        <motion.div {...fadeUp} className="max-w-3xl mx-auto px-4 md:px-6 text-center">
-          <Quote className="w-10 h-10 text-primary/40 mx-auto mb-6" />
-          <p className="font-serif italic text-2xl md:text-3xl lg:text-4xl leading-snug text-foreground">
-            "Curar não é apenas a ausência de sintomas, mas a presença de sentido encontrado na jornada da alma através do tempo."
-          </p>
-          <p className="mt-8 text-xs font-bold tracking-[0.2em] text-muted-foreground uppercase">
-            — Dr. Mauro Kwitko
-          </p>
-        </motion.div>
+      {/* QUEM SOU EU */}
+      <section id="quem-sou-eu" className="py-20 md:py-28 bg-secondary/30 border-y border-border/40">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+          <motion.div {...fadeUp} className="relative order-2 md:order-1">
+            <div className="absolute -inset-4 bg-gradient-to-br from-primary/15 to-transparent rounded-[2rem] blur-2xl" />
+            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-xl">
+              <img
+                src="https://i.ibb.co/358FCytk/DR-MAURO-2.jpg"
+                alt="Dr. Mauro Kwitko"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </motion.div>
+
+          <motion.div {...fadeUp} className="space-y-6 order-1 md:order-2">
+            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Quem Sou Eu</span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
+              Olá, sou <span className="italic font-serif text-primary">Dr. Mauro</span>
+            </h2>
+            <p className="text-muted-foreground leading-relaxed text-base md:text-lg">
+              Há cerca de 30 anos venho me dedicando a orientar pessoas — no consultório, nas palestras e nos cursos — a recordarem que somos Espíritos encarnados, com finalidades próprias a cada um.
+            </p>
+            <ul className="space-y-3 pt-2">
+              {[
+                'Fundador e patrono da Associação Brasileira de Psicoterapia Reencarnacionista (ABPR)',
+                'Mais de 20.000 Investigações do Inconsciente (Regressões) realizadas',
+                'Mais de 60 turmas formadas no Curso de Psicoterapia Reencarnacionista',
+                '19 livros publicados (físicos e e-books)',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-sm md:text-base text-foreground/85">
+                  <span className="mt-1 w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
+                    <Check className="w-3 h-3 text-primary" />
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <div className="grid grid-cols-3 gap-4 pt-6 border-t border-border/40">
+              <div>
+                <p className="text-2xl md:text-3xl font-bold tracking-tight">20k+</p>
+                <p className="text-xs text-muted-foreground mt-1">Atendimentos</p>
+              </div>
+              <div>
+                <p className="text-2xl md:text-3xl font-bold tracking-tight">19</p>
+                <p className="text-xs text-muted-foreground mt-1">Livros</p>
+              </div>
+              <div>
+                <p className="text-2xl md:text-3xl font-bold tracking-tight">60+</p>
+                <p className="text-xs text-muted-foreground mt-1">Turmas</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
-      {/* COURSE CTA */}
-      <section id="cursos" className="py-20 md:py-28">
+      {/* LIVROS — Marquee */}
+      <section id="livros" className="py-20 md:py-28">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 mb-12">
+          <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4">
+            <div>
+              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Bibliografia</span>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Aprenda Com Meus Livros</h2>
+              <p className="text-muted-foreground mt-3 max-w-xl">
+                Quase 30 anos de experiência clínica condensados em obras que orientam o caminho da reforma íntima.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+
+        <Marquee
+          items={BOOKS}
+          duration={60}
+          renderItem={(book) => (
+            <a
+              href={book.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block w-44 md:w-52"
+            >
+              <div className="aspect-[2/3] rounded-2xl overflow-hidden bg-white shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1">
+                <img src={book.cover} alt={book.title} className="w-full h-full object-contain p-3" />
+              </div>
+              <h3 className="mt-3 text-xs md:text-sm font-semibold leading-snug line-clamp-2">{book.title}</h3>
+              <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
+                Saiba Mais <ArrowRight className="w-3 h-3" />
+              </span>
+            </a>
+          )}
+        />
+
+        {/* E-books do Clube */}
+        {ebooks.length > 0 && (
+          <div className="mt-16 md:mt-20">
+            <div className="max-w-6xl mx-auto px-4 md:px-6 mb-8">
+              <motion.div {...fadeUp}>
+                <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">E-books</span>
+                <h3 className="text-2xl md:text-3xl font-bold tracking-tight mt-2">Disponíveis no Clube de Estudos</h3>
+                <p className="text-muted-foreground mt-2 max-w-xl text-sm md:text-base">
+                  Acesse a biblioteca completa de e-books como membro do Clube.
+                </p>
+              </motion.div>
+            </div>
+
+            <Marquee
+              items={ebooks}
+              duration={50}
+              renderItem={(eb) => (
+                <button
+                  onClick={() => navigate('/login')}
+                  className="group block w-36 md:w-44 text-left"
+                >
+                  <div className="aspect-[210/297] rounded-xl overflow-hidden bg-muted shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1 relative">
+                    {eb.cover_url && (
+                      <img src={eb.cover_url} alt={eb.title} className="w-full h-full object-contain" />
+                    )}
+                    <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/40 backdrop-blur-0 group-hover:backdrop-blur-sm transition-all flex items-center justify-center">
+                      <span className="opacity-0 group-hover:opacity-100 text-white text-[11px] font-bold tracking-wider uppercase transition-opacity">
+                        Disponível no Clube
+                      </span>
+                    </div>
+                  </div>
+                  <h4 className="mt-3 text-xs font-semibold leading-snug line-clamp-2">{eb.title}</h4>
+                </button>
+              )}
+            />
+          </div>
+        )}
+      </section>
+
+      {/* FORMAÇÃO — Course CTA */}
+      <section id="formacao" className="py-20 md:py-28 bg-secondary/30 border-y border-border/40">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
           <motion.div
             {...fadeUp}
@@ -118,10 +259,10 @@ const Home = () => {
                 Inscrições Abertas
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-                Curso de Formação em Psicoterapia Reencarnacionista
+                Formação em Psicoterapia Reencarnacionista
               </h2>
               <p className="text-white/70 leading-relaxed max-w-md">
-                Uma jornada profunda de formação para terapeutas que desejam integrar a Terapia de Regressão à sua prática clínica com fundamentação técnica e ética.
+                Uma nova visão psicológica baseada na Reencarnação, para que possamos realmente aproveitar a encarnação. Formação completa para terapeutas integrarem a Terapia de Regressão à prática clínica.
               </p>
               <ul className="space-y-3 pt-2">
                 {['Técnicas Avançadas de Regressão', 'Anatomia Espiritual & Karma', 'Casos Clínicos & Supervisão'].map((item) => (
@@ -139,107 +280,129 @@ const Home = () => {
             </div>
 
             <div className="relative aspect-square md:aspect-auto md:h-[420px] rounded-2xl overflow-hidden">
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    'radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.7), hsl(210 30% 8%) 70%)',
-                }}
+              <img
+                src="https://i.ibb.co/bjyq508N/DR-MAURO-CURSO-DE-FORMA-O.jpg"
+                alt="Curso de Formação"
+                className="absolute inset-0 w-full h-full object-cover"
               />
-              <div className="absolute inset-0 opacity-60 mix-blend-screen"
-                   style={{
-                     background:
-                       'radial-gradient(2px 2px at 20% 30%, white, transparent), radial-gradient(1px 1px at 60% 70%, white, transparent), radial-gradient(1.5px 1.5px at 80% 10%, white, transparent), radial-gradient(1px 1px at 30% 80%, white, transparent), radial-gradient(2px 2px at 90% 60%, white, transparent), radial-gradient(1px 1px at 10% 50%, white, transparent), radial-gradient(1.5px 1.5px at 70% 40%, white, transparent), radial-gradient(1px 1px at 45% 15%, white, transparent)',
-                   }}
-              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[hsl(210_25%_14%)] via-transparent to-transparent" />
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* BOOKS */}
-      <section id="livros" className="py-20 md:py-28 bg-secondary/30 border-y border-border/40">
+      {/* HINOS ESPIRITUAIS */}
+      <section id="hinos" className="py-20 md:py-28">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4 mb-12">
-            <div>
-              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Bibliografia</span>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Últimas Publicações</h2>
-            </div>
-            <a href="#" className="text-sm font-semibold text-primary hover:underline inline-flex items-center gap-1">
-              Ver bibliografia completa <ArrowRight className="w-4 h-4" />
-            </a>
+          <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-14">
+            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Hinos Espirituais</span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Mensagens vindas do Astral</h2>
+            <p className="text-muted-foreground mt-4 leading-relaxed">
+              Para lembrarmos que somos gotas de luz aqui na Terra. Cantos que tocam a alma e renovam a fé na jornada espiritual.
+            </p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-            {featuredBooks.map((book, i) => (
-              <motion.a
-                key={book.title}
-                href={book.link}
-                target="_blank"
-                rel="noopener noreferrer"
+          <div className="grid md:grid-cols-2 gap-6 md:gap-10 max-w-4xl mx-auto">
+            {[
+              { title: 'Hinos de Amor', cover: 'https://i.ibb.co/3YF3FBRC/HINOS-DE-AMOR.png' },
+              { title: 'Hinos de Fé', cover: 'https://i.ibb.co/zhyNrXVj/HINOS-DE-F.png' },
+            ].map((album, i) => (
+              <motion.button
+                key={album.title}
+                onClick={() => navigate('/login')}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group block"
+                className="group text-left"
               >
-                <div className="aspect-[2/3] rounded-2xl overflow-hidden bg-white shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1">
-                  <img src={book.cover} alt={book.title} className="w-full h-full object-contain p-4" />
+                <div className="aspect-square rounded-3xl overflow-hidden bg-secondary shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1 relative">
+                  <img src={album.cover} alt={album.title} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                    <span className="inline-flex items-center gap-2 text-white text-sm font-semibold">
+                      <Music className="w-4 h-4" /> Ouvir no Clube
+                    </span>
+                  </div>
                 </div>
-                <h3 className="mt-5 font-semibold text-base leading-snug line-clamp-2">{book.title}</h3>
-                <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:gap-2 transition-all">
-                  Saiba Mais <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-              </motion.a>
+                <h3 className="mt-4 text-xl font-bold tracking-tight">{album.title}</h3>
+              </motion.button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* BIO */}
-      <section className="py-20 md:py-28">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-          <motion.div {...fadeUp} className="grid grid-cols-2 gap-3 md:gap-4">
-            <div className="aspect-square rounded-2xl overflow-hidden bg-secondary">
-              <img src="https://i.ibb.co/358FCytk/DR-MAURO-2.jpg" alt="Dr. Mauro Kwitko na ABPR" className="w-full h-full object-cover" />
+      {/* GRUPOS DE APOIO */}
+      <section id="grupos" className="py-20 md:py-28 bg-secondary/30 border-y border-border/40">
+        <div className="max-w-4xl mx-auto px-4 md:px-6">
+          <motion.div
+            {...fadeUp}
+            className="rounded-3xl bg-background border border-border/60 p-8 md:p-12 lg:p-14 text-center shadow-sm"
+          >
+            <div className="inline-flex w-14 h-14 rounded-2xl bg-primary/10 items-center justify-center mb-6">
+              <Users className="w-7 h-7 text-primary" />
             </div>
-            <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-primary/30 to-accent/20" />
-            <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-accent/20 to-primary/30" />
-            <div className="aspect-square rounded-2xl overflow-hidden bg-secondary">
-              <img src="https://i.ibb.co/358FCytk/DR-MAURO-2.jpg" alt="Dr. Mauro palestrando" className="w-full h-full object-cover" />
-            </div>
-          </motion.div>
-
-          <motion.div {...fadeUp} className="space-y-6">
-            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Sobre o Dr. Mauro</span>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">
-              A Sabedoria da Experiência
-            </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Médico psiquiatra e psicoterapeuta, Dr. Mauro Kwitko dedicou mais de 30 anos ao estudo e à prática da Terapia de Regressão a vidas passadas, tornando-se uma das principais referências brasileiras no tema.
+            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Comunidade</span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Grupos de Apoio</h2>
+            <p className="text-muted-foreground mt-5 leading-relaxed max-w-xl mx-auto">
+              Encontros de estudo e troca entre praticantes da Psicoterapia Reencarnacionista. Um espaço para aprofundar o conhecimento e caminhar acompanhado.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
-              Autor de mais de uma dezena de livros e fundador do Curso de Formação em Psicoterapia Reencarnacionista, ele segue formando terapeutas em todo o país com base sólida em ética, técnica e espiritualidade.
-            </p>
-            <div className="grid grid-cols-2 gap-6 pt-4">
-              <div>
-                <p className="text-3xl md:text-4xl font-bold tracking-tight">15k+</p>
-                <p className="text-sm text-muted-foreground mt-1">Horas Clínicas</p>
-              </div>
-              <div>
-                <p className="text-3xl md:text-4xl font-bold tracking-tight">12</p>
-                <p className="text-sm text-muted-foreground mt-1">Livros Publicados</p>
-              </div>
-            </div>
-            <a href="#" className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:gap-2 transition-all pt-2">
-              Conheça mais sobre sua trajetória <ArrowRight className="w-4 h-4" />
+            <a
+              href="mailto:contato@maurokwitko.com.br"
+              className="inline-flex items-center gap-2 mt-7 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" /> Entre em contato
             </a>
           </motion.div>
         </div>
       </section>
 
-      {/* ARTICLES */}
-      <section id="artigos" className="py-20 md:py-28 bg-secondary/30 border-t border-border/40">
+      {/* GALERIA */}
+      <section className="py-20 md:py-28">
+        <div className="max-w-6xl mx-auto px-4 md:px-6">
+          <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Trajetória</span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Momentos da Jornada</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
+            {GALLERY.map((g, i) => (
+              <motion.div
+                key={g.src}
+                initial={{ opacity: 0, scale: 0.96 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
+                className="group relative aspect-square rounded-2xl overflow-hidden bg-secondary shadow-md"
+              >
+                <img
+                  src={g.src}
+                  alt={g.label}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                  <span className="text-white text-xs md:text-sm font-semibold tracking-wide">{g.label}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* QUOTE */}
+      <section className="py-16 md:py-24 border-y border-border/40 bg-secondary/30">
+        <motion.div {...fadeUp} className="max-w-3xl mx-auto px-4 md:px-6 text-center">
+          <Quote className="w-10 h-10 text-primary/40 mx-auto mb-6" />
+          <p className="font-serif italic text-2xl md:text-3xl lg:text-4xl leading-snug text-foreground">
+            "Curar não é apenas a ausência de sintomas, mas a presença de sentido encontrado na jornada da alma através do tempo."
+          </p>
+          <p className="mt-8 text-xs font-bold tracking-[0.2em] text-muted-foreground uppercase">
+            — Dr. Mauro Kwitko
+          </p>
+        </motion.div>
+      </section>
+
+      {/* ARTIGOS */}
+      <section id="artigos" className="py-20 md:py-28">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
           <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4 mb-12">
             <div>
@@ -282,8 +445,34 @@ const Home = () => {
         </div>
       </section>
 
-      {/* HINOS placeholder anchor */}
-      <div id="hinos" className="sr-only" />
+      {/* CONTATO */}
+      <section id="contato" className="py-20 md:py-28 bg-secondary/30 border-t border-border/40">
+        <motion.div {...fadeUp} className="max-w-3xl mx-auto px-4 md:px-6 text-center">
+          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Contato</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mt-3 leading-tight">
+            Vamos <span className="italic font-serif text-primary">conversar</span>
+          </h2>
+          <p className="text-muted-foreground mt-5 leading-relaxed text-base md:text-lg">
+            Me envie uma mensagem para que possamos conversar.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
+            <a
+              href="mailto:contato@maurokwitko.com.br"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
+            >
+              <Mail className="w-4 h-4" /> Enviar mensagem
+            </a>
+            <a
+              href="https://wa.me/5551999999999"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-success text-success-foreground text-sm font-semibold hover:bg-success/90 transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" /> WhatsApp
+            </a>
+          </div>
+        </motion.div>
+      </section>
     </div>
   );
 };

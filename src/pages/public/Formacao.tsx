@@ -1,5 +1,22 @@
 import { motion } from 'framer-motion';
-import { BookOpen, Users, Sparkles, Download, Check, MapPin } from 'lucide-react';
+import {
+  BookOpen,
+  Users,
+  Sparkles,
+  Download,
+  Check,
+  Stethoscope,
+  Leaf,
+  GraduationCap,
+  HeartHandshake,
+  School,
+} from 'lucide-react';
+
+const WhatsAppIcon = ({ className = 'w-6 h-6' }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.768.967-.941 1.164-.173.198-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.262.489 1.694.626.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.05 21.785h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.892 6.994c-.003 5.45-4.437 9.884-9.884 9.884zm8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+  </svg>
+);
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -56,18 +73,18 @@ const MODULOS = [
 ];
 
 const CRITERIOS = [
-  { titulo: 'Profissional da Saúde Oficial', desc: 'Médicos, psiquiatras, psicólogos, nutricionistas, fisioterapeutas, enfermeiros etc.' },
-  { titulo: 'Profissional da Saúde Alternativa', desc: 'Terapeutas florais, reikianos, astrólogos, numerólogos, massoterapeutas etc.' },
-  { titulo: 'Estudante na área da saúde', desc: 'Cursando áreas oficiais ou alternativas com objetivo de tornar-se profissional.' },
-  { titulo: 'Trabalhadores de Instituições Religiosas', desc: 'Médiuns atuantes em Centro Espírita ou Espiritualista.' },
-  { titulo: 'Profissional da Educação', desc: 'Professores, pedagogos, psicopedagogos etc.' },
+  { icon: Stethoscope, titulo: 'Profissional da Saúde Oficial', desc: 'Médicos, psiquiatras, psicólogos, nutricionistas, fisioterapeutas, enfermeiros etc.' },
+  { icon: Leaf, titulo: 'Profissional da Saúde Alternativa', desc: 'Terapeutas florais, reikianos, astrólogos, numerólogos, massoterapeutas etc.' },
+  { icon: GraduationCap, titulo: 'Estudante na área da saúde', desc: 'Cursando áreas oficiais ou alternativas com objetivo de tornar-se profissional.' },
+  { icon: HeartHandshake, titulo: 'Trabalhadores de Instituições Religiosas', desc: 'Médiuns atuantes em Centro Espírita ou Espiritualista.' },
+  { icon: School, titulo: 'Profissional da Educação', desc: 'Professores, pedagogos, psicopedagogos etc.' },
 ];
 
 const TURMAS = [
-  { local: 'Rio de Janeiro', data: 'Abril 2026' },
-  { local: 'Porto Alegre', data: 'Abril 2026' },
-  { local: 'Ceará', data: '2026' },
-  { local: 'Sergipe', data: '2026' },
+  { local: 'Rio de Janeiro', data: 'Abril 2026', link: 'https://chat.whatsapp.com/D2yhIa0pwqU789zytvfYKC' },
+  { local: 'Porto Alegre', data: 'Abril 2026', link: 'https://chat.whatsapp.com/Cx0Z343wotY9FQrhKeBnXB' },
+  { local: 'Ceará', data: '2026', link: 'https://chat.whatsapp.com/GOh1fdZaV1o0nh3xLb8dXz' },
+  { local: 'Sergipe', data: '2026', link: 'https://chat.whatsapp.com/LUDMdTpihjS8LZ2fV8W7bC' },
 ];
 
 const Formacao = () => {
@@ -88,11 +105,11 @@ const Formacao = () => {
               olhar reencarnacionista para auxiliar na cura e na evolução espiritual.
             </p>
           </motion.div>
-          <motion.div {...fadeUp} className="rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] bg-muted">
+          <motion.div {...fadeUp} className="rounded-3xl overflow-hidden shadow-2xl aspect-[3/4] max-w-md mx-auto md:max-w-none w-full bg-muted">
             <img
               src="https://i.ibb.co/bjyq508N/DR-MAURO-CURSO-DE-FORMA-O.jpg"
               alt="Dr. Mauro Kwitko ministrando o Curso de Formação"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-top"
             />
           </motion.div>
         </div>
@@ -173,7 +190,9 @@ const Formacao = () => {
 
           <motion.div {...fadeUp} className="mt-12 text-center">
             <a
-              href="mailto:contato@maurokwitko.com.br?subject=Quero o programa completo do Curso de Formação"
+              href="https://maurokwitko.com.br/wp-content/uploads/2022/09/PROGRAMA-DO-CURSO.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl"
             >
               <Download className="w-4 h-4" /> Quero baixar o programa completo!
@@ -203,8 +222,11 @@ const Formacao = () => {
                 key={c.titulo}
                 {...fadeUp}
                 transition={{ ...fadeUp.transition, delay: i * 0.06 }}
-                className="rounded-2xl border border-border/60 bg-card p-6"
+                className="rounded-2xl border border-border/60 bg-card p-6 hover:shadow-lg hover:border-primary/40 transition-all"
               >
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+                  <c.icon className="w-6 h-6" />
+                </div>
                 <h3 className="font-semibold text-base mb-2">{c.titulo}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
               </motion.div>
@@ -234,21 +256,24 @@ const Formacao = () => {
             {TURMAS.map((t, i) => (
               <motion.a
                 key={t.local}
-                href="#"
+                href={t.link}
+                target="_blank"
+                rel="noopener noreferrer"
                 {...fadeUp}
                 transition={{ ...fadeUp.transition, delay: i * 0.06 }}
-                className="group flex items-center justify-between gap-4 rounded-2xl border border-border/60 bg-card p-6 hover:border-primary hover:shadow-lg transition-all"
+                className="group flex items-center justify-between gap-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-6 hover:border-emerald-500 hover:shadow-lg hover:bg-emerald-100/70 transition-all"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    <MapPin className="w-5 h-5" />
+                  <div className="w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <WhatsAppIcon className="w-6 h-6" />
                   </div>
-                  <div>
-                    <p className="font-semibold text-base">Turma de {t.local}</p>
-                    <p className="text-sm text-muted-foreground">{t.data}</p>
+                  <div className="text-left">
+                    <p className="font-semibold text-base text-emerald-950">Turma de {t.local}</p>
+                    <p className="text-sm text-emerald-800/80">{t.data}</p>
+                    <p className="text-[11px] text-emerald-700 mt-0.5">Toque para entrar no grupo do WhatsApp</p>
                   </div>
                 </div>
-                <span className="text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="text-sm font-medium text-emerald-700 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                   Entrar →
                 </span>
               </motion.a>

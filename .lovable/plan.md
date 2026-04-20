@@ -1,126 +1,68 @@
 
 
-## Plano: Ajustes Header + Página Formação + Nova página pública Livros e E-books
+## Plano: Ajustes Home, página de detalhe (livros/e-books) e nova página de Artigos
 
-### 1. Header (`PublicHeader.tsx`)
+### 1. Página de detalhe `/livros-e-ebooks/:tipo/:id` (`LivroDetalhe.tsx`)
 
-- **Logo 3x maior**: `h-10 md:h-12` → `h-28 md:h-36` (mantém `w-auto object-contain`).
-- **Remover** o bloco de texto ao lado ("Dr. Mauro Kwitko / Psicoterapia de Regressão").
-- **Adicionar item "Home"** como primeiro item da `NAV` apontando para `/`.
-- **Ajustar altura do header** (`h-20 md:h-28`) para acomodar o logo maior sem quebrar layout.
-- **Trocar** "Livros e E-books" → rota `/livros-e-ebooks` (página nova).
-- Mobile drawer: adiciona "Home" no topo da lista.
+**E-books:**
+- Card "Acesso gratuito para assinantes" → trocar tons slate/azul por **tons verdes** (`bg-emerald-50 border-emerald-200`, ícone/título em `text-emerald-700`, link "Conhecer o Clube" em `text-emerald-700 hover:text-emerald-800`).
+- Botão **"Comprar"** → fundo verde (`bg-emerald-600 hover:bg-emerald-700 text-white`).
+- Botão **"Adquirir Gratuitamente"** → manter estilo secundário, adicionar **animação de zoom suave infinita** (Framer Motion: `animate={{ scale: [1, 1.03, 1] }}`, `transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}`).
 
-### 2. Página Formação (`Formacao.tsx`)
+**Livros físicos:**
+- Card "20% de desconto para membros do Clube" → tons verdes idem ao card dos e-books (consistência).
+- Botão **"Comprar"** → fundo verde (`bg-emerald-600 hover:bg-emerald-700`).
+- Botão **"Comprar com 20% de Desconto"** → **remover** o texto "cupom MAURO20" do botão (ficar só "Comprar com 20% de Desconto" + ícone tag). Aplicar mesma animação de zoom suave.
+- O cupom continua sendo aplicado/mencionado apenas no card informativo ou tooltip pós-clique, **nunca no botão**.
 
-- **Imagem do hero mais vertical**: trocar `aspect-[4/3]` para `aspect-[3/4]` + `object-top` (ou `object-position: top`) para não cortar a cabeça do Mauro. Mantém a mesma URL.
-- **Botão "Quero baixar o programa completo"**: trocar `mailto:` por link direto:
-  `https://maurokwitko.com.br/wp-content/uploads/2022/09/PROGRAMA-DO-CURSO.pdf` (target `_blank`, `rel="noopener noreferrer"`, `download`).
-- **Cards "Quem pode se inscrever"**: adicionar ícones personalizados (Lucide) por critério:
-  - Saúde Oficial → `Stethoscope`
-  - Saúde Alternativa → `Sparkles`
-  - Estudante → `GraduationCap`
-  - Religiosas → `HeartHandshake`
-  - Educação → `BookOpen`
-  - Cada card com ícone destacado em círculo `bg-primary/10`.
-- **Cards de turmas (WhatsApp)**: 
-  - Mudar visual para tom verde WhatsApp (`bg-emerald-50 border-emerald-200 hover:border-emerald-500`, ícone em `bg-emerald-500 text-white`).
-  - Substituir ícone `MapPin` por ícone WhatsApp (Lucide `MessageCircle` ou SVG inline do WhatsApp — usaremos SVG inline custom para fidelidade).
-  - Texto secundário: "Toque para entrar no grupo do WhatsApp".
-  - Links reais por turma:
-    - Rio: `https://chat.whatsapp.com/D2yhIa0pwqU789zytvfYKC`
-    - Porto Alegre: `https://chat.whatsapp.com/Cx0Z343wotY9FQrhKeBnXB`
-    - Ceará: `https://chat.whatsapp.com/GOh1fdZaV1o0nh3xLb8dXz`
-    - Sergipe: `https://chat.whatsapp.com/LUDMdTpihjS8LZ2fV8W7bC`
-  - `target="_blank"` `rel="noopener noreferrer"`.
+### 2. Home (`src/pages/public/Home.tsx`)
 
-### 3. Nova página pública: `/livros-e-ebooks` (catálogo)
+**Trocar imagem do Hero (Mauro):**
+- Substituir URL atual da foto do Mauro por: `https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg`.
 
-**Arquivo:** `src/pages/public/LivrosEbooks.tsx` (registrar rota em `App.tsx` dentro do `PublicLayout`).
+**Reordenar seções** (top → bottom):
+1. **Hero** (atual)
+2. **Livros** (carrossel de livros físicos — atual seção "Alguns dos meus livros")
+3. **Curso de Formação** (card destacado)
+4. **E-books** (carrossel de e-books)
+5. **Quem Sou Eu** (galeria + bio curta)
+6. (mantém o que já existe depois — Artigos preview, contato, etc.)
+
+Apenas reordenação dos blocos JSX existentes, sem alterar conteúdo interno.
+
+### 3. Nova página `/artigos` (catálogo de artigos)
+
+**Arquivo:** `src/pages/public/Artigos.tsx` + rota em `App.tsx` dentro do `PublicLayout`.
 
 **Estrutura:**
+- Hero curto: "Artigos do Dr. Mauro Kwitko" + subtítulo.
+- Grid de cards (3 colunas desktop / 1 mobile) com lista hardcoded de artigos. Cada card: título, resumo curto (2 linhas), botão "Ler artigo" → `/artigos/:slug`.
+- Por enquanto **1 artigo cadastrado**: "Transtorno do Espectro Autista" (slug `transtorno-do-espectro-autista`). Demais slots ficam ocultos (sem placeholders falsos).
 
-1. **Hero curto** — título "Livros e E-books do Dr. Mauro Kwitko" + subtítulo.
+### 4. Nova página de detalhe `/artigos/:slug` (`ArtigoDetalhe.tsx`)
 
-2. **Seção "Livros Físicos"** — grid e-commerce (3-4 colunas no desktop, 2 no mobile):
-   - Origem dos dados: lista hardcoded `BOOKS` (já existe em `src/data/books.ts` — usaremos essa única fonte). Passar a também usar em `src/pages/Livros.tsx` no clube para manter consistência (sem alterar visual do clube).
-   - Cada card mostra: capa (aspect 2/3 padronizada), título, **preço** (vindo do `BOOKS`), botão "Saber mais" → navega para `/livros-e-ebooks/fisico/:slug`.
+- Layout de leitura: título grande, autor "Dr. Mauro Kwitko", corpo do artigo formatado com `prose` (Tailwind typography classes manuais já que `@tailwindcss/typography` pode não estar — usaremos espaçamento manual: `space-y-5 text-lg leading-relaxed text-slate-700`, com primeiro parágrafo em destaque).
+- **Conteúdo do artigo "Transtorno do Espectro Autista" copiado integralmente, sem alterar uma palavra**, incluindo todos os parágrafos e os 3 itens (Interno / Externo / Intermediário).
+- Fonte dos artigos: arquivo `src/data/articles.ts` (novo) com tipo `Article = { slug, title, excerpt, body: string[] }`.
+- Link "← Voltar para Artigos" no topo.
+- CTA final: "Conhecer o Clube de Estudos" → `/login`.
 
-3. **Seção "Livros Digitais (E-books)"** — grid e-commerce:
-   - Origem dos dados: `useEbooks()` (Supabase tabela `ebooks` — RLS pública).
-   - Cada card: capa, título, autor, botão "Saber mais" → `/livros-e-ebooks/ebook/:id`.
+### 5. Atualização do header
 
-4. **Carrossel de sugestões** no rodapé — usa o `<Marquee>` existente, exibe mistura aleatória de 6 capas (livros + ebooks) como na home.
+- Em `PublicHeader.tsx`, item **"Artigos"** passa a apontar para `/artigos` (em vez de `/#artigos`).
 
-### 4. Nova página de detalhe pública: `/livros-e-ebooks/:tipo/:id`
-
-**Arquivo:** `src/pages/public/LivroDetalhe.tsx`. `tipo` = `fisico` ou `ebook`.
-
-**Layout estilo e-commerce:**
-
-- Coluna esquerda: capa grande do livro (sticky no desktop).
-- Coluna direita:
-  - Título grande + autor.
-  - **Sinopse** (descrição). Para físicos: usaremos descrições curtas hardcoded no `src/data/books.ts` (a estender com campo `synopsis`); para ebooks, vem de `ebooks.description`.
-  - **Comentário do Autor** — bloco com fundo destacado, label "Comentário do Autor" + espaço para vídeo:
-    - `<iframe>` YouTube quando houver. Adicionaremos campo opcional `videoUrl` em `BOOKS` (para físicos) e usaremos um campo `video_url` que pode vir do banco para ebooks no futuro (por enquanto: placeholder "Em breve" se não houver vídeo cadastrado — sem migração nesta entrega).
-  - **CTAs (variam por tipo):**
-    
-    **Se ebook:**
-    - Botão primário: **"Comprar"** → link externo (campo `url` do ebook, se for link de venda; senão fallback para mailto/contato). 
-    - Botão secundário: **"Adquirir Gratuitamente"** → leva para `/login`.
-    - Card informativo abaixo: *"Assinantes do Clube de Estudos do Dr. Mauro Kwitko têm acesso gratuito a todos os e-books publicados."* + link "Conhecer o Clube".
-
-    **Se livro físico:**
-    - Botão primário: **"Comprar"** → link BesouroBox direto.
-    - Botão secundário: **"Comprar com 20% de Desconto"** → mesmo link BesouroBox + abre tooltip/card com cupom `MAURO20`.
-    - Card informativo abaixo: *"Membros do Clube de Estudos do Dr. Mauro Kwitko ganham 20% de desconto em todos os livros físicos com o cupom MAURO20."* + link "Conhecer o Clube".
-    - Mostra **preço** em destaque.
-
-- Abaixo: **carrossel de outros livros/ebooks** (6 itens, mesmo `<Marquee>`).
-
-### 5. Atualização em `src/data/books.ts`
-
-Estender o tipo `Book` com campos opcionais:
-```ts
-export type Book = {
-  slug: string;          // novo - usado na rota
-  title: string;
-  price: string;
-  cover: string;
-  link: string;          // BesouroBox
-  synopsis?: string;     // novo
-  videoUrl?: string;     // novo - YouTube embed
-};
-```
-Adicionar `slug` e `synopsis` em cada um dos 5 livros existentes (slugs derivados do título). `videoUrl` fica vazio por enquanto (mostra "Em breve" no detalhe).
-
-### 6. Rotas adicionadas em `App.tsx`
-
-Dentro de `<Route element={<PublicLayout />}>`:
-```text
-/livros-e-ebooks                    → LivrosEbooks
-/livros-e-ebooks/:tipo/:id          → LivroDetalhe   (tipo = "fisico" | "ebook")
-```
-
-### 7. Arquivos
+### 6. Arquivos
 
 **Novos:**
-- `src/pages/public/LivrosEbooks.tsx`
-- `src/pages/public/LivroDetalhe.tsx`
+- `src/data/articles.ts` — lista de artigos com corpo completo do TEA.
+- `src/pages/public/Artigos.tsx` — catálogo.
+- `src/pages/public/ArtigoDetalhe.tsx` — leitura.
 
 **Alterados:**
-- `src/components/public/PublicHeader.tsx` — logo maior, remover textos, adicionar "Home", trocar link "Livros e E-books" para `/livros-e-ebooks`, ajustar altura.
-- `src/pages/public/Formacao.tsx` — imagem hero vertical, link real do PDF, ícones personalizados nos critérios, cards de turmas em verde com ícone WhatsApp + links reais.
-- `src/data/books.ts` — adicionar `slug` e `synopsis` (e `videoUrl` opcional).
-- `src/App.tsx` — registrar duas novas rotas públicas.
+- `src/pages/public/LivroDetalhe.tsx` — cards verdes + botão Comprar verde + zoom suave + remover "cupom MAURO20" do botão.
+- `src/pages/public/Home.tsx` — trocar foto Mauro + reordenar seções.
+- `src/components/public/PublicHeader.tsx` — link Artigos para `/artigos`.
+- `src/App.tsx` — registrar `/artigos` e `/artigos/:slug`.
 
-**Sem mudanças:** Supabase, Clube (`/app/*`), footer, Home.
-
-### 8. Observações
-
-- Sem migrações no Supabase nesta entrega. O catálogo de e-books usa o que já existe na tabela `ebooks` (RLS pública). O campo de vídeo de comentário do autor para ebooks pode ser adicionado depois (migração futura).
-- Cards de e-commerce reaproveitam o design system slate/glass do site público.
-- Carrossel reusa `<Marquee>` já existente (com scroll por toque).
-- Página de detalhe é responsiva: 2 colunas no desktop, empilhada no mobile.
+**Sem mudanças:** Supabase, Clube (`/app/*`), footer, Marquee.
 

@@ -40,7 +40,7 @@ const CourseDetail = () => {
           youtubeId: extractYouTubeId(t.youtubeUrl),
         })),
         contextTitle: album?.title ?? '',
-        backPath: '/library',
+        backPath: '/app/library',
         sidebarLabel: 'Faixas do Álbum',
       };
     }
@@ -53,7 +53,7 @@ const CourseDetail = () => {
         description: v.description,
       })),
       contextTitle: cat?.name ?? '',
-      backPath: '/courses',
+      backPath: '/app/courses',
       sidebarLabel: 'Próximas Aulas',
     };
   }, [source, contextId, courseCategories, albums]);
@@ -81,7 +81,7 @@ const CourseDetail = () => {
   }
 
   const handleSelect = (itemId: string) => {
-    navigate(`/watch/${source}/${contextId}/${itemId}`);
+    navigate(`/app/watch/${source}/${contextId}/${itemId}`);
   };
 
   const handleMarkComplete = () => {

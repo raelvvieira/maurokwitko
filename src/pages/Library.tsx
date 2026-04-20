@@ -103,7 +103,7 @@ const Library = () => {
                           <button
                             onClick={e => {
                               e.stopPropagation();
-                              navigate(`/watch/album/${album.id}/${track.id}`);
+                              navigate(`/app/watch/album/${album.id}/${track.id}`);
                             }}
                             className="shrink-0 p-1.5 rounded-full hover:bg-primary/10 text-primary"
                           >

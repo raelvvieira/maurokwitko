@@ -34,7 +34,7 @@ const Ebooks = () => {
               no checkout para receber o desconto de 20%.
             </p>
             <button
-              onClick={() => navigate('/livros')}
+              onClick={() => navigate('/app/livros')}
               className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-accent to-primary text-primary-foreground text-sm font-semibold hover:scale-[1.02] transition-transform"
             >
               Ver Livros <ArrowRight className="w-4 h-4" />
@@ -74,7 +74,7 @@ const Ebooks = () => {
             {book.description && <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4 flex-1 line-clamp-2">{book.description}</p>}
             <div className="flex gap-2 mt-auto">
               <button
-                onClick={() => navigate(`/ebooks/${book.id}`)}
+                onClick={() => navigate(`/app/ebooks/${book.id}`)}
                 className="flex-1 py-2 md:py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs md:text-sm font-semibold text-center flex items-center justify-center gap-1.5 hover:scale-[1.02] transition-transform"
               >
                 <BookOpen className="w-3 h-3 md:w-4 md:h-4" /> Ler

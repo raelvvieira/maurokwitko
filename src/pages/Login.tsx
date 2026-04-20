@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { LogIn, UserPlus, Eye, EyeOff, Sparkles, Mail, CheckCircle2 } from 'lucide-react';
+import { LogIn, UserPlus, Eye, EyeOff, Sparkles, Mail, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
@@ -9,6 +10,7 @@ import {
 
 const Login = () => {
   const { signIn, signUp } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
@@ -29,6 +31,7 @@ const Login = () => {
     setLoading(true);
     const { error } = isSignUp ? await signUp(email, password) : await signIn(email, password);
     if (error) setError(error.message);
+    else navigate('/app');
     setLoading(false);
   };
 
@@ -56,6 +59,9 @@ const Login = () => {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-sm space-y-4"
       >
+        <Link to="/" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+          <ArrowLeft className="w-3.5 h-3.5" /> Voltar ao site
+        </Link>
         <div className="glass-card space-y-6">
           <div className="text-center space-y-2">
             <img src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png" alt="Dr. Mauro Kwitko" className="w-42 h-42 object-contain rounded-2xl mx-auto" />

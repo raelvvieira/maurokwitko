@@ -144,7 +144,7 @@ const Dashboard = () => {
       <div className="glass-card">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm font-semibold flex items-center gap-2"><BookOpen className="w-4 h-4 text-primary" /> Continue Aprendendo</h2>
-          <button onClick={() => navigate('/courses')} className="text-xs text-primary font-medium hover:underline">Ver todos</button>
+          <button onClick={() => navigate('/app/courses')} className="text-xs text-primary font-medium hover:underline">Ver todos</button>
         </div>
         {categoryProgress.length === 0 ? (
           <p className="text-sm text-muted-foreground text-center py-6">Nenhuma aula assistida ainda. Acesse os cursos para começar!</p>
@@ -153,7 +153,7 @@ const Dashboard = () => {
             {categoryProgress.slice(0, 5).map(cat => (
               <button
                 key={cat.id}
-                onClick={() => navigate('/courses')}
+                onClick={() => navigate('/app/courses')}
                 className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-secondary/50 transition-colors text-left"
               >
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center shrink-0">
@@ -179,7 +179,7 @@ const Dashboard = () => {
       <div className="glass-card">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm font-semibold flex items-center gap-2"><Users className="w-4 h-4 text-primary" /> Últimos Comentários</h2>
-          <button onClick={() => navigate('/community')} className="text-xs text-primary font-medium hover:underline">Ver comunidade</button>
+          <button onClick={() => navigate('/app/community')} className="text-xs text-primary font-medium hover:underline">Ver comunidade</button>
         </div>
         {recentPosts.length === 0 ? (
           <p className="text-sm text-muted-foreground text-center py-4">Nenhum comentário ainda.</p>

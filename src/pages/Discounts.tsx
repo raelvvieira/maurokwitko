@@ -37,7 +37,7 @@ const Discounts = () => {
               no checkout.
             </p>
             <button
-              onClick={() => navigate('/livros')}
+              onClick={() => navigate('/app/livros')}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-accent to-primary text-primary-foreground text-sm font-semibold hover:scale-[1.02] transition-transform"
             >
               Ver Livros <ArrowRight className="w-4 h-4" />

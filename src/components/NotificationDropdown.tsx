@@ -94,7 +94,7 @@ const NotificationDropdown = () => {
 
         <div className="border-t border-border px-4 py-2">
           <button
-            onClick={() => navigate('/notificacoes')}
+            onClick={() => navigate('/app/notificacoes')}
             className="w-full text-xs text-primary hover:underline flex items-center justify-center gap-1"
           >
             Ver todas <ArrowRight className="w-3 h-3" />

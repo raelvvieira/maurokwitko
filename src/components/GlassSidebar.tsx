@@ -5,21 +5,21 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
-  { to: '/', icon: Home, label: 'Home' },
-  { to: '/courses', icon: BookOpen, label: 'Aulas' },
-  { to: '/library', icon: Headphones, label: 'Hinos' },
-  { to: '/ebooks', icon: BookMarked, label: 'E-books' },
-  { to: '/livros', icon: ShoppingCart, label: 'Livros Físicos' },
-  { to: '/radio', icon: Radio, label: 'Rádio' },
-  { to: '/materials', icon: FileText, label: 'Materiais' },
-  { to: '/ranking', icon: Trophy, label: 'Ranking' },
-  { to: '/community', icon: Users, label: 'Comunidade' },
-  { to: '/blog', icon: PenSquare, label: 'Blog' },
-  { to: '/discounts', icon: Tag, label: 'Descontos' },
+  { to: '/app', icon: Home, label: 'Home' },
+  { to: '/app/courses', icon: BookOpen, label: 'Aulas' },
+  { to: '/app/library', icon: Headphones, label: 'Hinos' },
+  { to: '/app/ebooks', icon: BookMarked, label: 'E-books' },
+  { to: '/app/livros', icon: ShoppingCart, label: 'Livros Físicos' },
+  { to: '/app/radio', icon: Radio, label: 'Rádio' },
+  { to: '/app/materials', icon: FileText, label: 'Materiais' },
+  { to: '/app/ranking', icon: Trophy, label: 'Ranking' },
+  { to: '/app/community', icon: Users, label: 'Comunidade' },
+  { to: '/app/blog', icon: PenSquare, label: 'Blog' },
+  { to: '/app/discounts', icon: Tag, label: 'Descontos' },
 ];
 
 const adminItems = [
-  { to: '/admin', icon: Shield, label: 'Administração' },
+  { to: '/app/admin', icon: Shield, label: 'Administração' },
 ];
 
 const GlassSidebar = () => {
@@ -35,7 +35,7 @@ const GlassSidebar = () => {
         <NavLink
           key={to}
           to={to}
-          end={to === '/'}
+          end={to === '/app'}
           onClick={() => isMobile && setSidebarMobileOpen(false)}
           className={({ isActive }) =>
             `flex items-center gap-3 ${collapsed ? 'justify-center px-2' : 'px-4'} py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${

@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { AppProvider } from "./context/AppContext";
 import { useAuth } from "./hooks/useAuth";
 import AppShell from "./components/AppShell";
+import PublicLayout from "./components/public/PublicLayout";
+import Home from "./pages/public/Home";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
@@ -36,9 +38,8 @@ function ScrollToTop() {
   return null;
 }
 
-function AuthGate() {
+function PrivateRoutes() {
   const { user, loading } = useAuth();
-  const { pathname } = useLocation();
 
   if (loading) {
     return (
@@ -48,43 +49,47 @@ function AuthGate() {
     );
   }
 
-  // Public route: password reset must be reachable from email link, even without session
-  if (pathname === '/reset-password') {
-    return (
-      <Routes>
-        <Route path="/reset-password" element={<ResetPassword />} />
-      </Routes>
-    );
-  }
-
-  if (!user) return <Login />;
+  if (!user) return <Navigate to="/login" replace />;
 
   return (
     <AppProvider>
       <Routes>
         <Route element={<AppShell />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/courses" element={<Courses />} />
-          <Route path="/watch/:source/:contextId/:videoId" element={<CourseDetail />} />
-          <Route path="/ranking" element={<Ranking />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/library" element={<Library />} />
-          <Route path="/ebooks" element={<Ebooks />} />
-          <Route path="/ebooks/:id" element={<EbookReader />} />
-          <Route path="/livros" element={<Livros />} />
-          <Route path="/radio" element={<RadioPage />} />
-          <Route path="/materials" element={<Materials />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<BlogPost />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/discounts" element={<Discounts />} />
-          <Route path="/notificacoes" element={<Notifications />} />
+          <Route index element={<Dashboard />} />
+          <Route path="courses" element={<Courses />} />
+          <Route path="watch/:source/:contextId/:videoId" element={<CourseDetail />} />
+          <Route path="ranking" element={<Ranking />} />
+          <Route path="community" element={<Community />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="library" element={<Library />} />
+          <Route path="ebooks" element={<Ebooks />} />
+          <Route path="ebooks/:id" element={<EbookReader />} />
+          <Route path="livros" element={<Livros />} />
+          <Route path="radio" element={<RadioPage />} />
+          <Route path="materials" element={<Materials />} />
+          <Route path="blog" element={<Blog />} />
+          <Route path="blog/:id" element={<BlogPost />} />
+          <Route path="admin" element={<Admin />} />
+          <Route path="discounts" element={<Discounts />} />
+          <Route path="notificacoes" element={<Notifications />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AppProvider>
   );
+}
+
+function LoginRoute() {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="min-h-screen mesh-gradient flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+  if (user) return <Navigate to="/app" replace />;
+  return <Login />;
 }
 
 const App = () => (
@@ -94,7 +99,19 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
-        <AuthGate />
+        <Routes>
+          {/* Public site */}
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<Home />} />
+          </Route>
+          <Route path="/login" element={<LoginRoute />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+
+          {/* Private club */}
+          <Route path="/app/*" element={<PrivateRoutes />} />
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

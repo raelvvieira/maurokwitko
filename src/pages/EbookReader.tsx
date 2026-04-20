@@ -38,7 +38,7 @@ const EbookReader = () => {
       {/* Header */}
       <div className="flex items-center gap-3 mb-3 shrink-0">
         <button
-          onClick={() => navigate('/ebooks')}
+          onClick={() => navigate('/app/ebooks')}
           className="p-2 rounded-xl glass-card hover:bg-accent/10 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />

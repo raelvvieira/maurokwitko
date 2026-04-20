@@ -11,7 +11,7 @@ const BlogPost = () => {
   if (!post) {
     return (
       <div className="max-w-3xl mx-auto space-y-6">
-        <button onClick={() => navigate('/blog')} className="flex items-center gap-2 text-sm text-primary hover:underline">
+        <button onClick={() => navigate('/app/blog')} className="flex items-center gap-2 text-sm text-primary hover:underline">
           <ArrowLeft className="w-4 h-4" /> Voltar ao Blog
         </button>
         <div className="glass-card text-center text-sm text-muted-foreground py-12">Post não encontrado.</div>
@@ -21,7 +21,7 @@ const BlogPost = () => {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <button onClick={() => navigate('/blog')} className="flex items-center gap-2 text-sm text-primary hover:underline">
+      <button onClick={() => navigate('/app/blog')} className="flex items-center gap-2 text-sm text-primary hover:underline">
         <ArrowLeft className="w-4 h-4" /> Voltar ao Blog
       </button>
 

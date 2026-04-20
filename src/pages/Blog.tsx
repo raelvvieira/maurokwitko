@@ -25,7 +25,7 @@ const Blog = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.1 }}
           className="glass-card group cursor-pointer"
-          onClick={() => navigate(`/blog/${post.id}`)}
+          onClick={() => navigate(`/app/blog/${post.id}`)}
         >
           {post.imageUrl && (
             <div className="w-full aspect-video rounded-xl overflow-hidden mb-4 bg-muted">

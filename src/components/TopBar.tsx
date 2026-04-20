@@ -31,7 +31,7 @@ const TopBar = () => {
         <NotificationDropdown />
 
         <button
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate('/app/profile')}
           className="flex items-center gap-2 md:gap-3 pl-2 md:pl-3 pr-2 md:pr-4 py-1.5 rounded-xl hover:bg-secondary/60 transition-colors"
         >
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
@@ -46,7 +46,7 @@ const TopBar = () => {
         </button>
 
         <button
-          onClick={() => signOut()}
+          onClick={async () => { await signOut(); navigate('/'); }}
           className="p-2 rounded-xl hover:bg-destructive/10 transition-colors"
           title="Sair"
         >

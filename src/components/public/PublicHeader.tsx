@@ -13,7 +13,7 @@ const NAV: { label: string; href?: string; children?: typeof COURSES }[] = [
   { label: 'Quem Sou Eu', href: '/quem-sou-eu' },
   { label: 'Cursos', children: COURSES },
   { label: 'Livros e E-books', href: '/livros-e-ebooks' },
-  { label: 'Artigos', href: '/#artigos' },
+  { label: 'Artigos', href: '/artigos' },
 ];
 
 const PublicHeader = () => {

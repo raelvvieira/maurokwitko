@@ -158,12 +158,9 @@ const LivrosEbooks = () => {
             renderItem={(item) => (
               <Link
                 to={item.to}
-                className="block w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-xl overflow-hidden bg-muted shadow-md hover:shadow-xl transition-shadow"
+                className="block w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-xl overflow-hidden bg-muted shadow-md hover:shadow-xl transition-shadow relative"
               >
-                <img src={item.cover} alt={item.title} className="absolute inset-0 w-full h-full object-cover" style={{ position: 'absolute' }} />
-                <div className="relative w-full h-full">
-                  <img src={item.cover} alt={item.title} className="absolute inset-0 w-full h-full object-cover" />
-                </div>
+                <img src={item.cover} alt={item.title} className="absolute inset-0 w-full h-full object-cover" />
               </Link>
             )}
           />

@@ -25,6 +25,7 @@ import Admin from "./pages/Admin";
 import Discounts from "./pages/Discounts";
 import Notifications from "./pages/Notifications";
 import Login from "./pages/Login";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,12 +38,22 @@ function ScrollToTop() {
 
 function AuthGate() {
   const { user, loading } = useAuth();
+  const { pathname } = useLocation();
 
   if (loading) {
     return (
       <div className="min-h-screen mesh-gradient flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
+    );
+  }
+
+  // Public route: password reset must be reachable from email link, even without session
+  if (pathname === '/reset-password') {
+    return (
+      <Routes>
+        <Route path="/reset-password" element={<ResetPassword />} />
+      </Routes>
     );
   }
 

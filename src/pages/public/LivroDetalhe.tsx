@@ -161,31 +161,33 @@ const LivroDetalhe = () => {
                     href={comprarLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl"
                   >
                     <ShoppingCart className="w-5 h-5" /> Comprar
                   </a>
-                  <a
+                  <motion.a
                     href={comprarLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-secondary text-foreground font-semibold border border-border hover:border-primary hover:text-primary transition-all"
+                    animate={{ scale: [1, 1.03, 1] }}
+                    transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-50 text-emerald-800 font-semibold border-2 border-emerald-300 hover:border-emerald-500 hover:bg-emerald-100 transition-colors"
                   >
-                    <Tag className="w-5 h-5" /> Comprar com 20% de Desconto · cupom MAURO20
-                  </a>
-                  <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5">
+                    <Tag className="w-5 h-5" /> Comprar com 20% de Desconto
+                  </motion.a>
+                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-700 flex items-center justify-center shrink-0">
                         <Sparkles className="w-5 h-5" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-foreground mb-1">
+                        <p className="text-sm font-semibold text-emerald-800 mb-1">
                           Membro do Clube ganha 20% de desconto
                         </p>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
+                        <p className="text-sm text-emerald-900/75 leading-relaxed">
                           Membros do Clube de Estudos do Dr. Mauro Kwitko ganham 20% de desconto em
-                          todos os livros físicos com o cupom <span className="font-mono font-semibold text-primary">MAURO20</span>.{' '}
-                          <Link to="/login" className="font-semibold text-primary hover:underline">
+                          todos os livros físicos.{' '}
+                          <Link to="/login" className="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
                             Conhecer o Clube →
                           </Link>
                         </p>
@@ -199,29 +201,34 @@ const LivroDetalhe = () => {
                     href={comprarLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl"
                   >
                     <ShoppingCart className="w-5 h-5" /> Comprar
                   </a>
-                  <Link
-                    to="/login"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-secondary text-foreground font-semibold border border-border hover:border-primary hover:text-primary transition-all"
+                  <motion.div
+                    animate={{ scale: [1, 1.03, 1] }}
+                    transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
                   >
-                    <Gift className="w-5 h-5" /> Adquirir Gratuitamente
-                  </Link>
-                  <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5">
+                    <Link
+                      to="/login"
+                      className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-50 text-emerald-800 font-semibold border-2 border-emerald-300 hover:border-emerald-500 hover:bg-emerald-100 transition-colors"
+                    >
+                      <Gift className="w-5 h-5" /> Adquirir Gratuitamente
+                    </Link>
+                  </motion.div>
+                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-700 flex items-center justify-center shrink-0">
                         <Sparkles className="w-5 h-5" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-foreground mb-1">
+                        <p className="text-sm font-semibold text-emerald-800 mb-1">
                           Acesso gratuito para assinantes
                         </p>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
+                        <p className="text-sm text-emerald-900/75 leading-relaxed">
                           Assinantes do Clube de Estudos do Dr. Mauro Kwitko têm acesso gratuito a
                           todos os e-books publicados.{' '}
-                          <Link to="/login" className="font-semibold text-primary hover:underline">
+                          <Link to="/login" className="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
                             Conhecer o Clube →
                           </Link>
                         </p>

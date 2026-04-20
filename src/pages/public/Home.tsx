@@ -102,7 +102,7 @@ const Home = () => {
             <div className="absolute -inset-6 bg-gradient-to-br from-primary/20 via-accent/10 to-transparent rounded-[2.5rem] blur-2xl" />
             <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-2xl">
               <img
-                src="https://i.ibb.co/MDn6WZRV/DR-MAURO-1.png"
+                src="https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg"
                 alt="Dr. Mauro Kwitko"
                 className="w-full h-full object-cover"
               />

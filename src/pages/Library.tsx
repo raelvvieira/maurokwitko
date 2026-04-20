@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Headphones, Disc3, Play, ChevronDown, ChevronUp } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 
@@ -17,6 +18,7 @@ const PLAYLIST_MAP: Record<string, string> = {
 
 const Library = () => {
   const { albums } = useApp();
+  const navigate = useNavigate();
   const [openAlbum, setOpenAlbum] = useState<string | null>(null);
   const [activeTrack, setActiveTrack] = useState<{ title: string; url: string } | null>(null);
 
@@ -101,7 +103,7 @@ const Library = () => {
                           <button
                             onClick={e => {
                               e.stopPropagation();
-                              setActiveTrack({ title: track.title, url: track.youtubeUrl });
+                              navigate(`/watch/album/${album.id}/${track.id}`);
                             }}
                             className="shrink-0 p-1.5 rounded-full hover:bg-primary/10 text-primary"
                           >

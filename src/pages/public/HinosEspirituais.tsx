@@ -2,23 +2,30 @@ import { motion } from 'framer-motion';
 import { Play, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { HINO_ALBUMS, type HinoAlbum } from '@/data/hinosTracks';
+import { useAlbums } from '@/hooks/useSupabaseData';
 
-const PLAYLISTS: { key: 'paz' | 'amor' | 'fe'; title: string; description: string; cover: string }[] = [
+type PlaylistMeta = {
+  matchTitle: string; // matches album title in DB (case-insensitive)
+  title: string;
+  description: string;
+  cover: string;
+};
+
+const PLAYLISTS: PlaylistMeta[] = [
   {
-    key: 'paz',
+    matchTitle: 'hinos de paz',
     title: 'Hinos de Paz',
     description: 'Composições suaves para meditação e tranquilidade interior.',
     cover: 'https://i.ibb.co/v6fpPVzb/HINOS-DE-PAZ-2.png',
   },
   {
-    key: 'amor',
+    matchTitle: 'hinos de amor',
     title: 'Hinos de Amor',
     description: 'Cânticos que celebram o amor universal e a fraternidade.',
     cover: 'https://i.ibb.co/q3GHxr4p/HINOS-DE-AMOR-2.png',
   },
   {
-    key: 'fe',
+    matchTitle: 'hinos de fé',
     title: 'Hinos de Fé',
     description: 'Hinos que fortalecem a conexão com o Divino e a fé interior.',
     cover: 'https://i.ibb.co/TDs4sdxQ/HINOS-DE-F-2-2.png',
@@ -28,21 +35,43 @@ const PLAYLISTS: { key: 'paz' | 'amor' | 'fe'; title: string; description: strin
 const SPOTIFY_URL =
   'https://open.spotify.com/intl-pt/artist/4ca3uyMhCggB6s0XImv9ds?si=FxBhz20TTrGug9tEqfurqw';
 
+// Extract a YouTube video ID from any common YouTube URL format
+const extractYouTubeId = (url: string): string => {
+  if (!url) return '';
+  // /embed/<id>
+  const embed = url.match(/\/embed\/([a-zA-Z0-9_-]{6,})/);
+  if (embed) return embed[1];
+  // youtu.be/<id>
+  const short = url.match(/youtu\.be\/([a-zA-Z0-9_-]{6,})/);
+  if (short) return short[1];
+  // ?v=<id>
+  const v = url.match(/[?&]v=([a-zA-Z0-9_-]{6,})/);
+  if (v) return v[1];
+  return url; // assume already an id
+};
+
+type Track = { id: string; title: string };
+type ActiveAlbum = { title: string; cover: string; tracks: Track[] };
+
 const HinosEspirituais = () => {
-  const [activeAlbum, setActiveAlbum] = useState<{ title: string; cover: string; album: HinoAlbum } | null>(null);
+  const { albums } = useAlbums();
+  const [activeAlbum, setActiveAlbum] = useState<ActiveAlbum | null>(null);
   const [activeTrackId, setActiveTrackId] = useState<string | null>(null);
 
-  const open = (p: typeof PLAYLISTS[number]) => {
-    const album = HINO_ALBUMS[p.key];
-    setActiveAlbum({ title: p.title, cover: p.cover, album });
-    setActiveTrackId(null); // start with playlist
+  const open = (p: PlaylistMeta) => {
+    const dbAlbum = albums.find((a) => a.title.trim().toLowerCase() === p.matchTitle);
+    const tracks: Track[] = (dbAlbum?.tracks ?? []).map((t) => ({
+      id: extractYouTubeId(t.youtubeUrl),
+      title: t.title,
+    }));
+    setActiveAlbum({ title: p.title, cover: p.cover, tracks });
+    setActiveTrackId(tracks[0]?.id ?? null);
   };
 
-  const playerSrc = activeAlbum
-    ? activeTrackId
+  const playerSrc =
+    activeAlbum && activeTrackId
       ? `https://www.youtube.com/embed/${activeTrackId}?autoplay=1`
-      : `https://www.youtube.com/embed/videoseries?list=${activeAlbum.album.playlistId}&autoplay=1`
-    : '';
+      : '';
 
   return (
     <div className="pt-24 md:pt-32 pb-16 max-w-5xl mx-auto px-4 md:px-6">
@@ -100,7 +129,6 @@ const HinosEspirituais = () => {
       >
         <div className="p-8 md:p-10 flex flex-col md:flex-row items-center gap-6 text-white">
           <div className="shrink-0 w-20 h-20 rounded-full bg-white/15 backdrop-blur flex items-center justify-center ring-1 ring-white/30">
-            {/* Spotify SVG icon */}
             <svg viewBox="0 0 24 24" className="w-12 h-12 fill-white" aria-hidden="true">
               <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.561.3z"/>
             </svg>
@@ -131,14 +159,20 @@ const HinosEspirituais = () => {
               {/* Player */}
               <div className="bg-black">
                 <div className="aspect-video w-full">
-                  <iframe
-                    key={playerSrc}
-                    src={playerSrc}
-                    title={activeAlbum.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
+                  {playerSrc ? (
+                    <iframe
+                      key={playerSrc}
+                      src={playerSrc}
+                      title={activeAlbum.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-white/60 text-sm">
+                      Nenhuma faixa disponível.
+                    </div>
+                  )}
                 </div>
                 <div className="p-5 flex items-center gap-4 border-t border-border/40">
                   <img src={activeAlbum.cover} alt="" className="w-14 h-14 rounded-lg object-cover" />
@@ -151,18 +185,10 @@ const HinosEspirituais = () => {
 
               {/* Track list */}
               <div className="border-l border-border/40 max-h-[480px] md:max-h-[560px] overflow-y-auto">
-                <button
-                  onClick={() => setActiveTrackId(null)}
-                  className={`w-full text-left px-4 py-3 border-b border-border/40 transition-colors ${
-                    activeTrackId === null ? 'bg-primary/10' : 'hover:bg-secondary/60'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <Play className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-semibold">Tocar Playlist Completa</span>
-                  </div>
-                </button>
-                {activeAlbum.album.tracks.map((t, idx) => {
+                {activeAlbum.tracks.length === 0 && (
+                  <div className="p-6 text-sm text-muted-foreground">Nenhuma faixa cadastrada neste hinário.</div>
+                )}
+                {activeAlbum.tracks.map((t, idx) => {
                   const active = activeTrackId === t.id;
                   return (
                     <button

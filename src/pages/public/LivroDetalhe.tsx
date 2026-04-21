@@ -4,6 +4,8 @@ import { ArrowLeft, ShoppingCart, Gift, Tag, Sparkles, BookOpen, Video } from 'l
 import { BOOKS } from '@/data/books';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import Marquee from '@/components/public/Marquee';
+import ExpandableSynopsis from '@/components/public/ExpandableSynopsis';
+import BookReviews from '@/components/public/BookReviews';
 
 const youtubeEmbed = (url?: string) => {
   if (!url) return null;

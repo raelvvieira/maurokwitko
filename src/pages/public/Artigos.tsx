@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, BookText } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { ARTICLES } from '@/data/articles';
+import { getArticleImage } from '@/data/articleImages';
 
 const Artigos = () => {
   return (
@@ -29,11 +30,17 @@ const Artigos = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="group rounded-3xl bg-secondary/40 border border-border/60 hover:border-primary/40 hover:shadow-xl transition-all p-6 md:p-7 flex flex-col"
+              className="group rounded-3xl overflow-hidden bg-secondary/40 border border-border/60 hover:border-primary/40 hover:shadow-xl transition-all flex flex-col"
             >
-              <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-5">
-                <BookText className="w-5 h-5" />
+              <div className="aspect-[16/10] overflow-hidden bg-muted">
+                <img
+                  src={getArticleImage(art.slug)}
+                  alt={art.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
               </div>
+              <div className="p-6 md:p-7 flex flex-col flex-1">
               <h2 className="text-xl md:text-2xl font-bold tracking-tight leading-snug group-hover:text-primary transition-colors">
                 {art.title}
               </h2>
@@ -46,6 +53,7 @@ const Artigos = () => {
               >
                 Ler artigo <ArrowRight className="w-4 h-4" />
               </Link>
+              </div>
             </motion.article>
           ))}
         </div>

@@ -2,6 +2,7 @@ import { Link, useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { ARTICLES } from '@/data/articles';
+import { getArticleImage } from '@/data/articleImages';
 
 const ArtigoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -34,6 +35,19 @@ const ArtigoDetalhe = () => {
             </h1>
             <p className="mt-5 text-sm font-medium text-muted-foreground">por Dr. Mauro Kwitko</p>
           </motion.header>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.05 }}
+            className="aspect-[21/9] rounded-2xl overflow-hidden bg-muted ring-1 ring-border/40 shadow-md mb-10 md:mb-14"
+          >
+            <img
+              src={getArticleImage(article.slug)}
+              alt={article.title}
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0 }}

@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Check, Quote, Mail, MessageCircle } from 'lucide-react';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 import { BOOKS } from '@/data/books';
 import { ARTICLES } from '@/data/articles';
 import { getArticleImage } from '@/data/articleImages';
@@ -50,52 +52,8 @@ const Home = () => {
 
   return (
     <div id="home" className="overflow-hidden">
-      {/* HERO */}
-      <section className="relative pt-24 md:pt-32 pb-12 md:pb-16">
-        <div className="absolute inset-0 -z-10 mesh-gradient opacity-60" />
-        <div className="max-w-6xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-          <motion.div {...fadeUp} className="space-y-6">
-            <span className="inline-block text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
-              30+ anos de prática clínica e formação
-            </span>
-            <h1 className="font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl leading-[1.05]">
-              Psicoterapia Reencarnacionista e{' '}
-              <span className="italic font-serif text-primary">Investigação do Inconsciente</span>
-            </h1>
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
-              Há mais de três décadas, o Dr. Mauro Kwitko, médico, fundador e presidente da Associação Brasileira de Psicoterapia Reencarnacionista trabalha para integrar a Reencarnação às Instituições Oficiais de Saúde, enquanto um tema da área da saúde, não como um assunto religioso, espiritual.
-            </p>
-            <div className="flex flex-wrap gap-3 pt-2">
-              <motion.button
-                {...greenButtonAnim}
-                onClick={() => navigate('/formacao')}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-md"
-              >
-                Conheça nossa Formação <ArrowRight className="w-4 h-4" />
-              </motion.button>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="relative"
-          >
-            <div className="absolute -inset-6 bg-gradient-to-br from-primary/20 via-accent/10 to-transparent rounded-[2.5rem] blur-2xl" />
-            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-2xl ring-1 ring-border/40">
-              <img
-                src="https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg"
-                alt="Dr. Mauro Kwitko"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <p className="mt-5 text-center text-sm md:text-base font-medium text-foreground/70 tracking-wide">
-              CRM 5761 · UFRGS · Fundador da ABPR
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      {/* HERO CAROUSEL */}
+      <HeroCarousel navigate={navigate} />
 
       {/* LIVROS — Marquee */}
       <section id="livros" className="relative py-12 md:py-16">

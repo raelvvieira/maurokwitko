@@ -26,6 +26,7 @@ const LivroDetalhe = () => {
   let videoUrl: string | undefined;
   let preco = '';
   let comprarLink = '#';
+  let coverScale: number | undefined;
   let dataReady = true;
 
   if (tipo === 'fisico') {

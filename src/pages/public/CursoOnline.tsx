@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Star } from 'lucide-react';
+import { ArrowRight, Star, Check, Sparkles, PlayCircle } from 'lucide-react';
 
 const MODULES = [
   'Introdução: O que você vai aprender neste curso',
@@ -126,6 +126,94 @@ const CursoOnline = () => {
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* AULAS GRATUITAS */}
+      <section className="max-w-6xl mx-auto px-4 md:px-6 mt-24">
+        <div className="text-center mb-10">
+          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Experimente</span>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Duas aulas gratuitas</h2>
+          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
+            Conheça o conteúdo do curso assistindo a estas duas aulas, por nossa conta.
+          </p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-6">
+          {[
+            { title: 'Introdução', subtitle: 'O que você vai aprender neste curso', id: 'd5bS3cEPna0' },
+            { title: 'O Mapa do Ego', subtitle: 'A chave para a Reforma Íntima', id: 'yZmad3txI74' },
+          ].map((aula) => (
+            <div key={aula.id} className="rounded-3xl overflow-hidden bg-background ring-1 ring-border/40 shadow-md hover:shadow-xl transition-shadow">
+              <div className="aspect-video bg-black">
+                <iframe
+                  src={`https://www.youtube.com/embed/${aula.id}`}
+                  title={aula.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              </div>
+              <div className="p-5 flex items-start gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                  <PlayCircle className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-[11px] font-bold tracking-wider uppercase text-emerald-700 dark:text-emerald-400">Aula gratuita</p>
+                  <h3 className="text-lg font-bold leading-tight mt-0.5">{aula.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{aula.subtitle}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CARD DE PREÇO */}
+      <section className="max-w-xl mx-auto px-4 md:px-6 mt-24">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="rounded-3xl p-8 md:p-10 bg-background ring-2 ring-primary shadow-2xl text-center"
+        >
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold tracking-wider uppercase mb-5">
+            <Sparkles className="w-3.5 h-3.5" /> Curso Completo
+          </div>
+          <h3 className="text-xl font-bold">A Psicologia da Reencarnação</h3>
+          <div className="mt-5 flex items-end justify-center gap-1">
+            <span className="text-2xl font-bold text-muted-foreground">R$</span>
+            <span className="text-6xl font-bold tracking-tight">297</span>
+            <span className="text-base text-muted-foreground mb-2">,00</span>
+          </div>
+          <p className="text-sm text-muted-foreground mt-2">
+            ou <strong className="text-foreground">12x de R$ 30,72</strong> <span className="text-xs">*</span> no cartão
+          </p>
+          <ul className="mt-7 space-y-3 text-left">
+            {[
+              'Mais de 20 módulos em vídeo',
+              'Acesso vitalício à plataforma',
+              'Assista quando e quantas vezes quiser',
+              'Materiais complementares',
+              'Certificado de conclusão',
+            ].map((i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-foreground/85">
+                <Check className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
+                <span>{i}</span>
+              </li>
+            ))}
+          </ul>
+          <motion.a
+            href={COURSE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            animate={{ scale: [1, 1.03, 1] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+            className="mt-8 block w-full px-6 py-4 rounded-full bg-emerald-600 text-white text-base font-bold hover:bg-emerald-700 transition-colors shadow-lg"
+          >
+            Quero me Inscrever
+          </motion.a>
+          <p className="text-[11px] text-muted-foreground mt-3">* Parcelamento sujeito a juros do cartão.</p>
+        </motion.div>
       </section>
 
       {/* AVALIAÇÕES */}

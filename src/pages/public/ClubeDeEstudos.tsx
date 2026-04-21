@@ -126,19 +126,28 @@ const ClubeDeEstudos = () => {
 
       {/* FAIXA DE BENEFÍCIOS */}
       <section className="max-w-6xl mx-auto px-4 md:px-6 mt-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {BENEFITS.map((b) => (
-            <div
-              key={b.title}
-              className="rounded-2xl p-5 bg-gradient-to-br from-background to-secondary/40 border border-border/60 ring-1 ring-border/40 shadow-sm text-center"
-            >
-              <div className="w-11 h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
-                <b.icon className="w-5 h-5" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {BENEFITS.map((b, i) => {
+            const palettes = [
+              { ring: 'ring-primary/30', grad: 'from-primary/15 via-primary/5 to-transparent', icon: 'bg-primary/15 text-primary', title: 'text-primary' },
+              { ring: 'ring-emerald-500/30', grad: 'from-emerald-500/15 via-emerald-500/5 to-transparent', icon: 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-400', title: 'text-emerald-700 dark:text-emerald-400' },
+              { ring: 'ring-amber-500/30', grad: 'from-amber-500/15 via-amber-500/5 to-transparent', icon: 'bg-amber-500/20 text-amber-700 dark:text-amber-400', title: 'text-amber-700 dark:text-amber-400' },
+              { ring: 'ring-accent/40', grad: 'from-accent/20 via-accent/5 to-transparent', icon: 'bg-accent/20 text-accent-foreground', title: 'text-foreground' },
+            ];
+            const p = palettes[i % palettes.length];
+            return (
+              <div
+                key={b.title}
+                className={`rounded-3xl p-6 md:p-7 bg-gradient-to-br ${p.grad} ring-1 ${p.ring} shadow-md hover:shadow-lg transition-shadow`}
+              >
+                <div className={`w-12 h-12 rounded-2xl ${p.icon} flex items-center justify-center mb-4`}>
+                  <b.icon className="w-6 h-6" />
+                </div>
+                <h3 className={`text-lg md:text-xl font-bold tracking-tight ${p.title}`}>{b.title}</h3>
+                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{b.desc}</p>
               </div>
-              <h3 className="text-sm font-bold">{b.title}</h3>
-              <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{b.desc}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 

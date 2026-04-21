@@ -55,27 +55,45 @@ const extractYouTubeId = (url: string): string => {
 };
 
 type Track = { id: string; title: string };
-type ActiveAlbum = { title: string; cover: string; tracks: Track[] };
+type PlayerMode = 'tracks' | 'playlist';
+type ActiveAlbum = { title: string; cover: string; tracks: Track[]; playlistId: string };
 
 const HinosEspirituais = () => {
   const { albums } = useAlbums();
   const [activeAlbum, setActiveAlbum] = useState<ActiveAlbum | null>(null);
   const [activeTrackId, setActiveTrackId] = useState<string | null>(null);
+  const [playerMode, setPlayerMode] = useState<PlayerMode>('tracks');
 
-  const open = (p: PlaylistMeta) => {
+  const buildAlbum = (p: PlaylistMeta): ActiveAlbum => {
     const dbAlbum = albums.find((a) => a.title.trim().toLowerCase() === p.matchTitle);
     const tracks: Track[] = (dbAlbum?.tracks ?? []).map((t) => ({
       id: extractYouTubeId(t.youtubeUrl),
       title: t.title,
     }));
-    setActiveAlbum({ title: p.title, cover: p.cover, tracks });
-    setActiveTrackId(tracks[0]?.id ?? null);
+    return { title: p.title, cover: p.cover, tracks, playlistId: p.playlistId };
   };
 
-  const playerSrc =
-    activeAlbum && activeTrackId
-      ? `https://www.youtube.com/embed/${activeTrackId}?autoplay=1`
-      : '';
+  const openTracks = (p: PlaylistMeta) => {
+    const album = buildAlbum(p);
+    setActiveAlbum(album);
+    setActiveTrackId(album.tracks[0]?.id ?? null);
+    setPlayerMode('tracks');
+  };
+
+  const openPlaylist = (p: PlaylistMeta) => {
+    const album = buildAlbum(p);
+    setActiveAlbum(album);
+    setActiveTrackId(null);
+    setPlayerMode('playlist');
+  };
+
+  const playerSrc = activeAlbum
+    ? playerMode === 'playlist'
+      ? `https://www.youtube.com/embed/videoseries?list=${activeAlbum.playlistId}&autoplay=1`
+      : activeTrackId
+        ? `https://www.youtube.com/embed/${activeTrackId}?autoplay=1`
+        : ''
+    : '';
 
   return (
     <div className="pt-24 md:pt-32 pb-16 max-w-5xl mx-auto px-4 md:px-6">

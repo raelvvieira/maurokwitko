@@ -60,34 +60,20 @@ const Home = () => {
             </span>
             <h1 className="font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl leading-[1.05]">
               Ciência, Clínica e{' '}
-              <span className="italic font-serif text-primary">Despertar Espiritual</span>
+              <span className="italic font-serif text-primary">Reencarnação</span>
             </h1>
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
               Há mais de três décadas, o Dr. Mauro Kwitko integra a Psicoterapia de Regressão à prática clínica — oferecendo a psicoterapeutas, médicos e demais profissionais da saúde uma abordagem onde rigor científico, escuta clínica e profundidade da alma se encontram.
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
-              <button
+              <motion.button
+                {...greenButtonAnim}
                 onClick={() => navigate('/formacao')}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-md"
               >
-                Conheça o Método <ArrowRight className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => navigate('/formacao')}
-                className="inline-flex items-center px-6 py-3 rounded-full border border-primary/30 text-primary text-sm font-semibold hover:bg-primary/5 transition-colors"
-              >
-                Formação para Profissionais
-              </button>
-              <a
-                href="#artigos"
-                className="inline-flex items-center px-6 py-3 rounded-full text-foreground/70 text-sm font-semibold hover:text-foreground hover:bg-secondary/60 transition-colors"
-              >
-                Pesquisas e Artigos
-              </a>
+                Conheça nossa Formação <ArrowRight className="w-4 h-4" />
+              </motion.button>
             </div>
-            <p className="text-xs text-muted-foreground pt-1 tracking-wide">
-              CRM 5761 · UFRGS · Fundador da ABPR
-            </p>
           </motion.div>
 
           <motion.div
@@ -104,6 +90,9 @@ const Home = () => {
                 className="w-full h-full object-cover"
               />
             </div>
+            <p className="mt-5 text-center text-sm md:text-base font-medium text-foreground/70 tracking-wide">
+              CRM 5761 · UFRGS · Fundador da ABPR
+            </p>
           </motion.div>
         </div>
       </section>
@@ -159,7 +148,7 @@ const Home = () => {
             className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-background to-secondary/40 border border-border/60 ring-1 ring-border/40 shadow-sm p-8 md:p-14 lg:p-16 grid md:grid-cols-2 gap-10 md:gap-14 items-center"
           >
             <div className="relative space-y-6">
-              <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-bold tracking-wider uppercase">
+              <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold tracking-wider uppercase">
                 Inscrições Abertas
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
@@ -214,7 +203,7 @@ const Home = () => {
 
           <Marquee
             items={ebooks}
-            duration={60}
+            duration={Math.max(60, Math.round(ebooks.length * 8.5))}
             renderItem={(eb) => (
               <Link
                 to={`/livros-e-ebooks/ebook/${eb.id}`}

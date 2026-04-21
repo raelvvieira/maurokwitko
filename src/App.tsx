@@ -15,6 +15,9 @@ import LivrosEbooks from "./pages/public/LivrosEbooks";
 import LivroDetalhe from "./pages/public/LivroDetalhe";
 import Artigos from "./pages/public/Artigos";
 import ArtigoDetalhe from "./pages/public/ArtigoDetalhe";
+import HinosEspirituais from "./pages/public/HinosEspirituais";
+import RadioPublica from "./pages/public/RadioPublica";
+import CursoOnline from "./pages/public/CursoOnline";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
@@ -115,6 +118,9 @@ const App = () => (
             <Route path="/livros-e-ebooks/:tipo/:id" element={<LivroDetalhe />} />
             <Route path="/artigos" element={<Artigos />} />
             <Route path="/artigos/:slug" element={<ArtigoDetalhe />} />
+            <Route path="/hinos-espirituais" element={<HinosEspirituais />} />
+            <Route path="/radio" element={<RadioPublica />} />
+            <Route path="/curso-online" element={<CursoOnline />} />
           </Route>
           <Route path="/login" element={<LoginRoute />} />
           <Route path="/reset-password" element={<ResetPassword />} />

@@ -5,14 +5,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const COURSES = [
   { label: 'Formação em Psicoterapia Reencarnacionista', href: '/formacao' },
-  { label: 'Curso On-line: A Psicologia da Reencarnação', href: '/#curso-online' },
+  { label: 'Curso On-line: A Psicologia da Reencarnação', href: '/curso-online' },
 ];
 
-const NAV: { label: string; href?: string; children?: typeof COURSES }[] = [
+const RADIO = [
+  { label: 'Rádio com Dr. Mauro', href: '/radio' },
+];
+
+const NAV: { label: string; href?: string; children?: { label: string; href: string }[] }[] = [
   { label: 'Home', href: '/' },
   { label: 'Quem Sou Eu', href: '/quem-sou-eu' },
   { label: 'Cursos', children: COURSES },
   { label: 'Livros e E-books', href: '/livros-e-ebooks' },
+  { label: 'Hinos Espirituais', href: '/hinos-espirituais' },
+  { label: 'Rádio', children: RADIO },
   { label: 'Artigos', href: '/artigos' },
 ];
 

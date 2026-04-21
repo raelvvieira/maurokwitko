@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { ArrowRight, Check, Quote, Calendar, Mail, MessageCircle } from 'lucide-react';
+import { ArrowRight, Check, Quote, Calendar, Mail, MessageCircle, BookOpen } from 'lucide-react';
 import { BOOKS } from '@/data/books';
 import { supabase } from '@/integrations/supabase/client';
 import { Marquee } from '@/components/public/Marquee';
@@ -45,6 +45,11 @@ const GALLERY = [
 
 type Ebook = { id: string; title: string; cover_url: string | null };
 
+const greenButtonAnim = {
+  animate: { scale: [1, 1.03, 1] },
+  transition: { duration: 2.4, repeat: Infinity, ease: 'easeInOut' as const },
+};
+
 const Home = () => {
   const navigate = useNavigate();
   const [ebooks, setEbooks] = useState<Ebook[]>([]);
@@ -63,7 +68,7 @@ const Home = () => {
   return (
     <div id="home" className="overflow-hidden">
       {/* HERO */}
-      <section className="relative pt-28 md:pt-36 pb-20 md:pb-28">
+      <section className="relative pt-24 md:pt-32 pb-12 md:pb-16">
         <div className="absolute inset-0 -z-10 mesh-gradient opacity-60" />
         <div className="max-w-6xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <motion.div {...fadeUp} className="space-y-7">
@@ -100,7 +105,7 @@ const Home = () => {
             className="relative"
           >
             <div className="absolute -inset-6 bg-gradient-to-br from-primary/20 via-accent/10 to-transparent rounded-[2.5rem] blur-2xl" />
-            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-2xl">
+            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-2xl ring-1 ring-border/40">
               <img
                 src="https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg"
                 alt="Dr. Mauro Kwitko"
@@ -112,8 +117,10 @@ const Home = () => {
       </section>
 
       {/* LIVROS — Marquee */}
-      <section id="livros" className="py-20 md:py-28">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 mb-12">
+      <section id="livros" className="relative py-12 md:py-16">
+        <div className="absolute -top-20 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
+        <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl -z-10" />
+        <div className="max-w-6xl mx-auto px-4 md:px-6 mb-10">
           <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4">
             <div>
               <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Bibliografia</span>
@@ -129,13 +136,11 @@ const Home = () => {
           items={BOOKS}
           duration={60}
           renderItem={(book) => (
-            <a
-              href={book.link}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to={`/livros-e-ebooks/fisico/${book.slug}`}
               className="group block w-[160px] md:w-[200px]"
             >
-              <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1">
+              <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 group-hover:shadow-xl group-hover:ring-primary/30 transition-all duration-500 group-hover:-translate-y-1">
                 <img
                   src={book.cover}
                   alt={book.title}
@@ -143,20 +148,23 @@ const Home = () => {
                 />
               </div>
               <h3 className="mt-3 text-xs md:text-sm font-semibold leading-snug line-clamp-2">{book.title}</h3>
-              <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
+              <motion.span
+                {...greenButtonAnim}
+                className="mt-2 w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-full bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
+              >
                 Saiba Mais <ArrowRight className="w-3 h-3" />
-              </span>
-            </a>
+              </motion.span>
+            </Link>
           )}
         />
       </section>
 
       {/* FORMAÇÃO — Course CTA */}
-      <section id="formacao" className="py-20 md:py-28 bg-secondary/30 border-y border-border/40">
+      <section id="formacao" className="py-12 md:py-16 bg-secondary/30 border-y border-border/40">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
           <motion.div
             {...fadeUp}
-            className="relative rounded-3xl overflow-hidden bg-background border border-border/60 shadow-sm p-8 md:p-14 lg:p-16 grid md:grid-cols-2 gap-10 md:gap-14 items-center"
+            className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-background to-secondary/40 border border-border/60 ring-1 ring-border/40 shadow-sm p-8 md:p-14 lg:p-16 grid md:grid-cols-2 gap-10 md:gap-14 items-center"
           >
             <div className="relative space-y-6">
               <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-bold tracking-wider uppercase">
@@ -186,7 +194,7 @@ const Home = () => {
               </button>
             </div>
 
-            <div className="relative aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden bg-secondary">
+            <div className="relative aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden bg-secondary ring-1 ring-border/40">
               <img
                 src="https://i.ibb.co/bjyq508N/DR-MAURO-CURSO-DE-FORMA-O.jpg"
                 alt="Curso de Formação"
@@ -199,7 +207,9 @@ const Home = () => {
 
       {/* E-books do Clube */}
       {ebooks.length > 0 && (
-        <section className="py-20 md:py-28">
+        <section className="relative py-12 md:py-16">
+          <div className="absolute -top-20 -right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
+          <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl -z-10" />
           <div className="max-w-6xl mx-auto px-4 md:px-6 mb-10">
             <motion.div {...fadeUp}>
               <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">E-books</span>
@@ -212,13 +222,13 @@ const Home = () => {
 
           <Marquee
             items={ebooks}
-            duration={50}
+            duration={60}
             renderItem={(eb) => (
-              <button
-                onClick={() => navigate('/login')}
+              <Link
+                to={`/livros-e-ebooks/ebook/${eb.id}`}
                 className="group block w-[160px] md:w-[200px] text-left"
               >
-                <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-1">
+                <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 group-hover:shadow-xl group-hover:ring-primary/30 transition-all duration-500 group-hover:-translate-y-1">
                   {eb.cover_url && (
                     <img
                       src={eb.cover_url}
@@ -226,25 +236,26 @@ const Home = () => {
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   )}
-                  <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/40 backdrop-blur-0 group-hover:backdrop-blur-sm transition-all flex items-center justify-center">
-                    <span className="opacity-0 group-hover:opacity-100 text-white text-[11px] font-bold tracking-wider uppercase transition-opacity">
-                      Disponível no Clube
-                    </span>
-                  </div>
                 </div>
                 <h4 className="mt-3 text-xs font-semibold leading-snug line-clamp-2">{eb.title}</h4>
-              </button>
+                <motion.span
+                  {...greenButtonAnim}
+                  className="mt-2 w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-full bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
+                >
+                  Saiba Mais <ArrowRight className="w-3 h-3" />
+                </motion.span>
+              </Link>
             )}
           />
         </section>
       )}
 
       {/* QUEM SOU EU */}
-      <section id="quem-sou-eu" className="py-20 md:py-28 bg-secondary/30 border-y border-border/40">
+      <section id="quem-sou-eu" className="py-12 md:py-16 bg-secondary/30 border-y border-border/40">
         <div className="max-w-6xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 md:gap-20 items-center">
           <motion.div {...fadeUp} className="relative order-2 md:order-1">
             <div className="absolute -inset-4 bg-gradient-to-br from-primary/15 to-transparent rounded-[2rem] blur-2xl" />
-            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-xl">
+            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-xl ring-1 ring-border/40">
               <img
                 src="https://i.ibb.co/358FCytk/DR-MAURO-2.jpg"
                 alt="Dr. Mauro Kwitko"
@@ -295,9 +306,9 @@ const Home = () => {
       </section>
 
       {/* GALERIA */}
-      <section className="py-20 md:py-28">
+      <section className="py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-12">
+          <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Trajetória</span>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Momentos da Jornada</h2>
           </motion.div>
@@ -310,7 +321,7 @@ const Home = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
-                className="group relative aspect-square rounded-2xl overflow-hidden bg-secondary shadow-md"
+                className="group relative aspect-square rounded-2xl overflow-hidden bg-secondary shadow-md ring-1 ring-border/40"
               >
                 <img
                   src={g.src}
@@ -327,7 +338,7 @@ const Home = () => {
       </section>
 
       {/* QUOTE */}
-      <section className="py-16 md:py-24 border-y border-border/40 bg-secondary/30">
+      <section className="py-12 md:py-16 border-y border-border/40 bg-secondary/30">
         <motion.div {...fadeUp} className="max-w-3xl mx-auto px-4 md:px-6 text-center">
           <Quote className="w-10 h-10 text-primary/40 mx-auto mb-6" />
           <p className="font-serif italic text-2xl md:text-3xl lg:text-4xl leading-snug text-foreground">
@@ -340,16 +351,16 @@ const Home = () => {
       </section>
 
       {/* ARTIGOS */}
-      <section id="artigos" className="py-20 md:py-28">
+      <section id="artigos" className="py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4 mb-12">
+          <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4 mb-10">
             <div>
               <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Reflexões</span>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Artigos Recentes</h2>
             </div>
-            <a href="#" className="text-sm font-semibold text-primary hover:underline inline-flex items-center gap-1">
+            <Link to="/artigos" className="text-sm font-semibold text-primary hover:underline inline-flex items-center gap-1">
               Ver todos <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6 md:gap-8">
@@ -360,9 +371,11 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group cursor-pointer"
+                className="group cursor-pointer rounded-3xl p-5 bg-gradient-to-br from-background to-secondary/40 border border-border/60 ring-1 ring-border/40 shadow-sm hover:shadow-lg transition-all"
               >
-                <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 via-accent/10 to-secondary mb-5 group-hover:shadow-lg transition-shadow" />
+                <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-gradient-to-br from-primary/30 via-accent/20 to-secondary mb-5 group-hover:shadow-lg transition-shadow flex items-center justify-center">
+                  <BookOpen className="w-12 h-12 text-primary/60" />
+                </div>
                 <div className="flex items-center gap-3 text-[11px] font-bold tracking-wider uppercase text-muted-foreground mb-2">
                   <span className="text-primary">{art.category}</span>
                   <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
@@ -384,7 +397,7 @@ const Home = () => {
       </section>
 
       {/* CONTATO */}
-      <section id="contato" className="py-20 md:py-28 bg-secondary/30 border-t border-border/40">
+      <section id="contato" className="py-12 md:py-16 bg-secondary/30 border-t border-border/40">
         <motion.div {...fadeUp} className="max-w-3xl mx-auto px-4 md:px-6 text-center">
           <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Contato</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mt-3 leading-tight">

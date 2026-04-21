@@ -99,7 +99,12 @@ const LivroDetalhe = () => {
             >
               <div className="relative aspect-[2/3] rounded-2xl overflow-hidden bg-muted shadow-2xl max-w-sm mx-auto">
                 {cover ? (
-                  <img src={cover} alt={titulo} className="absolute inset-0 w-full h-full object-cover" />
+                  <img
+                    src={cover}
+                    alt={titulo}
+                    style={coverScale ? { transform: `scale(${coverScale})` } : undefined}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
                     <BookOpen className="w-16 h-16" />

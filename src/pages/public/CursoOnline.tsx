@@ -92,7 +92,7 @@ const CursoOnline = () => {
       {/* INTRO */}
       <section className="max-w-3xl mx-auto px-4 md:px-6 mt-16 space-y-5 text-center text-base md:text-lg leading-relaxed text-foreground/85">
         <p>
-          Este projeto é a realização de um sonho e iniciei sua produção já há alguns meses. O meu objetivo com ele é o de levar para o maior número de pessoas possível todo o conhecimento que adquiri, ao longo dos mais de 20 anos que atuo com a psicoterapia reencarnacionista.
+          Este projeto é a realização de um sonho e iniciei sua produção já há alguns meses. O meu objetivo com ele é o de levar para o maior número de pessoas possível todo o conhecimento que adquiri, ao longo dos cerca de 30 anos que atuo com a Psicoterapia Reencarnacionista.
         </p>
         <p>
           Aprender sobre a Psicoterapia Reencarnacionista para assim realizar uma Reforma Íntima, requer vontade de ser melhor a cada dia e de alcançar a felicidade. E, para a psicoterapia reencarnacionista, sempre é tempo de iniciar.

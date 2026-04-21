@@ -59,11 +59,11 @@ const Home = () => {
               30+ anos de prática clínica e formação
             </span>
             <h1 className="font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl leading-[1.05]">
-              Ciência, Clínica e{' '}
-              <span className="italic font-serif text-primary">Reencarnação</span>
+              Psicoterapia Reencarnacionista e{' '}
+              <span className="italic font-serif text-primary">Investigação do Inconsciente</span>
             </h1>
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
-              Há mais de três décadas, o Dr. Mauro Kwitko integra a Psicoterapia de Regressão à prática clínica — oferecendo a psicoterapeutas, médicos e demais profissionais da saúde uma abordagem onde rigor científico, escuta clínica e profundidade da alma se encontram.
+              Há mais de três décadas, o Dr. Mauro Kwitko, médico, fundador e presidente da Associação Brasileira de Psicoterapia Reencarnacionista trabalha para integrar a Reencarnação às Instituições Oficiais de Saúde, enquanto um tema da área da saúde, não como um assunto religioso, espiritual.
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <motion.button

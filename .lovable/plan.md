@@ -1,87 +1,41 @@
 
 
-## Plano: sinopses + vídeos, comentários de leitores, ajustes de capa e Hero em card
+## Plano: card hero mais largo + botões dos hinos + copy
 
-### 1. Atualizar sinopses + vídeos dos livros físicos (`src/data/books.ts`)
-Substituir `synopsis` e adicionar `videoUrl` para cada um dos 7 livros, usando os textos e links do YouTube do Google Doc:
+### 1. Card hero mais largo e com mais respiro (`src/pages/public/Home.tsx`)
+- Trocar wrapper externo `max-w-6xl mx-auto px-4 md:px-6` para **`max-w-7xl mx-auto px-3 md:px-6`** — card visualmente mais largo no desktop e quase encostado nas bordas no mobile (mas com 12px de respiro mínimo).
+- Aumentar padding interno do card de `p-6 md:p-12 lg:p-16` para **`p-8 sm:p-10 md:p-16 lg:p-20`** — mais distância entre conteúdo e bordas em todos os tamanhos.
+- Aumentar gap entre coluna de texto e imagem de `gap-12 md:gap-16` para **`gap-10 md:gap-20`**.
+- Mobile: garantir que título, parágrafo e botão respirem bem dentro do card — `space-y-6` continua, mas o padding extra resolve o aperto visto na imagem do usuário.
 
-| Livro | Vídeo |
-|---|---|
-| Tratando Fobia, Pânico e Depressão | `youtu.be/fxFCwAk0T5M` |
-| A Terapia da Reforma Íntima | `youtu.be/iw5a78_jvvw` |
-| A Fascinante Vida de Mirta Kassov | `youtu.be/8X9dVPEx_kE` |
-| Jovens Guerreiros e Guerreiras da Luz | `youtu.be/wVbWLNojlLM` |
-| Como Evoluir Espiritualmente em um Mundo de Drogas | `youtu.be/LLPozeTEVQs` |
-| Terapia de Regressão: Perguntas e Respostas | `youtube.com/watch?v=KWdlgytfo8U` |
-| 20 Casos de Regressão | `youtube.com/watch?v=EGSdm3t09BM` |
+### 2. Hinos Espirituais — dois botões por álbum (`src/pages/public/HinosEspirituais.tsx`)
+Substituir o botão único "Ouvir Agora" por **dois botões empilhados**:
 
-Também:
-- Trocar título de "Jovens Guerreiros e Guerreiras da Luz: para adolescentes" → **"Jovens Guerreiros e Guerreiras da Luz"**.
-- Trocar a capa do "Jovens Guerreiros" pela capa oficial da BesouroBox no mesmo padrão das outras (`images.tcdn.com.br/.../jovens-guerreiros...png`) — vou buscar a URL oficial na BesouroBox durante a implementação.
+- **Botão 1 — "Ver Hinos"** (primário verde, mesmo estilo atual): abre o `Dialog` do player com tracklist (comportamento atual).
+- **Botão 2 — "Ouvir Álbum Completo"** (secundário, outline ou tom mais suave): abre o **mesmo Dialog**, mas o iframe carrega a playlist completa do YouTube via `https://www.youtube.com/embed/videoseries?list=<PLAYLIST_ID>&autoplay=1`, que reproduz o álbum inteiro em sequência (mesmo comportamento usado no Clube).
 
-### 2. Atualizar sinopses + vídeos dos e-books (banco `ebooks`)
-Migration UPDATE em cada e-book existente, mapeando pelo título, com sinopses do Doc e adicionando coluna nova **`video_url text`** na tabela `ebooks`:
+Adicionar `playlistId` ao `PLAYLISTS` (reaproveitando os IDs já existentes em `src/data/hinosTracks.ts`):
+- Hinos de Paz → `PLG7GxMRJ1lg1lkiGi6HLMAJhCq7NLfk7X`
+- Hinos de Amor → `PLG7GxMRJ1lg2Pn2UzVXanS5k7_8beIBVy`
+- Hinos de Fé → `PLG7GxMRJ1lg26AzCi0oOcrNZVir0SOc1j`
 
-```sql
-ALTER TABLE public.ebooks ADD COLUMN video_url text;
-UPDATE public.ebooks SET description = '...', video_url = 'https://youtu.be/...' WHERE title = '...';
-```
+Ajustes no estado/lógica:
+- Novo estado `playerMode: 'tracks' | 'playlist'`.
+- Quando `playlist`: `playerSrc = https://www.youtube.com/embed/videoseries?list=${playlistId}&autoplay=1` e a coluna lateral de tracklist mostra um aviso "Reproduzindo álbum completo em sequência" (ou esconde a lista e ocupa 100% no player). Decisão: manter o mesmo grid `1.6fr_1fr` para consistência visual, com a lateral mostrando mensagem clara no modo playlist.
+- Botão 2 fica desabilitado se não houver `playlistId` (só por segurança).
 
-E-books cobertos pelo Doc: Doutor eu ouço vozes, Fogo Selvagem (sem vídeo no Doc), A Força Espiritual, Como Voltar a Ser Criança, A História de Betinho, A Linha do Horizonte, A Arte de Adoçar os Olhos, E Putin Reencarnou Ucraniano, Baixa Autoestima, Como Matar o Pensamento Suicida, Como Aproveitar a sua Encarnação. Os que não estão no Doc (A Cura da Solidão, Autismo e Reencarnação, Reencarnação – Desigualdade Social, Viver para Servir) ficam com a sinopse atual.
+### 3. Copy "Outras obras" → "todas as obras"
+- `src/pages/public/LivrosEbooks.tsx` linha 153: `Outras obras do autor` → **`Todas as obras do autor`**.
+- `src/pages/public/LivroDetalhe.tsx` linha 267: idem.
 
-### 3. Sinopse expansível (`src/pages/public/LivroDetalhe.tsx`)
-Criar componente local `<ExpandableSynopsis text={synopsis} />`:
-- Mede o conteúdo; se ultrapassar ~5 linhas (clamp via `line-clamp-[5]`), mostra botão "Ler mais ↓".
-- Ao expandir, libera todo o texto e troca para "Ler menos ↑".
-- Usa transição de altura suave (max-height + opacity).
-- Substitui o `<p>` de sinopse atual.
-
-E também no `LivroDetalhe.tsx`, ler `videoUrl` dos e-books a partir de `ebook.video_url` (regenerar tipos do Supabase é automático).
-
-### 4. Caixa de comentários nos livros (`comentários de leitores`)
-**Banco — nova tabela `book_reviews`:**
-```sql
-CREATE TABLE public.book_reviews (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  book_type text NOT NULL CHECK (book_type IN ('fisico','ebook')),
-  book_id text NOT NULL,        -- slug (físico) ou uuid (ebook) como string
-  reader_name text NOT NULL,
-  comment text NOT NULL,
-  rating int NOT NULL CHECK (rating BETWEEN 1 AND 5),
-  created_at timestamptz NOT NULL DEFAULT now()
-);
-ALTER TABLE public.book_reviews ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "anyone reads reviews" ON public.book_reviews FOR SELECT USING (true);
-CREATE POLICY "anyone writes reviews" ON public.book_reviews FOR INSERT WITH CHECK (
-  char_length(reader_name) BETWEEN 1 AND 80 AND
-  char_length(comment) BETWEEN 1 AND 1000
-);
-```
-Aberto a comentários públicos (sem login) já que a área pública não exige auth — validação por tamanho na policy + zod no client.
-
-**Componente `<BookReviews bookType bookId />`** dentro do `LivroDetalhe.tsx`:
-- Título: "Já leu esse livro? Deixe seu comentário sobre a leitura."
-- Form: nome, comentário (textarea), seletor de 1–5 estrelas (botões com `Star` do lucide).
-- Validação zod (nome 1–80, comentário 1–1000, rating 1–5).
-- Envia via `supabase.from('book_reviews').insert(...)`.
-- Lista comentários abaixo (mais recentes primeiro): nome, estrelas preenchidas, data relativa, texto.
-- Mostra resumo no topo: média de estrelas e total ("4.7 ★ · 12 comentários").
-
-### 5. Hero da Home dentro de um grande card (`src/pages/public/Home.tsx`)
-- Envolver o `<div ref={emblaRef}>` com um wrapper card:
-  ```
-  rounded-[2rem] border border-border/60 ring-1 ring-border/40 bg-card/60 backdrop-blur-sm shadow-sm p-8 md:p-14 lg:p-16
-  ```
-- **Remover as setas** (botões prev/next desktop) — mantém só os dots.
-- Aumentar a margem interna do conteúdo (padding do card já maior).
-- Dots ficam fora ou dentro? Dentro do card, abaixo do conteúdo (continuam centralizados).
+(O eyebrow acima continua "Para conhecer", como já está.)
 
 ### Arquivos alterados
-- `src/data/books.ts` — sinopses, videoUrl, título e capa de "Jovens Guerreiros".
-- `src/pages/public/LivroDetalhe.tsx` — sinopse expansível, ler `video_url` de ebooks, novo bloco `<BookReviews>`.
-- `src/pages/public/Home.tsx` — wrapper card no hero, remoção das setas.
-- **Nova migration** — `ALTER TABLE ebooks ADD COLUMN video_url`, `UPDATE`s das sinopses, criação de `book_reviews` com RLS.
+- `src/pages/public/Home.tsx` — largura/padding do card hero.
+- `src/pages/public/HinosEspirituais.tsx` — `playlistId` no `PLAYLISTS`, dois botões, modo `playlist` no Dialog.
+- `src/pages/public/LivrosEbooks.tsx` — copy.
+- `src/pages/public/LivroDetalhe.tsx` — copy.
 
 ### Não muda
-- Layout dos catálogos, marquees, autoplay/dots do hero (apenas removidas as setas), demais páginas.
+- Layout do Dialog/player, design dos cards de álbum, autoplay/dots do hero, demais seções.
 

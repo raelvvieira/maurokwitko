@@ -115,12 +115,12 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
       <div className="absolute inset-0 -z-10 mesh-gradient opacity-60" />
       <div className="max-w-7xl mx-auto px-3 md:px-6 relative">
         <div className="rounded-[2rem] border border-border/60 ring-1 ring-border/40 bg-card/60 backdrop-blur-sm shadow-sm p-8 sm:p-10 md:p-16 lg:p-20">
-          <div className="overflow-hidden" ref={emblaRef} aria-roledescription="carousel">
-            <div className="flex">
+          <div className="overflow-hidden rounded-[1.5rem]" ref={emblaRef} aria-roledescription="carousel">
+            <div className="flex -ml-6 md:-ml-10">
               {HERO_SLIDES.map((slide, idx) => (
                 <div
                   key={slide.titleAccent}
-                  className="min-w-0 shrink-0 grow-0 basis-full"
+                  className="min-w-0 shrink-0 grow-0 basis-full pl-6 md:pl-10"
                   role="group"
                   aria-roledescription="slide"
                   aria-label={`Slide ${idx + 1} de ${HERO_SLIDES.length}`}

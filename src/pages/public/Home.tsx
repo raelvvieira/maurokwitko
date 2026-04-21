@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { ArrowRight, Check, Quote, Calendar, Mail, MessageCircle, BookOpen } from 'lucide-react';
+import { ArrowRight, Check, Quote, Mail, MessageCircle } from 'lucide-react';
 import { BOOKS } from '@/data/books';
+import { ARTICLES } from '@/data/articles';
+import { getArticleImage } from '@/data/articleImages';
 import { supabase } from '@/integrations/supabase/client';
 import { Marquee } from '@/components/public/Marquee';
 
@@ -13,26 +15,7 @@ const fadeUp = {
   transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
 };
 
-const ARTICLES = [
-  {
-    category: 'Regressão',
-    date: '12 Mar 2025',
-    title: 'O que a memória de vidas passadas revela sobre o presente',
-    excerpt: 'Uma reflexão sobre como recordações antigas iluminam padrões emocionais atuais.',
-  },
-  {
-    category: 'Espiritualidade',
-    date: '02 Mar 2025',
-    title: 'Karma e responsabilidade: além do conceito popular',
-    excerpt: 'Compreendendo o karma como um princípio de aprendizado, não de punição.',
-  },
-  {
-    category: 'Clínica',
-    date: '18 Fev 2025',
-    title: 'Quando a psicoterapia tradicional encontra a regressão',
-    excerpt: 'Como integrar abordagens científicas e transcendentais no consultório.',
-  },
-];
+const RECENT_ARTICLES = ARTICLES.slice(0, 3);
 
 const GALLERY = [
   { src: 'https://i.ibb.co/MDJBY2J0/AULAS-TE-RICAS.jpg', label: 'Aulas Teóricas' },
@@ -71,31 +54,40 @@ const Home = () => {
       <section className="relative pt-24 md:pt-32 pb-12 md:pb-16">
         <div className="absolute inset-0 -z-10 mesh-gradient opacity-60" />
         <div className="max-w-6xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-          <motion.div {...fadeUp} className="space-y-7">
+          <motion.div {...fadeUp} className="space-y-6">
             <span className="inline-block text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
-              30+ anos de excelência clínica
+              30+ anos de prática clínica e formação
             </span>
             <h1 className="font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl leading-[1.05]">
-              Ciência e{' '}
+              Ciência, Clínica e{' '}
               <span className="italic font-serif text-primary">Despertar Espiritual</span>
             </h1>
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
-              Dr. Mauro Kwitko integra a Psicoterapia de Regressão à psicologia clínica há mais de três décadas, oferecendo um caminho onde o rigor científico encontra a profundidade da alma.
+              Há mais de três décadas, o Dr. Mauro Kwitko integra a Psicoterapia de Regressão à prática clínica — oferecendo a psicoterapeutas, médicos e demais profissionais da saúde uma abordagem onde rigor científico, escuta clínica e profundidade da alma se encontram.
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
-              <a
-                href="#formacao"
+              <button
+                onClick={() => navigate('/formacao')}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
               >
                 Conheça o Método <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
+              <button
+                onClick={() => navigate('/formacao')}
+                className="inline-flex items-center px-6 py-3 rounded-full border border-primary/30 text-primary text-sm font-semibold hover:bg-primary/5 transition-colors"
+              >
+                Formação para Profissionais
+              </button>
               <a
                 href="#artigos"
-                className="inline-flex items-center px-6 py-3 rounded-full bg-secondary/80 text-foreground text-sm font-semibold hover:bg-secondary transition-colors"
+                className="inline-flex items-center px-6 py-3 rounded-full text-foreground/70 text-sm font-semibold hover:text-foreground hover:bg-secondary/60 transition-colors"
               >
-                Pesquisas Recentes
+                Pesquisas e Artigos
               </a>
             </div>
+            <p className="text-xs text-muted-foreground pt-1 tracking-wide">
+              CRM 5761 · UFRGS · Fundador da ABPR
+            </p>
           </motion.div>
 
           <motion.div
@@ -364,32 +356,34 @@ const Home = () => {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-            {ARTICLES.map((art, i) => (
+            {RECENT_ARTICLES.map((art, i) => (
               <motion.article
-                key={art.title}
+                key={art.slug}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group cursor-pointer rounded-3xl p-5 bg-gradient-to-br from-background to-secondary/40 border border-border/60 ring-1 ring-border/40 shadow-sm hover:shadow-lg transition-all"
+                className="group rounded-3xl overflow-hidden bg-gradient-to-br from-background to-secondary/40 border border-border/60 ring-1 ring-border/40 shadow-sm hover:shadow-lg transition-all"
               >
-                <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-gradient-to-br from-primary/30 via-accent/20 to-secondary mb-5 group-hover:shadow-lg transition-shadow flex items-center justify-center">
-                  <BookOpen className="w-12 h-12 text-primary/60" />
-                </div>
-                <div className="flex items-center gap-3 text-[11px] font-bold tracking-wider uppercase text-muted-foreground mb-2">
-                  <span className="text-primary">{art.category}</span>
-                  <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
-                  <span className="inline-flex items-center gap-1">
-                    <Calendar className="w-3 h-3" /> {art.date}
-                  </span>
-                </div>
-                <h3 className="text-lg font-bold tracking-tight leading-snug group-hover:text-primary transition-colors">
-                  {art.title}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-2">{art.excerpt}</p>
-                <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:gap-2 transition-all">
-                  Ler artigo <ArrowRight className="w-3.5 h-3.5" />
-                </span>
+                <Link to={`/artigos/${art.slug}`} className="block">
+                  <div className="aspect-[16/10] overflow-hidden bg-muted">
+                    <img
+                      src={getArticleImage(art.slug)}
+                      alt={art.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-lg font-bold tracking-tight leading-snug group-hover:text-primary transition-colors">
+                      {art.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-2">{art.excerpt}</p>
+                    <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:gap-2 transition-all">
+                      Ler artigo <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </Link>
               </motion.article>
             ))}
           </div>

@@ -1,22 +1,22 @@
 import { motion } from 'framer-motion';
-import { Music, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const PLAYLISTS = [
   {
     title: 'Hinos de Paz',
     description: 'Composições suaves para meditação e tranquilidade interior.',
-    color: 'from-sky-200 to-sky-50',
+    cover: 'https://i.ibb.co/v6fpPVzb/HINOS-DE-PAZ-2.png',
   },
   {
     title: 'Hinos de Amor',
     description: 'Cânticos que celebram o amor universal e a fraternidade.',
-    color: 'from-rose-200 to-rose-50',
+    cover: 'https://i.ibb.co/q3GHxr4p/HINOS-DE-AMOR-2.png',
   },
   {
     title: 'Hinos de Fé',
     description: 'Hinos que fortalecem a conexão com o Divino e a fé interior.',
-    color: 'from-amber-200 to-amber-50',
+    cover: 'https://i.ibb.co/TDs4sdxQ/HINOS-DE-F-2-2.png',
   },
 ];
 
@@ -46,8 +46,13 @@ const HinosEspirituais = () => {
             transition={{ duration: 0.5, delay: i * 0.1 }}
             className="group rounded-3xl overflow-hidden bg-gradient-to-br from-background to-secondary/40 border border-border/60 ring-1 ring-border/40 shadow-sm hover:shadow-lg transition-all"
           >
-            <div className={`aspect-video bg-gradient-to-br ${p.color} flex items-center justify-center`}>
-              <Music className="w-14 h-14 text-foreground/60" />
+            <div className="aspect-square overflow-hidden bg-muted">
+              <img
+                src={p.cover}
+                alt={p.title}
+                loading="lazy"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
             </div>
             <div className="p-6 space-y-4">
               <h3 className="text-lg font-bold">{p.title}</h3>

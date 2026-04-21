@@ -26,8 +26,8 @@ const PublicHeader = () => {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [coursesOpen, setCoursesOpen] = useState(false);
-  const [mobileCoursesOpen, setMobileCoursesOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [mobileOpenMenu, setMobileOpenMenu] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -59,18 +59,18 @@ const PublicHeader = () => {
               <div
                 key={item.label}
                 className="relative"
-                onMouseEnter={() => setCoursesOpen(true)}
-                onMouseLeave={() => setCoursesOpen(false)}
+                onMouseEnter={() => setOpenMenu(item.label)}
+                onMouseLeave={() => setOpenMenu(null)}
               >
                 <button
-                  onClick={() => setCoursesOpen((v) => !v)}
+                  onClick={() => setOpenMenu((v) => (v === item.label ? null : item.label))}
                   className="inline-flex items-center gap-1 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
                 >
                   {item.label}
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${coursesOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${openMenu === item.label ? 'rotate-180' : ''}`} />
                 </button>
                 <AnimatePresence>
-                  {coursesOpen && (
+                  {openMenu === item.label && (
                     <motion.div
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -83,7 +83,7 @@ const PublicHeader = () => {
                           <Link
                             key={sub.href}
                             to={sub.href}
-                            onClick={() => setCoursesOpen(false)}
+                            onClick={() => setOpenMenu(null)}
                             className="block px-4 py-3 rounded-xl text-sm font-medium text-foreground/80 hover:bg-secondary/70 hover:text-foreground transition-colors"
                           >
                             {sub.label}
@@ -151,14 +151,14 @@ const PublicHeader = () => {
                   item.children ? (
                     <div key={item.label}>
                       <button
-                        onClick={() => setMobileCoursesOpen((v) => !v)}
+                        onClick={() => setMobileOpenMenu((v) => (v === item.label ? null : item.label))}
                         className="w-full flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium text-foreground/80 hover:bg-secondary/60 transition-colors"
                       >
                         {item.label}
-                        <ChevronDown className={`w-4 h-4 transition-transform ${mobileCoursesOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform ${mobileOpenMenu === item.label ? 'rotate-180' : ''}`} />
                       </button>
                       <AnimatePresence>
-                        {mobileCoursesOpen && (
+                        {mobileOpenMenu === item.label && (
                           <motion.div
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}

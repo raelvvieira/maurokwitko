@@ -264,7 +264,7 @@ const LivroDetalhe = () => {
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-2">
               Você também pode gostar
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Outras obras do autor</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Todas as obras do autor</h2>
           </div>
           <Marquee
             items={sugestoes}

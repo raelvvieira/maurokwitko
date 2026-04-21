@@ -10,7 +10,7 @@ const PublicFooter = () => {
               <img
                 src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png"
                 alt="Dr. Mauro Kwitko"
-                className="h-12 w-auto object-contain"
+                className="h-12 w-auto object-contain brightness-0 invert"
               />
             </div>
             <p className="text-sm text-white/60 leading-relaxed max-w-xs">

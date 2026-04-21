@@ -16,6 +16,12 @@ const PLAYLIST_MAP: Record<string, string> = {
   'HINOS DE FÉ': 'https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg26AzCi0oOcrNZVir0SOc1j',
 };
 
+const ALBUM_COVER_MAP: Record<string, string> = {
+  'HINOS DE PAZ': 'https://i.ibb.co/v6fpPVzb/HINOS-DE-PAZ-2.png',
+  'HINOS DE AMOR': 'https://i.ibb.co/q3GHxr4p/HINOS-DE-AMOR-2.png',
+  'HINOS DE FÉ': 'https://i.ibb.co/TDs4sdxQ/HINOS-DE-F-2-2.png',
+};
+
 const Library = () => {
   const { albums } = useApp();
   const navigate = useNavigate();
@@ -50,9 +56,17 @@ const Library = () => {
                 className="flex flex-col items-center"
                 onClick={() => setOpenAlbum(isOpen ? null : album.id)}
               >
-                <div className={`w-32 h-32 mx-auto rounded-xl bg-gradient-to-br ${album.coverColor} flex items-center justify-center mb-3`}>
-                  <Disc3 className="w-10 h-10 text-foreground/20" />
-                </div>
+                {ALBUM_COVER_MAP[album.title.toUpperCase()] ? (
+                  <img
+                    src={ALBUM_COVER_MAP[album.title.toUpperCase()]}
+                    alt={album.title}
+                    className="w-32 h-32 rounded-xl object-cover mb-3"
+                  />
+                ) : (
+                  <div className={`w-32 h-32 mx-auto rounded-xl bg-gradient-to-br ${album.coverColor} flex items-center justify-center mb-3`}>
+                    <Disc3 className="w-10 h-10 text-foreground/20" />
+                  </div>
+                )}
                 <h3 className="text-sm font-semibold text-center mb-1">{album.title}</h3>
                 <p className="text-xs text-muted-foreground">{album.tracks.length} faixas</p>
                 <div className="mt-2">

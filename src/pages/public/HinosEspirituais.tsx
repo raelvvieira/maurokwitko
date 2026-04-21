@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Play, ExternalLink } from 'lucide-react';
+import { Play, ExternalLink, ListMusic } from 'lucide-react';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useAlbums } from '@/hooks/useSupabaseData';

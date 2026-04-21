@@ -42,8 +42,7 @@ const QuemSouEu = () => {
               Quem é <span className="text-primary">Dr. Mauro Kwitko</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Médico, fundador da Psicoterapia Reencarnacionista e Diretor de Ensino da
-              Associação Brasileira de Psicoterapia Reencarnacionista (ABPR).
+              Médico, fundador e presidente da Associação Brasileira de Psicoterapia Reencarnacionista (ABPR).
             </p>
           </motion.div>
           <motion.div {...fadeUp} className="relative">

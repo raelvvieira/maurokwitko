@@ -81,10 +81,8 @@ const CRITERIOS = [
 ];
 
 const TURMAS = [
-  { local: 'Rio de Janeiro', data: 'Abril 2026', link: 'https://chat.whatsapp.com/D2yhIa0pwqU789zytvfYKC' },
-  { local: 'Porto Alegre', data: 'Abril 2026', link: 'https://chat.whatsapp.com/Cx0Z343wotY9FQrhKeBnXB' },
-  { local: 'Ceará', data: '2026', link: 'https://chat.whatsapp.com/GOh1fdZaV1o0nh3xLb8dXz' },
-  { local: 'Sergipe', data: '2026', link: 'https://chat.whatsapp.com/LUDMdTpihjS8LZ2fV8W7bC' },
+  { local: 'Rio de Janeiro', data: 'Junho 2026', link: 'https://chat.whatsapp.com/D2yhIa0pwqU789zytvfYKC' },
+  { local: 'Porto Alegre', data: 'Junho 2026', link: 'https://chat.whatsapp.com/Cx0Z343wotY9FQrhKeBnXB' },
 ];
 
 const Formacao = () => {

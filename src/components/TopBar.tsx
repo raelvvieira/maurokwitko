@@ -1,4 +1,4 @@
-import { Search, User, Menu, LogOut } from 'lucide-react';
+import { Search, User, Menu, LogOut, Home } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';

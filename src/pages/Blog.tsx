@@ -1,48 +1,48 @@
 import { motion } from 'framer-motion';
-import { Calendar, User, ArrowRight } from 'lucide-react';
-import { useApp } from '@/context/AppContext';
+import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { ARTICLES } from '@/data/articles';
+import { getArticleImage } from '@/data/articleImages';
 
 const Blog = () => {
-  const { blogPosts } = useApp();
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Blog</h1>
-        <p className="text-sm text-muted-foreground mt-1">Artigos, dicas e novidades</p>
+        <h1 className="text-2xl font-bold">Artigos</h1>
+        <p className="text-sm text-muted-foreground mt-1">Reflexões e estudos do Dr. Mauro Kwitko</p>
       </div>
 
-      {blogPosts.length === 0 && (
-        <div className="glass-card text-center text-sm text-muted-foreground py-12">Nenhum post publicado ainda.</div>
-      )}
-
-      {blogPosts.map((post, i) => (
-        <motion.article
-          key={post.id}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.1 }}
-          className="glass-card group cursor-pointer"
-          onClick={() => navigate(`/app/blog/${post.id}`)}
-        >
-          {post.imageUrl && (
-            <div className="w-full aspect-video rounded-xl overflow-hidden mb-4 bg-muted">
-              <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        {ARTICLES.map((article, i) => (
+          <motion.article
+            key={article.slug}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: Math.min(i * 0.04, 0.4) }}
+            className="glass-card group cursor-pointer flex flex-col"
+            onClick={() => navigate(`/app/blog/${article.slug}`)}
+          >
+            <div className="w-full aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-muted">
+              <img
+                src={getArticleImage(article.slug)}
+                alt={article.title}
+                loading="lazy"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
             </div>
-          )}
-          <h2 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors">{post.title}</h2>
-          <p className="text-sm text-muted-foreground mb-3 line-clamp-3">{post.content}</p>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1"><User className="w-3 h-3" /> {post.author}</span>
-              <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {new Date(post.createdAt).toLocaleDateString('pt-BR')}</span>
+            <h2 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">{article.title}</h2>
+            <p className="text-sm text-muted-foreground mb-4 line-clamp-3 flex-1">{article.excerpt}</p>
+            <div className="flex items-center justify-between mt-auto">
+              <span className="text-xs text-muted-foreground">Dr. Mauro Kwitko</span>
+              <span className="text-sm text-primary font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                Ler artigo <ArrowRight className="w-4 h-4" />
+              </span>
             </div>
-            <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-          </div>
-        </motion.article>
-      ))}
+          </motion.article>
+        ))}
+      </div>
     </div>
   );
 };

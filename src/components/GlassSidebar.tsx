@@ -14,7 +14,7 @@ const navItems = [
   { to: '/app/materials', icon: FileText, label: 'Materiais' },
   { to: '/app/ranking', icon: Trophy, label: 'Ranking' },
   { to: '/app/community', icon: Users, label: 'Comunidade' },
-  { to: '/app/blog', icon: PenSquare, label: 'Blog' },
+  { to: '/app/blog', icon: PenSquare, label: 'Artigos' },
   { to: '/app/discounts', icon: Tag, label: 'Descontos' },
 ];
 

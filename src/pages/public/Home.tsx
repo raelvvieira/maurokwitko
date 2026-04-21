@@ -113,8 +113,8 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
   return (
     <section className="relative pt-24 md:pt-32 pb-12 md:pb-16">
       <div className="absolute inset-0 -z-10 mesh-gradient opacity-60" />
-      <div className="max-w-6xl mx-auto px-4 md:px-6 relative">
-        <div className="rounded-[2rem] border border-border/60 ring-1 ring-border/40 bg-card/60 backdrop-blur-sm shadow-sm p-6 md:p-12 lg:p-16">
+      <div className="max-w-7xl mx-auto px-3 md:px-6 relative">
+        <div className="rounded-[2rem] border border-border/60 ring-1 ring-border/40 bg-card/60 backdrop-blur-sm shadow-sm p-8 sm:p-10 md:p-16 lg:p-20">
           <div className="overflow-hidden" ref={emblaRef} aria-roledescription="carousel">
             <div className="flex">
               {HERO_SLIDES.map((slide, idx) => (
@@ -125,7 +125,7 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
                   aria-roledescription="slide"
                   aria-label={`Slide ${idx + 1} de ${HERO_SLIDES.length}`}
                 >
-                  <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                  <div className="grid md:grid-cols-2 gap-10 md:gap-20 items-center">
                     <div className="space-y-6">
                       <span className="inline-block text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
                         {slide.eyebrow}

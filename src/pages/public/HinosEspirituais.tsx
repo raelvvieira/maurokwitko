@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Play, ExternalLink } from 'lucide-react';
+import { Play, ExternalLink, ListMusic } from 'lucide-react';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useAlbums } from '@/hooks/useSupabaseData';
@@ -9,6 +9,7 @@ type PlaylistMeta = {
   title: string;
   description: string;
   cover: string;
+  playlistId: string;
 };
 
 const PLAYLISTS: PlaylistMeta[] = [
@@ -17,18 +18,21 @@ const PLAYLISTS: PlaylistMeta[] = [
     title: 'Hinos de Paz',
     description: 'Composições suaves para meditação e tranquilidade interior.',
     cover: 'https://i.ibb.co/v6fpPVzb/HINOS-DE-PAZ-2.png',
+    playlistId: 'PLG7GxMRJ1lg1lkiGi6HLMAJhCq7NLfk7X',
   },
   {
     matchTitle: 'hinos de amor',
     title: 'Hinos de Amor',
     description: 'Cânticos que celebram o amor universal e a fraternidade.',
     cover: 'https://i.ibb.co/q3GHxr4p/HINOS-DE-AMOR-2.png',
+    playlistId: 'PLG7GxMRJ1lg2Pn2UzVXanS5k7_8beIBVy',
   },
   {
     matchTitle: 'hinos de fé',
     title: 'Hinos de Fé',
     description: 'Hinos que fortalecem a conexão com o Divino e a fé interior.',
     cover: 'https://i.ibb.co/TDs4sdxQ/HINOS-DE-F-2-2.png',
+    playlistId: 'PLG7GxMRJ1lg26AzCi0oOcrNZVir0SOc1j',
   },
 ];
 
@@ -51,27 +55,45 @@ const extractYouTubeId = (url: string): string => {
 };
 
 type Track = { id: string; title: string };
-type ActiveAlbum = { title: string; cover: string; tracks: Track[] };
+type PlayerMode = 'tracks' | 'playlist';
+type ActiveAlbum = { title: string; cover: string; tracks: Track[]; playlistId: string };
 
 const HinosEspirituais = () => {
   const { albums } = useAlbums();
   const [activeAlbum, setActiveAlbum] = useState<ActiveAlbum | null>(null);
   const [activeTrackId, setActiveTrackId] = useState<string | null>(null);
+  const [playerMode, setPlayerMode] = useState<PlayerMode>('tracks');
 
-  const open = (p: PlaylistMeta) => {
+  const buildAlbum = (p: PlaylistMeta): ActiveAlbum => {
     const dbAlbum = albums.find((a) => a.title.trim().toLowerCase() === p.matchTitle);
     const tracks: Track[] = (dbAlbum?.tracks ?? []).map((t) => ({
       id: extractYouTubeId(t.youtubeUrl),
       title: t.title,
     }));
-    setActiveAlbum({ title: p.title, cover: p.cover, tracks });
-    setActiveTrackId(tracks[0]?.id ?? null);
+    return { title: p.title, cover: p.cover, tracks, playlistId: p.playlistId };
   };
 
-  const playerSrc =
-    activeAlbum && activeTrackId
-      ? `https://www.youtube.com/embed/${activeTrackId}?autoplay=1`
-      : '';
+  const openTracks = (p: PlaylistMeta) => {
+    const album = buildAlbum(p);
+    setActiveAlbum(album);
+    setActiveTrackId(album.tracks[0]?.id ?? null);
+    setPlayerMode('tracks');
+  };
+
+  const openPlaylist = (p: PlaylistMeta) => {
+    const album = buildAlbum(p);
+    setActiveAlbum(album);
+    setActiveTrackId(null);
+    setPlayerMode('playlist');
+  };
+
+  const playerSrc = activeAlbum
+    ? playerMode === 'playlist'
+      ? `https://www.youtube.com/embed/videoseries?list=${activeAlbum.playlistId}&autoplay=1`
+      : activeTrackId
+        ? `https://www.youtube.com/embed/${activeTrackId}?autoplay=1`
+        : ''
+    : '';
 
   return (
     <div className="pt-24 md:pt-32 pb-16 max-w-5xl mx-auto px-4 md:px-6">
@@ -108,12 +130,20 @@ const HinosEspirituais = () => {
             <div className="p-6 space-y-4">
               <h3 className="text-lg font-bold">{p.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{p.description}</p>
-              <button
-                onClick={() => open(p)}
-                className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
-              >
-                Ouvir Agora <Play className="w-4 h-4" />
-              </button>
+              <div className="space-y-2">
+                <button
+                  onClick={() => openTracks(p)}
+                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
+                >
+                  Ver Hinos <ListMusic className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => openPlaylist(p)}
+                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-emerald-600/40 text-emerald-700 dark:text-emerald-400 text-sm font-semibold hover:bg-emerald-600/10 transition-colors"
+                >
+                  Ouvir Álbum Completo <Play className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </motion.div>
         ))}
@@ -183,37 +213,47 @@ const HinosEspirituais = () => {
                 </div>
               </div>
 
-              {/* Track list */}
+              {/* Track list / Playlist info */}
               <div className="border-l border-border/40 max-h-[480px] md:max-h-[560px] overflow-y-auto">
-                {activeAlbum.tracks.length === 0 && (
-                  <div className="p-6 text-sm text-muted-foreground">Nenhuma faixa cadastrada neste hinário.</div>
+                {playerMode === 'playlist' ? (
+                  <div className="p-6 text-sm text-muted-foreground space-y-2">
+                    <p className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Modo álbum</p>
+                    <p className="font-medium text-foreground">Reproduzindo álbum completo em sequência.</p>
+                    <p>As faixas tocam automaticamente, uma após a outra, direto do YouTube.</p>
+                  </div>
+                ) : (
+                  <>
+                    {activeAlbum.tracks.length === 0 && (
+                      <div className="p-6 text-sm text-muted-foreground">Nenhuma faixa cadastrada neste hinário.</div>
+                    )}
+                    {activeAlbum.tracks.map((t, idx) => {
+                      const active = activeTrackId === t.id;
+                      return (
+                        <button
+                          key={`${t.id}-${idx}`}
+                          onClick={() => setActiveTrackId(t.id)}
+                          className={`w-full text-left p-3 flex items-center gap-3 border-b border-border/40 transition-colors ${
+                            active ? 'bg-primary/10' : 'hover:bg-secondary/60'
+                          }`}
+                        >
+                          <div className="relative w-20 h-12 rounded-md overflow-hidden bg-muted shrink-0">
+                            <img
+                              src={`https://img.youtube.com/vi/${t.id}/mqdefault.jpg`}
+                              alt=""
+                              loading="lazy"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-muted-foreground">Faixa {idx + 1}</p>
+                            <p className="text-sm font-medium truncate">{t.title}</p>
+                          </div>
+                          {active && <Play className="w-4 h-4 text-primary shrink-0" />}
+                        </button>
+                      );
+                    })}
+                  </>
                 )}
-                {activeAlbum.tracks.map((t, idx) => {
-                  const active = activeTrackId === t.id;
-                  return (
-                    <button
-                      key={`${t.id}-${idx}`}
-                      onClick={() => setActiveTrackId(t.id)}
-                      className={`w-full text-left p-3 flex items-center gap-3 border-b border-border/40 transition-colors ${
-                        active ? 'bg-primary/10' : 'hover:bg-secondary/60'
-                      }`}
-                    >
-                      <div className="relative w-20 h-12 rounded-md overflow-hidden bg-muted shrink-0">
-                        <img
-                          src={`https://img.youtube.com/vi/${t.id}/mqdefault.jpg`}
-                          alt=""
-                          loading="lazy"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs text-muted-foreground">Faixa {idx + 1}</p>
-                        <p className="text-sm font-medium truncate">{t.title}</p>
-                      </div>
-                      {active && <Play className="w-4 h-4 text-primary shrink-0" />}
-                    </button>
-                  );
-                })}
               </div>
             </div>
           )}

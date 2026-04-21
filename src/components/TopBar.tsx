@@ -28,6 +28,15 @@ const TopBar = () => {
       </div>
 
       <div className="flex items-center gap-2 md:gap-4 ml-2">
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 rounded-xl px-2 md:px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
+          title="Voltar para o Site"
+        >
+          <Home className="w-4 h-4" />
+          <span className="hidden md:inline">Voltar para o Site</span>
+        </button>
+
         <NotificationDropdown />
 
         <button

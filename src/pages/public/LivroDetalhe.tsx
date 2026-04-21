@@ -165,17 +165,21 @@ const LivroDetalhe = () => {
                   >
                     <ShoppingCart className="w-5 h-5" /> Comprar
                   </a>
-                  <motion.a
-                    href={comprarLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <motion.div
                     animate={{ scale: [1, 1.03, 1] }}
                     transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-50 text-emerald-800 font-semibold border-2 border-emerald-300 hover:border-emerald-500 hover:bg-emerald-100 transition-colors"
                   >
-                    <Tag className="w-5 h-5" /> Comprar com 20% de Desconto
-                  </motion.a>
-                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+                    <Link
+                      to="/clube-de-estudos"
+                      className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-50 text-emerald-800 font-semibold border-2 border-emerald-300 hover:border-emerald-500 hover:bg-emerald-100 transition-colors"
+                    >
+                      <Tag className="w-5 h-5" /> Comprar com 20% de Desconto
+                    </Link>
+                  </motion.div>
+                  <Link
+                    to="/clube-de-estudos"
+                    className="block rounded-2xl border border-emerald-200 bg-emerald-50 p-5 hover:bg-emerald-100 transition-colors"
+                  >
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-700 flex items-center justify-center shrink-0">
                         <Sparkles className="w-5 h-5" />
@@ -187,13 +191,13 @@ const LivroDetalhe = () => {
                         <p className="text-sm text-emerald-900/75 leading-relaxed">
                           Membros do Clube de Estudos do Dr. Mauro Kwitko ganham 20% de desconto em
                           todos os livros físicos.{' '}
-                          <Link to="/login" className="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
+                          <span className="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
                             Conhecer o Clube →
-                          </Link>
+                          </span>
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
@@ -210,13 +214,16 @@ const LivroDetalhe = () => {
                     transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
                   >
                     <Link
-                      to="/login"
+                      to="/clube-de-estudos"
                       className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-50 text-emerald-800 font-semibold border-2 border-emerald-300 hover:border-emerald-500 hover:bg-emerald-100 transition-colors"
                     >
                       <Gift className="w-5 h-5" /> Adquirir Gratuitamente
                     </Link>
                   </motion.div>
-                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+                  <Link
+                    to="/clube-de-estudos"
+                    className="block rounded-2xl border border-emerald-200 bg-emerald-50 p-5 hover:bg-emerald-100 transition-colors"
+                  >
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-700 flex items-center justify-center shrink-0">
                         <Sparkles className="w-5 h-5" />
@@ -228,13 +235,13 @@ const LivroDetalhe = () => {
                         <p className="text-sm text-emerald-900/75 leading-relaxed">
                           Assinantes do Clube de Estudos do Dr. Mauro Kwitko têm acesso gratuito a
                           todos os e-books publicados.{' '}
-                          <Link to="/login" className="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
+                          <span className="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
                             Conhecer o Clube →
-                          </Link>
+                          </span>
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               )}
             </motion.div>

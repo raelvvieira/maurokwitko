@@ -143,30 +143,56 @@ const ClubeDeEstudos = () => {
         </div>
       </section>
 
-      {/* CONTEÚDOS DO DR. MAURO — capas reais */}
-      <section className="max-w-6xl mx-auto px-4 md:px-6 mt-24 text-center">
-        <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Acervo</span>
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">
-          Acesse todos os conteúdos do Dr. Mauro
-        </h2>
-        <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-          Mais de 20 anos de prática clínica reunidos em livros, e-books, aulas e hinos.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
-          {BOOKS.slice(0, 3).map((b) => (
-            <div
-              key={b.slug}
-              className="rounded-2xl overflow-hidden bg-gradient-to-br from-background to-secondary/40 border border-border/60 ring-1 ring-border/40 shadow-sm hover:shadow-md transition-all"
-            >
-              <div className="aspect-[3/4] bg-muted overflow-hidden">
-                <img src={b.cover} alt={b.title} loading="lazy" className="w-full h-full object-contain" />
-              </div>
-              <div className="p-4">
-                <h3 className="text-sm font-bold leading-snug line-clamp-2">{b.title}</h3>
-              </div>
+      {/* CARD DE BENEFÍCIOS — E-BOOKS GRATUITOS + 20% LIVROS FÍSICOS */}
+      <section className="max-w-5xl mx-auto px-4 md:px-6 mt-20">
+        <div className="grid md:grid-cols-2 gap-5">
+          <div className="rounded-3xl p-6 md:p-8 bg-gradient-to-br from-emerald-500/15 via-emerald-500/5 to-transparent ring-1 ring-emerald-500/30 shadow-md">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 flex items-center justify-center mb-4">
+              <Gift className="w-6 h-6" />
             </div>
-          ))}
+            <h3 className="text-xl md:text-2xl font-bold tracking-tight">
+              Todos os e-books do Dr. Mauro, <span className="text-emerald-700 dark:text-emerald-400">totalmente gratuitos</span>
+            </h3>
+            <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
+              Como membro do Clube, você baixa e lê todos os e-books publicados pelo Dr. Mauro Kwitko sem pagar nada a mais — e os próximos lançamentos chegam primeiro pra você.
+            </p>
+          </div>
+          <div className="rounded-3xl p-6 md:p-8 bg-gradient-to-br from-primary/15 via-primary/5 to-transparent ring-1 ring-primary/30 shadow-md">
+            <div className="w-12 h-12 rounded-2xl bg-primary/15 text-primary flex items-center justify-center mb-4">
+              <Tag className="w-6 h-6" />
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold tracking-tight">
+              <span className="text-primary">20% de desconto</span> em todos os livros físicos
+            </h3>
+            <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
+              Membros recebem 20% de desconto na compra de qualquer livro físico publicado pelo Dr. Mauro pela editora BesouroBox.
+            </p>
+          </div>
         </div>
+      </section>
+
+      {/* CONTEÚDOS DO DR. MAURO — carrossel só de e-books, capas */}
+      <section className="mt-24">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 text-center mb-10">
+          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Acervo</span>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">
+            Acesse todos os conteúdos do Dr. Mauro
+          </h2>
+          <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+            E-books, aulas, lives, hinos e curso completo — tudo em um só lugar.
+          </p>
+        </div>
+        {ebookCovers.length > 0 && (
+          <Marquee
+            items={ebookCovers}
+            duration={Math.max(40, ebookCovers.length * 8)}
+            renderItem={(e) => (
+              <div className="block w-[160px] h-[226px] md:w-[200px] md:h-[283px] rounded-xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 relative">
+                <img src={e.cover_url ?? ''} alt={e.title} className="absolute inset-0 w-full h-full object-cover" />
+              </div>
+            )}
+          />
+        )}
       </section>
 
       {/* SEÇÕES DE CONTEÚDO */}

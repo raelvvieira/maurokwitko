@@ -26,6 +26,7 @@ const LivroDetalhe = () => {
   let videoUrl: string | undefined;
   let preco = '';
   let comprarLink = '#';
+  let coverScale: number | undefined;
   let dataReady = true;
 
   if (tipo === 'fisico') {
@@ -37,6 +38,7 @@ const LivroDetalhe = () => {
     videoUrl = book.videoUrl;
     preco = book.price;
     comprarLink = book.link;
+    coverScale = book.coverScale;
   } else {
     const ebook = ebooks.find((e) => e.id === id);
     if (ebooks.length === 0) {
@@ -62,10 +64,11 @@ const LivroDetalhe = () => {
       cover: b.cover,
       title: b.title,
       to: `/livros-e-ebooks/fisico/${b.slug}`,
+      coverScale: b.coverScale,
     })),
     ...ebooks
       .filter((e) => !(tipo === 'ebook' && e.id === id))
-      .map((e) => ({ key: 'e-' + e.id, cover: e.cover_url || '', title: e.title, to: `/livros-e-ebooks/ebook/${e.id}` })),
+      .map((e) => ({ key: 'e-' + e.id, cover: e.cover_url || '', title: e.title, to: `/livros-e-ebooks/ebook/${e.id}`, coverScale: undefined as number | undefined })),
   ].filter((i) => i.cover);
 
   if (!dataReady) {
@@ -97,7 +100,12 @@ const LivroDetalhe = () => {
             >
               <div className="relative aspect-[2/3] rounded-2xl overflow-hidden bg-muted shadow-2xl max-w-sm mx-auto">
                 {cover ? (
-                  <img src={cover} alt={titulo} className="absolute inset-0 w-full h-full object-cover" />
+                  <img
+                    src={cover}
+                    alt={titulo}
+                    style={coverScale ? { transform: `scale(${coverScale})` } : undefined}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
                     <BookOpen className="w-16 h-16" />
@@ -274,7 +282,12 @@ const LivroDetalhe = () => {
                 to={item.to}
                 className="block w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-xl overflow-hidden bg-muted shadow-md hover:shadow-xl transition-shadow relative"
               >
-                <img src={item.cover} alt={item.title} className="absolute inset-0 w-full h-full object-cover" />
+                <img
+                  src={item.cover}
+                  alt={item.title}
+                  style={item.coverScale ? { transform: `scale(${item.coverScale})` } : undefined}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
               </Link>
             )}
           />

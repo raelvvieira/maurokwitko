@@ -17,8 +17,8 @@ const LivrosEbooks = () => {
 
   // Mix de capas para o carrossel final (até 12 itens, embaralhado leve)
   const carouselItems = [
-    ...BOOKS.map((b) => ({ key: 'f-' + b.slug, cover: b.cover, title: b.title, to: `/livros-e-ebooks/fisico/${b.slug}` })),
-    ...ebooks.map((e) => ({ key: 'e-' + e.id, cover: e.cover_url || '', title: e.title, to: `/livros-e-ebooks/ebook/${e.id}` })),
+    ...BOOKS.map((b) => ({ key: 'f-' + b.slug, cover: b.cover, title: b.title, to: `/livros-e-ebooks/fisico/${b.slug}`, coverScale: b.coverScale })),
+    ...ebooks.map((e) => ({ key: 'e-' + e.id, cover: e.cover_url || '', title: e.title, to: `/livros-e-ebooks/ebook/${e.id}`, coverScale: undefined as number | undefined })),
   ].filter((i) => i.cover);
 
   return (
@@ -65,6 +65,7 @@ const LivrosEbooks = () => {
                   <img
                     src={b.cover}
                     alt={b.title}
+                    style={b.coverScale ? { transform: `scale(${b.coverScale})` } : undefined}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
@@ -160,7 +161,12 @@ const LivrosEbooks = () => {
                 to={item.to}
                 className="block w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-xl overflow-hidden bg-muted shadow-md hover:shadow-xl transition-shadow relative"
               >
-                <img src={item.cover} alt={item.title} className="absolute inset-0 w-full h-full object-cover" />
+                <img
+                  src={item.cover}
+                  alt={item.title}
+                  style={item.coverScale ? { transform: `scale(${item.coverScale})` } : undefined}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
               </Link>
             )}
           />

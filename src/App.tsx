@@ -18,6 +18,7 @@ import ArtigoDetalhe from "./pages/public/ArtigoDetalhe";
 import HinosEspirituais from "./pages/public/HinosEspirituais";
 import RadioPublica from "./pages/public/RadioPublica";
 import CursoOnline from "./pages/public/CursoOnline";
+import ClubeDeEstudos from "./pages/public/ClubeDeEstudos";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
@@ -121,6 +122,7 @@ const App = () => (
             <Route path="/hinos-espirituais" element={<HinosEspirituais />} />
             <Route path="/radio" element={<RadioPublica />} />
             <Route path="/curso-online" element={<CursoOnline />} />
+            <Route path="/clube-de-estudos" element={<ClubeDeEstudos />} />
           </Route>
           <Route path="/login" element={<LoginRoute />} />
           <Route path="/reset-password" element={<ResetPassword />} />

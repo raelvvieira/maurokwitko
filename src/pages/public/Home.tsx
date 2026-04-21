@@ -125,7 +125,7 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
                   aria-roledescription="slide"
                   aria-label={`Slide ${idx + 1} de ${HERO_SLIDES.length}`}
                 >
-                  <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                  <div className="grid md:grid-cols-2 gap-10 md:gap-20 items-center">
                     <div className="space-y-6">
                       <span className="inline-block text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
                         {slide.eyebrow}

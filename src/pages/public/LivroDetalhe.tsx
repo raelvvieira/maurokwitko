@@ -252,6 +252,12 @@ const LivroDetalhe = () => {
         </div>
       </section>
 
+      <section className="px-4 md:px-6 pb-16">
+        <div className="max-w-6xl mx-auto">
+          <BookReviews bookType={tipo as 'fisico' | 'ebook'} bookId={id!} />
+        </div>
+      </section>
+
       {sugestoes.length > 0 && (
         <section className="py-16 md:py-20 px-4 md:px-6 bg-secondary/30">
           <div className="max-w-7xl mx-auto mb-8 md:mb-10 text-center">

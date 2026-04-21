@@ -65,6 +65,7 @@ const LivrosEbooks = () => {
                   <img
                     src={b.cover}
                     alt={b.title}
+                    style={b.coverScale ? { transform: `scale(${b.coverScale})` } : undefined}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />

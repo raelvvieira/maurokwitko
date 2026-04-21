@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Check, Quote, Mail, MessageCircle } from 'lucide-react';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 import { BOOKS } from '@/data/books';
 import { ARTICLES } from '@/data/articles';
 import { getArticleImage } from '@/data/articleImages';
@@ -33,6 +35,173 @@ const greenButtonAnim = {
   transition: { duration: 2.4, repeat: Infinity, ease: 'easeInOut' as const },
 };
 
+type Slide = {
+  eyebrow: string;
+  titleStart: string;
+  titleAccent: string;
+  titleEnd?: string;
+  description: string;
+  ctaLabel: string;
+  ctaHref: string;
+  image: string;
+  imageAlt: string;
+  caption: string;
+};
+
+const HERO_SLIDES: Slide[] = [
+  {
+    eyebrow: '30+ anos de prática clínica e formação',
+    titleStart: 'Psicoterapia Reencarnacionista e ',
+    titleAccent: 'Investigação do Inconsciente',
+    description:
+      'Há mais de três décadas, o Dr. Mauro Kwitko, médico, fundador e presidente da Associação Brasileira de Psicoterapia Reencarnacionista trabalha para integrar a Reencarnação às Instituições Oficiais de Saúde, enquanto um tema da área da saúde, não como um assunto religioso, espiritual.',
+    ctaLabel: 'Conheça nossa Formação',
+    ctaHref: '/formacao',
+    image: 'https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg',
+    imageAlt: 'Dr. Mauro Kwitko',
+    caption: 'CRM 5761 · UFRGS · Fundador da ABPR',
+  },
+  {
+    eyebrow: 'Comunidade exclusiva de membros',
+    titleStart: 'Clube de Estudos ',
+    titleAccent: 'Dr. Mauro Kwitko',
+    description:
+      'Acesse aulas, hinos espirituais, e-books, rádio e uma comunidade ativa em torno da Psicoterapia Reencarnacionista. Tudo num só lugar, com curadoria do Dr. Mauro.',
+    ctaLabel: 'Entrar no Clube',
+    ctaHref: '/clube-de-estudos',
+    image: 'https://i.ibb.co/HDQbPzRX/AULAS-PR-TICAS.jpg',
+    imageAlt: 'Clube de Estudos',
+    caption: 'Aulas, hinos, e-books e comunidade',
+  },
+  {
+    eyebrow: 'Curso online completo',
+    titleStart: 'A Psicologia da ',
+    titleAccent: 'Reencarnação',
+    description:
+      'Aprenda no seu ritmo os fundamentos da Psicoterapia Reencarnacionista, condensados em quase 30 anos de prática clínica. R$ 297 — em até 12x.',
+    ctaLabel: 'Conhecer o Curso Online',
+    ctaHref: '/curso-online',
+    image: 'https://i.ibb.co/MDJBY2J0/AULAS-TE-RICAS.jpg',
+    imageAlt: 'Curso Online',
+    caption: 'Acesso vitalício · 2 aulas gratuitas',
+  },
+];
+
+const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
+  const prefersReducedMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+  const autoplayRef = useRef(
+    Autoplay({ delay: 6000, stopOnInteraction: false, stopOnMouseEnter: true })
+  );
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: 'start' },
+    prefersReducedMotion ? [] : [autoplayRef.current]
+  );
+  const [selected, setSelected] = useState(0);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => setSelected(emblaApi.selectedScrollSnap());
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+  }, [emblaApi]);
+
+  return (
+    <section className="relative pt-24 md:pt-32 pb-12 md:pb-16">
+      <div className="absolute inset-0 -z-10 mesh-gradient opacity-60" />
+      <div className="max-w-6xl mx-auto px-4 md:px-6 relative">
+        <div className="overflow-hidden" ref={emblaRef} aria-roledescription="carousel">
+          <div className="flex">
+            {HERO_SLIDES.map((slide, idx) => (
+              <div
+                key={slide.titleAccent}
+                className="min-w-0 shrink-0 grow-0 basis-full"
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`Slide ${idx + 1} de ${HERO_SLIDES.length}`}
+              >
+                <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                  <div className="space-y-6">
+                    <span className="inline-block text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
+                      {slide.eyebrow}
+                    </span>
+                    <h1 className="font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl leading-[1.05]">
+                      {slide.titleStart}
+                      <span className="italic font-serif text-primary">{slide.titleAccent}</span>
+                      {slide.titleEnd}
+                    </h1>
+                    <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
+                      {slide.description}
+                    </p>
+                    <div className="flex flex-wrap gap-3 pt-2">
+                      <motion.button
+                        animate={{ scale: [1, 1.03, 1] }}
+                        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                        onClick={() => navigate(slide.ctaHref)}
+                        className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-md"
+                      >
+                        {slide.ctaLabel} <ArrowRight className="w-4 h-4" />
+                      </motion.button>
+                    </div>
+                  </div>
+
+                  <div className="relative">
+                    <div className="absolute -inset-6 bg-gradient-to-br from-primary/20 via-accent/10 to-transparent rounded-[2.5rem] blur-2xl" />
+                    <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-2xl ring-1 ring-border/40">
+                      <img
+                        src={slide.image}
+                        alt={slide.imageAlt}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <p className="mt-5 text-center text-sm md:text-base font-medium text-foreground/70 tracking-wide">
+                      {slide.caption}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Dots */}
+        <div className="flex items-center justify-center gap-2 mt-8">
+          {HERO_SLIDES.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => emblaApi?.scrollTo(idx)}
+              aria-label={`Ir para slide ${idx + 1}`}
+              className={`h-2 rounded-full transition-all ${
+                selected === idx ? 'w-8 bg-primary' : 'w-2 bg-border hover:bg-muted-foreground/40'
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Arrows (desktop) */}
+        <button
+          onClick={() => emblaApi?.scrollPrev()}
+          aria-label="Slide anterior"
+          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-background/70 backdrop-blur-md border border-border/60 shadow-sm hover:bg-background transition-colors"
+        >
+          <ArrowRight className="w-4 h-4 rotate-180" />
+        </button>
+        <button
+          onClick={() => emblaApi?.scrollNext()}
+          aria-label="Próximo slide"
+          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-background/70 backdrop-blur-md border border-border/60 shadow-sm hover:bg-background transition-colors"
+        >
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      </div>
+    </section>
+  );
+};
+
 const Home = () => {
   const navigate = useNavigate();
   const [ebooks, setEbooks] = useState<Ebook[]>([]);
@@ -50,52 +219,8 @@ const Home = () => {
 
   return (
     <div id="home" className="overflow-hidden">
-      {/* HERO */}
-      <section className="relative pt-24 md:pt-32 pb-12 md:pb-16">
-        <div className="absolute inset-0 -z-10 mesh-gradient opacity-60" />
-        <div className="max-w-6xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-          <motion.div {...fadeUp} className="space-y-6">
-            <span className="inline-block text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
-              30+ anos de prática clínica e formação
-            </span>
-            <h1 className="font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl leading-[1.05]">
-              Psicoterapia Reencarnacionista e{' '}
-              <span className="italic font-serif text-primary">Investigação do Inconsciente</span>
-            </h1>
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
-              Há mais de três décadas, o Dr. Mauro Kwitko, médico, fundador e presidente da Associação Brasileira de Psicoterapia Reencarnacionista trabalha para integrar a Reencarnação às Instituições Oficiais de Saúde, enquanto um tema da área da saúde, não como um assunto religioso, espiritual.
-            </p>
-            <div className="flex flex-wrap gap-3 pt-2">
-              <motion.button
-                {...greenButtonAnim}
-                onClick={() => navigate('/formacao')}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-md"
-              >
-                Conheça nossa Formação <ArrowRight className="w-4 h-4" />
-              </motion.button>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="relative"
-          >
-            <div className="absolute -inset-6 bg-gradient-to-br from-primary/20 via-accent/10 to-transparent rounded-[2.5rem] blur-2xl" />
-            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-2xl ring-1 ring-border/40">
-              <img
-                src="https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg"
-                alt="Dr. Mauro Kwitko"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <p className="mt-5 text-center text-sm md:text-base font-medium text-foreground/70 tracking-wide">
-              CRM 5761 · UFRGS · Fundador da ABPR
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      {/* HERO CAROUSEL */}
+      <HeroCarousel navigate={navigate} />
 
       {/* LIVROS — Marquee */}
       <section id="livros" className="relative py-12 md:py-16">

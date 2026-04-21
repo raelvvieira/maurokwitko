@@ -16,12 +16,12 @@ const RADIO = [
 const NAV: { label: string; href?: string; children?: { label: string; href: string }[] }[] = [
   { label: 'Home', href: '/' },
   { label: 'Quem Sou Eu', href: '/quem-sou-eu' },
+  { label: 'Clube de Estudos', href: '/clube-de-estudos' },
   { label: 'Cursos', children: COURSES },
   { label: 'Livros e E-books', href: '/livros-e-ebooks' },
   { label: 'Hinos Espirituais', href: '/hinos-espirituais' },
   { label: 'Rádio', children: RADIO },
   { label: 'Artigos', href: '/artigos' },
-  { label: 'Clube de Estudos', href: '/clube-de-estudos' },
 ];
 
 const PublicHeader = () => {

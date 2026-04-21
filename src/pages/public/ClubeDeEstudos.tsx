@@ -70,6 +70,9 @@ const FAQ = [
 ];
 
 const ClubeDeEstudos = () => {
+  const { ebooks } = useEbooks();
+  const ebookCovers = ebooks.filter((e) => e.cover_url);
+
   return (
     <div className="pt-24 md:pt-32 pb-16 overflow-hidden">
       {/* HERO */}

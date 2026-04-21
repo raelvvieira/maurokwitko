@@ -46,6 +46,7 @@ const LivroDetalhe = () => {
       autor = ebook.author;
       cover = ebook.cover_url || '';
       synopsis = ebook.description || 'Sinopse em breve.';
+      videoUrl = (ebook as any).video_url || undefined;
       comprarLink = ebook.url || '#';
     }
   }
@@ -126,7 +127,7 @@ const LivroDetalhe = () => {
                 <h2 className="text-sm font-semibold tracking-[0.18em] text-foreground/60 uppercase mb-2">
                   Sinopse
                 </h2>
-                <p className="text-base text-foreground/80 leading-relaxed whitespace-pre-line">{synopsis}</p>
+                <ExpandableSynopsis text={synopsis} />
               </div>
 
               {/* Comentário do Autor */}

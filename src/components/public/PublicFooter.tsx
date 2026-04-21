@@ -71,13 +71,13 @@ const PublicFooter = () => {
             © {new Date().getFullYear()} Dr. Mauro Kwitko. Todos os direitos reservados.
           </p>
           <div className="flex items-center gap-3">
-            <a href="#" aria-label="Instagram" className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 transition-colors">
+            <a href="https://www.instagram.com/maurokwitko/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 transition-colors">
               <Instagram className="w-4 h-4" />
             </a>
-            <a href="#" aria-label="YouTube" className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 transition-colors">
+            <a href="https://www.youtube.com/channel/UCrAaxlSZUbKoFNrCVgQ3uAw" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 transition-colors">
               <Youtube className="w-4 h-4" />
             </a>
-            <a href="#" aria-label="Facebook" className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 transition-colors">
+            <a href="https://www.facebook.com/maurokwitko" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 transition-colors">
               <Facebook className="w-4 h-4" />
             </a>
           </div>

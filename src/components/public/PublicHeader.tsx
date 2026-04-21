@@ -20,6 +20,7 @@ const NAV: { label: string; href?: string; children?: { label: string; href: str
   { label: 'Hinos Espirituais', href: '/hinos-espirituais' },
   { label: 'Rádio', children: RADIO },
   { label: 'Artigos', href: '/artigos' },
+  { label: 'Clube de Estudos', href: '/clube-de-estudos' },
 ];
 
 const PublicHeader = () => {

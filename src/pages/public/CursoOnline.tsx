@@ -103,30 +103,6 @@ const CursoOnline = () => {
         <p className="font-semibold">Abraço do Mauro Kwitko.</p>
       </section>
 
-      {/* IMAGEM 1 — Jornada / meditação */}
-      <section className="max-w-3xl mx-auto px-4 md:px-6 mt-16">
-        <div className="rounded-3xl overflow-hidden shadow-md ring-1 ring-border/40">
-          <img
-            src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=80"
-            alt="Jornada de autoconhecimento"
-            loading="lazy"
-            className="w-full aspect-[21/9] object-cover"
-          />
-        </div>
-      </section>
-
-      {/* IMAGEM 2 — Estudo / livros */}
-      <section className="max-w-3xl mx-auto px-4 md:px-6 mt-16">
-        <div className="rounded-3xl overflow-hidden shadow-md ring-1 ring-border/40">
-          <img
-            src="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=1200&q=80"
-            alt="Estudo e aprendizado"
-            loading="lazy"
-            className="w-full aspect-[21/9] object-cover"
-          />
-        </div>
-      </section>
-
       {/* MÓDULOS */}
       <section className="max-w-6xl mx-auto px-4 md:px-6 mt-16">
         <div className="text-center mb-10">
@@ -185,18 +161,6 @@ const CursoOnline = () => {
               <p className="mt-3 text-sm font-semibold">{r.name}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* IMAGEM 3 — Amanhecer / recomeço */}
-      <section className="max-w-3xl mx-auto px-4 md:px-6 mt-16">
-        <div className="rounded-3xl overflow-hidden shadow-md ring-1 ring-border/40">
-          <img
-            src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&q=80"
-            alt="Amanhecer e recomeço"
-            loading="lazy"
-            className="w-full aspect-[21/9] object-cover"
-          />
         </div>
       </section>
 

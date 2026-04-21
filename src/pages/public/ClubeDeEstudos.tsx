@@ -96,12 +96,14 @@ const ClubeDeEstudos = () => {
               animate={{ scale: [1, 1.03, 1] }}
               transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <Link
-                to="/login"
+              <a
+                href="https://chk.eduzz.com/2445141"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-emerald-600 text-white text-sm md:text-base font-bold hover:bg-emerald-700 transition-colors shadow-lg"
               >
                 Assine agora — R$ 29/mês <ArrowRight className="w-4 h-4" />
-              </Link>
+              </a>
             </motion.div>
             <span className="text-xs text-muted-foreground">Cancele quando quiser</span>
           </div>
@@ -316,12 +318,14 @@ const ClubeDeEstudos = () => {
             transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
             className="mt-8"
           >
-            <Link
-              to="/login"
+            <a
+              href="https://chk.eduzz.com/2445141"
+              target="_blank"
+              rel="noopener noreferrer"
               className="block w-full px-6 py-4 rounded-full bg-emerald-600 text-white text-base font-bold hover:bg-emerald-700 transition-colors shadow-lg"
             >
               Assinar agora
-            </Link>
+            </a>
           </motion.div>
           <p className="text-xs text-muted-foreground mt-3">Cancele quando quiser, sem multa.</p>
         </motion.div>
@@ -355,12 +359,14 @@ const ClubeDeEstudos = () => {
           transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
           className="mt-7 inline-block"
         >
-          <Link
-            to="/login"
+          <a
+            href="https://chk.eduzz.com/2445141"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-emerald-600 text-white text-base font-bold hover:bg-emerald-700 transition-colors shadow-lg"
           >
             Assine por R$ 29/mês <ArrowRight className="w-5 h-5" />
-          </Link>
+          </a>
         </motion.div>
       </section>
     </div>

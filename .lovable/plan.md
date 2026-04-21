@@ -1,85 +1,55 @@
 
 
-## Plano: ajustes no header, artigos com imagens, hero, e capas dos hinos
+## Plano: refinos na hero, curso online, hinos tocáveis e velocidade do marquee
 
-### 1. Header: dropdowns independentes (`src/components/public/PublicHeader.tsx`)
+### 1. Hero da Home (`src/pages/public/Home.tsx`)
 
-**Bug:** estado único `coursesOpen` controla os dois dropdowns (Cursos e Rádio), por isso ambos abrem ao mesmo tempo.
+- **Copy do título:** trocar "Ciência, Clínica e *Despertar Espiritual*" por "Ciência, Clínica e *Reencarnação*" (mantém serif itálico no último termo).
+- **CTAs:** remover os 3 botões atuais e o link "Pesquisas e Artigos". Manter apenas **um** CTA: `Conheça nossa Formação` (verde `bg-emerald-600`, animação pulse igual aos botões "Saiba Mais", → `/formacao`).
+- **Selo de credibilidade:** mover `CRM 5761 · UFRGS · Fundador da ABPR` da coluna de texto para **abaixo da imagem do Dr. Mauro** (coluna direita), centralizado, fonte um pouco maior (`text-sm md:text-base font-medium text-foreground/70 tracking-wide`).
+- **Inscrições Abertas:** o pill "Inscrições Abertas" da seção Formação passa a ter tom verde (`bg-emerald-500/15 text-emerald-700` no light, `dark:text-emerald-400`).
 
-**Correção:** trocar `coursesOpen` por `openMenu: string | null` (guarda o `label` do item ativo). Cada dropdown abre/fecha checando `openMenu === item.label`. Mesma lógica no mobile (`mobileOpenMenu`).
+### 2. Velocidade do marquee de e-books
 
-### 2. Imagens nos artigos (Unsplash) — banco central
+O `<Marquee>` desloca `-50%` em `duration` segundos. Como há mais e-books (até 20) que livros (7), a faixa duplicada do marquee dos e-books fica muito maior e percorre mais distância no mesmo tempo, parecendo mais rápida. **Correção:** ajustar `duration` proporcionalmente ao número de itens em `Home.tsx`:
+- Livros: `duration={60}` (7 itens → ~8.5s/item).
+- E-books: `duration={Math.max(60, Math.round(ebooks.length * 8.5))}` (ex.: 20 itens → ~170s).
 
-**Arquivo novo:** `src/data/articleImages.ts` exportando `ARTICLE_IMAGES: Record<slug, string>`. URLs do Unsplash (`?w=800&q=80`), tamanho médio, temas neutros e relacionados a saúde/cotidiano (sem misticismo):
+Resultado: cada card passa pela tela na mesma velocidade visual em ambos os carrosséis.
 
-- `transtorno-do-espectro-autista` — criança brincando com blocos coloridos
-- `beneficios-contraindicacoes-da-regressao` — pessoa sentada relaxada/meditação simples
-- `investigacao-do-inconsciente-em-criancas` — criança desenhando com lápis
-- `mensagem-aos-espiritas` — livro aberto sobre mesa
-- `o-livro-dos-espiritos` — pilha de livros antigos
-- `a-etica-da-investigacao-do-inconsciente` — aperto de mãos / consultório
-- `mensagem-aos-psicologos-e-psiquiatras` — estetoscópio / consultório clínico
-- `o-tratamento` — sofá de terapia / consultório
-- `por-que-a-psicologia-e-a-psiquiatria-nao-lidam-com-a-reencarnacao` — cérebro/anatomia médica
-- `psicoterapia-para-quem-ouve-vozes` — pessoa pensativa de perfil
-- `a-verdadeira-e-a-falsa-rebeldia-jovem` — adolescentes conversando
-- `freud-alem-da-vida` — caderno e caneta sobre mesa de estudo
-- `visao-espiritual-fobias-panico-depressao-dores-cronicas` — mãos cobrindo o rosto (ansiedade simples)
-- `depressao` — pessoa olhando pela janela
-- `fibromialgia` — pessoa com dor no ombro / fisioterapia
-- `transtorno-do-panico` — coração / batimento (saúde)
-- `jovens-guerreiros-da-luz-e-a-cannabis` — folha verde / planta natural
-- `fobias` — escada/altura discreta (objeto comum)
+### 3. Curso On-line (`src/pages/public/CursoOnline.tsx`) — toda página centralizada
 
-Helper `getArticleImage(slug)` com fallback para uma imagem genérica de livro.
+- **Hero:** virar layout vertical, tudo centralizado (`text-center max-w-3xl mx-auto`). Remover `grid md:grid-cols-2`.
+- **VSL (vídeo Reels):** mover para **abaixo da hero**, centralizado (`max-w-[360px] mx-auto`), mantendo `aspect-[9/16]`.
+- **INTRO:** já é `max-w-3xl mx-auto`, adicionar `text-center` aos parágrafos.
+- **Módulos:** título já centralizado; manter grid 1/2/3 colunas.
+- **Sobre o autor:** **REMOVER** completamente a seção (linhas 147-184) e todo estado relacionado (`expandBio`, `setExpandBio`, import `Award`).
+- **FAQ:** **REMOVER** completamente (linhas 222-236) e remover imports `Accordion*`.
+- **Avaliações:** manter, já está centralizada.
+- **Imagens temáticas:** adicionar 3 imagens neutras do Unsplash distribuídas pela página, alinhadas ao tema:
+  - Após a INTRO: imagem "jornada/caminho" (`https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=80` — pessoa em meditação).
+  - Antes da seção Módulos: imagem "estudo/livros abertos" (`https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=1200&q=80`).
+  - Antes do CTA final: imagem "amanhecer/recomeço" (`https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&q=80` — paisagem natural calma).
+  - Cada imagem em container `max-w-3xl mx-auto rounded-3xl aspect-[21/9] object-cover shadow-md ring-1 ring-border/40`.
 
-### 3. Cards de artigos com imagem
+### 4. Hinos tocáveis no site público (`src/pages/public/HinosEspirituais.tsx`)
 
-**`src/pages/public/Artigos.tsx`** — substituir o quadradinho com ícone `BookText` por uma capa `aspect-[16/10]` com `<img src={getArticleImage(art.slug)} loading="lazy" />` e overlay sutil. Ícone removido.
+Hoje o botão "Ouvir no Clube" empurra pra `/login`. Tornar os hinos **tocáveis no próprio site** usando as playlists do YouTube já mapeadas em `Library.tsx`:
 
-**`src/pages/public/Home.tsx` — seção "Artigos Recentes":**
-- Remover o array `ARTICLES` mockado.
-- Importar `ARTICLES` de `@/data/articles` e usar `.slice(0, 3)` (ou os 3 últimos).
-- Trocar o placeholder gradiente por `<img src={getArticleImage(slug)} />`.
-- Card vira `<Link to={'/artigos/' + slug}>` (clicável).
-- Remover linha de categoria/data (não existem nos artigos reais).
-
-**`src/pages/public/ArtigoDetalhe.tsx`** — adicionar uma capa hero (aspect-[21/9]) com a imagem do artigo logo abaixo do header, `rounded-2xl`.
-
-### 4. Hero da Home — copy ampliada para psicoterapeutas + profissionais de saúde
-
-Em `src/pages/public/Home.tsx` (linhas 75-98):
-
-- **Eyebrow:** "30+ anos de prática clínica e formação"
-- **Título:** "Ciência, Clínica e *Despertar Espiritual*" (mantém o serif itálico no último)
-- **Subtítulo:**  
-  "Há mais de três décadas, o Dr. Mauro Kwitko integra a Psicoterapia de Regressão à prática clínica — oferecendo a psicoterapeutas, médicos e demais profissionais da saúde uma abordagem onde rigor científico, escuta clínica e profundidade da alma se encontram."
-- **CTAs:** "Conheça o Método" (primary, → `/formacao`) + "Formação para Profissionais" (outline, → `/formacao`) + "Pesquisas e Artigos" (ghost link, → `#artigos`).
-- Adicionar pequeno faixa de selos de credibilidade abaixo dos botões: `CRM 5761 · UFRGS · Fundador da ABPR` (texto fino, `text-xs text-muted-foreground`).
-
-### 5. Capas quadradas dos Hinos (3 imagens fornecidas)
-
-Mapeamento:
-- Paz → `https://i.ibb.co/v6fpPVzb/HINOS-DE-PAZ-2.png`
-- Amor → `https://i.ibb.co/q3GHxr4p/HINOS-DE-AMOR-2.png`
-- Fé → `https://i.ibb.co/TDs4sdxQ/HINOS-DE-F-2-2.png`
-
-**`src/pages/public/HinosEspirituais.tsx`** — substituir o bloco `aspect-video` com ícone `Music` por `<img src={cover} className="w-full aspect-square object-cover" />` (formato quadrado conforme pedido). Cards do grid passam a ter capa quadrada + bloco de informações abaixo.
-
-**`src/pages/Library.tsx` (área do clube)** — criar mapa `ALBUM_COVER_MAP` (mesmas 3 URLs) por título do álbum em maiúsculas. No bloco `w-32 h-32` com `Disc3` (linhas 53-55), se houver capa correspondente, renderizar `<img src={cover} className="w-32 h-32 rounded-xl object-cover" />` em vez do gradiente+ícone. Mantém quadrado.
+- Mapear cada playlist pública à URL embed:
+  - Paz → `https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg1lkiGi6HLMAJhCq7NLfk7X`
+  - Amor → `https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg2Pn2UzVXanS5k7_8beIBVy`
+  - Fé → `https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg26AzCi0oOcrNZVir0SOc1j`
+- Botão muda de "Ouvir no Clube" para **"Ouvir Agora"** e abre um `<Dialog>` com iframe do YouTube em `aspect-video`.
+- Estado local `activePlaylist: { title; url } | null`. Reusa `Dialog` de `@/components/ui/dialog`.
+- Capas continuam quadradas, layout intacto.
 
 ### Arquivos
 
-**Criados:**
-- `src/data/articleImages.ts`
-
 **Alterados:**
-- `src/components/public/PublicHeader.tsx` — fix dropdowns independentes
-- `src/pages/public/Home.tsx` — hero reformulada, "Artigos Recentes" puxando dados reais com imagens
-- `src/pages/public/Artigos.tsx` — cards com imagem
-- `src/pages/public/ArtigoDetalhe.tsx` — imagem hero
-- `src/pages/public/HinosEspirituais.tsx` — capas quadradas reais
-- `src/pages/Library.tsx` — capas quadradas reais nos álbuns do clube
+- `src/pages/public/Home.tsx` — hero refinada, único CTA verde, selo abaixo da foto, duração marquee e-books proporcional, pill verde "Inscrições Abertas".
+- `src/pages/public/CursoOnline.tsx` — layout 100% centralizado, VSL abaixo da hero, remoção de "Sobre o autor" e FAQ, 3 imagens temáticas.
+- `src/pages/public/HinosEspirituais.tsx` — playlists tocáveis em modal, botão "Ouvir Agora".
 
-**Sem mudanças:** Supabase, rotas, Marquee, Footer, dados dos artigos.
+**Sem mudanças:** Marquee component, Library.tsx (clube), header, rotas, dados.
 

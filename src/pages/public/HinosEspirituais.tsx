@@ -213,37 +213,47 @@ const HinosEspirituais = () => {
                 </div>
               </div>
 
-              {/* Track list */}
+              {/* Track list / Playlist info */}
               <div className="border-l border-border/40 max-h-[480px] md:max-h-[560px] overflow-y-auto">
-                {activeAlbum.tracks.length === 0 && (
-                  <div className="p-6 text-sm text-muted-foreground">Nenhuma faixa cadastrada neste hinário.</div>
+                {playerMode === 'playlist' ? (
+                  <div className="p-6 text-sm text-muted-foreground space-y-2">
+                    <p className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Modo álbum</p>
+                    <p className="font-medium text-foreground">Reproduzindo álbum completo em sequência.</p>
+                    <p>As faixas tocam automaticamente, uma após a outra, direto do YouTube.</p>
+                  </div>
+                ) : (
+                  <>
+                    {activeAlbum.tracks.length === 0 && (
+                      <div className="p-6 text-sm text-muted-foreground">Nenhuma faixa cadastrada neste hinário.</div>
+                    )}
+                    {activeAlbum.tracks.map((t, idx) => {
+                      const active = activeTrackId === t.id;
+                      return (
+                        <button
+                          key={`${t.id}-${idx}`}
+                          onClick={() => setActiveTrackId(t.id)}
+                          className={`w-full text-left p-3 flex items-center gap-3 border-b border-border/40 transition-colors ${
+                            active ? 'bg-primary/10' : 'hover:bg-secondary/60'
+                          }`}
+                        >
+                          <div className="relative w-20 h-12 rounded-md overflow-hidden bg-muted shrink-0">
+                            <img
+                              src={`https://img.youtube.com/vi/${t.id}/mqdefault.jpg`}
+                              alt=""
+                              loading="lazy"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-muted-foreground">Faixa {idx + 1}</p>
+                            <p className="text-sm font-medium truncate">{t.title}</p>
+                          </div>
+                          {active && <Play className="w-4 h-4 text-primary shrink-0" />}
+                        </button>
+                      );
+                    })}
+                  </>
                 )}
-                {activeAlbum.tracks.map((t, idx) => {
-                  const active = activeTrackId === t.id;
-                  return (
-                    <button
-                      key={`${t.id}-${idx}`}
-                      onClick={() => setActiveTrackId(t.id)}
-                      className={`w-full text-left p-3 flex items-center gap-3 border-b border-border/40 transition-colors ${
-                        active ? 'bg-primary/10' : 'hover:bg-secondary/60'
-                      }`}
-                    >
-                      <div className="relative w-20 h-12 rounded-md overflow-hidden bg-muted shrink-0">
-                        <img
-                          src={`https://img.youtube.com/vi/${t.id}/mqdefault.jpg`}
-                          alt=""
-                          loading="lazy"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs text-muted-foreground">Faixa {idx + 1}</p>
-                        <p className="text-sm font-medium truncate">{t.title}</p>
-                      </div>
-                      {active && <Play className="w-4 h-4 text-primary shrink-0" />}
-                    </button>
-                  );
-                })}
               </div>
             </div>
           )}

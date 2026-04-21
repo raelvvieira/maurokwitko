@@ -34,7 +34,7 @@ const REVIEWS = [
 ];
 
 const CursoOnline = () => {
-  const COURSE_URL = 'https://reformaintimaonline.com.br';
+  const COURSE_URL = 'https://chk.eduzz.com/801EN21NW7';
 
   return (
     <div className="pt-24 md:pt-32 pb-16 overflow-hidden">

@@ -11,8 +11,12 @@ import {
   GraduationCap,
   Sparkles,
   Heart,
+  Gift,
+  Tag,
 } from 'lucide-react';
 import { BOOKS } from '@/data/books';
+import { useEbooks } from '@/hooks/useSupabaseData';
+import Marquee from '@/components/public/Marquee';
 
 const HINOS_COVERS = [
   'https://i.ibb.co/v6fpPVzb/HINOS-DE-PAZ-2.png',

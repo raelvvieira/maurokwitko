@@ -38,6 +38,7 @@ const LivroDetalhe = () => {
     videoUrl = book.videoUrl;
     preco = book.price;
     comprarLink = book.link;
+    coverScale = book.coverScale;
   } else {
     const ebook = ebooks.find((e) => e.id === id);
     if (ebooks.length === 0) {

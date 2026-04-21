@@ -110,13 +110,9 @@ const ClubeDeEstudos = () => {
           <div className="absolute -inset-6 bg-gradient-to-br from-primary/30 to-accent/20 rounded-[2rem] blur-2xl" />
           <div className="relative rounded-3xl overflow-hidden shadow-2xl ring-1 ring-border/40">
             <img
-              src="https://i.ibb.co/2t5ZzSp/dr-mauro-foto.png"
+              src="https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg"
               alt="Dr. Mauro Kwitko"
               className="w-full aspect-[4/5] object-cover"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src =
-                  'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=900&q=80';
-              }}
             />
           </div>
         </motion.div>

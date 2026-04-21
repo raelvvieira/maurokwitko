@@ -1,55 +1,94 @@
 
 
-## Plano: refinos na hero, curso online, hinos tocáveis e velocidade do marquee
+## Plano: Spotify nos hinos, player com lista, limpeza do curso, novas imagens nos artigos e nova página "Clube de Estudos"
 
-### 1. Hero da Home (`src/pages/public/Home.tsx`)
+### 1. Hinos Espirituais (`src/pages/public/HinosEspirituais.tsx`)
 
-- **Copy do título:** trocar "Ciência, Clínica e *Despertar Espiritual*" por "Ciência, Clínica e *Reencarnação*" (mantém serif itálico no último termo).
-- **CTAs:** remover os 3 botões atuais e o link "Pesquisas e Artigos". Manter apenas **um** CTA: `Conheça nossa Formação` (verde `bg-emerald-600`, animação pulse igual aos botões "Saiba Mais", → `/formacao`).
-- **Selo de credibilidade:** mover `CRM 5761 · UFRGS · Fundador da ABPR` da coluna de texto para **abaixo da imagem do Dr. Mauro** (coluna direita), centralizado, fonte um pouco maior (`text-sm md:text-base font-medium text-foreground/70 tracking-wide`).
-- **Inscrições Abertas:** o pill "Inscrições Abertas" da seção Formação passa a ter tom verde (`bg-emerald-500/15 text-emerald-700` no light, `dark:text-emerald-400`).
+**Card do Spotify (abaixo dos 3 hinários):**
+- Novo bloco em `max-w-3xl mx-auto mt-12`, card com gradiente verde Spotify (`from-emerald-600 to-green-700`) e ícone Spotify (SVG inline ou `lucide-react` com path custom).
+- Título: "Me encontre também no Spotify".
+- Subtítulo: "Ouça hinos, meditações e podcasts do Dr. Mauro direto no seu app preferido."
+- Botão branco com texto verde: "Abrir no Spotify" → `https://open.spotify.com/intl-pt/artist/4ca3uyMhCggB6s0XImv9ds?si=FxBhz20TTrGug9tEqfurqw` (target `_blank`).
 
-### 2. Velocidade do marquee de e-books
+**Player com lista de faixas (estilo Library do clube):**
+- Substituir o `Dialog` simples (iframe único) por um `Dialog` mais largo (`max-w-4xl`) com layout em 2 colunas no desktop:
+  - **Esquerda (player):** iframe atual da playlist do YouTube em `aspect-video`.
+  - **Direita (lista de faixas):** lista vertical scrollável (`max-h-[480px] overflow-y-auto`) com as faixas do hinário, mostrando miniatura YouTube (`https://img.youtube.com/vi/${id}/mqdefault.jpg`), número e título. Ao clicar numa faixa, troca o `src` do iframe para o vídeo individual com `autoplay=1`.
+- Mapear cada hinário a um array de tracks (id YouTube + título). Como dado, criar `src/data/hinosTracks.ts` com as faixas conhecidas dos 3 álbuns (reaproveitar do `AppContext` se já existir; caso contrário, inicializar com a playlist completa via `videoseries` + faixas estáticas mínimas — usar a playlist como fallback "Tocar tudo" no topo).
+- Mobile: empilhar player em cima, lista embaixo.
 
-O `<Marquee>` desloca `-50%` em `duration` segundos. Como há mais e-books (até 20) que livros (7), a faixa duplicada do marquee dos e-books fica muito maior e percorre mais distância no mesmo tempo, parecendo mais rápida. **Correção:** ajustar `duration` proporcionalmente ao número de itens em `Home.tsx`:
-- Livros: `duration={60}` (7 itens → ~8.5s/item).
-- E-books: `duration={Math.max(60, Math.round(ebooks.length * 8.5))}` (ex.: 20 itens → ~170s).
+### 2. Página do Curso On-line (`src/pages/public/CursoOnline.tsx`)
 
-Resultado: cada card passa pela tela na mesma velocidade visual em ambos os carrosséis.
+- **Remover** as 3 seções de imagem temáticas (linhas 106-128 e 191-201). Manter espaçamentos via `mt-16` entre blocos restantes (Intro → Módulos → Avaliações → CTA).
 
-### 3. Curso On-line (`src/pages/public/CursoOnline.tsx`) — toda página centralizada
+### 3. Imagens de artigos ajustadas (`src/data/articleImages.ts`)
 
-- **Hero:** virar layout vertical, tudo centralizado (`text-center max-w-3xl mx-auto`). Remover `grid md:grid-cols-2`.
-- **VSL (vídeo Reels):** mover para **abaixo da hero**, centralizado (`max-w-[360px] mx-auto`), mantendo `aspect-[9/16]`.
-- **INTRO:** já é `max-w-3xl mx-auto`, adicionar `text-center` aos parágrafos.
-- **Módulos:** título já centralizado; manter grid 1/2/3 colunas.
-- **Sobre o autor:** **REMOVER** completamente a seção (linhas 147-184) e todo estado relacionado (`expandBio`, `setExpandBio`, import `Award`).
-- **FAQ:** **REMOVER** completamente (linhas 222-236) e remover imports `Accordion*`.
-- **Avaliações:** manter, já está centralizada.
-- **Imagens temáticas:** adicionar 3 imagens neutras do Unsplash distribuídas pela página, alinhadas ao tema:
-  - Após a INTRO: imagem "jornada/caminho" (`https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=80` — pessoa em meditação).
-  - Antes da seção Módulos: imagem "estudo/livros abertos" (`https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=1200&q=80`).
-  - Antes do CTA final: imagem "amanhecer/recomeço" (`https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&q=80` — paisagem natural calma).
-  - Cada imagem em container `max-w-3xl mx-auto rounded-3xl aspect-[21/9] object-cover shadow-md ring-1 ring-border/40`.
+Trocar URLs Unsplash dos 8 artigos pedidos por imagens **mais alinhadas ao tema clínico/cotidiano** (sem misticismo):
 
-### 4. Hinos tocáveis no site público (`src/pages/public/HinosEspirituais.tsx`)
+| Slug | Tema buscado | Nova imagem (Unsplash) |
+|---|---|---|
+| `investigacao-do-inconsciente-em-criancas` | criança desenhando com lápis de cor | `photo-1587654780291-39c9404d746b?w=800&q=80` |
+| `mensagem-aos-psicologos-e-psiquiatras` | consultório/estetoscópio em mesa clínica | `photo-1576091160550-2173dba999ef?w=800&q=80` |
+| `o-tratamento` | duas cadeiras de terapia / sofá clínico | `photo-1591343395082-e120087004b4?w=800&q=80` |
+| `por-que-a-psicologia-e-a-psiquiatria-nao-lidam-com-a-reencarnacao` | livros + estetoscópio (ciência+saúde) | `photo-1532187863486-abf9dbad1b69?w=800&q=80` |
+| `visao-espiritual-fobias-panico-depressao-dores-cronicas` | mãos no rosto, ansiedade discreta | `photo-1541199249251-f713e6145474?w=800&q=80` |
+| `depressao` | pessoa pensativa olhando pela janela | `photo-1516534775068-ba3e7458af70?w=800&q=80` |
+| `transtorno-do-panico` | mão sobre o peito (coração acelerado) | `photo-1559757148-5c350d0d3c56?w=800&q=80` |
+| `fobias` | escada/altura comum (objeto cotidiano) | `photo-1551269901-5c5e14c25df7?w=800&q=80` (mantida — já adequada) ou troca por `photo-1500382017468-9049fed747ef` |
 
-Hoje o botão "Ouvir no Clube" empurra pra `/login`. Tornar os hinos **tocáveis no próprio site** usando as playlists do YouTube já mapeadas em `Library.tsx`:
+(URLs definitivas ajustadas durante implementação verificando no Unsplash; sem mística.)
 
-- Mapear cada playlist pública à URL embed:
-  - Paz → `https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg1lkiGi6HLMAJhCq7NLfk7X`
-  - Amor → `https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg2Pn2UzVXanS5k7_8beIBVy`
-  - Fé → `https://www.youtube.com/embed/videoseries?list=PLG7GxMRJ1lg26AzCi0oOcrNZVir0SOc1j`
-- Botão muda de "Ouvir no Clube" para **"Ouvir Agora"** e abre um `<Dialog>` com iframe do YouTube em `aspect-video`.
-- Estado local `activePlaylist: { title; url } | null`. Reusa `Dialog` de `@/components/ui/dialog`.
-- Capas continuam quadradas, layout intacto.
+### 4. Novo menu e página "Clube de Estudos" (página de vendas)
+
+**Header (`PublicHeader.tsx`):**
+- Adicionar item `Clube de Estudos` → `/clube-de-estudos`, posicionado **antes** do botão "Entrar no Clube".
+
+**Rota nova (`src/App.tsx`):** `/clube-de-estudos` → `ClubeDeEstudos` (dentro do `PublicLayout`).
+
+**Página nova (`src/pages/public/ClubeDeEstudos.tsx`):** página de vendas inspirada nas referências, mas com o design do site (glassmorphism, primary slate-blue, emerald nos CTAs, cards `rounded-3xl ring-1 ring-border/40`):
+
+1. **Hero** (split 2 colunas):
+   - Esquerda: eyebrow "COMUNIDADE EXCLUSIVA", título "Clube de Estudos *Dr. Mauro Kwitko*", subtítulo destacando comunidade, conversas e trocas com profissionais buscando reforma íntima e espiritualidade. CTA verde grande "Assine agora — R$ 29/mês" → `/login`. Linha fina: "Cancele quando quiser".
+   - Direita: foto do Dr. Mauro (mesma da Home).
+
+2. **Faixa de benefícios** (4 ícones em grid): Comunidade ativa · Grupo VIP no WhatsApp · Lives exclusivas com convidados · Acervo completo (e-books, aulas, hinos).
+
+3. **"Acesse todos os conteúdos do Dr. Mauro"** — grid 3 cards reaproveitando capas reais dos livros (`books.ts`): Fogo Selvagem, Viver Para Servir, Baixa Autoestima.
+
+4. **Seções de conteúdo** (estilo da imagem 23/24 com ícone + texto à esquerda e visual à direita):
+   - Acesse E-books e Futuros Lançamentos.
+   - Acesso a Lives e Aulas Gravadas (card mock "LIVE #01 — Autismo em Adultos").
+   - Acesso ao Curso Gravado: A Reforma Íntima.
+   - Hinários (com capas dos 3 hinos quadradas).
+
+5. **"Reforço da Comunidade"** — bloco grande com título "Mais que conteúdo: uma comunidade", parágrafo destacando troca com **psicoterapeutas, médicos e demais profissionais de saúde** que buscam aprofundar reforma íntima, espiritualidade e Psicoterapia Reencarnacionista. Lista bullet: conversar em fóruns internos, comentar aulas, postar relatos, participar do grupo VIP no WhatsApp, receber em primeira mão lives com entrevistados.
+
+6. **"Conteúdos que você verá"** — 3 thumbnails mock (As Armadilhas Terrenas, Por que a Psicologia não lida com a Reencarnação, O Mapa do Ego), com botão "Assine agora".
+
+7. **Card de preço destaque** (centralizado, `max-w-xl`, ring-2 ring-primary, sombra forte):
+   - "Acesso Mensal ao Clube"
+   - Preço grande: **R$ 29** /mês
+   - Lista com check ✓: Comunidade exclusiva · Grupo VIP no WhatsApp · Lives com convidados especiais · Acervo de e-books e aulas · Hinários · Curso Reforma Íntima · Cancele quando quiser
+   - Botão emerald CTA "Assinar agora" → `/login` (futuramente integrável a checkout).
+
+8. **FAQ curto** (4–6 perguntas: O que recebo? Posso cancelar? Como acesso? Quem pode participar?).
+
+9. **CTA final** + footer já vem do PublicLayout.
+
+**Atualização de preço em outros locais:** verificar se há banners "R$ 24,90" no público — se houver, atualizar para R$ 29 (texto livre só nessa nova página por ora).
 
 ### Arquivos
 
-**Alterados:**
-- `src/pages/public/Home.tsx` — hero refinada, único CTA verde, selo abaixo da foto, duração marquee e-books proporcional, pill verde "Inscrições Abertas".
-- `src/pages/public/CursoOnline.tsx` — layout 100% centralizado, VSL abaixo da hero, remoção de "Sobre o autor" e FAQ, 3 imagens temáticas.
-- `src/pages/public/HinosEspirituais.tsx` — playlists tocáveis em modal, botão "Ouvir Agora".
+**Criados:**
+- `src/pages/public/ClubeDeEstudos.tsx`
+- `src/data/hinosTracks.ts` (faixas dos 3 hinários para o player com lista)
 
-**Sem mudanças:** Marquee component, Library.tsx (clube), header, rotas, dados.
+**Alterados:**
+- `src/pages/public/HinosEspirituais.tsx` — card Spotify + dialog em 2 colunas com lista de faixas clicáveis.
+- `src/pages/public/CursoOnline.tsx` — remoção das 3 imagens temáticas.
+- `src/data/articleImages.ts` — novas URLs para os 8 artigos listados.
+- `src/components/public/PublicHeader.tsx` — item "Clube de Estudos" adicionado.
+- `src/App.tsx` — rota `/clube-de-estudos`.
+
+**Sem mudanças:** Library (clube), área `/app/*`, Supabase, marquee, footer.
 

@@ -114,88 +114,74 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
     <section className="relative pt-24 md:pt-32 pb-12 md:pb-16">
       <div className="absolute inset-0 -z-10 mesh-gradient opacity-60" />
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative">
-        <div className="overflow-hidden" ref={emblaRef} aria-roledescription="carousel">
-          <div className="flex">
-            {HERO_SLIDES.map((slide, idx) => (
-              <div
-                key={slide.titleAccent}
-                className="min-w-0 shrink-0 grow-0 basis-full"
-                role="group"
-                aria-roledescription="slide"
-                aria-label={`Slide ${idx + 1} de ${HERO_SLIDES.length}`}
-              >
-                <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-                  <div className="space-y-6">
-                    <span className="inline-block text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
-                      {slide.eyebrow}
-                    </span>
-                    <h1 className="font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl leading-[1.05]">
-                      {slide.titleStart}
-                      <span className="italic font-serif text-primary">{slide.titleAccent}</span>
-                      {slide.titleEnd}
-                    </h1>
-                    <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
-                      {slide.description}
-                    </p>
-                    <div className="flex flex-wrap gap-3 pt-2">
-                      <motion.button
-                        animate={{ scale: [1, 1.03, 1] }}
-                        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-                        onClick={() => navigate(slide.ctaHref)}
-                        className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-md"
-                      >
-                        {slide.ctaLabel} <ArrowRight className="w-4 h-4" />
-                      </motion.button>
+        <div className="rounded-[2rem] border border-border/60 ring-1 ring-border/40 bg-card/60 backdrop-blur-sm shadow-sm p-6 md:p-12 lg:p-16">
+          <div className="overflow-hidden" ref={emblaRef} aria-roledescription="carousel">
+            <div className="flex">
+              {HERO_SLIDES.map((slide, idx) => (
+                <div
+                  key={slide.titleAccent}
+                  className="min-w-0 shrink-0 grow-0 basis-full"
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label={`Slide ${idx + 1} de ${HERO_SLIDES.length}`}
+                >
+                  <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                    <div className="space-y-6">
+                      <span className="inline-block text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
+                        {slide.eyebrow}
+                      </span>
+                      <h1 className="font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl leading-[1.05]">
+                        {slide.titleStart}
+                        <span className="italic font-serif text-primary">{slide.titleAccent}</span>
+                        {slide.titleEnd}
+                      </h1>
+                      <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
+                        {slide.description}
+                      </p>
+                      <div className="flex flex-wrap gap-3 pt-2">
+                        <motion.button
+                          animate={{ scale: [1, 1.03, 1] }}
+                          transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                          onClick={() => navigate(slide.ctaHref)}
+                          className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-md"
+                        >
+                          {slide.ctaLabel} <ArrowRight className="w-4 h-4" />
+                        </motion.button>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="relative">
-                    <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-lg ring-1 ring-border/40">
-                      <img
-                        src={slide.image}
-                        alt={slide.imageAlt}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="relative">
+                      <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-lg ring-1 ring-border/40">
+                        <img
+                          src={slide.image}
+                          alt={slide.imageAlt}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <p className="mt-5 text-center text-sm md:text-base font-medium text-foreground/70 tracking-wide">
+                        {slide.caption}
+                      </p>
                     </div>
-                    <p className="mt-5 text-center text-sm md:text-base font-medium text-foreground/70 tracking-wide">
-                      {slide.caption}
-                    </p>
                   </div>
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Dots */}
+          <div className="flex items-center justify-center gap-2 mt-8">
+            {HERO_SLIDES.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => emblaApi?.scrollTo(idx)}
+                aria-label={`Ir para slide ${idx + 1}`}
+                className={`h-2 rounded-full transition-all ${
+                  selected === idx ? 'w-8 bg-primary' : 'w-2 bg-border hover:bg-muted-foreground/40'
+                }`}
+              />
             ))}
           </div>
         </div>
-
-        {/* Dots */}
-        <div className="flex items-center justify-center gap-2 mt-8">
-          {HERO_SLIDES.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => emblaApi?.scrollTo(idx)}
-              aria-label={`Ir para slide ${idx + 1}`}
-              className={`h-2 rounded-full transition-all ${
-                selected === idx ? 'w-8 bg-primary' : 'w-2 bg-border hover:bg-muted-foreground/40'
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Arrows (desktop) */}
-        <button
-          onClick={() => emblaApi?.scrollPrev()}
-          aria-label="Slide anterior"
-          className="hidden md:flex absolute -left-2 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-transparent text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors"
-        >
-          <ArrowRight className="w-4 h-4 rotate-180" />
-        </button>
-        <button
-          onClick={() => emblaApi?.scrollNext()}
-          aria-label="Próximo slide"
-          className="hidden md:flex absolute -right-2 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-transparent text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors"
-        >
-          <ArrowRight className="w-4 h-4" />
-        </button>
       </div>
     </section>
   );

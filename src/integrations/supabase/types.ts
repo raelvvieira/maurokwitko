@@ -97,6 +97,36 @@ export type Database = {
         }
         Relationships: []
       }
+      book_reviews: {
+        Row: {
+          book_id: string
+          book_type: string
+          comment: string
+          created_at: string
+          id: string
+          rating: number
+          reader_name: string
+        }
+        Insert: {
+          book_id: string
+          book_type: string
+          comment: string
+          created_at?: string
+          id?: string
+          rating: number
+          reader_name: string
+        }
+        Update: {
+          book_id?: string
+          book_type?: string
+          comment?: string
+          created_at?: string
+          id?: string
+          rating?: number
+          reader_name?: string
+        }
+        Relationships: []
+      }
       community_comments: {
         Row: {
           content: string
@@ -261,6 +291,7 @@ export type Database = {
           pages: number
           title: string
           url: string
+          video_url: string | null
         }
         Insert: {
           author?: string
@@ -271,6 +302,7 @@ export type Database = {
           pages?: number
           title: string
           url?: string
+          video_url?: string | null
         }
         Update: {
           author?: string
@@ -281,6 +313,7 @@ export type Database = {
           pages?: number
           title?: string
           url?: string
+          video_url?: string | null
         }
         Relationships: []
       }

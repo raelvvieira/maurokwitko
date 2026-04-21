@@ -4,6 +4,8 @@ import { ArrowLeft, ShoppingCart, Gift, Tag, Sparkles, BookOpen, Video } from 'l
 import { BOOKS } from '@/data/books';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import Marquee from '@/components/public/Marquee';
+import ExpandableSynopsis from '@/components/public/ExpandableSynopsis';
+import BookReviews from '@/components/public/BookReviews';
 
 const youtubeEmbed = (url?: string) => {
   if (!url) return null;
@@ -46,6 +48,7 @@ const LivroDetalhe = () => {
       autor = ebook.author;
       cover = ebook.cover_url || '';
       synopsis = ebook.description || 'Sinopse em breve.';
+      videoUrl = (ebook as any).video_url || undefined;
       comprarLink = ebook.url || '#';
     }
   }
@@ -126,7 +129,7 @@ const LivroDetalhe = () => {
                 <h2 className="text-sm font-semibold tracking-[0.18em] text-foreground/60 uppercase mb-2">
                   Sinopse
                 </h2>
-                <p className="text-base text-foreground/80 leading-relaxed whitespace-pre-line">{synopsis}</p>
+                <ExpandableSynopsis text={synopsis} />
               </div>
 
               {/* Comentário do Autor */}
@@ -246,6 +249,12 @@ const LivroDetalhe = () => {
               )}
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      <section className="px-4 md:px-6 pb-16">
+        <div className="max-w-6xl mx-auto">
+          <BookReviews bookType={tipo as 'fisico' | 'ebook'} bookId={id!} />
         </div>
       </section>
 

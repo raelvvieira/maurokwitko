@@ -130,12 +130,20 @@ const HinosEspirituais = () => {
             <div className="p-6 space-y-4">
               <h3 className="text-lg font-bold">{p.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{p.description}</p>
-              <button
-                onClick={() => open(p)}
-                className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
-              >
-                Ouvir Agora <Play className="w-4 h-4" />
-              </button>
+              <div className="space-y-2">
+                <button
+                  onClick={() => openTracks(p)}
+                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
+                >
+                  Ver Hinos <ListMusic className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => openPlaylist(p)}
+                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-emerald-600/40 text-emerald-700 dark:text-emerald-400 text-sm font-semibold hover:bg-emerald-600/10 transition-colors"
+                >
+                  Ouvir Álbum Completo <Play className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </motion.div>
         ))}

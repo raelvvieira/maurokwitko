@@ -1,4 +1,5 @@
 import { Instagram, Youtube, Facebook, Mail } from 'lucide-react';
+import logo from '@/assets/logo-mauro-kwitko.png';
 
 const PublicFooter = () => {
   return (
@@ -8,7 +9,7 @@ const PublicFooter = () => {
           <div className="col-span-2 md:col-span-1 space-y-3">
             <div className="flex items-center gap-2">
               <img
-                src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png"
+                src={logo}
                 alt="Dr. Mauro Kwitko"
                 className="h-12 w-auto object-contain brightness-0 invert"
               />

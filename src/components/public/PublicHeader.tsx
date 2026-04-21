@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from '@/assets/logo-mauro-kwitko.png';
 
 const COURSES = [
   { label: 'Formação em Psicoterapia Reencarnacionista', href: '/formacao' },
@@ -48,7 +49,7 @@ const PublicHeader = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-6 h-20 md:h-28 flex items-center justify-between gap-4">
         <Link to="/" className="flex items-center shrink-0">
           <img
-            src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png"
+            src={logo}
             alt="Dr. Mauro Kwitko"
             className="h-16 md:h-24 w-auto object-contain"
           />

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, KeyRound } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import logo from '@/assets/logo-mauro-kwitko.png';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ const ResetPassword = () => {
       >
         <div className="glass-card space-y-6">
           <div className="text-center space-y-2">
-            <img src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png" alt="Dr. Mauro Kwitko" className="w-32 h-32 object-contain rounded-2xl mx-auto" />
+            <img src={logo} alt="Dr. Mauro Kwitko" className="w-32 h-32 object-contain rounded-2xl mx-auto" />
             <h1 className="text-lg font-bold flex items-center justify-center gap-2">
               <KeyRound className="w-4 h-4 text-primary" /> Criar nova senha
             </h1>

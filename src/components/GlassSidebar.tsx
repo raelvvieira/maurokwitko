@@ -3,6 +3,7 @@ import { Home, BookOpen, Headphones, FileText, Trophy, Users, PenSquare, Sparkle
 import { useApp } from '@/context/AppContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from '@/assets/logo-mauro-kwitko.png';
 
 const navItems = [
   { to: '/app', icon: Home, label: 'Home' },
@@ -83,7 +84,7 @@ const GlassSidebar = () => {
       <aside className={`fixed left-0 top-0 bottom-0 ${width} glass-strong z-40 flex flex-col transition-all duration-300`}>
         <div className={`p-4 flex items-center justify-center ${collapsed ? '' : 'px-6'}`}>
           <img
-            src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png"
+            src={logo}
             alt="Clube de Estudos Dr. Mauro Kwitko"
             className={`${collapsed ? 'w-12 h-12' : 'h-[4.2rem]'} object-contain shrink-0`}
           />
@@ -123,7 +124,7 @@ const GlassSidebar = () => {
           >
             <div className="p-4 flex items-center justify-between px-6">
               <img
-                src="https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png"
+                src={logo}
                 alt="Clube de Estudos Dr. Mauro Kwitko"
                 className="h-[4.2rem] object-contain shrink-0"
               />

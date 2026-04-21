@@ -1,79 +1,85 @@
 
 
-## Plano: Ajustes na Home, novas páginas e melhorias visuais
+## Plano: ajustes no header, artigos com imagens, hero, e capas dos hinos
 
-### 1. Home (`src/pages/public/Home.tsx`)
+### 1. Header: dropdowns independentes (`src/components/public/PublicHeader.tsx`)
 
-**Cards de livros e e-books clicáveis para detalhe:**
-- Marquee de livros físicos: trocar `<a href={book.link}>` por `<Link to={'/livros-e-ebooks/fisico/' + book.slug}>`.
-- Marquee de e-books: trocar `onClick={() => navigate('/login')}` por `navigate('/livros-e-ebooks/ebook/' + eb.id)`.
-- Remover o overlay "Disponível no Clube" no hover dos e-books.
+**Bug:** estado único `coursesOpen` controla os dois dropdowns (Cursos e Rádio), por isso ambos abrem ao mesmo tempo.
 
-**Botões "Saiba Mais" mais evidentes em verde:**
-- Trocar o link discreto "Saiba Mais →" abaixo de cada livro/e-book por um botão pill verde (`bg-emerald-600 text-white hover:bg-emerald-700`), ocupando a largura do card, com leve animação de zoom-in/zoom-out (mesma já usada em LivroDetalhe).
+**Correção:** trocar `coursesOpen` por `openMenu: string | null` (guarda o `label` do item ativo). Cada dropdown abre/fecha checando `openMenu === item.label`. Mesma lógica no mobile (`mobileOpenMenu`).
 
-**Reduzir espaços entre seções:**
-- Trocar paddings das seções de `py-20 md:py-28` para `py-12 md:py-16` (Hero, Livros, Formação, E-books, Quem Sou Eu, Galeria, Quote, Artigos, Contato).
-- Hero: de `pt-28 md:pt-36 pb-20 md:pb-28` para `pt-24 md:pt-32 pb-12 md:pb-16`.
+### 2. Imagens nos artigos (Unsplash) — banco central
 
-**Melhorar destaque visual (cards e seções):**
-- Adicionar a cards/seções leve gradiente/sombra: bordas com `border border-border/60`, `bg-gradient-to-br from-background to-secondary/40`, `shadow-sm hover:shadow-lg`.
-- Adicionar elementos decorativos sutis: blobs com `blur-3xl` em cores primary/accent atrás das seções de Livros e E-books.
-- Cards de artigos: substituir o placeholder vazio (`aspect-[16/10]` gradiente) por uma imagem ou ícone temático com overlay.
-- Aumentar levemente bordas arredondadas (`rounded-3xl`) e adicionar `ring-1 ring-border/40` nas seções principais.
+**Arquivo novo:** `src/data/articleImages.ts` exportando `ARTICLE_IMAGES: Record<slug, string>`. URLs do Unsplash (`?w=800&q=80`), tamanho médio, temas neutros e relacionados a saúde/cotidiano (sem misticismo):
 
-**Velocidade do carrossel de e-books:**
-- Alterar `duration={50}` para `duration={60}` no Marquee de e-books (igualando ao de livros físicos).
+- `transtorno-do-espectro-autista` — criança brincando com blocos coloridos
+- `beneficios-contraindicacoes-da-regressao` — pessoa sentada relaxada/meditação simples
+- `investigacao-do-inconsciente-em-criancas` — criança desenhando com lápis
+- `mensagem-aos-espiritas` — livro aberto sobre mesa
+- `o-livro-dos-espiritos` — pilha de livros antigos
+- `a-etica-da-investigacao-do-inconsciente` — aperto de mãos / consultório
+- `mensagem-aos-psicologos-e-psiquiatras` — estetoscópio / consultório clínico
+- `o-tratamento` — sofá de terapia / consultório
+- `por-que-a-psicologia-e-a-psiquiatria-nao-lidam-com-a-reencarnacao` — cérebro/anatomia médica
+- `psicoterapia-para-quem-ouve-vozes` — pessoa pensativa de perfil
+- `a-verdadeira-e-a-falsa-rebeldia-jovem` — adolescentes conversando
+- `freud-alem-da-vida` — caderno e caneta sobre mesa de estudo
+- `visao-espiritual-fobias-panico-depressao-dores-cronicas` — mãos cobrindo o rosto (ansiedade simples)
+- `depressao` — pessoa olhando pela janela
+- `fibromialgia` — pessoa com dor no ombro / fisioterapia
+- `transtorno-do-panico` — coração / batimento (saúde)
+- `jovens-guerreiros-da-luz-e-a-cannabis` — folha verde / planta natural
+- `fobias` — escada/altura discreta (objeto comum)
 
-### 2. Header público (`src/components/public/PublicHeader.tsx`)
+Helper `getArticleImage(slug)` com fallback para uma imagem genérica de livro.
 
-- Adicionar item **"Hinos Espirituais"** apontando para `/hinos-espirituais`.
-- Adicionar item **"Rádio"** com submenu (igual ao "Cursos") contendo um filho **"Rádio com Dr. Mauro"** apontando para `/radio`.
-- No submenu de Cursos, o item "Curso On-line: A Psicologia da Reencarnação" passa a apontar para `/curso-online` (página nova).
+### 3. Cards de artigos com imagem
 
-### 3. Nova página pública: Hinos Espirituais (`src/pages/public/HinosEspirituais.tsx`)
+**`src/pages/public/Artigos.tsx`** — substituir o quadradinho com ícone `BookText` por uma capa `aspect-[16/10]` com `<img src={getArticleImage(art.slug)} loading="lazy" />` e overlay sutil. Ícone removido.
 
-- Hero com título "Hinos Espirituais" e descrição.
-- 3 cards de playlists (Hinos de Paz, Hinos de Amor, Hinos de Fé) com capa/ícone e botão para "Ouvir no Clube" (CTA login) ou link YouTube.
-- Layout consistente com LivrosEbooks (cards com border, hover, sombra).
-- Rota registrada em `App.tsx` dentro do `PublicLayout`.
+**`src/pages/public/Home.tsx` — seção "Artigos Recentes":**
+- Remover o array `ARTICLES` mockado.
+- Importar `ARTICLES` de `@/data/articles` e usar `.slice(0, 3)` (ou os 3 últimos).
+- Trocar o placeholder gradiente por `<img src={getArticleImage(slug)} />`.
+- Card vira `<Link to={'/artigos/' + slug}>` (clicável).
+- Remover linha de categoria/data (não existem nos artigos reais).
 
-### 4. Nova página pública: Rádio (`src/pages/public/RadioPublica.tsx`)
+**`src/pages/public/ArtigoDetalhe.tsx`** — adicionar uma capa hero (aspect-[21/9]) com a imagem do artigo logo abaixo do header, `rounded-2xl`.
 
-- Reaproveitar visual da `Radio.tsx` privada (cards Paranormal.plus e Soul Cast Plus com horários e botão "Escutar Agora").
-- Adaptar para o layout público (header fixo, padding-top 32, max-width 5xl, glassmorphism leve).
-- Rota `/radio` registrada em `App.tsx` dentro do `PublicLayout`.
+### 4. Hero da Home — copy ampliada para psicoterapeutas + profissionais de saúde
 
-### 5. Nova página pública: Curso On-line (`src/pages/public/CursoOnline.tsx`)
+Em `src/pages/public/Home.tsx` (linhas 75-98):
 
-- **Hero**: título "Curso On-Line com Dr. Mauro Kwitko — A Psicologia da Reencarnação" + subtítulo + CTA verde "Quero me Inscrever" → `https://reformaintimaonline.com.br`.
-- **VSL em formato Reels**: container vertical (`aspect-[9/16]`) centralizado com iframe do YouTube `https://www.youtube.com/embed/eT7wOH_YkC4`, max-width ~360px, sombra e bordas arredondadas.
-- **Texto introdutório** (parágrafos do briefing).
-- **Módulos**: grid responsivo (2/3 colunas) com 21 cards numerados (01–20 + Bônus), cada card com número grande, título e leve hover.
-- **Sobre o autor**: card com foto Dr. Mauro, nome, badge "5 Anos Hotmarter", bio completa, botão "Mostrar mais" (toggle).
-- **Avaliações**: 5 cards com estrelas (5/5), data, depoimento, nome do avaliador.
-- **FAQ**: accordion (componente `ui/accordion`) com as 10 perguntas listadas (respostas placeholder curtas).
-- **CTA final** verde grande "Acessar o Curso On-Line".
-- Rota `/curso-online` registrada em `App.tsx` dentro do `PublicLayout`.
+- **Eyebrow:** "30+ anos de prática clínica e formação"
+- **Título:** "Ciência, Clínica e *Despertar Espiritual*" (mantém o serif itálico no último)
+- **Subtítulo:**  
+  "Há mais de três décadas, o Dr. Mauro Kwitko integra a Psicoterapia de Regressão à prática clínica — oferecendo a psicoterapeutas, médicos e demais profissionais da saúde uma abordagem onde rigor científico, escuta clínica e profundidade da alma se encontram."
+- **CTAs:** "Conheça o Método" (primary, → `/formacao`) + "Formação para Profissionais" (outline, → `/formacao`) + "Pesquisas e Artigos" (ghost link, → `#artigos`).
+- Adicionar pequeno faixa de selos de credibilidade abaixo dos botões: `CRM 5761 · UFRGS · Fundador da ABPR` (texto fino, `text-xs text-muted-foreground`).
 
-### 6. Roteamento (`src/App.tsx`)
+### 5. Capas quadradas dos Hinos (3 imagens fornecidas)
 
-Adicionar dentro de `<Route element={<PublicLayout />}>`:
-- `/hinos-espirituais` → `HinosEspirituais`
-- `/radio` → `RadioPublica`
-- `/curso-online` → `CursoOnline`
+Mapeamento:
+- Paz → `https://i.ibb.co/v6fpPVzb/HINOS-DE-PAZ-2.png`
+- Amor → `https://i.ibb.co/q3GHxr4p/HINOS-DE-AMOR-2.png`
+- Fé → `https://i.ibb.co/TDs4sdxQ/HINOS-DE-F-2-2.png`
+
+**`src/pages/public/HinosEspirituais.tsx`** — substituir o bloco `aspect-video` com ícone `Music` por `<img src={cover} className="w-full aspect-square object-cover" />` (formato quadrado conforme pedido). Cards do grid passam a ter capa quadrada + bloco de informações abaixo.
+
+**`src/pages/Library.tsx` (área do clube)** — criar mapa `ALBUM_COVER_MAP` (mesmas 3 URLs) por título do álbum em maiúsculas. No bloco `w-32 h-32` com `Disc3` (linhas 53-55), se houver capa correspondente, renderizar `<img src={cover} className="w-32 h-32 rounded-xl object-cover" />` em vez do gradiente+ícone. Mantém quadrado.
 
 ### Arquivos
 
 **Criados:**
-- `src/pages/public/HinosEspirituais.tsx`
-- `src/pages/public/RadioPublica.tsx`
-- `src/pages/public/CursoOnline.tsx`
+- `src/data/articleImages.ts`
 
 **Alterados:**
-- `src/pages/public/Home.tsx` — links nos cards, botões verdes, paddings reduzidos, decoração visual, duration do marquee.
-- `src/components/public/PublicHeader.tsx` — Hinos Espirituais + Rádio submenu + ajuste link Curso On-line.
-- `src/App.tsx` — 3 novas rotas.
+- `src/components/public/PublicHeader.tsx` — fix dropdowns independentes
+- `src/pages/public/Home.tsx` — hero reformulada, "Artigos Recentes" puxando dados reais com imagens
+- `src/pages/public/Artigos.tsx` — cards com imagem
+- `src/pages/public/ArtigoDetalhe.tsx` — imagem hero
+- `src/pages/public/HinosEspirituais.tsx` — capas quadradas reais
+- `src/pages/Library.tsx` — capas quadradas reais nos álbuns do clube
 
-**Sem mudanças:** Supabase, área do clube (`/app/*`), Marquee, Footer.
+**Sem mudanças:** Supabase, rotas, Marquee, Footer, dados dos artigos.
 

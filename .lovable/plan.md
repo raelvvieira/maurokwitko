@@ -1,68 +1,79 @@
 
 
-## Plano: Ajustes Home, página de detalhe (livros/e-books) e nova página de Artigos
+## Plano: Ajustes na Home, novas páginas e melhorias visuais
 
-### 1. Página de detalhe `/livros-e-ebooks/:tipo/:id` (`LivroDetalhe.tsx`)
+### 1. Home (`src/pages/public/Home.tsx`)
 
-**E-books:**
-- Card "Acesso gratuito para assinantes" → trocar tons slate/azul por **tons verdes** (`bg-emerald-50 border-emerald-200`, ícone/título em `text-emerald-700`, link "Conhecer o Clube" em `text-emerald-700 hover:text-emerald-800`).
-- Botão **"Comprar"** → fundo verde (`bg-emerald-600 hover:bg-emerald-700 text-white`).
-- Botão **"Adquirir Gratuitamente"** → manter estilo secundário, adicionar **animação de zoom suave infinita** (Framer Motion: `animate={{ scale: [1, 1.03, 1] }}`, `transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}`).
+**Cards de livros e e-books clicáveis para detalhe:**
+- Marquee de livros físicos: trocar `<a href={book.link}>` por `<Link to={'/livros-e-ebooks/fisico/' + book.slug}>`.
+- Marquee de e-books: trocar `onClick={() => navigate('/login')}` por `navigate('/livros-e-ebooks/ebook/' + eb.id)`.
+- Remover o overlay "Disponível no Clube" no hover dos e-books.
 
-**Livros físicos:**
-- Card "20% de desconto para membros do Clube" → tons verdes idem ao card dos e-books (consistência).
-- Botão **"Comprar"** → fundo verde (`bg-emerald-600 hover:bg-emerald-700`).
-- Botão **"Comprar com 20% de Desconto"** → **remover** o texto "cupom MAURO20" do botão (ficar só "Comprar com 20% de Desconto" + ícone tag). Aplicar mesma animação de zoom suave.
-- O cupom continua sendo aplicado/mencionado apenas no card informativo ou tooltip pós-clique, **nunca no botão**.
+**Botões "Saiba Mais" mais evidentes em verde:**
+- Trocar o link discreto "Saiba Mais →" abaixo de cada livro/e-book por um botão pill verde (`bg-emerald-600 text-white hover:bg-emerald-700`), ocupando a largura do card, com leve animação de zoom-in/zoom-out (mesma já usada em LivroDetalhe).
 
-### 2. Home (`src/pages/public/Home.tsx`)
+**Reduzir espaços entre seções:**
+- Trocar paddings das seções de `py-20 md:py-28` para `py-12 md:py-16` (Hero, Livros, Formação, E-books, Quem Sou Eu, Galeria, Quote, Artigos, Contato).
+- Hero: de `pt-28 md:pt-36 pb-20 md:pb-28` para `pt-24 md:pt-32 pb-12 md:pb-16`.
 
-**Trocar imagem do Hero (Mauro):**
-- Substituir URL atual da foto do Mauro por: `https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg`.
+**Melhorar destaque visual (cards e seções):**
+- Adicionar a cards/seções leve gradiente/sombra: bordas com `border border-border/60`, `bg-gradient-to-br from-background to-secondary/40`, `shadow-sm hover:shadow-lg`.
+- Adicionar elementos decorativos sutis: blobs com `blur-3xl` em cores primary/accent atrás das seções de Livros e E-books.
+- Cards de artigos: substituir o placeholder vazio (`aspect-[16/10]` gradiente) por uma imagem ou ícone temático com overlay.
+- Aumentar levemente bordas arredondadas (`rounded-3xl`) e adicionar `ring-1 ring-border/40` nas seções principais.
 
-**Reordenar seções** (top → bottom):
-1. **Hero** (atual)
-2. **Livros** (carrossel de livros físicos — atual seção "Alguns dos meus livros")
-3. **Curso de Formação** (card destacado)
-4. **E-books** (carrossel de e-books)
-5. **Quem Sou Eu** (galeria + bio curta)
-6. (mantém o que já existe depois — Artigos preview, contato, etc.)
+**Velocidade do carrossel de e-books:**
+- Alterar `duration={50}` para `duration={60}` no Marquee de e-books (igualando ao de livros físicos).
 
-Apenas reordenação dos blocos JSX existentes, sem alterar conteúdo interno.
+### 2. Header público (`src/components/public/PublicHeader.tsx`)
 
-### 3. Nova página `/artigos` (catálogo de artigos)
+- Adicionar item **"Hinos Espirituais"** apontando para `/hinos-espirituais`.
+- Adicionar item **"Rádio"** com submenu (igual ao "Cursos") contendo um filho **"Rádio com Dr. Mauro"** apontando para `/radio`.
+- No submenu de Cursos, o item "Curso On-line: A Psicologia da Reencarnação" passa a apontar para `/curso-online` (página nova).
 
-**Arquivo:** `src/pages/public/Artigos.tsx` + rota em `App.tsx` dentro do `PublicLayout`.
+### 3. Nova página pública: Hinos Espirituais (`src/pages/public/HinosEspirituais.tsx`)
 
-**Estrutura:**
-- Hero curto: "Artigos do Dr. Mauro Kwitko" + subtítulo.
-- Grid de cards (3 colunas desktop / 1 mobile) com lista hardcoded de artigos. Cada card: título, resumo curto (2 linhas), botão "Ler artigo" → `/artigos/:slug`.
-- Por enquanto **1 artigo cadastrado**: "Transtorno do Espectro Autista" (slug `transtorno-do-espectro-autista`). Demais slots ficam ocultos (sem placeholders falsos).
+- Hero com título "Hinos Espirituais" e descrição.
+- 3 cards de playlists (Hinos de Paz, Hinos de Amor, Hinos de Fé) com capa/ícone e botão para "Ouvir no Clube" (CTA login) ou link YouTube.
+- Layout consistente com LivrosEbooks (cards com border, hover, sombra).
+- Rota registrada em `App.tsx` dentro do `PublicLayout`.
 
-### 4. Nova página de detalhe `/artigos/:slug` (`ArtigoDetalhe.tsx`)
+### 4. Nova página pública: Rádio (`src/pages/public/RadioPublica.tsx`)
 
-- Layout de leitura: título grande, autor "Dr. Mauro Kwitko", corpo do artigo formatado com `prose` (Tailwind typography classes manuais já que `@tailwindcss/typography` pode não estar — usaremos espaçamento manual: `space-y-5 text-lg leading-relaxed text-slate-700`, com primeiro parágrafo em destaque).
-- **Conteúdo do artigo "Transtorno do Espectro Autista" copiado integralmente, sem alterar uma palavra**, incluindo todos os parágrafos e os 3 itens (Interno / Externo / Intermediário).
-- Fonte dos artigos: arquivo `src/data/articles.ts` (novo) com tipo `Article = { slug, title, excerpt, body: string[] }`.
-- Link "← Voltar para Artigos" no topo.
-- CTA final: "Conhecer o Clube de Estudos" → `/login`.
+- Reaproveitar visual da `Radio.tsx` privada (cards Paranormal.plus e Soul Cast Plus com horários e botão "Escutar Agora").
+- Adaptar para o layout público (header fixo, padding-top 32, max-width 5xl, glassmorphism leve).
+- Rota `/radio` registrada em `App.tsx` dentro do `PublicLayout`.
 
-### 5. Atualização do header
+### 5. Nova página pública: Curso On-line (`src/pages/public/CursoOnline.tsx`)
 
-- Em `PublicHeader.tsx`, item **"Artigos"** passa a apontar para `/artigos` (em vez de `/#artigos`).
+- **Hero**: título "Curso On-Line com Dr. Mauro Kwitko — A Psicologia da Reencarnação" + subtítulo + CTA verde "Quero me Inscrever" → `https://reformaintimaonline.com.br`.
+- **VSL em formato Reels**: container vertical (`aspect-[9/16]`) centralizado com iframe do YouTube `https://www.youtube.com/embed/eT7wOH_YkC4`, max-width ~360px, sombra e bordas arredondadas.
+- **Texto introdutório** (parágrafos do briefing).
+- **Módulos**: grid responsivo (2/3 colunas) com 21 cards numerados (01–20 + Bônus), cada card com número grande, título e leve hover.
+- **Sobre o autor**: card com foto Dr. Mauro, nome, badge "5 Anos Hotmarter", bio completa, botão "Mostrar mais" (toggle).
+- **Avaliações**: 5 cards com estrelas (5/5), data, depoimento, nome do avaliador.
+- **FAQ**: accordion (componente `ui/accordion`) com as 10 perguntas listadas (respostas placeholder curtas).
+- **CTA final** verde grande "Acessar o Curso On-Line".
+- Rota `/curso-online` registrada em `App.tsx` dentro do `PublicLayout`.
 
-### 6. Arquivos
+### 6. Roteamento (`src/App.tsx`)
 
-**Novos:**
-- `src/data/articles.ts` — lista de artigos com corpo completo do TEA.
-- `src/pages/public/Artigos.tsx` — catálogo.
-- `src/pages/public/ArtigoDetalhe.tsx` — leitura.
+Adicionar dentro de `<Route element={<PublicLayout />}>`:
+- `/hinos-espirituais` → `HinosEspirituais`
+- `/radio` → `RadioPublica`
+- `/curso-online` → `CursoOnline`
+
+### Arquivos
+
+**Criados:**
+- `src/pages/public/HinosEspirituais.tsx`
+- `src/pages/public/RadioPublica.tsx`
+- `src/pages/public/CursoOnline.tsx`
 
 **Alterados:**
-- `src/pages/public/LivroDetalhe.tsx` — cards verdes + botão Comprar verde + zoom suave + remover "cupom MAURO20" do botão.
-- `src/pages/public/Home.tsx` — trocar foto Mauro + reordenar seções.
-- `src/components/public/PublicHeader.tsx` — link Artigos para `/artigos`.
-- `src/App.tsx` — registrar `/artigos` e `/artigos/:slug`.
+- `src/pages/public/Home.tsx` — links nos cards, botões verdes, paddings reduzidos, decoração visual, duration do marquee.
+- `src/components/public/PublicHeader.tsx` — Hinos Espirituais + Rádio submenu + ajuste link Curso On-line.
+- `src/App.tsx` — 3 novas rotas.
 
-**Sem mudanças:** Supabase, Clube (`/app/*`), footer, Marquee.
+**Sem mudanças:** Supabase, área do clube (`/app/*`), Marquee, Footer.
 

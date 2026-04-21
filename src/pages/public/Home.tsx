@@ -150,8 +150,7 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
                   </div>
 
                   <div className="relative">
-                    <div className="absolute -inset-6 bg-gradient-to-br from-primary/20 via-accent/10 to-transparent rounded-[2.5rem] blur-2xl" />
-                    <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-2xl ring-1 ring-border/40">
+                    <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-lg ring-1 ring-border/40">
                       <img
                         src={slide.image}
                         alt={slide.imageAlt}
@@ -186,14 +185,14 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
         <button
           onClick={() => emblaApi?.scrollPrev()}
           aria-label="Slide anterior"
-          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-background/70 backdrop-blur-md border border-border/60 shadow-sm hover:bg-background transition-colors"
+          className="hidden md:flex absolute -left-2 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-transparent text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors"
         >
           <ArrowRight className="w-4 h-4 rotate-180" />
         </button>
         <button
           onClick={() => emblaApi?.scrollNext()}
           aria-label="Próximo slide"
-          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-background/70 backdrop-blur-md border border-border/60 shadow-sm hover:bg-background transition-colors"
+          className="hidden md:flex absolute -right-2 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-transparent text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors"
         >
           <ArrowRight className="w-4 h-4" />
         </button>

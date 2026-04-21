@@ -54,4 +54,22 @@ export const BOOKS: Book[] = [
     synopsis:
       'Um livro construído a partir das principais dúvidas de pacientes, terapeutas e estudantes sobre a Terapia de Regressão. Respostas claras, fundamentadas e didáticas que abrem caminho para uma compreensão segura e ética desta poderosa ferramenta de evolução.',
   },
+  {
+    slug: 'terapia-da-reforma-intima',
+    title: 'A Terapia da Reforma Íntima',
+    price: 'R$ 64,90',
+    cover: 'https://images.tcdn.com.br/img/img_prod/1347031/a_terapia_da_reforma_intima_1989_1_cb1f8226b8413fc8b66a139c0249670c.png',
+    link: 'https://www.besourobox.com.br/espiritualidade/a-terapia-da-reforma-intima',
+    synopsis:
+      'Uma obra dedicada ao tema central da evolução espiritual: a reforma íntima. O Dr. Mauro Kwitko mostra como o processo terapêutico, aliado ao autoconhecimento e à transformação interior, abre caminho para uma vida mais leve, ética e em sintonia com o propósito da encarnação.',
+  },
+  {
+    slug: 'jovens-guerreiros-guerreiras-da-luz',
+    title: 'Jovens Guerreiros e Guerreiras da Luz: para adolescentes',
+    price: 'R$ 64,90',
+    cover: 'https://www.maurokwitko.com.br/wp-content/uploads/2022/09/Jovens-1.png',
+    link: 'https://www.amazon.com.br/Jovens-guerreiros-guerreiras-luz-adolescentes/dp/8555270901',
+    synopsis:
+      'Uma mensagem dirigida aos adolescentes para que relembrem que são Essências Divinas e que vieram a esta encarnação para melhorar o mundo. Um convite à autoestima, ao propósito e à coragem de viver alinhado à própria luz, sob uma visão reencarnacionista da vida.',
+  },
 ];

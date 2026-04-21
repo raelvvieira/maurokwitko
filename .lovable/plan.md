@@ -1,36 +1,65 @@
 
 
-## Plano: copy do Dr. Mauro, turmas, e redução global de 25%
+## Plano: reordenar menu + Hero como carrossel de 3 slides
 
-### 1. Hero da Home (`src/pages/public/Home.tsx`)
-Substituir título e parágrafo da hero (linhas ~61-67):
-- **H1:** "Psicoterapia Reencarnacionista e Investigação do Inconsciente" (mantendo "Investigação do Inconsciente" em itálico/serif primary).
-- **Parágrafo:** "Há mais de três décadas, o Dr. Mauro Kwitko, médico, fundador e presidente da Associação Brasileira de Psicoterapia Reencarnacionista trabalha para integrar a Reencarnação às Instituições Oficiais de Saúde, enquanto um tema da área da saúde, não como um assunto religioso, espiritual."
+### 1. Reordenar menu do cabeçalho (`src/components/public/PublicHeader.tsx`)
+Mover `Clube de Estudos` no array `NAV` para logo após `Quem Sou Eu`. Nova ordem:
+1. Home
+2. Quem Sou Eu
+3. **Clube de Estudos** ← movido
+4. Cursos
+5. Livros e E-books
+6. Hinos Espirituais
+7. Rádio
+8. Artigos
 
-### 2. Página Quem Sou Eu (`src/pages/public/QuemSouEu.tsx`)
-Linha 45-46, trocar para: "Médico, fundador e presidente da Associação Brasileira de Psicoterapia Reencarnacionista (ABPR)."
+Aplica-se ao desktop e mobile (ambos usam o mesmo array).
 
-### 3. Curso de Formação (`src/pages/public/Formacao.tsx`)
-Array `TURMAS` (linhas 83-88): remover Ceará e Sergipe; alterar mês de Rio de Janeiro e Porto Alegre de "Abril 2026" para **"Junho 2026"**. Resultado: apenas 2 cards (Rio e Porto Alegre). O grid `sm:grid-cols-2` continua funcionando bem com 2 itens.
+### 2. Hero como carrossel automático de 3 slides (`src/pages/public/Home.tsx`)
 
-### 4. Curso Online (`src/pages/public/CursoOnline.tsx`)
-Linha 95: trocar "ao longo dos mais de 20 anos que atuo com a psicoterapia reencarnacionista." por "ao longo dos cerca de 30 anos que atuo com a Psicoterapia Reencarnacionista."
+Substituir a seção `{/* HERO */}` (linhas 53-98) por um carrossel usando o componente `Carousel` do shadcn (`src/components/ui/carousel.tsx`) com plugin **embla-carousel-autoplay** (já disponível com embla, vamos importar `embla-carousel-autoplay`).
 
-### 5. Redução global de 25% no tamanho (zoom nativo a 75%)
-Em `src/index.css`, dentro de `@layer base`, adicionar:
+**Estrutura:** mesmo layout grid 2 colunas (texto à esquerda, imagem à direita), mesmas classes/animações/tipografia atuais. O que muda é só o conteúdo de cada slide.
 
-```css
-html {
-  font-size: 12px; /* equivalente a 75% do padrão 16px */
-}
-```
+**Slide 1 — Atual (Dr. Mauro / Formação)**
+- Eyebrow: "30+ ANOS DE PRÁTICA CLÍNICA E FORMAÇÃO"
+- H1: "Psicoterapia Reencarnacionista e *Investigação do Inconsciente*"
+- Parágrafo atual sobre as 3 décadas
+- CTA verde: "Conheça nossa Formação →" → `/formacao`
+- Imagem: a foto atual do Dr. Mauro (i.ibb.co/mCWzv6QL)
+- Legenda: "CRM 5761 · UFRGS · Fundador da ABPR"
 
-Como todo o projeto usa Tailwind (que escala em `rem`) e a fonte base é definida em `body`, mudar a `font-size` do `<html>` reduz proporcionalmente todos os textos, paddings, margens, larguras com `rem` e breakpoints baseados em `em` — equivalente ao `Ctrl+Shift+-` a 75%, mas nativo. Não afeta valores em `px` (alguns ícones e imagens), o que mantém proporções visuais saudáveis. Os `1rem = 12px` se aplicam a toda a aplicação (site público + clube de estudos + login).
+**Slide 2 — Clube de Estudos**
+- Eyebrow: "COMUNIDADE EXCLUSIVA DE MEMBROS"
+- H1: "Clube de Estudos *Dr. Mauro Kwitko*"
+- Parágrafo: "Acesse aulas, hinos espirituais, e-books, rádio e uma comunidade ativa em torno da Psicoterapia Reencarnacionista. Tudo num só lugar, com curadoria do Dr. Mauro."
+- CTA verde: "Entrar no Clube →" → `/clube-de-estudos`
+- Imagem: `https://i.ibb.co/HDQbPzRX/AULAS-PR-TICAS.jpg` (ou outra do GALLERY)
+- Legenda: "Aulas, hinos, e-books e comunidade"
+
+**Slide 3 — Curso Online**
+- Eyebrow: "CURSO ONLINE COMPLETO"
+- H1: "A Psicologia da *Reencarnação*"
+- Parágrafo: "Aprenda no seu ritmo os fundamentos da Psicoterapia Reencarnacionista, condensados em quase 30 anos de prática clínica. R$ 297 — em até 12x."
+- CTA verde: "Conhecer o Curso Online →" → `/curso-online`
+- Imagem: `https://i.ibb.co/MDJBY2J0/AULAS-TE-RICAS.jpg`
+- Legenda: "Acesso vitalício · 2 aulas gratuitas"
+
+**Comportamento do carrossel:**
+- Autoplay: avanço a cada **6 segundos**, `loop: true`, `stopOnInteraction: false`, `stopOnMouseEnter: true`
+- Transição suave (embla padrão)
+- Indicadores (dots) abaixo do hero, clicáveis, com bolinha ativa em `bg-primary` e inativa em `bg-border`
+- Setas de navegação **escondidas no mobile** (só dots), visíveis discretamente no desktop nas laterais
+- Acessibilidade: `aria-label` em cada slide e nos dots
+- Respeita `prefers-reduced-motion` (autoplay desabilitado)
+
+**Dependência:** `embla-carousel-autoplay` (peer do `embla-carousel-react` já instalado). Será adicionado ao `package.json`.
 
 ### Arquivos alterados
-- `src/pages/public/Home.tsx`
-- `src/pages/public/QuemSouEu.tsx`
-- `src/pages/public/Formacao.tsx`
-- `src/pages/public/CursoOnline.tsx`
-- `src/index.css`
+- `src/components/public/PublicHeader.tsx` — reordenar `NAV`
+- `src/pages/public/Home.tsx` — substituir bloco HERO por carrossel
+- `package.json` — adicionar `embla-carousel-autoplay`
+
+### Não muda
+- Tipografia, cores, espaçamentos, demais seções da Home, header (exceto ordem do menu), nada do clube interno.
 

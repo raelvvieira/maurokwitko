@@ -9,6 +9,7 @@ type PlaylistMeta = {
   title: string;
   description: string;
   cover: string;
+  playlistId: string;
 };
 
 const PLAYLISTS: PlaylistMeta[] = [
@@ -17,18 +18,21 @@ const PLAYLISTS: PlaylistMeta[] = [
     title: 'Hinos de Paz',
     description: 'Composições suaves para meditação e tranquilidade interior.',
     cover: 'https://i.ibb.co/v6fpPVzb/HINOS-DE-PAZ-2.png',
+    playlistId: 'PLG7GxMRJ1lg1lkiGi6HLMAJhCq7NLfk7X',
   },
   {
     matchTitle: 'hinos de amor',
     title: 'Hinos de Amor',
     description: 'Cânticos que celebram o amor universal e a fraternidade.',
     cover: 'https://i.ibb.co/q3GHxr4p/HINOS-DE-AMOR-2.png',
+    playlistId: 'PLG7GxMRJ1lg2Pn2UzVXanS5k7_8beIBVy',
   },
   {
     matchTitle: 'hinos de fé',
     title: 'Hinos de Fé',
     description: 'Hinos que fortalecem a conexão com o Divino e a fé interior.',
     cover: 'https://i.ibb.co/TDs4sdxQ/HINOS-DE-F-2-2.png',
+    playlistId: 'PLG7GxMRJ1lg26AzCi0oOcrNZVir0SOc1j',
   },
 ];
 

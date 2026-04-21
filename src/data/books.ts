@@ -6,6 +6,7 @@ export type Book = {
   link: string;
   synopsis?: string;
   videoUrl?: string;
+  coverScale?: number;
 };
 
 export const BOOKS: Book[] = [

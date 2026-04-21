@@ -1,94 +1,73 @@
 
 
-## Plano: Spotify nos hinos, player com lista, limpeza do curso, novas imagens nos artigos e nova página "Clube de Estudos"
+## Plano: rodapé com redes reais, botão "Voltar para o Site" no clube, e Artigos unificados
 
-### 1. Hinos Espirituais (`src/pages/public/HinosEspirituais.tsx`)
+### 1. Footer público (`src/components/public/PublicFooter.tsx`)
+Trocar os `href="#"` dos 3 ícones sociais pelos links reais (com `target="_blank"` e `rel="noopener noreferrer"`):
+- Instagram → `https://www.instagram.com/maurokwitko/`
+- YouTube → `https://www.youtube.com/channel/UCrAaxlSZUbKoFNrCVgQ3uAw`
+- Facebook → `https://www.facebook.com/maurokwitko`
 
-**Card do Spotify (abaixo dos 3 hinários):**
-- Novo bloco em `max-w-3xl mx-auto mt-12`, card com gradiente verde Spotify (`from-emerald-600 to-green-700`) e ícone Spotify (SVG inline ou `lucide-react` com path custom).
-- Título: "Me encontre também no Spotify".
-- Subtítulo: "Ouça hinos, meditações e podcasts do Dr. Mauro direto no seu app preferido."
-- Botão branco com texto verde: "Abrir no Spotify" → `https://open.spotify.com/intl-pt/artist/4ca3uyMhCggB6s0XImv9ds?si=FxBhz20TTrGug9tEqfurqw` (target `_blank`).
+### 2. Botão "Voltar para o Site" no header do clube (`src/components/TopBar.tsx`)
+Adicionar, à esquerda do `NotificationDropdown`, um botão discreto com ícone `Home` (lucide) e texto "Voltar para o Site" (texto oculto no mobile, só ícone). Estilo: `rounded-xl px-3 py-1.5 text-sm hover:bg-secondary/60`, `onClick={() => navigate('/')}`.
 
-**Player com lista de faixas (estilo Library do clube):**
-- Substituir o `Dialog` simples (iframe único) por um `Dialog` mais largo (`max-w-4xl`) com layout em 2 colunas no desktop:
-  - **Esquerda (player):** iframe atual da playlist do YouTube em `aspect-video`.
-  - **Direita (lista de faixas):** lista vertical scrollável (`max-h-[480px] overflow-y-auto`) com as faixas do hinário, mostrando miniatura YouTube (`https://img.youtube.com/vi/${id}/mqdefault.jpg`), número e título. Ao clicar numa faixa, troca o `src` do iframe para o vídeo individual com `autoplay=1`.
-- Mapear cada hinário a um array de tracks (id YouTube + título). Como dado, criar `src/data/hinosTracks.ts` com as faixas conhecidas dos 3 álbuns (reaproveitar do `AppContext` se já existir; caso contrário, inicializar com a playlist completa via `videoseries` + faixas estáticas mínimas — usar a playlist como fallback "Tocar tudo" no topo).
-- Mobile: empilhar player em cima, lista embaixo.
+### 3. "Blog" → "Artigos" dentro do clube (unificar com o site público)
 
-### 2. Página do Curso On-line (`src/pages/public/CursoOnline.tsx`)
+**Sidebar (`src/components/GlassSidebar.tsx`):** renomear o item "Blog" para "Artigos" (manter rota `/app/blog` para não quebrar links existentes; alterar apenas o `label` e ícone se fizer sentido — manter o atual).
 
-- **Remover** as 3 seções de imagem temáticas (linhas 106-128 e 191-201). Manter espaçamentos via `mt-16` entre blocos restantes (Intro → Módulos → Avaliações → CTA).
+**Listagem (`src/pages/Blog.tsx`):** reescrever para consumir a **mesma fonte do site público** — `ARTICLES` de `src/data/articles.ts` + capas de `src/data/articleImages.ts`. Layout: grid 1/2/3 colunas glass-card com capa (`aspect-[16/10]`), título, excerpt (`line-clamp-3`) e botão "Ler artigo" → navega para `/app/blog/:slug` (mantém prefixo `/app/blog/` mas usa o slug do artigo). Título da página: "Artigos".
 
-### 3. Imagens de artigos ajustadas (`src/data/articleImages.ts`)
+**Detalhe (`src/pages/BlogPost.tsx`):** reescrever para procurar o artigo em `ARTICLES` por `slug` (parâmetro da rota), renderizando título, imagem hero (mesmo `getArticleImage`), e o `content` HTML do artigo — espelhando o layout de `src/pages/public/ArtigoDetalhe.tsx`, porém envolvido pelo `AppShell` (já é). Botão "Voltar" para `/app/blog`.
 
-Trocar URLs Unsplash dos 8 artigos pedidos por imagens **mais alinhadas ao tema clínico/cotidiano** (sem misticismo):
+**Painel admin (`src/pages/Admin.tsx`):** localizar a aba/seção "Blog" (que hoje grava em `blog_posts` no Supabase). Manter a tabela `blog_posts` intocada, **mas** adicionar uma nova aba **"Artigos"** com formulário completo espelhando os campos usados no site:
+- `slug` (texto, único)
+- `title`
+- `excerpt` (textarea curta)
+- `content` (textarea longa, aceita HTML/Markdown — mesmo formato de `articles.ts`)
+- `image_url` (URL da capa, opcional — fallback para `getArticleImage(slug)`)
+- `author` (default Dr. Mauro Kwitko)
+- `published_at`
 
-| Slug | Tema buscado | Nova imagem (Unsplash) |
-|---|---|---|
-| `investigacao-do-inconsciente-em-criancas` | criança desenhando com lápis de cor | `photo-1587654780291-39c9404d746b?w=800&q=80` |
-| `mensagem-aos-psicologos-e-psiquiatras` | consultório/estetoscópio em mesa clínica | `photo-1576091160550-2173dba999ef?w=800&q=80` |
-| `o-tratamento` | duas cadeiras de terapia / sofá clínico | `photo-1591343395082-e120087004b4?w=800&q=80` |
-| `por-que-a-psicologia-e-a-psiquiatria-nao-lidam-com-a-reencarnacao` | livros + estetoscópio (ciência+saúde) | `photo-1532187863486-abf9dbad1b69?w=800&q=80` |
-| `visao-espiritual-fobias-panico-depressao-dores-cronicas` | mãos no rosto, ansiedade discreta | `photo-1541199249251-f713e6145474?w=800&q=80` |
-| `depressao` | pessoa pensativa olhando pela janela | `photo-1516534775068-ba3e7458af70?w=800&q=80` |
-| `transtorno-do-panico` | mão sobre o peito (coração acelerado) | `photo-1559757148-5c350d0d3c56?w=800&q=80` |
-| `fobias` | escada/altura comum (objeto cotidiano) | `photo-1551269901-5c5e14c25df7?w=800&q=80` (mantida — já adequada) ou troca por `photo-1500382017468-9049fed747ef` |
+Como hoje os artigos são **estáticos** em `src/data/articles.ts`, criar nova tabela Supabase `articles` com migração:
+```sql
+create table public.articles (
+  id uuid primary key default gen_random_uuid(),
+  slug text unique not null,
+  title text not null,
+  excerpt text not null default '',
+  content text not null default '',
+  image_url text,
+  author text not null default 'Dr. Mauro Kwitko',
+  published_at timestamptz not null default now(),
+  created_at timestamptz not null default now()
+);
+alter table public.articles enable row level security;
+create policy "Public read" on public.articles for select using (true);
+create policy "Admins manage" on public.articles for all using (
+  auth.jwt()->>'email' in ('raelvvieira@gmail.com','mauroabpr@gmail.com')
+) with check (
+  auth.jwt()->>'email' in ('raelvvieira@gmail.com','mauroabpr@gmail.com')
+);
+```
+Seed: inserir os artigos atuais de `ARTICLES` para que site e clube mostrem o mesmo conteúdo. As páginas `Artigos.tsx`, `ArtigoDetalhe.tsx`, `Blog.tsx` e `BlogPost.tsx` passam a ler de `articles` (via Supabase) e cair no `ARTICLES` estático apenas como fallback inicial.
 
-(URLs definitivas ajustadas durante implementação verificando no Unsplash; sem mística.)
-
-### 4. Novo menu e página "Clube de Estudos" (página de vendas)
-
-**Header (`PublicHeader.tsx`):**
-- Adicionar item `Clube de Estudos` → `/clube-de-estudos`, posicionado **antes** do botão "Entrar no Clube".
-
-**Rota nova (`src/App.tsx`):** `/clube-de-estudos` → `ClubeDeEstudos` (dentro do `PublicLayout`).
-
-**Página nova (`src/pages/public/ClubeDeEstudos.tsx`):** página de vendas inspirada nas referências, mas com o design do site (glassmorphism, primary slate-blue, emerald nos CTAs, cards `rounded-3xl ring-1 ring-border/40`):
-
-1. **Hero** (split 2 colunas):
-   - Esquerda: eyebrow "COMUNIDADE EXCLUSIVA", título "Clube de Estudos *Dr. Mauro Kwitko*", subtítulo destacando comunidade, conversas e trocas com profissionais buscando reforma íntima e espiritualidade. CTA verde grande "Assine agora — R$ 29/mês" → `/login`. Linha fina: "Cancele quando quiser".
-   - Direita: foto do Dr. Mauro (mesma da Home).
-
-2. **Faixa de benefícios** (4 ícones em grid): Comunidade ativa · Grupo VIP no WhatsApp · Lives exclusivas com convidados · Acervo completo (e-books, aulas, hinos).
-
-3. **"Acesse todos os conteúdos do Dr. Mauro"** — grid 3 cards reaproveitando capas reais dos livros (`books.ts`): Fogo Selvagem, Viver Para Servir, Baixa Autoestima.
-
-4. **Seções de conteúdo** (estilo da imagem 23/24 com ícone + texto à esquerda e visual à direita):
-   - Acesse E-books e Futuros Lançamentos.
-   - Acesso a Lives e Aulas Gravadas (card mock "LIVE #01 — Autismo em Adultos").
-   - Acesso ao Curso Gravado: A Reforma Íntima.
-   - Hinários (com capas dos 3 hinos quadradas).
-
-5. **"Reforço da Comunidade"** — bloco grande com título "Mais que conteúdo: uma comunidade", parágrafo destacando troca com **psicoterapeutas, médicos e demais profissionais de saúde** que buscam aprofundar reforma íntima, espiritualidade e Psicoterapia Reencarnacionista. Lista bullet: conversar em fóruns internos, comentar aulas, postar relatos, participar do grupo VIP no WhatsApp, receber em primeira mão lives com entrevistados.
-
-6. **"Conteúdos que você verá"** — 3 thumbnails mock (As Armadilhas Terrenas, Por que a Psicologia não lida com a Reencarnação, O Mapa do Ego), com botão "Assine agora".
-
-7. **Card de preço destaque** (centralizado, `max-w-xl`, ring-2 ring-primary, sombra forte):
-   - "Acesso Mensal ao Clube"
-   - Preço grande: **R$ 29** /mês
-   - Lista com check ✓: Comunidade exclusiva · Grupo VIP no WhatsApp · Lives com convidados especiais · Acervo de e-books e aulas · Hinários · Curso Reforma Íntima · Cancele quando quiser
-   - Botão emerald CTA "Assinar agora" → `/login` (futuramente integrável a checkout).
-
-8. **FAQ curto** (4–6 perguntas: O que recebo? Posso cancelar? Como acesso? Quem pode participar?).
-
-9. **CTA final** + footer já vem do PublicLayout.
-
-**Atualização de preço em outros locais:** verificar se há banners "R$ 24,90" no público — se houver, atualizar para R$ 29 (texto livre só nessa nova página por ora).
+Painel admin ganha CRUD: criar / editar / excluir artigo, com preview do HTML.
 
 ### Arquivos
 
 **Criados:**
-- `src/pages/public/ClubeDeEstudos.tsx`
-- `src/data/hinosTracks.ts` (faixas dos 3 hinários para o player com lista)
+- migração SQL `articles` + seed dos artigos atuais
+- `src/hooks/useArticles.ts` (fetch + create/update/delete)
 
 **Alterados:**
-- `src/pages/public/HinosEspirituais.tsx` — card Spotify + dialog em 2 colunas com lista de faixas clicáveis.
-- `src/pages/public/CursoOnline.tsx` — remoção das 3 imagens temáticas.
-- `src/data/articleImages.ts` — novas URLs para os 8 artigos listados.
-- `src/components/public/PublicHeader.tsx` — item "Clube de Estudos" adicionado.
-- `src/App.tsx` — rota `/clube-de-estudos`.
+- `src/components/public/PublicFooter.tsx` — links sociais reais.
+- `src/components/TopBar.tsx` — botão "Voltar para o Site".
+- `src/components/GlassSidebar.tsx` — label "Artigos".
+- `src/pages/Blog.tsx` — listagem de artigos unificada.
+- `src/pages/BlogPost.tsx` — detalhe por slug, layout do site.
+- `src/pages/public/Artigos.tsx` e `src/pages/public/ArtigoDetalhe.tsx` — passam a ler de Supabase com fallback estático.
+- `src/pages/Admin.tsx` — nova aba "Artigos" com formulário completo (slug, título, excerpt, content, capa, autor, data).
+- `src/App.tsx` — rota interna `/app/blog/:slug` (já existe; confirmar param).
 
-**Sem mudanças:** Library (clube), área `/app/*`, Supabase, marquee, footer.
+**Sem mudanças:** tabela `blog_posts` (mantida para compatibilidade), demais áreas do site, hinos, clube de estudos, cursos.
 

@@ -14,7 +14,6 @@ import {
   Gift,
   Tag,
 } from 'lucide-react';
-import { BOOKS } from '@/data/books';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import Marquee from '@/components/public/Marquee';
 

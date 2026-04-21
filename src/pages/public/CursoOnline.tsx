@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Star } from 'lucide-react';
+import { ArrowRight, Star, Check, Sparkles, PlayCircle } from 'lucide-react';
 
 const MODULES = [
   'Introdução: O que você vai aprender neste curso',

@@ -17,8 +17,8 @@ const LivrosEbooks = () => {
 
   // Mix de capas para o carrossel final (até 12 itens, embaralhado leve)
   const carouselItems = [
-    ...BOOKS.map((b) => ({ key: 'f-' + b.slug, cover: b.cover, title: b.title, to: `/livros-e-ebooks/fisico/${b.slug}` })),
-    ...ebooks.map((e) => ({ key: 'e-' + e.id, cover: e.cover_url || '', title: e.title, to: `/livros-e-ebooks/ebook/${e.id}` })),
+    ...BOOKS.map((b) => ({ key: 'f-' + b.slug, cover: b.cover, title: b.title, to: `/livros-e-ebooks/fisico/${b.slug}`, coverScale: b.coverScale })),
+    ...ebooks.map((e) => ({ key: 'e-' + e.id, cover: e.cover_url || '', title: e.title, to: `/livros-e-ebooks/ebook/${e.id}`, coverScale: undefined as number | undefined })),
   ].filter((i) => i.cover);
 
   return (

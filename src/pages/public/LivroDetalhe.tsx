@@ -64,10 +64,11 @@ const LivroDetalhe = () => {
       cover: b.cover,
       title: b.title,
       to: `/livros-e-ebooks/fisico/${b.slug}`,
+      coverScale: b.coverScale,
     })),
     ...ebooks
       .filter((e) => !(tipo === 'ebook' && e.id === id))
-      .map((e) => ({ key: 'e-' + e.id, cover: e.cover_url || '', title: e.title, to: `/livros-e-ebooks/ebook/${e.id}` })),
+      .map((e) => ({ key: 'e-' + e.id, cover: e.cover_url || '', title: e.title, to: `/livros-e-ebooks/ebook/${e.id}`, coverScale: undefined as number | undefined })),
   ].filter((i) => i.cover);
 
   if (!dataReady) {

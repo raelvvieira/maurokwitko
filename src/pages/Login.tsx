@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { LogIn, UserPlus, Eye, EyeOff, Sparkles, Mail, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { LogIn, UserPlus, Eye, EyeOff, Sparkles, Mail, CheckCircle2, ArrowLeft, ShoppingCart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -9,6 +9,21 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from '@/components/ui/dialog';
 
+const CHECKOUT_URL = 'https://chk.eduzz.com/2445141';
+const ADMIN_EMAILS = new Set(['raelvvieira@gmail.com', 'mauroabpr@gmail.com']);
+
+async function checkPaidAccess(email: string): Promise<{ paid: boolean; status: string }> {
+  const e = email.trim().toLowerCase();
+  if (ADMIN_EMAILS.has(e)) return { paid: true, status: 'admin' };
+  try {
+    const { data, error } = await supabase.functions.invoke('check-paid-access', { body: { email: e } });
+    if (error) return { paid: false, status: 'error' };
+    return data as { paid: boolean; status: string };
+  } catch {
+    return { paid: false, status: 'error' };
+  }
+}
+
 const Login = () => {
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
@@ -16,6 +31,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState('');
+  const [blocked, setBlocked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -25,11 +41,19 @@ const Login = () => {
   const [resetLoading, setResetLoading] = useState(false);
   const [resetSent, setResetSent] = useState(false);
   const [resetError, setResetError] = useState('');
+  const [resetBlocked, setResetBlocked] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setBlocked(false);
     setLoading(true);
+    const access = await checkPaidAccess(email);
+    if (!access.paid) {
+      setLoading(false);
+      setBlocked(true);
+      return;
+    }
     const { error } = isSignUp ? await signUp(email, password) : await signIn(email, password);
     if (error) setError(error.message);
     else navigate('/app');
@@ -39,7 +63,14 @@ const Login = () => {
   const handleResetSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setResetError('');
+    setResetBlocked(false);
     setResetLoading(true);
+    const access = await checkPaidAccess(resetEmail);
+    if (!access.paid) {
+      setResetLoading(false);
+      setResetBlocked(true);
+      return;
+    }
     const { error } = await supabase.auth.resetPasswordForEmail(resetEmail.trim().toLowerCase(), {
       redirectTo: `${window.location.origin}/reset-password`,
     });
@@ -50,7 +81,7 @@ const Login = () => {
 
   const closeReset = () => {
     setResetOpen(false);
-    setTimeout(() => { setResetSent(false); setResetEmail(''); setResetError(''); }, 200);
+    setTimeout(() => { setResetSent(false); setResetEmail(''); setResetError(''); setResetBlocked(false); }, 200);
   };
 
   return (

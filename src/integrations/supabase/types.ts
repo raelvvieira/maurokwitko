@@ -317,6 +317,33 @@ export type Database = {
         }
         Relationships: []
       }
+      eduzz_webhook_log: {
+        Row: {
+          event: string | null
+          event_id: string | null
+          id: string
+          payload: Json
+          processed_at: string
+          signature_valid: boolean
+        }
+        Insert: {
+          event?: string | null
+          event_id?: string | null
+          id?: string
+          payload: Json
+          processed_at?: string
+          signature_valid?: boolean
+        }
+        Update: {
+          event?: string | null
+          event_id?: string | null
+          id?: string
+          payload?: Json
+          processed_at?: string
+          signature_valid?: boolean
+        }
+        Relationships: []
+      }
       email_send_log: {
         Row: {
           created_at: string
@@ -539,6 +566,51 @@ export type Database = {
           title?: string
           type?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      paid_customers: {
+        Row: {
+          created_at: string
+          eduzz_buyer_id: string | null
+          email: string
+          first_paid_at: string | null
+          id: string
+          last_invoice_id: string | null
+          name: string | null
+          phone: string | null
+          revoked_at: string | null
+          revoked_reason: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          eduzz_buyer_id?: string | null
+          email: string
+          first_paid_at?: string | null
+          id?: string
+          last_invoice_id?: string | null
+          name?: string | null
+          phone?: string | null
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          eduzz_buyer_id?: string | null
+          email?: string
+          first_paid_at?: string | null
+          id?: string
+          last_invoice_id?: string | null
+          name?: string | null
+          phone?: string | null
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }

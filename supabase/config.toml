@@ -5,3 +5,7 @@ project_id = "khztwxgobacabfvaeves"
     verify_jwt = false
   [functions.process-email-queue]
     verify_jwt = true
+  [functions.eduzz-webhook]
+    verify_jwt = false
+  [functions.check-paid-access]
+    verify_jwt = false

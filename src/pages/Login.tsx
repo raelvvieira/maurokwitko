@@ -131,6 +131,24 @@ const Login = () => {
 
             {error && <p className="text-xs text-destructive text-center">{error}</p>}
 
+            {blocked && (
+              <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 space-y-2">
+                <p className="text-sm font-semibold text-foreground">Não encontramos seu pagamento</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Para entrar no Clube de Estudos é preciso adquirir o acesso. Se você já comprou,
+                  use o mesmo e-mail informado no checkout.
+                </p>
+                <a
+                  href={CHECKOUT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full mt-1 px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold flex items-center justify-center gap-2"
+                >
+                  <ShoppingCart className="w-4 h-4" /> Adquirir acesso ao Clube
+                </a>
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={loading}
@@ -194,6 +212,23 @@ const Login = () => {
                   className="w-full px-4 py-2.5 rounded-xl bg-secondary/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
                 {resetError && <p className="text-xs text-destructive text-center">{resetError}</p>}
+                {resetBlocked && (
+                  <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 space-y-2">
+                    <p className="text-sm font-semibold text-foreground">E-mail não encontrado</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Esse e-mail não consta como pagante do Clube de Estudos. Confirme se digitou
+                      o mesmo e-mail usado no checkout, ou adquira agora o seu acesso.
+                    </p>
+                    <a
+                      href={CHECKOUT_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full mt-1 px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold flex items-center justify-center gap-2"
+                    >
+                      <ShoppingCart className="w-4 h-4" /> Adquirir acesso ao Clube
+                    </a>
+                  </div>
+                )}
                 <button
                   type="submit"
                   disabled={resetLoading}

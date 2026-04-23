@@ -7,7 +7,7 @@ import { getArticleImage } from '@/data/articleImages';
 const Artigos = () => {
   return (
     <div className="bg-background">
-      <section className="pt-28 md:pt-36 pb-12 md:pb-16 px-4 md:px-6">
+      <section className="pt-28 md:pt-36 pb-12 md:pb-16 px-5 md:px-6">
         <div className="max-w-5xl mx-auto text-center">
           <span className="inline-block text-[11px] font-bold tracking-[0.2em] text-primary uppercase mb-3">
             Reflexões e Pesquisas
@@ -21,7 +21,7 @@ const Artigos = () => {
         </div>
       </section>
 
-      <section className="pb-24 md:pb-32 px-4 md:px-6">
+      <section className="pb-24 md:pb-32 px-5 md:px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {ARTICLES.map((art, i) => (
             <motion.article

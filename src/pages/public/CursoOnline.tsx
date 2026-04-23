@@ -39,7 +39,7 @@ const CursoOnline = () => {
   return (
     <div className="pt-24 md:pt-32 pb-16 overflow-hidden">
       {/* HERO */}
-      <section className="max-w-3xl mx-auto px-4 md:px-6 text-center space-y-6">
+      <section className="max-w-3xl mx-auto px-5 md:px-6 text-center space-y-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,7 +69,7 @@ const CursoOnline = () => {
       </section>
 
       {/* VSL — abaixo da hero, centralizado */}
-      <section className="max-w-[360px] mx-auto px-4 md:px-6 mt-12">
+      <section className="max-w-[360px] mx-auto px-5 md:px-6 mt-12">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -90,7 +90,7 @@ const CursoOnline = () => {
       </section>
 
       {/* INTRO */}
-      <section className="max-w-3xl mx-auto px-4 md:px-6 mt-16 space-y-5 text-center text-base md:text-lg leading-relaxed text-foreground/85">
+      <section className="max-w-3xl mx-auto px-5 md:px-6 mt-16 space-y-5 text-center text-base md:text-lg leading-relaxed text-foreground/85">
         <p>
           Este projeto é a realização de um sonho e iniciei sua produção já há alguns meses. O meu objetivo com ele é o de levar para o maior número de pessoas possível todo o conhecimento que adquiri, ao longo dos cerca de 30 anos que atuo com a Psicoterapia Reencarnacionista.
         </p>
@@ -104,7 +104,7 @@ const CursoOnline = () => {
       </section>
 
       {/* MÓDULOS */}
-      <section className="max-w-6xl mx-auto px-4 md:px-6 mt-16">
+      <section className="max-w-6xl mx-auto px-5 md:px-6 mt-16">
         <div className="text-center mb-10">
           <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Conteúdo</span>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Módulos do Curso</h2>
@@ -129,7 +129,7 @@ const CursoOnline = () => {
       </section>
 
       {/* AULAS GRATUITAS */}
-      <section className="max-w-6xl mx-auto px-4 md:px-6 mt-24">
+      <section className="max-w-6xl mx-auto px-5 md:px-6 mt-24">
         <div className="text-center mb-10">
           <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Experimente</span>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Duas aulas gratuitas</h2>
@@ -168,7 +168,7 @@ const CursoOnline = () => {
       </section>
 
       {/* CARD DE PREÇO */}
-      <section className="max-w-xl mx-auto px-4 md:px-6 mt-24">
+      <section className="max-w-xl mx-auto px-5 md:px-6 mt-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -217,7 +217,7 @@ const CursoOnline = () => {
       </section>
 
       {/* AVALIAÇÕES */}
-      <section className="max-w-5xl mx-auto px-4 md:px-6 mt-20">
+      <section className="max-w-5xl mx-auto px-5 md:px-6 mt-20">
         <div className="text-center mb-10">
           <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Depoimentos</span>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Avaliações</h2>
@@ -253,7 +253,7 @@ const CursoOnline = () => {
       </section>
 
       {/* CTA FINAL */}
-      <section className="max-w-3xl mx-auto px-4 md:px-6 mt-12 text-center">
+      <section className="max-w-3xl mx-auto px-5 md:px-6 mt-12 text-center">
         <motion.a
           href={COURSE_URL}
           target="_blank"

@@ -24,7 +24,7 @@ const programs = [
 
 const RadioPublica = () => {
   return (
-    <div className="pt-24 md:pt-32 pb-16 max-w-5xl mx-auto px-4 md:px-6">
+    <div className="pt-24 md:pt-32 pb-16 max-w-5xl mx-auto px-5 md:px-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -81,7 +81,7 @@ const LivroDetalhe = () => {
 
   return (
     <div className="bg-background">
-      <section className="pt-28 md:pt-36 pb-16 md:pb-24 px-4 md:px-6">
+      <section className="pt-28 md:pt-36 pb-16 md:pb-24 px-5 md:px-6">
         <div className="max-w-6xl mx-auto">
           <Link
             to="/livros-e-ebooks"
@@ -260,14 +260,14 @@ const LivroDetalhe = () => {
         </div>
       </section>
 
-      <section className="px-4 md:px-6 pb-16">
+      <section className="px-5 md:px-6 pb-16">
         <div className="max-w-6xl mx-auto">
           <BookReviews bookType={tipo as 'fisico' | 'ebook'} bookId={id!} />
         </div>
       </section>
 
       {sugestoes.length > 0 && (
-        <section className="py-16 md:py-20 px-4 md:px-6 bg-secondary/30">
+        <section className="py-16 md:py-20 px-5 md:px-6 bg-secondary/30">
           <div className="max-w-7xl mx-auto mb-8 md:mb-10 text-center">
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-2">
               Você também pode gostar

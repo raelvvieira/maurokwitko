@@ -113,8 +113,8 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
   return (
     <section className="relative pt-24 md:pt-32 pb-12 md:pb-16">
       <div className="absolute inset-0 -z-10 mesh-gradient opacity-60" />
-      <div className="max-w-7xl mx-auto px-3 md:px-6 relative">
-        <div className="rounded-[2rem] border border-border/60 ring-1 ring-border/40 bg-card/60 backdrop-blur-sm shadow-sm p-8 sm:p-10 md:p-16 lg:p-20">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 relative">
+        <div className="rounded-[2rem] border border-border/60 ring-1 ring-border/40 bg-card/60 backdrop-blur-sm shadow-sm p-5 sm:p-8 md:p-16 lg:p-20">
           <div className="overflow-hidden rounded-[1.5rem]" ref={emblaRef} aria-roledescription="carousel">
             <div className="flex -ml-6 md:-ml-10">
               {HERO_SLIDES.map((slide, idx) => (
@@ -130,12 +130,12 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
                       <span className="inline-block text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
                         {slide.eyebrow}
                       </span>
-                      <h1 className="font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl leading-[1.05]">
+                      <h1 className="font-bold tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.05] break-words">
                         {slide.titleStart}
                         <span className="italic font-serif text-primary">{slide.titleAccent}</span>
                         {slide.titleEnd}
                       </h1>
-                      <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
+                      <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg hyphens-auto">
                         {slide.description}
                       </p>
                       <div className="flex flex-wrap gap-3 pt-2">
@@ -229,9 +229,9 @@ const Home = () => {
           renderItem={(book) => (
             <Link
               to={`/livros-e-ebooks/fisico/${book.slug}`}
-              className="group block w-[160px] md:w-[200px]"
+              className="group block w-[112px] md:w-[200px]"
             >
-              <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 group-hover:shadow-xl group-hover:ring-primary/30 transition-all duration-500 group-hover:-translate-y-1">
+              <div className="relative w-[112px] h-[168px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 group-hover:shadow-xl group-hover:ring-primary/30 transition-all duration-500 group-hover:-translate-y-1">
                 <img
                   src={book.cover}
                   alt={book.title}
@@ -317,9 +317,9 @@ const Home = () => {
             renderItem={(eb) => (
               <Link
                 to={`/livros-e-ebooks/ebook/${eb.id}`}
-                className="group block w-[160px] md:w-[200px] text-left"
+                className="group block w-[112px] md:w-[200px] text-left"
               >
-                <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 group-hover:shadow-xl group-hover:ring-primary/30 transition-all duration-500 group-hover:-translate-y-1">
+                <div className="relative w-[112px] h-[168px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 group-hover:shadow-xl group-hover:ring-primary/30 transition-all duration-500 group-hover:-translate-y-1">
                   {eb.cover_url && (
                     <img
                       src={eb.cover_url}

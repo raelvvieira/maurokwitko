@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { LogIn, UserPlus, Eye, EyeOff, Sparkles, Mail, CheckCircle2, ArrowLeft, ShoppingCart } from 'lucide-react';
+import { LogIn, Eye, EyeOff, Sparkles, Mail, CheckCircle2, ArrowLeft, ShoppingCart, KeyRound } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -25,11 +25,10 @@ async function checkPaidAccess(email: string): Promise<{ paid: boolean; status: 
 }
 
 const Login = () => {
-  const { signIn, signUp } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState('');
   const [blocked, setBlocked] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -54,7 +53,7 @@ const Login = () => {
       setBlocked(true);
       return;
     }
-    const { error } = isSignUp ? await signUp(email, password) : await signIn(email, password);
+    const { error } = await signIn(email, password);
     if (error) setError(error.message);
     else navigate('/app');
     setLoading(false);
@@ -154,25 +153,38 @@ const Login = () => {
               disabled={loading}
               className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {loading ? 'Aguarde...' : isSignUp ? (<><UserPlus className="w-4 h-4" /> Criar conta</>) : (<><LogIn className="w-4 h-4" /> Entrar</>)}
+              {loading ? 'Aguarde...' : (<><LogIn className="w-4 h-4" /> Entrar</>)}
             </button>
           </form>
 
-          <p className="text-xs text-center text-muted-foreground">
-            {isSignUp ? 'Já tem conta?' : 'Não tem conta?'}{' '}
-            <button onClick={() => { setIsSignUp(!isSignUp); setError(''); }} className="text-primary font-semibold hover:underline">
-              {isSignUp ? 'Entrar' : 'Criar conta'}
+          <div className="text-xs text-center text-muted-foreground space-y-2">
+            <p>Já possui acesso? Entre acima.</p>
+            <button
+              type="button"
+              onClick={() => setResetOpen(true)}
+              className="inline-flex items-center gap-1.5 text-primary font-semibold hover:underline"
+            >
+              <KeyRound className="w-3.5 h-3.5" /> Criar Nova Senha
             </button>
-          </p>
+          </div>
         </div>
 
-        {/* First-access highlighted card */}
-        <button
+        {/* First-access highlighted card with zoom + glow */}
+        <motion.button
           type="button"
           onClick={() => setResetOpen(true)}
-          className="w-full text-left rounded-2xl p-4 border border-accent/40 bg-gradient-to-br from-accent/15 via-primary/10 to-transparent backdrop-blur-md hover:scale-[1.01] transition-transform shadow-lg"
+          animate={{ scale: [1, 1.025, 1] }}
+          transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
+          className="relative overflow-hidden w-full text-left rounded-2xl p-4 border border-accent/40 bg-gradient-to-br from-accent/15 via-primary/10 to-transparent backdrop-blur-md shadow-lg"
         >
-          <div className="flex items-start gap-3">
+          <motion.span
+            aria-hidden
+            initial={{ x: '-120%' }}
+            animate={{ x: ['-120%', '120%'] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+            className="pointer-events-none absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-white/25 to-transparent mix-blend-overlay"
+          />
+          <div className="relative flex items-start gap-3">
             <div className="shrink-0 w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-accent" />
             </div>
@@ -186,7 +198,7 @@ const Login = () => {
               </p>
             </div>
           </div>
-        </button>
+        </motion.button>
       </motion.div>
 
       <Dialog open={resetOpen} onOpenChange={(o) => !o && closeReset()}>

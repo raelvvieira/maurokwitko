@@ -24,7 +24,7 @@ const LivrosEbooks = () => {
   return (
     <div className="bg-background">
       {/* Hero */}
-      <section className="pt-32 pb-12 md:pt-40 md:pb-16 px-4 md:px-6">
+      <section className="pt-32 pb-12 md:pt-40 md:pb-16 px-5 md:px-6">
         <div className="max-w-5xl mx-auto text-center">
           <motion.div {...fadeUp}>
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-4">
@@ -42,7 +42,7 @@ const LivrosEbooks = () => {
       </section>
 
       {/* Livros Físicos */}
-      <section className="py-12 md:py-16 px-4 md:px-6">
+      <section className="py-12 md:py-16 px-5 md:px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div {...fadeUp} className="flex items-end justify-between mb-8 md:mb-10">
             <div>
@@ -53,7 +53,7 @@ const LivrosEbooks = () => {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
+          <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
             {BOOKS.map((b, i) => (
               <motion.div
                 key={b.slug}
@@ -70,14 +70,14 @@ const LivrosEbooks = () => {
                     loading="lazy"
                   />
                 </Link>
-                <div className="p-4 md:p-5 flex flex-col gap-3 flex-1">
-                  <h3 className="font-semibold text-sm md:text-base leading-snug line-clamp-3 min-h-[3.5rem]">
+                <div className="p-3 md:p-5 flex flex-col gap-2 md:gap-3 flex-1">
+                  <h3 className="font-semibold text-xs md:text-base leading-snug line-clamp-3 min-h-[3rem] md:min-h-[3.5rem]">
                     {b.title}
                   </h3>
-                  <p className="text-lg font-bold text-primary">{b.price}</p>
+                  <p className="text-base md:text-lg font-bold text-primary">{b.price}</p>
                   <Link
                     to={`/livros-e-ebooks/fisico/${b.slug}`}
-                    className="mt-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full bg-secondary text-foreground text-sm font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="mt-auto inline-flex items-center justify-center gap-1.5 px-3 md:px-4 py-2 md:py-2.5 rounded-full bg-secondary text-foreground text-xs md:text-sm font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     Saber mais <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
@@ -89,7 +89,7 @@ const LivrosEbooks = () => {
       </section>
 
       {/* E-books */}
-      <section className="py-12 md:py-16 px-4 md:px-6 bg-secondary/30">
+      <section className="py-12 md:py-16 px-5 md:px-6 bg-secondary/30">
         <div className="max-w-7xl mx-auto">
           <motion.div {...fadeUp} className="flex items-end justify-between mb-8 md:mb-10">
             <div>
@@ -103,7 +103,7 @@ const LivrosEbooks = () => {
           {ebooks.length === 0 ? (
             <p className="text-center text-muted-foreground py-12">Nenhum e-book disponível no momento.</p>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
+            <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
               {ebooks.map((e, i) => (
                 <motion.div
                   key={e.id}
@@ -125,14 +125,14 @@ const LivrosEbooks = () => {
                       </div>
                     )}
                   </Link>
-                  <div className="p-4 md:p-5 flex flex-col gap-2 flex-1">
-                    <h3 className="font-semibold text-sm md:text-base leading-snug line-clamp-3 min-h-[3.5rem]">
+                  <div className="p-3 md:p-5 flex flex-col gap-2 flex-1">
+                    <h3 className="font-semibold text-xs md:text-base leading-snug line-clamp-3 min-h-[3rem] md:min-h-[3.5rem]">
                       {e.title}
                     </h3>
-                    <p className="text-xs text-muted-foreground">{e.author}</p>
+                    <p className="text-[10px] md:text-xs text-muted-foreground line-clamp-1">{e.author}</p>
                     <Link
                       to={`/livros-e-ebooks/ebook/${e.id}`}
-                      className="mt-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full bg-secondary text-foreground text-sm font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
+                      className="mt-auto inline-flex items-center justify-center gap-1.5 px-3 md:px-4 py-2 md:py-2.5 rounded-full bg-secondary text-foreground text-xs md:text-sm font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
                     >
                       Saber mais <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
@@ -146,7 +146,7 @@ const LivrosEbooks = () => {
 
       {/* Carrossel sugestões */}
       {carouselItems.length > 0 && (
-        <section className="py-16 md:py-24 px-4 md:px-6">
+        <section className="py-16 md:py-24 px-5 md:px-6">
           <div className="max-w-7xl mx-auto mb-8 md:mb-10 text-center">
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-2">
               Para conhecer
@@ -159,7 +159,7 @@ const LivrosEbooks = () => {
             renderItem={(item) => (
               <Link
                 to={item.to}
-                className="block w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-xl overflow-hidden bg-muted shadow-md hover:shadow-xl transition-shadow relative"
+                className="block w-[112px] h-[168px] md:w-[200px] md:h-[300px] rounded-xl overflow-hidden bg-muted shadow-md hover:shadow-xl transition-shadow relative"
               >
                 <img
                   src={item.cover}

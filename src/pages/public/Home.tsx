@@ -113,8 +113,8 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
   return (
     <section className="relative pt-24 md:pt-32 pb-12 md:pb-16">
       <div className="absolute inset-0 -z-10 mesh-gradient opacity-60" />
-      <div className="max-w-7xl mx-auto px-3 md:px-6 relative">
-        <div className="rounded-[2rem] border border-border/60 ring-1 ring-border/40 bg-card/60 backdrop-blur-sm shadow-sm p-8 sm:p-10 md:p-16 lg:p-20">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 relative">
+        <div className="rounded-[2rem] border border-border/60 ring-1 ring-border/40 bg-card/60 backdrop-blur-sm shadow-sm p-5 sm:p-8 md:p-16 lg:p-20">
           <div className="overflow-hidden rounded-[1.5rem]" ref={emblaRef} aria-roledescription="carousel">
             <div className="flex -ml-6 md:-ml-10">
               {HERO_SLIDES.map((slide, idx) => (
@@ -130,12 +130,12 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
                       <span className="inline-block text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
                         {slide.eyebrow}
                       </span>
-                      <h1 className="font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl leading-[1.05]">
+                      <h1 className="font-bold tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.05] break-words">
                         {slide.titleStart}
                         <span className="italic font-serif text-primary">{slide.titleAccent}</span>
                         {slide.titleEnd}
                       </h1>
-                      <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
+                      <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg hyphens-auto">
                         {slide.description}
                       </p>
                       <div className="flex flex-wrap gap-3 pt-2">
@@ -211,7 +211,7 @@ const Home = () => {
       <section id="livros" className="relative py-12 md:py-16">
         <div className="absolute -top-20 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
         <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl -z-10" />
-        <div className="max-w-6xl mx-auto px-4 md:px-6 mb-10">
+        <div className="max-w-6xl mx-auto px-5 md:px-6 mb-10">
           <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4">
             <div>
               <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Bibliografia</span>
@@ -229,9 +229,9 @@ const Home = () => {
           renderItem={(book) => (
             <Link
               to={`/livros-e-ebooks/fisico/${book.slug}`}
-              className="group block w-[160px] md:w-[200px]"
+              className="group block w-[112px] md:w-[200px]"
             >
-              <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 group-hover:shadow-xl group-hover:ring-primary/30 transition-all duration-500 group-hover:-translate-y-1">
+              <div className="relative w-[112px] h-[168px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 group-hover:shadow-xl group-hover:ring-primary/30 transition-all duration-500 group-hover:-translate-y-1">
                 <img
                   src={book.cover}
                   alt={book.title}
@@ -252,7 +252,7 @@ const Home = () => {
 
       {/* FORMAÇÃO — Course CTA */}
       <section id="formacao" className="py-12 md:py-16 bg-secondary/30 border-y border-border/40">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
+        <div className="max-w-6xl mx-auto px-5 md:px-6">
           <motion.div
             {...fadeUp}
             className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-background to-secondary/40 border border-border/60 ring-1 ring-border/40 shadow-sm p-8 md:p-14 lg:p-16 grid md:grid-cols-2 gap-10 md:gap-14 items-center"
@@ -301,7 +301,7 @@ const Home = () => {
         <section className="relative py-12 md:py-16">
           <div className="absolute -top-20 -right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
           <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl -z-10" />
-          <div className="max-w-6xl mx-auto px-4 md:px-6 mb-10">
+          <div className="max-w-6xl mx-auto px-5 md:px-6 mb-10">
             <motion.div {...fadeUp}>
               <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">E-books</span>
               <h3 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Disponíveis no Clube de Estudos</h3>
@@ -317,9 +317,9 @@ const Home = () => {
             renderItem={(eb) => (
               <Link
                 to={`/livros-e-ebooks/ebook/${eb.id}`}
-                className="group block w-[160px] md:w-[200px] text-left"
+                className="group block w-[112px] md:w-[200px] text-left"
               >
-                <div className="relative w-[160px] h-[240px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 group-hover:shadow-xl group-hover:ring-primary/30 transition-all duration-500 group-hover:-translate-y-1">
+                <div className="relative w-[112px] h-[168px] md:w-[200px] md:h-[300px] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 group-hover:shadow-xl group-hover:ring-primary/30 transition-all duration-500 group-hover:-translate-y-1">
                   {eb.cover_url && (
                     <img
                       src={eb.cover_url}
@@ -343,7 +343,7 @@ const Home = () => {
 
       {/* QUEM SOU EU */}
       <section id="quem-sou-eu" className="py-12 md:py-16 bg-secondary/30 border-y border-border/40">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+        <div className="max-w-6xl mx-auto px-5 md:px-6 grid md:grid-cols-2 gap-12 md:gap-20 items-center">
           <motion.div {...fadeUp} className="relative order-2 md:order-1">
             <div className="absolute -inset-4 bg-gradient-to-br from-primary/15 to-transparent rounded-[2rem] blur-2xl" />
             <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-xl ring-1 ring-border/40">
@@ -398,7 +398,7 @@ const Home = () => {
 
       {/* GALERIA */}
       <section className="py-12 md:py-16">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
+        <div className="max-w-6xl mx-auto px-5 md:px-6">
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Trajetória</span>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Momentos da Jornada</h2>
@@ -430,7 +430,7 @@ const Home = () => {
 
       {/* QUOTE */}
       <section className="py-12 md:py-16 border-y border-border/40 bg-secondary/30">
-        <motion.div {...fadeUp} className="max-w-3xl mx-auto px-4 md:px-6 text-center">
+        <motion.div {...fadeUp} className="max-w-3xl mx-auto px-5 md:px-6 text-center">
           <Quote className="w-10 h-10 text-primary/40 mx-auto mb-6" />
           <p className="font-serif italic text-2xl md:text-3xl lg:text-4xl leading-snug text-foreground">
             "Curar não é apenas a ausência de sintomas, mas a presença de sentido encontrado na jornada da alma através do tempo."
@@ -443,7 +443,7 @@ const Home = () => {
 
       {/* ARTIGOS */}
       <section id="artigos" className="py-12 md:py-16">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
+        <div className="max-w-6xl mx-auto px-5 md:px-6">
           <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4 mb-10">
             <div>
               <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Reflexões</span>
@@ -491,7 +491,7 @@ const Home = () => {
 
       {/* CONTATO */}
       <section id="contato" className="py-12 md:py-16 bg-secondary/30 border-t border-border/40">
-        <motion.div {...fadeUp} className="max-w-3xl mx-auto px-4 md:px-6 text-center">
+        <motion.div {...fadeUp} className="max-w-3xl mx-auto px-5 md:px-6 text-center">
           <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Contato</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mt-3 leading-tight">
             Vamos <span className="italic font-serif text-primary">conversar</span>

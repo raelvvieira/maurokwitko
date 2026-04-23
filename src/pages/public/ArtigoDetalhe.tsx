@@ -12,7 +12,7 @@ const ArtigoDetalhe = () => {
 
   return (
     <div className="bg-background">
-      <section className="pt-28 md:pt-36 pb-16 md:pb-24 px-4 md:px-6">
+      <section className="pt-28 md:pt-36 pb-16 md:pb-24 px-5 md:px-6">
         <div className="max-w-3xl mx-auto">
           <Link
             to="/artigos"

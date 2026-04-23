@@ -32,7 +32,7 @@ const QuemSouEu = () => {
   return (
     <div className="bg-background">
       {/* Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24 px-4 md:px-6">
+      <section className="pt-32 pb-16 md:pt-40 md:pb-24 px-5 md:px-6">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <motion.div {...fadeUp}>
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-4">
@@ -58,7 +58,7 @@ const QuemSouEu = () => {
       </section>
 
       {/* O Começo */}
-      <section className="py-16 md:py-24 px-4 md:px-6 bg-secondary/30">
+      <section className="py-16 md:py-24 px-5 md:px-6 bg-secondary/30">
         <div className="max-w-4xl mx-auto">
           <motion.div {...fadeUp}>
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
@@ -86,7 +86,7 @@ const QuemSouEu = () => {
       </section>
 
       {/* Meus Valores */}
-      <section className="py-16 md:py-24 px-4 md:px-6">
+      <section className="py-16 md:py-24 px-5 md:px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div {...fadeUp} className="text-center mb-12">
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
@@ -116,7 +116,7 @@ const QuemSouEu = () => {
       </section>
 
       {/* ABPR */}
-      <section className="py-16 md:py-24 px-4 md:px-6 bg-secondary/30">
+      <section className="py-16 md:py-24 px-5 md:px-6 bg-secondary/30">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <motion.div {...fadeUp} className="rounded-3xl overflow-hidden shadow-xl aspect-[4/3] bg-muted">
             <img
@@ -154,7 +154,7 @@ const QuemSouEu = () => {
       </section>
 
       {/* Psicoterapia Reencarnacionista */}
-      <section className="py-16 md:py-24 px-4 md:px-6">
+      <section className="py-16 md:py-24 px-5 md:px-6">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <motion.div {...fadeUp} className="order-2 md:order-1">
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
@@ -189,7 +189,7 @@ const QuemSouEu = () => {
       </section>
 
       {/* Carreira */}
-      <section className="py-16 md:py-24 px-4 md:px-6 bg-secondary/30">
+      <section className="py-16 md:py-24 px-5 md:px-6 bg-secondary/30">
         <div className="max-w-4xl mx-auto">
           <motion.div {...fadeUp}>
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
@@ -227,7 +227,7 @@ const QuemSouEu = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-20 md:py-28 px-4 md:px-6">
+      <section className="py-20 md:py-28 px-5 md:px-6">
         <motion.div {...fadeUp} className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
             Aprofunde-se nos meus ensinamentos

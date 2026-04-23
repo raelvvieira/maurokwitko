@@ -75,7 +75,7 @@ const ClubeDeEstudos = () => {
   return (
     <div className="pt-24 md:pt-32 pb-16 overflow-hidden">
       {/* HERO */}
-      <section className="max-w-7xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-10 items-center">
+      <section className="max-w-7xl mx-auto px-5 md:px-6 grid md:grid-cols-2 gap-10 items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -127,7 +127,7 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* FAIXA DE BENEFÍCIOS */}
-      <section className="max-w-6xl mx-auto px-4 md:px-6 mt-20">
+      <section className="max-w-6xl mx-auto px-5 md:px-6 mt-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {BENEFITS.map((b, i) => {
             const palettes = [
@@ -154,7 +154,7 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* CARD DE BENEFÍCIOS — E-BOOKS GRATUITOS + 20% LIVROS FÍSICOS */}
-      <section className="max-w-5xl mx-auto px-4 md:px-6 mt-20">
+      <section className="max-w-5xl mx-auto px-5 md:px-6 mt-20">
         <div className="grid md:grid-cols-2 gap-5">
           <div className="rounded-3xl p-6 md:p-8 bg-gradient-to-br from-emerald-500/15 via-emerald-500/5 to-transparent ring-1 ring-emerald-500/30 shadow-md">
             <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 flex items-center justify-center mb-4">
@@ -183,7 +183,7 @@ const ClubeDeEstudos = () => {
 
       {/* CONTEÚDOS DO DR. MAURO — carrossel só de e-books, capas */}
       <section className="mt-24">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 text-center mb-10">
+        <div className="max-w-6xl mx-auto px-5 md:px-6 text-center mb-10">
           <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Acervo</span>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">
             Acesse todos os conteúdos do Dr. Mauro
@@ -206,7 +206,7 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* SEÇÕES DE CONTEÚDO */}
-      <section className="max-w-6xl mx-auto px-4 md:px-6 mt-24 space-y-16">
+      <section className="max-w-6xl mx-auto px-5 md:px-6 mt-24 space-y-16">
         {FEATURES.map((f, idx) => (
           <motion.div
             key={f.title}
@@ -257,7 +257,7 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* COMUNIDADE — REFORÇO */}
-      <section className="max-w-5xl mx-auto px-4 md:px-6 mt-24">
+      <section className="max-w-5xl mx-auto px-5 md:px-6 mt-24">
         <div className="rounded-3xl p-8 md:p-12 bg-gradient-to-br from-primary/10 via-background to-accent/10 ring-1 ring-border/40 shadow-md">
           <div className="flex items-center gap-3 mb-4">
             <Heart className="w-6 h-6 text-primary" />
@@ -288,7 +288,7 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* CARD DE PREÇO */}
-      <section className="max-w-xl mx-auto px-4 md:px-6 mt-24">
+      <section className="max-w-xl mx-auto px-5 md:px-6 mt-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -332,7 +332,7 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* FAQ */}
-      <section className="max-w-3xl mx-auto px-4 md:px-6 mt-24">
+      <section className="max-w-3xl mx-auto px-5 md:px-6 mt-24">
         <div className="text-center mb-10">
           <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Dúvidas</span>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Perguntas frequentes</h2>
@@ -351,7 +351,7 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* CTA FINAL */}
-      <section className="max-w-3xl mx-auto px-4 md:px-6 mt-20 text-center">
+      <section className="max-w-3xl mx-auto px-5 md:px-6 mt-20 text-center">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Sua caminhada começa aqui</h2>
         <p className="text-muted-foreground mt-4">Junte-se à comunidade do Dr. Mauro Kwitko hoje mesmo.</p>
         <motion.div

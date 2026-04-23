@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { LogIn, UserPlus, Eye, EyeOff, Sparkles, Mail, CheckCircle2, ArrowLeft, ShoppingCart } from 'lucide-react';
+import { LogIn, Eye, EyeOff, Sparkles, Mail, CheckCircle2, ArrowLeft, ShoppingCart, KeyRound } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -25,11 +25,10 @@ async function checkPaidAccess(email: string): Promise<{ paid: boolean; status: 
 }
 
 const Login = () => {
-  const { signIn, signUp } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState('');
   const [blocked, setBlocked] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -54,7 +53,7 @@ const Login = () => {
       setBlocked(true);
       return;
     }
-    const { error } = isSignUp ? await signUp(email, password) : await signIn(email, password);
+    const { error } = await signIn(email, password);
     if (error) setError(error.message);
     else navigate('/app');
     setLoading(false);

@@ -49,6 +49,8 @@ const variantClasses: Record<Variant, string> = {
   cyan: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-md",
   blue: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md",
   primary: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md",
+  "light-blue":
+    "bg-gradient-to-br from-sky-400 via-sky-500 to-cyan-500 text-white hover:from-sky-400 hover:to-cyan-400 shadow-[0_8px_24px_-8px_rgba(56,189,248,0.6)] ring-1 ring-white/40",
 };
 
 const WhatsAppIcon = () => (

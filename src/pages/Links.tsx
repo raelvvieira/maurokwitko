@@ -38,7 +38,7 @@ interface Section {
 const PROFILE = {
   name: "Dr. Mauro Kwitko",
   username: "@maurokwitko",
-  avatar: "https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png",
+  avatar: "https://i.ibb.co/MDn6WZRV/DR-MAURO-1.png",
   bio: "Sou Mauro Kwitko, médico homeopata e psicoterapeuta reencarnacionista. Uso a Reencarnação para ajudar as pessoas a se curarem e evoluírem. Criei a Associação Brasileira de Psicoterapia Reencarnacionista, que ensina e divulga esse método. Quero unir a Psicologia, a Psiquiatria e a Reencarnação, e fazer o bem, para isso que estou aqui.",
 };
 

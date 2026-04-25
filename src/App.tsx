@@ -38,6 +38,7 @@ import Discounts from "./pages/Discounts";
 import Notifications from "./pages/Notifications";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
+import Links from "./pages/Links";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -126,6 +127,7 @@ const App = () => (
           </Route>
           <Route path="/login" element={<LoginRoute />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/links" element={<Links />} />
 
           {/* Private club */}
           <Route path="/app/*" element={<PrivateRoutes />} />

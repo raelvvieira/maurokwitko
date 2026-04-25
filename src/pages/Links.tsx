@@ -188,7 +188,7 @@ export default function Links() {
     {
       title: "CURSOS E ESTUDOS",
       links: [
-        { id: "clube", label: "Clube de Estudos Dr. Mauro", url: "https://www.maurokwitko.com.br/clube-de-estudos", variant: "dark" },
+        { id: "clube", label: "Clube de Estudos Dr. Mauro", url: "https://www.maurokwitko.com.br/clube-de-estudos", variant: "light-blue", highlight: true },
         { id: "formacao", label: "Curso de Formação: Psicoterapia Reencarnacionista", url: "https://www.maurokwitko.com.br/curso-online", variant: "white" },
       ],
     },

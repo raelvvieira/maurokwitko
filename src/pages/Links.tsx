@@ -17,7 +17,7 @@ const RADIO_PROGRAMS = [
   },
 ];
 
-type Variant = "dark" | "white" | "green" | "cyan" | "blue" | "primary";
+type Variant = "dark" | "white" | "green" | "cyan" | "blue" | "primary" | "light-blue";
 
 interface LinkItem {
   id: string;
@@ -26,6 +26,8 @@ interface LinkItem {
   variant: Variant;
   icon?: "whatsapp" | "youtube" | "radio";
   onClick?: () => void;
+  badge?: string;
+  highlight?: boolean;
 }
 
 interface Section {

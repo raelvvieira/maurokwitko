@@ -17,7 +17,7 @@ const RADIO_PROGRAMS = [
   },
 ];
 
-type Variant = "dark" | "white" | "green" | "cyan" | "blue" | "primary";
+type Variant = "dark" | "white" | "green" | "cyan" | "blue" | "primary" | "light-blue";
 
 interface LinkItem {
   id: string;
@@ -26,6 +26,8 @@ interface LinkItem {
   variant: Variant;
   icon?: "whatsapp" | "youtube" | "radio";
   onClick?: () => void;
+  badge?: string;
+  highlight?: boolean;
 }
 
 interface Section {
@@ -36,7 +38,7 @@ interface Section {
 const PROFILE = {
   name: "Dr. Mauro Kwitko",
   username: "@maurokwitko",
-  avatar: "https://i.ibb.co/RTTwXXSp/39854-45f6772671ed8cf8bc3e9a92d5e5a6f0.png",
+  avatar: "https://i.ibb.co/MDn6WZRV/DR-MAURO-1.png",
   bio: "Sou Mauro Kwitko, médico homeopata e psicoterapeuta reencarnacionista. Uso a Reencarnação para ajudar as pessoas a se curarem e evoluírem. Criei a Associação Brasileira de Psicoterapia Reencarnacionista, que ensina e divulga esse método. Quero unir a Psicologia, a Psiquiatria e a Reencarnação, e fazer o bem, para isso que estou aqui.",
 };
 
@@ -47,6 +49,8 @@ const variantClasses: Record<Variant, string> = {
   cyan: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-md",
   blue: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md",
   primary: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md",
+  "light-blue":
+    "bg-gradient-to-br from-sky-400 via-sky-500 to-cyan-500 text-white hover:from-sky-400 hover:to-cyan-400 shadow-[0_8px_24px_-8px_rgba(56,189,248,0.6)] ring-1 ring-white/40",
 };
 
 const WhatsAppIcon = () => (
@@ -64,6 +68,13 @@ const LinkButton = ({ item }: { item: LinkItem }) => {
     }
   };
 
+  const animateProps = item.highlight
+    ? {
+        animate: { scale: [1, 1.035, 1] },
+        transition: { duration: 2.4, repeat: Infinity, ease: "easeInOut" as const },
+      }
+    : {};
+
   return (
     <motion.a
       href={item.url}
@@ -72,12 +83,27 @@ const LinkButton = ({ item }: { item: LinkItem }) => {
       onClick={handle}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.97 }}
-      className={`relative flex items-center justify-center w-full py-4 px-8 rounded-full font-semibold uppercase text-center transition-colors ${variantClasses[item.variant]}`}
+      {...animateProps}
+      className={`relative flex items-center justify-center w-full py-4 px-8 rounded-full font-semibold uppercase text-center transition-colors overflow-hidden ${variantClasses[item.variant]}`}
     >
+      {item.highlight && (
+        <motion.span
+          aria-hidden
+          initial={{ x: "-120%" }}
+          animate={{ x: "120%" }}
+          transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 1.2, ease: "easeInOut" }}
+          className="pointer-events-none absolute inset-y-0 -inset-x-2 w-1/3 bg-gradient-to-r from-transparent via-white/55 to-transparent skew-x-[-20deg]"
+        />
+      )}
       {item.icon === "youtube" && <Youtube className="w-5 h-5 absolute left-6 text-red-500" />}
       {item.icon === "radio" && <RadioIcon className="w-5 h-5 absolute left-6" />}
       {item.icon === "whatsapp" && <WhatsAppIcon />}
-      <span className="text-[12px] tracking-wide mx-2 line-clamp-1">{item.label}</span>
+      <span className="relative text-[12px] tracking-wide mx-2 line-clamp-1">{item.label}</span>
+      {item.badge && (
+        <span className="absolute -top-1.5 -right-1 bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider animate-pulse ring-2 ring-white">
+          {item.badge}
+        </span>
+      )}
     </motion.a>
   );
 };
@@ -162,7 +188,7 @@ export default function Links() {
     {
       title: "CURSOS E ESTUDOS",
       links: [
-        { id: "clube", label: "Clube de Estudos Dr. Mauro", url: "https://www.maurokwitko.com.br/clube-de-estudos", variant: "dark" },
+        { id: "clube", label: "Clube de Estudos Dr. Mauro", url: "https://www.maurokwitko.com.br/clube-de-estudos", variant: "light-blue", highlight: true },
         { id: "formacao", label: "Curso de Formação: Psicoterapia Reencarnacionista", url: "https://www.maurokwitko.com.br/curso-online", variant: "white" },
       ],
     },
@@ -172,7 +198,7 @@ export default function Links() {
         { id: "ebooks", label: "Meus E-books", url: "https://www.maurokwitko.com.br/livros-e-ebooks", variant: "dark" },
         { id: "livros", label: "Meus Livros Físicos", url: "https://www.maurokwitko.com.br/livros-e-ebooks", variant: "blue" },
         { id: "youtube", label: "Canal Youtube — Dr. Mauro", url: "https://www.youtube.com/@MauroKwitkopsicoterapeuta", variant: "white", icon: "youtube" },
-        { id: "radio", label: "Programa Dr. Mauro (Rádio)", url: "#", variant: "white", icon: "radio", onClick: () => setRadioOpen(true) },
+        { id: "radio", label: "Programa Dr. Mauro (Rádio)", url: "#", variant: "white", icon: "radio", onClick: () => setRadioOpen(true), badge: "Novo" },
       ],
     },
     {

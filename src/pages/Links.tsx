@@ -256,8 +256,8 @@ export default function Links() {
               alt={PROFILE.name}
               className="relative w-32 h-32 rounded-full border-4 border-white shadow-xl object-cover bg-white"
             />
-            <div className="absolute top-2 -right-1 bg-primary p-1 rounded-full border-2 border-white shadow">
-              <BadgeCheck className="w-5 h-5 text-primary-foreground" />
+            <div className="absolute top-2 -right-1 bg-[#007DF7] p-1 rounded-full border-2 border-white shadow">
+              <BadgeCheck className="w-5 h-5 text-white" />
             </div>
           </div>
           <h1 className="text-primary text-2xl font-bold tracking-tight mb-1">{PROFILE.name}</h1>

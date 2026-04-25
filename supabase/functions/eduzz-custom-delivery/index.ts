@@ -68,6 +68,20 @@ Deno.serve(async (req) => {
     signature_valid: validSecret,
   })
 
+  // Eduzz dispara um POST de teste sem payload ao validar a URL no Órbita.
+  // Aceitamos esse ping com 200 para passar na validação. Eventos reais
+  // (create/remove) continuam exigindo o origin_secret válido.
+  const isValidationPing =
+    !type ||
+    type === 'test' ||
+    type === 'ping' ||
+    type === 'validation' ||
+    (!fields?.edz_cli_email && !fields?.edz_fat_cod)
+
+  if (isValidationPing) {
+    return ok({ ok: true, action: 'validation_ping' })
+  }
+
   if (!validSecret) {
     return ok({ error: 'invalid origin secret' }, 401)
   }

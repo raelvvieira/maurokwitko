@@ -1,6 +1,21 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BadgeCheck, X, Radio as RadioIcon, Youtube } from "lucide-react";
+import { BadgeCheck, X, Radio as RadioIcon, Youtube, Clock, ExternalLink } from "lucide-react";
+
+const RADIO_PROGRAMS = [
+  {
+    name: "Paranormal.plus",
+    cover: "https://i.ibb.co/rR9yNcSP/paranormal-plus.png",
+    link: "https://share.google/6Cy2SpzzA1ldiRcZI",
+    schedule: "Segunda 11h, Quarta 23h",
+  },
+  {
+    name: "Soul Cast Plus",
+    cover: "https://i.ibb.co/qYw9jzGK/soulcast-plus.png",
+    link: "https://share.google/6KqsdxSlcSPjlNROg",
+    schedule: "Domingo 20h, Terça 15:30",
+  },
+];
 
 type Variant = "dark" | "white" | "green" | "cyan" | "blue" | "primary";
 
@@ -78,29 +93,57 @@ const RadioModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
         className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
       >
         <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
+          initial={{ scale: 0.92, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
+          exit={{ scale: 0.92, opacity: 0 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative w-full max-w-md rounded-2xl bg-white/90 backdrop-blur-xl border border-white/40 shadow-2xl p-6"
+          className="relative w-full max-w-md rounded-3xl bg-secondary/95 backdrop-blur-xl border border-white/40 shadow-2xl p-5"
         >
-          <button onClick={onClose} className="absolute top-3 right-3 p-1 rounded-full hover:bg-foreground/10">
-            <X className="w-5 h-5" />
+          <button
+            onClick={onClose}
+            aria-label="Fechar"
+            className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white shadow flex items-center justify-center hover:bg-white/80 transition-colors"
+          >
+            <X className="w-4 h-4 text-foreground" />
           </button>
-          <div className="flex flex-col items-center text-center">
-            <RadioIcon className="w-10 h-10 text-primary mb-2" />
-            <h3 className="text-lg font-bold text-primary mb-1">Programa Dr. Mauro</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Acompanhe o programa do Dr. Mauro Kwitko transmitido na Soulcast.
-            </p>
-            <a
-              href="https://soulcast.com.br/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
-            >
-              Ouvir agora
-            </a>
+
+          <div className="text-center mt-1 mb-5">
+            <h3 className="text-primary text-lg font-bold uppercase tracking-wider">
+              Programas de Rádio
+            </h3>
+            <div className="mx-auto mt-2 h-0.5 w-12 bg-primary rounded-full" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            {RADIO_PROGRAMS.map((p) => (
+              <div
+                key={p.name}
+                className="flex flex-col rounded-2xl bg-white shadow-md overflow-hidden"
+              >
+                <img
+                  src={p.cover}
+                  alt={p.name}
+                  className="w-full aspect-square object-cover"
+                />
+                <div className="p-3 flex flex-col flex-1">
+                  <h4 className="text-primary font-bold text-sm leading-tight mb-1.5">
+                    {p.name}
+                  </h4>
+                  <div className="flex items-start gap-1.5 text-[11px] text-muted-foreground mb-3">
+                    <Clock className="w-3.5 h-3.5 mt-px shrink-0" />
+                    <span className="leading-snug">{p.schedule}</span>
+                  </div>
+                  <a
+                    href={p.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-auto inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-full bg-primary text-primary-foreground text-[11px] font-bold uppercase tracking-wide hover:bg-primary/90 transition-colors"
+                  >
+                    Escutar agora <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+            ))}
           </div>
         </motion.div>
       </motion.div>

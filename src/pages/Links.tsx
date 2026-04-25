@@ -68,6 +68,13 @@ const LinkButton = ({ item }: { item: LinkItem }) => {
     }
   };
 
+  const animateProps = item.highlight
+    ? {
+        animate: { scale: [1, 1.035, 1] },
+        transition: { duration: 2.4, repeat: Infinity, ease: "easeInOut" as const },
+      }
+    : {};
+
   return (
     <motion.a
       href={item.url}
@@ -76,12 +83,27 @@ const LinkButton = ({ item }: { item: LinkItem }) => {
       onClick={handle}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.97 }}
-      className={`relative flex items-center justify-center w-full py-4 px-8 rounded-full font-semibold uppercase text-center transition-colors ${variantClasses[item.variant]}`}
+      {...animateProps}
+      className={`relative flex items-center justify-center w-full py-4 px-8 rounded-full font-semibold uppercase text-center transition-colors overflow-hidden ${variantClasses[item.variant]}`}
     >
+      {item.highlight && (
+        <motion.span
+          aria-hidden
+          initial={{ x: "-120%" }}
+          animate={{ x: "120%" }}
+          transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 1.2, ease: "easeInOut" }}
+          className="pointer-events-none absolute inset-y-0 -inset-x-2 w-1/3 bg-gradient-to-r from-transparent via-white/55 to-transparent skew-x-[-20deg]"
+        />
+      )}
       {item.icon === "youtube" && <Youtube className="w-5 h-5 absolute left-6 text-red-500" />}
       {item.icon === "radio" && <RadioIcon className="w-5 h-5 absolute left-6" />}
       {item.icon === "whatsapp" && <WhatsAppIcon />}
-      <span className="text-[12px] tracking-wide mx-2 line-clamp-1">{item.label}</span>
+      <span className="relative text-[12px] tracking-wide mx-2 line-clamp-1">{item.label}</span>
+      {item.badge && (
+        <span className="absolute -top-1.5 -right-1 bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider animate-pulse ring-2 ring-white">
+          {item.badge}
+        </span>
+      )}
     </motion.a>
   );
 };

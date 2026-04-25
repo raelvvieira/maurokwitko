@@ -198,7 +198,7 @@ export default function Links() {
         { id: "ebooks", label: "Meus E-books", url: "https://www.maurokwitko.com.br/livros-e-ebooks", variant: "dark" },
         { id: "livros", label: "Meus Livros Físicos", url: "https://www.maurokwitko.com.br/livros-e-ebooks", variant: "blue" },
         { id: "youtube", label: "Canal Youtube — Dr. Mauro", url: "https://www.youtube.com/@MauroKwitkopsicoterapeuta", variant: "white", icon: "youtube" },
-        { id: "radio", label: "Programa Dr. Mauro (Rádio)", url: "#", variant: "white", icon: "radio", onClick: () => setRadioOpen(true) },
+        { id: "radio", label: "Programa Dr. Mauro (Rádio)", url: "#", variant: "white", icon: "radio", onClick: () => setRadioOpen(true), badge: "Novo" },
       ],
     },
     {

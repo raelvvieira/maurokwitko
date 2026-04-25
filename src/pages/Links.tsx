@@ -1,6 +1,21 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BadgeCheck, X, Radio as RadioIcon, Youtube } from "lucide-react";
+import { BadgeCheck, X, Radio as RadioIcon, Youtube, Clock, ExternalLink } from "lucide-react";
+
+const RADIO_PROGRAMS = [
+  {
+    name: "Paranormal.plus",
+    cover: "https://i.ibb.co/rR9yNcSP/paranormal-plus.png",
+    link: "https://share.google/6Cy2SpzzA1ldiRcZI",
+    schedule: "Segunda 11h, Quarta 23h",
+  },
+  {
+    name: "Soul Cast Plus",
+    cover: "https://i.ibb.co/qYw9jzGK/soulcast-plus.png",
+    link: "https://share.google/6KqsdxSlcSPjlNROg",
+    schedule: "Domingo 20h, Terça 15:30",
+  },
+];
 
 type Variant = "dark" | "white" | "green" | "cyan" | "blue" | "primary";
 

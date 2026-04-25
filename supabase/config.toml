@@ -7,7 +7,5 @@ project_id = "khztwxgobacabfvaeves"
     verify_jwt = true
   [functions.eduzz-webhook]
     verify_jwt = false
-  [functions.eduzz-custom-delivery]
-    verify_jwt = false
   [functions.check-paid-access]
     verify_jwt = false

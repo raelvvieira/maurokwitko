@@ -4,6 +4,7 @@ import { BookOpen, ArrowRight, ExternalLink } from 'lucide-react';
 import { BOOKS } from '@/data/books';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import Marquee from '@/components/public/Marquee';
+import amazonIcon from '@/assets/amazon-icon.png';
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -96,27 +97,7 @@ const LivrosEbooks = () => {
         >
           <div className="p-6 md:p-10 flex flex-col md:flex-row items-center gap-5 md:gap-6 text-white">
             <div className="shrink-0 w-20 h-20 rounded-full bg-white flex items-center justify-center ring-1 ring-white/30 shadow-md">
-              <svg viewBox="0 0 256 80" className="w-14 h-auto" aria-hidden="true">
-                <path
-                  fill="#FF9900"
-                  d="M158.6 64.7c-14.9 11-36.5 16.8-55.1 16.8-26 0-49.4-9.6-67.2-25.6-1.4-1.3-.1-3 1.5-2 19.2 11.2 42.9 17.9 67.4 17.9 16.5 0 34.6-3.4 51.4-10.5 2.5-1.1 4.6 1.6 2 3.4z"
-                />
-                <path
-                  fill="#FF9900"
-                  d="M164.8 57.6c-1.9-2.4-12.5-1.1-17.3-.6-1.5.2-1.7-1.1-.4-2 8.5-6 22.4-4.2 24-2.2 1.6 2-.5 16-8.4 22.7-1.2 1-2.4.5-1.8-.9 1.8-4.5 5.8-14.6 3.9-17z"
-                />
-                <text
-                  x="0"
-                  y="40"
-                  fill="#fff"
-                  fontFamily="Arial, sans-serif"
-                  fontWeight="700"
-                  fontSize="44"
-                  letterSpacing="-2"
-                >
-                  amazon
-                </text>
-              </svg>
+              <img src={amazonIcon} alt="Amazon" className="w-14 h-14 object-contain" />
             </div>
             <div className="flex-1 text-center md:text-left">
               <h3 className="text-xl md:text-2xl font-bold">Prefere comprar pela Amazon?</h3>

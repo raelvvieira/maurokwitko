@@ -50,7 +50,7 @@ const variantClasses: Record<Variant, string> = {
   blue: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md",
   primary: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md",
   "light-blue":
-    "bg-gradient-to-br from-sky-400 via-sky-500 to-cyan-500 text-white hover:from-sky-400 hover:to-cyan-400 shadow-[0_8px_24px_-8px_rgba(56,189,248,0.6)] ring-1 ring-white/40",
+    "bg-gradient-to-br from-sky-300 via-sky-500 to-cyan-600 text-white hover:from-sky-300 hover:to-cyan-500 shadow-[0_10px_30px_-10px_rgba(56,189,248,0.7),inset_0_1px_0_0_rgba(255,255,255,0.4)] ring-1 ring-white/50",
 };
 
 const WhatsAppIcon = () => (
@@ -70,41 +70,61 @@ const LinkButton = ({ item }: { item: LinkItem }) => {
 
   const animateProps = item.highlight
     ? {
-        animate: { scale: [1, 1.035, 1] },
-        transition: { duration: 2.4, repeat: Infinity, ease: "easeInOut" as const },
+        animate: { scale: [1, 1.025, 1] },
+        transition: { duration: 2.8, repeat: Infinity, ease: "easeInOut" as const },
       }
     : {};
 
   return (
-    <motion.a
-      href={item.url}
-      target={item.url.startsWith("http") ? "_blank" : undefined}
-      rel="noopener noreferrer"
-      onClick={handle}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.97 }}
-      {...animateProps}
-      className={`relative flex items-center justify-center w-full py-4 px-8 rounded-full font-semibold uppercase text-center transition-colors overflow-hidden ${variantClasses[item.variant]}`}
-    >
-      {item.highlight && (
-        <motion.span
-          aria-hidden
-          initial={{ x: "-120%" }}
-          animate={{ x: "120%" }}
-          transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 1.2, ease: "easeInOut" }}
-          className="pointer-events-none absolute inset-y-0 -inset-x-2 w-1/3 bg-gradient-to-r from-transparent via-white/55 to-transparent skew-x-[-20deg]"
-        />
-      )}
-      {item.icon === "youtube" && <Youtube className="w-5 h-5 absolute left-6 text-red-500" />}
-      {item.icon === "radio" && <RadioIcon className="w-5 h-5 absolute left-6" />}
-      {item.icon === "whatsapp" && <WhatsAppIcon />}
-      <span className="relative text-[12px] tracking-wide mx-2 line-clamp-1">{item.label}</span>
+    <div className="relative w-full">
+      <motion.a
+        href={item.url}
+        target={item.url.startsWith("http") ? "_blank" : undefined}
+        rel="noopener noreferrer"
+        onClick={handle}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.97 }}
+        {...animateProps}
+        className={`relative flex items-center justify-center w-full py-4 px-8 rounded-full font-semibold uppercase text-center transition-colors overflow-hidden ${variantClasses[item.variant]}`}
+      >
+        {item.highlight && (
+          <>
+            {/* glow base pulsante */}
+            <motion.span
+              aria-hidden
+              animate={{ opacity: [0.35, 0.6, 0.35] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.45),transparent_70%)]"
+            />
+            {/* shine sweep cinematográfico */}
+            <motion.span
+              aria-hidden
+              initial={{ x: "-150%" }}
+              animate={{ x: "150%" }}
+              transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 2.4, ease: "easeOut" }}
+              className="pointer-events-none absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-white/20 via-50% to-transparent skew-x-[-25deg] blur-sm"
+              style={{
+                backgroundImage:
+                  "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.75) 50%, rgba(255,255,255,0.2) 70%, transparent 100%)",
+              }}
+            />
+          </>
+        )}
+        {item.icon === "youtube" && <Youtube className="w-5 h-5 absolute left-6 text-red-500" />}
+        {item.icon === "radio" && <RadioIcon className="w-5 h-5 absolute left-6" />}
+        {item.icon === "whatsapp" && <WhatsAppIcon />}
+        <span className="relative text-[12px] tracking-wide mx-2 line-clamp-1">{item.label}</span>
+      </motion.a>
       {item.badge && (
-        <span className="absolute -top-1.5 -right-1 bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider animate-pulse ring-2 ring-white">
+        <motion.span
+          animate={{ scale: [1, 1.08, 1] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-2 -right-2 z-10 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-md uppercase tracking-wider ring-2 ring-white"
+        >
           {item.badge}
-        </span>
+        </motion.span>
       )}
-    </motion.a>
+    </div>
   );
 };
 

@@ -268,7 +268,7 @@ const Home = () => {
                 Uma nova visão psicológica baseada na Reencarnação, para que possamos realmente aproveitar a encarnação. Formação completa para terapeutas integrarem a Terapia de Regressão à prática clínica.
               </p>
               <ul className="space-y-3 pt-2">
-                {['Técnicas Avançadas de Regressão', 'Anatomia Espiritual & Karma', 'Casos Clínicos & Supervisão'].map((item) => (
+                {['Investigação ética do Inconsciente', 'Anatomia Espiritual & Karma', 'Casos Clínicos & Supervisão'].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm text-foreground/80">
                     <span className="mt-0.5 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <Check className="w-3 h-3 text-primary" />
@@ -304,7 +304,7 @@ const Home = () => {
           <div className="max-w-6xl mx-auto px-5 md:px-6 mb-10">
             <motion.div {...fadeUp}>
               <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">E-books</span>
-              <h3 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Disponíveis no Clube de Estudos</h3>
+              <h3 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Adquira ou acesse gratuitamente no Clube de Estudos</h3>
               <p className="text-muted-foreground mt-3 max-w-xl text-sm md:text-base">
                 Acesse a biblioteca completa de e-books como membro do Clube.
               </p>
@@ -366,9 +366,9 @@ const Home = () => {
             <ul className="space-y-3 pt-2">
               {[
                 'Fundador e patrono da Associação Brasileira de Psicoterapia Reencarnacionista (ABPR)',
-                'Mais de 20.000 Investigações do Inconsciente (Regressões) realizadas',
-                'Mais de 60 turmas formadas no Curso de Psicoterapia Reencarnacionista',
-                '19 livros publicados (físicos e e-books)',
+                'Mais de 10.000 Investigações do Inconsciente (Regressões) realizadas',
+                'Mais de 70 turmas formadas no Curso de Psicoterapia Reencarnacionista',
+                '25 livros publicados (físicos e e-books)',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm md:text-base text-foreground/85">
                   <span className="mt-1 w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
@@ -380,15 +380,15 @@ const Home = () => {
             </ul>
             <div className="grid grid-cols-3 gap-4 pt-6 border-t border-border/40">
               <div>
-                <p className="text-2xl md:text-3xl font-bold tracking-tight">20k+</p>
+                <p className="text-2xl md:text-3xl font-bold tracking-tight">10k+</p>
                 <p className="text-xs text-muted-foreground mt-1">Atendimentos</p>
               </div>
               <div>
-                <p className="text-2xl md:text-3xl font-bold tracking-tight">19</p>
+                <p className="text-2xl md:text-3xl font-bold tracking-tight">25</p>
                 <p className="text-xs text-muted-foreground mt-1">Livros</p>
               </div>
               <div>
-                <p className="text-2xl md:text-3xl font-bold tracking-tight">60+</p>
+                <p className="text-2xl md:text-3xl font-bold tracking-tight">70+</p>
                 <p className="text-xs text-muted-foreground mt-1">Turmas</p>
               </div>
             </div>

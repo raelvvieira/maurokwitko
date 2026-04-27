@@ -36,7 +36,7 @@ const RadioPublica = () => {
           <RadioIcon className="w-8 h-8 md:w-10 md:h-10 text-primary" /> Rádio com Dr. Mauro
         </h1>
         <p className="text-muted-foreground mt-4 max-w-2xl mx-auto leading-relaxed">
-          Acompanhe os programas semanais do Dr. Mauro Kwitko nas principais rádios espiritualistas.
+          Acompanhe os programas semanais do Dr. Mauro nessas rádios espiritualistas. Os programas anteriores busque no Menu.
         </p>
       </motion.div>
 

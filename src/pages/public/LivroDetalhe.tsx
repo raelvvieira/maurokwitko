@@ -51,7 +51,8 @@ const LivroDetalhe = () => {
       cover = ebook.cover_url || '';
       synopsis = ebook.description || 'Sinopse em breve.';
       videoUrl = (ebook as any).video_url || undefined;
-      comprarLink = ebook.url || '#';
+      // E-books: "Comprar" leva para a Amazon (não expor PDF). Acesso ao PDF é só dentro do Clube de Estudos.
+      comprarLink = 'https://www.amazon.com.br/s?k=Dr.+Mauro+Kwitko';
     }
   }
 

@@ -1,30 +1,25 @@
-# Ajustes de Copy
+## Problema
 
-Pequenas alterações de texto em duas páginas públicas.
+Na página pública de detalhe de um **E-book** (`/livros-e-ebooks/ebook/:id`), o botão **"Comprar"** está abrindo o PDF do e-book diretamente, porque usa `ebook.url` (que aponta para o arquivo PDF). E-books só devem ser lidos por membros logados no Clube de Estudos.
 
-## 1. `src/pages/public/Home.tsx`
+Além disso, o botão **"Adquirir Gratuitamente"** já leva para `/clube-de-estudos`, o que está correto — apenas confirmar.
 
-**Linha 271** — card "Formação em Psicoterapia Reencarnacionista":
-- "Técnicas Avançadas de Regressão" → **"Investigação ética do Inconsciente"**
+## Alterações
 
-**Linha 307** — seção de e-books:
-- "Disponíveis no Clube de Estudos" → **"Adquira ou acesse gratuitamente no Clube de Estudos"**
+**Arquivo:** `src/pages/public/LivroDetalhe.tsx`
 
-**Linhas 369–371** — seção "Olá, sou Dr. Mauro":
-- "Mais de 20.000 Investigações..." → **"Mais de 10.000 Investigações do Inconsciente (Regressões) realizadas"**
-- "Mais de 60 turmas..." → **"Mais de 70 turmas formadas no Curso de Psicoterapia Reencarnacionista"**
-- "19 livros publicados..." → **"25 livros publicados (físicos e e-books)"**
+No bloco de CTAs do tipo `ebook` (linhas ~213-257):
 
-**Linhas 381–393** — atualizar os números do bloco de estatísticas para refletir os novos dados:
-- `20k+` Atendimentos → **`10k+`**
-- `19` Livros → **`25`**
-- `60+` Turmas → **`70+`**
+1. **Botão "Comprar"** — em vez de usar `comprarLink` (que é o PDF do e-book), apontar para a página de busca da Amazon com as obras do Dr. Mauro Kwitko, abrindo em nova aba:
+   - URL: `https://www.amazon.com.br/s?k=Dr.+Mauro+Kwitko`
+   - (mesma URL já usada no card Amazon da página `LivrosEbooks.tsx`)
 
-## 2. `src/pages/public/RadioPublica.tsx`
+2. **Botão "Adquirir Gratuitamente"** — manter como está, já leva para `/clube-de-estudos`. ✅
 
-**Subtítulo do hero** — substituir:
-- "Acompanhe os programas semanais do Dr. Mauro Kwitko nas principais rádios espiritualistas." → **"Acompanhe os programas semanais do Dr. Mauro nessas rádios espiritualistas. Os programas anteriores busque no Menu."**
+3. **Remover** a variável `comprarLink` para o caso de e-book (não será mais usada nessa CTA), evitando que o link do PDF vaze para o front público.
 
-## Observações
-- Apenas mudanças de texto/números — nenhum impacto em layout, lógica ou backend.
-- Versão autenticada da Rádio (`src/pages/Radio.tsx`) não tem esse subtítulo, então não precisa de ajuste.
+### Observação
+
+A página de **livro físico** continua intacta (botão "Comprar" segue indo para o link da BesouroBox via `book.link`).
+
+Aprove para implementar.

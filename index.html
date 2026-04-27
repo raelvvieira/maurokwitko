@@ -45,5 +45,24 @@
     <!-- End Meta Pixel Code -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- UTM forwarding to Eduzz checkout links -->
+    <script>
+    (function() {
+        const utmParamQueryString = new URLSearchParams(window.location.search);
+        if (utmParamQueryString.toString()) {
+            var navLinks = document.querySelectorAll('a');
+            navLinks.forEach(function(item) {
+                if (item.href.indexOf('https://chk.eduzz.com') !== -1) {
+                    if (item.href.indexOf('?') === -1) {
+                        item.href += '?' + utmParamQueryString.toString();
+                    } else {
+                        item.href += '&' + utmParamQueryString.toString();
+                    }
+                }
+            });
+        }
+    })();
+    </script>
   </body>
 </html>

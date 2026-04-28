@@ -37,7 +37,7 @@ import Admin from "./pages/Admin";
 import Discounts from "./pages/Discounts";
 import Notifications from "./pages/Notifications";
 import Login from "./pages/Login";
-import ResetPassword from "./pages/ResetPassword";
+import Unsubscribe from "./pages/Unsubscribe";
 import Links from "./pages/Links";
 import NotFound from "./pages/NotFound";
 
@@ -126,7 +126,7 @@ const App = () => (
             <Route path="/clube-de-estudos" element={<ClubeDeEstudos />} />
           </Route>
           <Route path="/login" element={<LoginRoute />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/unsubscribe" element={<Unsubscribe />} />
           <Route path="/links" element={<Links />} />
 
           {/* Private club */}

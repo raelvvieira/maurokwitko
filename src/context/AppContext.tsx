@@ -15,6 +15,7 @@ import {
   type DiscountRow,
 } from '@/hooks/useSupabaseData';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfileInfo } from '@/hooks/useProfileInfo';
 
 // ── Legacy Types ───────────────────────────────────────
 

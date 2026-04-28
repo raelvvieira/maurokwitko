@@ -15,6 +15,7 @@ import {
   type DiscountRow,
 } from '@/hooks/useSupabaseData';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfileInfo } from '@/hooks/useProfileInfo';
 
 // ── Legacy Types ───────────────────────────────────────
 
@@ -299,9 +300,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const livrosHook = useLivros();
   const discountsHook = useDiscounts();
 
+  const { name: realName, email: realEmail } = useProfileInfo();
   const profile: UserProfile = {
-    name: 'Alex Martins', email: 'alex@email.com', avatar: '',
-    rank: 4, streak: 15, badge: 'Rising Star', totalScore: 8750,
+    name: realName || (user?.email?.split('@')[0] ?? ''),
+    email: realEmail || (user?.email ?? ''),
+    avatar: '',
+    rank: 0,
+    streak: 0,
+    badge: '',
+    totalScore: 0,
   };
 
   const markLessonComplete = (lessonId: string) => {

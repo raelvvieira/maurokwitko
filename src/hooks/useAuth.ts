@@ -27,13 +27,7 @@ export function useAuth() {
 
   const isAdmin = ADMIN_EMAILS.includes(user?.email ?? '');
 
-  const signIn = (email: string, password: string) =>
-    supabase.auth.signInWithPassword({ email, password });
-
-  const signUp = (email: string, password: string) =>
-    supabase.auth.signUp({ email, password });
-
   const signOut = () => supabase.auth.signOut();
 
-  return { user, session, loading, isAdmin, signIn, signUp, signOut };
+  return { user, session, loading, isAdmin, signOut };
 }

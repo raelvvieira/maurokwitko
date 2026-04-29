@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Star, Check, Sparkles, PlayCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { getArrayTranslation } from '@/i18n';
 
 const MODULES = [
   'Introdução: O que você vai aprender neste curso',
@@ -34,7 +36,9 @@ const REVIEWS = [
 ];
 
 const CursoOnline = () => {
+  const { t } = useTranslation();
   const COURSE_URL = 'https://chk.eduzz.com/801EN21NW7';
+  const includes = getArrayTranslation<string>(t('cursoOnline.priceIncludes', { returnObjects: true }));
 
   return (
     <div className="pt-24 md:pt-32 pb-16 overflow-hidden">

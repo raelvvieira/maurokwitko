@@ -44,10 +44,10 @@ const Artigos = () => {
               </div>
               <div className="p-6 md:p-7 flex flex-col flex-1">
               <h2 className="text-xl md:text-2xl font-bold tracking-tight leading-snug group-hover:text-primary transition-colors">
-                {art.title}
+                {t(`articleTitles.${art.slug}`, { defaultValue: art.title })}
               </h2>
               <p className="mt-3 text-sm md:text-base text-muted-foreground leading-relaxed line-clamp-3 flex-1">
-                {art.excerpt}
+                {t(`articleExcerpts.${art.slug}`, { defaultValue: art.excerpt })}
               </p>
               <Link
                 to={`/artigos/${art.slug}`}

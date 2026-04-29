@@ -39,7 +39,7 @@ const ArtigoDetalhe = () => {
               {t('artigoDetalhe.label')}
             </span>
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
-              {article.title}
+              {translatedTitle}
             </h1>
             <p className="mt-5 text-sm font-medium text-muted-foreground">{t('artigoDetalhe.by')}</p>
           </motion.header>
@@ -52,7 +52,7 @@ const ArtigoDetalhe = () => {
           >
             <img
               src={getArticleImage(article.slug)}
-              alt={article.title}
+              alt={translatedTitle}
               className="w-full h-full object-cover"
             />
           </motion.div>
@@ -63,7 +63,7 @@ const ArtigoDetalhe = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="space-y-5 text-base md:text-lg leading-relaxed text-foreground/85"
           >
-            {article.body.map((para, idx) => {
+            {body.map((para, idx) => {
               if (para.startsWith('__LIST__')) {
                 const items = para.replace('__LIST__', '').split('||');
                 return (

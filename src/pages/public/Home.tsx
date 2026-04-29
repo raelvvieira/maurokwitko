@@ -49,44 +49,29 @@ type Slide = {
   caption: string;
 };
 
-const HERO_SLIDES: Slide[] = [
-  {
-    eyebrow: '30+ anos de prática clínica e formação',
-    titleStart: 'Psicoterapia Reencarnacionista e ',
-    titleAccent: 'Investigação do Inconsciente',
-    description:
-      'Há mais de três décadas, o Dr. Mauro Kwitko, médico, fundador e presidente da Associação Brasileira de Psicoterapia Reencarnacionista trabalha para integrar a Reencarnação às Instituições Oficiais de Saúde, enquanto um tema da área da saúde, não como um assunto religioso, espiritual.',
-    ctaLabel: 'Conheça nossa Formação',
-    ctaHref: '/formacao',
-    image: 'https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg',
-    imageAlt: 'Dr. Mauro Kwitko',
-    caption: 'CRM 5761 · UFRGS · Fundador da ABPR',
-  },
-  {
-    eyebrow: 'Comunidade exclusiva de membros',
-    titleStart: 'Clube de Estudos ',
-    titleAccent: 'Dr. Mauro Kwitko',
-    description:
-      'Acesse aulas, hinos espirituais, e-books, rádio e uma comunidade ativa em torno da Psicoterapia Reencarnacionista. Tudo num só lugar, com curadoria do Dr. Mauro.',
-    ctaLabel: 'Entrar no Clube',
-    ctaHref: '/clube-de-estudos',
-    image: 'https://i.ibb.co/HDQbPzRX/AULAS-PR-TICAS.jpg',
-    imageAlt: 'Clube de Estudos',
-    caption: 'Aulas, hinos, e-books e comunidade',
-  },
-  {
-    eyebrow: 'Curso online completo',
-    titleStart: 'A Psicologia da ',
-    titleAccent: 'Reencarnação',
-    description:
-      'Aprenda no seu ritmo os fundamentos da Psicoterapia Reencarnacionista, condensados em quase 30 anos de prática clínica. R$ 297 — em até 12x.',
-    ctaLabel: 'Conhecer o Curso Online',
-    ctaHref: '/curso-online',
-    image: 'https://i.ibb.co/MDJBY2J0/AULAS-TE-RICAS.jpg',
-    imageAlt: 'Curso Online',
-    caption: 'Acesso vitalício · 2 aulas gratuitas',
-  },
+const SLIDE_IMAGES: { ctaHref: string; image: string; imageAlt: string }[] = [
+  { ctaHref: '/formacao', image: 'https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg', imageAlt: 'Dr. Mauro Kwitko' },
+  { ctaHref: '/clube-de-estudos', image: 'https://i.ibb.co/HDQbPzRX/AULAS-PR-TICAS.jpg', imageAlt: 'Clube de Estudos' },
+  { ctaHref: '/curso-online', image: 'https://i.ibb.co/MDJBY2J0/AULAS-TE-RICAS.jpg', imageAlt: 'Curso Online' },
 ];
+
+const useHeroSlides = (): Slide[] => {
+  const { t } = useTranslation();
+  return SLIDE_IMAGES.map((s, i) => {
+    const k = `home.slides.${i + 1}`;
+    return {
+      eyebrow: t(`${k}.eyebrow`),
+      titleStart: t(`${k}.titleStart`),
+      titleAccent: t(`${k}.titleAccent`),
+      description: t(`${k}.description`),
+      ctaLabel: t(`${k}.cta`),
+      ctaHref: s.ctaHref,
+      image: s.image,
+      imageAlt: s.imageAlt,
+      caption: t(`${k}.caption`),
+    };
+  });
+};
 
 const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
   const prefersReducedMotion =

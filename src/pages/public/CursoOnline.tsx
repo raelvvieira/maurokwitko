@@ -50,12 +50,12 @@ const CursoOnline = () => {
           transition={{ duration: 0.6 }}
           className="space-y-6"
         >
-          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Curso On-Line</span>
+          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('cursoOnline.eyebrow')}</span>
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight">
-            A <span className="italic font-serif text-primary">Psicologia da Reencarnação</span>
+            {t('cursoOnline.titleStart')}<span className="italic font-serif text-primary">{t('cursoOnline.titleAccent')}</span>
           </h1>
           <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-            Encontre as respostas para suas maiores questões: como abandonar velhos hábitos, cultivar foco e disciplina, compreender o que é essencial e viver uma versão superior de si mesmo.
+            {t('cursoOnline.desc')}
           </p>
           <div className="flex justify-center">
             <motion.a
@@ -66,7 +66,7 @@ const CursoOnline = () => {
               transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-md"
             >
-              Quero me Inscrever <ArrowRight className="w-4 h-4" />
+              {t('cursoOnline.subscribe')} <ArrowRight className="w-4 h-4" />
             </motion.a>
           </div>
         </motion.div>

@@ -74,6 +74,7 @@ const useHeroSlides = (): Slide[] => {
 };
 
 const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
+  const HERO_SLIDES = useHeroSlides();
   const prefersReducedMotion =
     typeof window !== 'undefined' &&
     window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;

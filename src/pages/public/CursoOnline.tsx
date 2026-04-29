@@ -161,7 +161,7 @@ const CursoOnline = () => {
                   <PlayCircle className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-[11px] font-bold tracking-wider uppercase text-emerald-700 dark:text-emerald-400">Aula gratuita</p>
+                  <p className="text-[11px] font-bold tracking-wider uppercase text-emerald-700 dark:text-emerald-400">{t('cursoOnline.freeBadge')}</p>
                   <h3 className="text-lg font-bold leading-tight mt-0.5">{aula.title}</h3>
                   <p className="text-sm text-muted-foreground mt-1">{aula.subtitle}</p>
                 </div>
@@ -181,25 +181,19 @@ const CursoOnline = () => {
           className="rounded-3xl p-8 md:p-10 bg-background ring-2 ring-primary shadow-2xl text-center"
         >
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold tracking-wider uppercase mb-5">
-            <Sparkles className="w-3.5 h-3.5" /> Curso Completo
+            <Sparkles className="w-3.5 h-3.5" /> {t('cursoOnline.priceBadge')}
           </div>
-          <h3 className="text-xl font-bold">A Psicologia da Reencarnação</h3>
+          <h3 className="text-xl font-bold">{t('cursoOnline.priceTitle')}</h3>
           <div className="mt-5 flex items-end justify-center gap-1">
             <span className="text-2xl font-bold text-muted-foreground">R$</span>
             <span className="text-6xl font-bold tracking-tight">297</span>
             <span className="text-base text-muted-foreground mb-2">,00</span>
           </div>
           <p className="text-sm text-muted-foreground mt-2">
-            ou <strong className="text-foreground">12x de R$ 30,72</strong> <span className="text-xs">*</span> no cartão
+            {t('cursoOnline.priceInstall', { value: '12x R$ 30,72' })} <span className="text-xs">*</span>
           </p>
           <ul className="mt-7 space-y-3 text-left">
-            {[
-              'Mais de 20 módulos em vídeo',
-              'Acesso vitalício à plataforma',
-              'Assista quando e quantas vezes quiser',
-              'Materiais complementares',
-              'Certificado de conclusão',
-            ].map((i) => (
+            {includes.map((i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-foreground/85">
                 <Check className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
                 <span>{i}</span>
@@ -214,17 +208,17 @@ const CursoOnline = () => {
             transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
             className="mt-8 block w-full px-6 py-4 rounded-full bg-emerald-600 text-white text-base font-bold hover:bg-emerald-700 transition-colors shadow-lg"
           >
-            Quero me Inscrever
+            {t('cursoOnline.subscribe')}
           </motion.a>
-          <p className="text-[11px] text-muted-foreground mt-3">* Parcelamento sujeito a juros do cartão.</p>
+          <p className="text-[11px] text-muted-foreground mt-3">{t('cursoOnline.priceNote')}</p>
         </motion.div>
       </section>
 
       {/* AVALIAÇÕES */}
       <section className="max-w-5xl mx-auto px-5 md:px-6 mt-20">
         <div className="text-center mb-10">
-          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Depoimentos</span>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Avaliações</h2>
+          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('cursoOnline.reviewsEyebrow')}</span>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">{t('cursoOnline.reviewsTitle')}</h2>
           <div className="flex items-center justify-center gap-2 mt-3">
             <span className="text-3xl font-bold">5,0</span>
             <div className="flex">
@@ -232,7 +226,7 @@ const CursoOnline = () => {
                 <Star key={s} className="w-5 h-5 fill-amber-400 text-amber-400" />
               ))}
             </div>
-            <span className="text-sm text-muted-foreground">({REVIEWS.length} avaliações)</span>
+            <span className="text-sm text-muted-foreground">{t('cursoOnline.reviewsCount', { count: REVIEWS.length })}</span>
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-5">
@@ -266,7 +260,7 @@ const CursoOnline = () => {
           transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
           className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-emerald-600 text-white text-base font-bold hover:bg-emerald-700 transition-colors shadow-lg"
         >
-          Acessar o Curso On-Line <ArrowRight className="w-5 h-5" />
+          {t('cursoOnline.accessCourse')} <ArrowRight className="w-5 h-5" />
         </motion.a>
       </section>
     </div>

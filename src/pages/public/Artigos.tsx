@@ -1,22 +1,24 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { ARTICLES } from '@/data/articles';
 import { getArticleImage } from '@/data/articleImages';
 
 const Artigos = () => {
+  const { t } = useTranslation();
   return (
     <div className="bg-background">
       <section className="pt-28 md:pt-36 pb-12 md:pb-16 px-5 md:px-6">
         <div className="max-w-5xl mx-auto text-center">
           <span className="inline-block text-[11px] font-bold tracking-[0.2em] text-primary uppercase mb-3">
-            Reflexões e Pesquisas
+            {t('artigos.eyebrow')}
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]">
-            Artigos do <span className="italic font-serif text-primary">Dr. Mauro Kwitko</span>
+            {t('artigos.titleStart')}<span className="italic font-serif text-primary">{t('artigos.titleAccent')}</span>
           </h1>
           <p className="mt-5 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Textos sobre Psicoterapia Reencarnacionista, vidas passadas e a fronteira entre ciência e espiritualidade.
+            {t('artigos.desc')}
           </p>
         </div>
       </section>
@@ -51,7 +53,7 @@ const Artigos = () => {
                 to={`/artigos/${art.slug}`}
                 className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:gap-2.5 transition-all"
               >
-                Ler artigo <ArrowRight className="w-4 h-4" />
+                {t('artigos.read')} <ArrowRight className="w-4 h-4" />
               </Link>
               </div>
             </motion.article>

@@ -1,75 +1,66 @@
-# Seletor de Idioma com Tradução Completa do Site
+## Goals
+1. Header: prevent menu items from wrapping (e.g. "Quién Soy", "Libros y E-books"), and increase spacing between menu items.
+2. Replace `BR` / `US` / `ES` country code labels in the language switcher with small flag icons (both in trigger button and dropdown list).
+3. Make language switching feel instant, and finish translating pages still showing hardcoded Portuguese (Livros e E-books, Detalhe do Livro, Artigos, Formação, Curso Online, Quem Sou Eu).
 
-Adicionar um botão de bandeira no canto superior direito do site público que, ao ser clicado, abre um popover com as opções **Português (BR)**, **English** e **Español**. Ao escolher um idioma, **todo o site público é traduzido** instantaneamente (textos, menus, botões, títulos, parágrafos), e a preferência fica salva no navegador.
+---
 
-## O que será feito
+## 1. Header — no line breaks + better spacing
+**File:** `src/components/public/PublicHeader.tsx`
 
-### 1. Infraestrutura de i18n (internacionalização)
-- Instalar **`react-i18next`** + **`i18next`** + **`i18next-browser-languagedetector`** (padrão do mercado React, leve e estável).
-- Criar `src/i18n/index.ts` para inicialização com 3 idiomas: `pt-BR` (padrão/fallback), `en`, `es`.
-- Criar arquivos de tradução em `src/i18n/locales/`:
-  - `pt-BR.json`
-  - `en.json`
-  - `es.json`
-- Persistir o idioma escolhido em `localStorage` (`i18nextLng`) — ao recarregar, o site abre no idioma escolhido.
-- Inicializar o i18n em `src/main.tsx` para estar disponível em toda a aplicação.
+- On the desktop `<nav>`: bump gap from `gap-7` to `gap-8 xl:gap-10` and add `whitespace-nowrap` to each link/button.
+- Long labels like "Training in Reincarnationist Psychotherapy" must never appear in the top nav — keep using the short labels (`header.menu.cursos`, `header.menu.radio`) for the trigger and only show the long names inside the dropdown. Verify current code already does this (it does).
+- Shorten the Spanish/English short labels for top-level items where needed in `en.json` / `es.json`:
+  - `header.menu.quemSouEu`: ES "Quién Soy" → keep but `whitespace-nowrap` solves the break.
+  - `header.menu.livros`: ES "Libros y E-books" → wraps at narrow viewports; add `whitespace-nowrap` on the link.
 
-### 2. Botão seletor com bandeiras (canto superior direito)
-- Novo componente: `src/components/public/LanguageSwitcher.tsx`.
-- Integrado ao `PublicHeader.tsx`, posicionado **antes do botão "Entrar no Clube"** no desktop e dentro do menu drawer no mobile.
-- Visual:
-  - Botão circular/pill mostrando a bandeira do idioma atual + sigla (ex.: 🇧🇷 PT) + chevron.
-  - Ao clicar, abre um popover (componente `Popover` do shadcn já existente) com as 3 opções, cada uma com bandeira + nome do idioma (estilo similar ao print enviado).
-  - Indicador visual de qual idioma está ativo (borda destacada na cor primária `#506274`).
-  - Bandeiras renderizadas como **emojis** (🇧🇷 🇺🇸 🇪🇸) — sem dependência de imagens, leve e nítido em qualquer resolução.
-- Acessível: `aria-label`, navegação por teclado, fecha ao clicar fora.
+So the fix is **CSS-only**: every nav `<Link>` and dropdown trigger gets `whitespace-nowrap`, and the parent gets a larger gap.
 
-### 3. Tradução de todo o site público
-Todas as strings visíveis das seguintes páginas/componentes serão extraídas para as chaves de tradução:
+## 2. Language switcher — flags instead of `BR / US / ES`
+**File:** `src/components/public/LanguageSwitcher.tsx` (+ create `src/components/public/Flags.tsx` if not present)
 
-**Layout/Navegação:**
-- `PublicHeader.tsx` — itens do menu (Home, Quem Sou Eu, Clube de Estudos, Cursos, Livros e E-books, Hinos Espirituais, Rádio, Artigos), submenus, botão "Entrar no Clube", "Menu", "Fechar menu".
-- `PublicFooter.tsx` — links, copyright, descrições.
+- Replace the `<span>{current.short}</span>` text in the trigger button with the inline SVG flag component (`FlagBR / FlagUS / FlagES`), sized `w-5 h-3.5 rounded-sm overflow-hidden`.
+- In the dropdown list, replace the leading emoji + label with: SVG flag icon + full language label. Drop the `short` prefix (`BR`, `US`, `ES`) entirely.
+- Keep the chevron caret on the trigger.
+- Result on header: `[🇪🇸 ▼]` (flag only, no "ES ES" text).
 
-**Páginas públicas (todas em `src/pages/public/`):**
-- `Home.tsx` (524 linhas — hero, seções de cursos, livros, hinos, rádio, depoimentos, CTAs).
-- `QuemSouEu.tsx` (biografia, formação, missão).
-- `Formacao.tsx` (curso de formação, módulos, investimento).
-- `CursoOnline.tsx` (curso online, conteúdo programático, CTA).
-- `ClubeDeEstudos.tsx` (descrição do clube, benefícios, planos).
-- `LivrosEbooks.tsx` + `LivroDetalhe.tsx` (catálogo, sinopses, reviews).
-- `Artigos.tsx` + `ArtigoDetalhe.tsx` (lista e detalhe — metadados em UI; conteúdo dos artigos em si fica no idioma original, ver "Limites" abaixo).
-- `HinosEspirituais.tsx` (descrição da seção, controles do player).
-- `RadioPublica.tsx` (descrição da rádio).
+If `Flags.tsx` already exists from prior work, just import and use it. Otherwise create it with three small inline SVGs (BR / US / ES) following the snippet from earlier sessions.
 
-**Componentes:**
-- `BookReviews.tsx`, `ExpandableSynopsis.tsx` (botões "Ver mais"/"Ver menos"), `Marquee.tsx` (se houver texto).
+## 3. Faster + more complete translations
 
-### 4. Estrutura das chaves de tradução
-Organizadas por escopo para facilitar manutenção, ex.:
-```text
-{
-  "header": { "menu": { "home": "...", "clube": "..." }, "cta": "..." },
-  "footer": { "rights": "...", "developedBy": "..." },
-  "home": { "hero": { "title": "...", "subtitle": "..." }, ... },
-  "quemSouEu": { ... },
-  "common": { "readMore": "...", "readLess": "...", "loading": "..." }
-}
-```
+### 3a. Speed
+**File:** `src/i18n/index.ts`
 
-### 5. Limites e observações
-- **Conteúdo dinâmico** vindo do banco (artigos, ebooks com sinopse cadastrada pelo admin, hinos, etc.) **não é traduzido automaticamente** — eles permanecem no idioma em que foram cadastrados. Apenas a **UI/navegação/textos estáticos** são traduzidos. Isso é o padrão e o esperado: traduzir conteúdo de banco exigiria salvar versões por idioma no admin (ou usar API de tradução), o que é um projeto separado.
-- **Área logada (`/app/*`)**: o pedido fala "todo site" — interpreto como **site público** (que é onde o seletor aparece visualmente). Se quiser traduzir também a área logada do clube, me avise que adiciono o seletor lá e estendo as traduções (é trabalho considerável: dezenas de páginas adicionais).
-- **E-mails transacionais**: continuam em português (são disparados do backend baseados em status de pagamento, não na preferência de UI).
-- O idioma padrão continua **Português (Brasil)** para novos visitantes.
+- Set `react.useSuspense: false` (already done) and ensure resources are loaded synchronously at boot (already done — JSON is `import`ed). The actual perceived delay is from React re-rendering large pages; nothing else is fetched. Add `partialBundledLanguages: true` and remove `load: 'all'` (it forces extra lookups). Switching language will then be instant since all 3 bundles are already in memory.
 
-## Detalhes técnicos
+### 3b. Translate the remaining pages
+Add new sections to all three JSON files (`pt-BR.json`, `en.json`, `es.json`) and wire `useTranslation` into:
 
-- Pacotes: `i18next`, `react-i18next`, `i18next-browser-languagedetector`.
-- Detecção de idioma: ordem `localStorage → navigator → fallback (pt-BR)`.
-- Hook usado nas páginas: `const { t } = useTranslation();` → `t('home.hero.title')`.
-- `<html lang>` atualizado dinamicamente via `useEffect` no `LanguageSwitcher` para SEO/acessibilidade.
-- Sem mudanças no roteamento (URLs continuam as mesmas — não vamos prefixar com `/en/`, `/es/` para manter simples e preservar SEO atual).
+- `src/pages/public/LivrosEbooks.tsx` → keys under `livros.*` (eyebrow Catálogo, title, desc, sections "Edições impressas/Livros Físicos", "Edições digitais/Livros Digitais (E-books)", empty state, Amazon card title/desc/CTA, "Saber mais", carousel headings).
+- `src/pages/public/LivroDetalhe.tsx` → keys under `livroDetalhe.*` (Voltar ao catálogo, Livro Físico/E-book label, "por", Sinopse, Comentário do Autor, "Vídeo de apresentação em breve.", Comprar, "Comprar com 20% de Desconto", "Adquirir Gratuitamente", member discount/free callouts, "Você também pode gostar", "Todas as obras do autor").
+- `src/pages/public/Artigos.tsx` → keys under `artigos.*` (eyebrow "Reflexões e Pesquisas", title with accent split, desc, "Ler artigo").
+- `src/pages/public/Formacao.tsx`, `src/pages/public/CursoOnline.tsx`, `src/pages/public/QuemSouEu.tsx` → keys under `formacao.*`, `cursoOnline.*`, `quemSouEu.*` for every visible string (titles, eyebrows, paragraphs, list items via `getArrayTranslation`, CTAs).
 
-## Resultado final
-Visitante vê uma bandeirinha no header → clica → escolhe idioma → site inteiro (público) muda na hora, sem reload, com a escolha lembrada para próximas visitas.
+For long static blocks (article body content, book synopses pulled from `BOOKS` data and Supabase ebooks) we **do not** translate — those are user/author content that only exists in Portuguese. We will note this clearly: only UI chrome (titles, labels, buttons, section headings) gets translated. Article bodies and book/ebook descriptions stay in their source language.
+
+### 3c. Cache i18n init across reloads
+- Confirm `localStorage` detection caches the choice (already configured) so page refreshes pick the saved language without flashing PT first.
+
+---
+
+## Out of scope
+- Translating article body text in `src/data/` and Supabase-stored ebook descriptions (these are author content, not UI).
+- Internal admin/app pages under `/app/*` (the language switcher is for the public site).
+
+## Files to edit
+- `src/components/public/PublicHeader.tsx` (spacing + `whitespace-nowrap`)
+- `src/components/public/LanguageSwitcher.tsx` (use flag SVGs, drop short codes)
+- `src/components/public/Flags.tsx` (create if missing)
+- `src/i18n/index.ts` (drop `load: 'all'`, add `partialBundledLanguages`)
+- `src/i18n/locales/pt-BR.json`, `en.json`, `es.json` (add `livros`, `livroDetalhe`, `artigos`, `formacao`, `cursoOnline`, `quemSouEu` sections)
+- `src/pages/public/LivrosEbooks.tsx`
+- `src/pages/public/LivroDetalhe.tsx`
+- `src/pages/public/Artigos.tsx`
+- `src/pages/public/Formacao.tsx`
+- `src/pages/public/CursoOnline.tsx`
+- `src/pages/public/QuemSouEu.tsx`

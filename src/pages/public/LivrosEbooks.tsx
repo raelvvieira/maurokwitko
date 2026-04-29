@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BookOpen, ArrowRight, ExternalLink } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { BOOKS } from '@/data/books';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import Marquee from '@/components/public/Marquee';
@@ -14,9 +15,9 @@ const fadeUp = {
 };
 
 const LivrosEbooks = () => {
+  const { t } = useTranslation();
   const { ebooks } = useEbooks();
 
-  // Mix de capas para o carrossel final (até 12 itens, embaralhado leve)
   const carouselItems = [
     ...BOOKS.map((b) => ({ key: 'f-' + b.slug, cover: b.cover, title: b.title, to: `/livros-e-ebooks/fisico/${b.slug}`, coverScale: b.coverScale })),
     ...ebooks.map((e) => ({ key: 'e-' + e.id, cover: e.cover_url || '', title: e.title, to: `/livros-e-ebooks/ebook/${e.id}`, coverScale: undefined as number | undefined })),
@@ -29,14 +30,13 @@ const LivrosEbooks = () => {
         <div className="max-w-5xl mx-auto text-center">
           <motion.div {...fadeUp}>
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-4">
-              Catálogo
+              {t('livros.eyebrow')}
             </span>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-6">
-              Livros e <span className="text-primary">E-books</span> do Dr. Mauro Kwitko
+              {t('livros.titleStart')}<span className="text-primary">{t('livros.titleAccent')}</span>{t('livros.titleEnd')}
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              Décadas de estudo, prática clínica e ensino reunidos em obras físicas e
-              digitais. Conheça toda a coleção e aprofunde-se no olhar reencarnacionista.
+              {t('livros.desc')}
             </p>
           </motion.div>
         </div>
@@ -48,9 +48,9 @@ const LivrosEbooks = () => {
           <motion.div {...fadeUp} className="flex items-end justify-between mb-8 md:mb-10">
             <div>
               <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-2">
-                Edições impressas
+                {t('livros.fisicosEyebrow')}
               </span>
-              <h2 className="text-2xl md:text-4xl font-bold tracking-tight">Livros Físicos</h2>
+              <h2 className="text-2xl md:text-4xl font-bold tracking-tight">{t('livros.fisicosTitle')}</h2>
             </div>
           </motion.div>
 
@@ -80,7 +80,7 @@ const LivrosEbooks = () => {
                     to={`/livros-e-ebooks/fisico/${b.slug}`}
                     className="mt-auto inline-flex items-center justify-center gap-1.5 px-3 md:px-4 py-2 md:py-2.5 rounded-full bg-secondary text-foreground text-xs md:text-sm font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
-                    Saber mais <ArrowRight className="w-3.5 h-3.5" />
+                    {t('livros.saberMais')} <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </motion.div>
@@ -100,10 +100,9 @@ const LivrosEbooks = () => {
               <img src={amazonIcon} alt="Amazon" className="w-14 h-14 object-contain" />
             </div>
             <div className="flex-1 text-center md:text-left">
-              <h3 className="text-xl md:text-2xl font-bold">Prefere comprar pela Amazon?</h3>
+              <h3 className="text-xl md:text-2xl font-bold">{t('livros.amazonTitle')}</h3>
               <p className="text-sm md:text-base text-white/80 mt-2 leading-relaxed">
-                Os e-books do Dr. Mauro Kwitko também podem ser adquiridos e lidos fora
-                do Clube de Estudos, direto no seu Kindle ou no app da Amazon.
+                {t('livros.amazonDesc')}
               </p>
             </div>
             <a
@@ -112,7 +111,7 @@ const LivrosEbooks = () => {
               rel="noopener noreferrer"
               className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#FF9900] text-[#131A22] text-sm font-bold hover:bg-[#ffad33] transition-colors shadow-md"
             >
-              Ver na Amazon <ExternalLink className="w-4 h-4" />
+              {t('livros.amazonCta')} <ExternalLink className="w-4 h-4" />
             </a>
           </div>
         </motion.div>
@@ -122,14 +121,14 @@ const LivrosEbooks = () => {
           <motion.div {...fadeUp} className="flex items-end justify-between mb-8 md:mb-10">
             <div>
               <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-2">
-                Edições digitais
+                {t('livros.digitaisEyebrow')}
               </span>
-              <h2 className="text-2xl md:text-4xl font-bold tracking-tight">Livros Digitais (E-books)</h2>
+              <h2 className="text-2xl md:text-4xl font-bold tracking-tight">{t('livros.digitaisTitle')}</h2>
             </div>
           </motion.div>
 
           {ebooks.length === 0 ? (
-            <p className="text-center text-muted-foreground py-12">Nenhum e-book disponível no momento.</p>
+            <p className="text-center text-muted-foreground py-12">{t('livros.empty')}</p>
           ) : (
             <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
               {ebooks.map((e, i) => (
@@ -162,7 +161,7 @@ const LivrosEbooks = () => {
                       to={`/livros-e-ebooks/ebook/${e.id}`}
                       className="mt-auto inline-flex items-center justify-center gap-1.5 px-3 md:px-4 py-2 md:py-2.5 rounded-full bg-secondary text-foreground text-xs md:text-sm font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
                     >
-                      Saber mais <ArrowRight className="w-3.5 h-3.5" />
+                      {t('livros.saberMais')} <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
                 </motion.div>
@@ -177,9 +176,9 @@ const LivrosEbooks = () => {
         <section className="py-16 md:py-24 px-5 md:px-6">
           <div className="max-w-7xl mx-auto mb-8 md:mb-10 text-center">
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-2">
-              Para conhecer
+              {t('livros.carouselEyebrow')}
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Todas as obras do autor</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{t('livros.carouselTitle')}</h2>
           </div>
           <Marquee
             items={carouselItems}

@@ -156,7 +156,7 @@ const PublicHeader = () => {
           />
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-7">
+        <nav className="hidden lg:flex items-center gap-8 xl:gap-10">
           {NAV.map((item) =>
             item.children ? (
               <div
@@ -167,7 +167,7 @@ const PublicHeader = () => {
               >
                 <button
                   onClick={() => setOpenMenu((v) => (v === item.label ? null : item.label))}
-                  className="inline-flex items-center gap-1 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
+                  className="inline-flex items-center gap-1 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors whitespace-nowrap"
                 >
                   {item.label}
                   <ChevronDown className={`w-3.5 h-3.5 transition-transform ${openMenu === item.label ? 'rotate-180' : ''}`} />
@@ -201,7 +201,7 @@ const PublicHeader = () => {
               <Link
                 key={item.label}
                 to={item.href!}
-                className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
+                className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors whitespace-nowrap"
               >
                 {item.label}
               </Link>

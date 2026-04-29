@@ -11,6 +11,7 @@ import {
   HeartHandshake,
   School,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const WhatsAppIcon = ({ className = 'w-6 h-6' }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
@@ -86,6 +87,7 @@ const TURMAS = [
 ];
 
 const Formacao = () => {
+  const { t } = useTranslation();
   return (
     <div className="bg-background">
       {/* Hero */}
@@ -93,14 +95,13 @@ const Formacao = () => {
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <motion.div {...fadeUp}>
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-4">
-              Curso de Formação
+              {t('formacao.eyebrow')}
             </span>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-6">
-              Curso de Formação em <span className="text-primary">Psicoterapia Reencarnacionista</span>
+              {t('formacao.titleStart')}<span className="text-primary">{t('formacao.titleAccent')}</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Forme-se em uma escola psicoterapêutica que une psicologia, psiquiatria e o
-              olhar reencarnacionista para auxiliar na cura e na evolução espiritual.
+              {t('formacao.desc')}
             </p>
           </motion.div>
           <motion.div {...fadeUp} className="rounded-3xl overflow-hidden shadow-2xl aspect-[3/4] max-w-md mx-auto md:max-w-none w-full bg-muted">
@@ -118,17 +119,13 @@ const Formacao = () => {
         <div className="max-w-4xl mx-auto">
           <motion.div {...fadeUp}>
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
-              O que é
+              {t('formacao.whatEyebrow')}
             </span>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-              Um olhar reencarnacionista sobre a vida
+              {t('formacao.whatTitle')}
             </h2>
             <p className="text-base md:text-lg text-foreground/80 leading-relaxed mb-8">
-              O Curso de Formação em Psicoterapia Reencarnacionista visa formar profissionais
-              capazes de auxiliar a todos a enxergarem a vida sob o olhar reencarnacionista.
-              A partir desta visão, podemos perceber que somos como somos porque nascemos
-              assim, trazendo uma bagagem de outras vidas que precisa ser trabalhada para que
-              possamos nos curar e evoluir espiritualmente.
+              {t('formacao.whatDesc')}
             </p>
             <ul className="space-y-3">
               {PILARES.map((p) => (
@@ -149,10 +146,10 @@ const Formacao = () => {
         <div className="max-w-7xl mx-auto">
           <motion.div {...fadeUp} className="text-center mb-12">
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
-              Conteúdo do Curso
+              {t('formacao.contentEyebrow')}
             </span>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-              Três pilares de aprendizado
+              {t('formacao.contentTitle')}
             </h2>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -193,7 +190,7 @@ const Formacao = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl"
             >
-              <Download className="w-4 h-4" /> Quero baixar o programa completo!
+              <Download className="w-4 h-4" /> {t('formacao.downloadProgram')}
             </a>
           </motion.div>
         </div>
@@ -204,14 +201,13 @@ const Formacao = () => {
         <div className="max-w-7xl mx-auto">
           <motion.div {...fadeUp} className="max-w-3xl mb-12">
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
-              Critérios para Inscrição
+              {t('formacao.criteriaEyebrow')}
             </span>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-              Quem pode se inscrever
+              {t('formacao.criteriaTitle')}
             </h2>
             <p className="text-base text-muted-foreground leading-relaxed">
-              Para habilitar-se a realizar o Curso de Formação, o(a) candidato(a) deve
-              enquadrar-se em pelo menos um dos critérios abaixo:
+              {t('formacao.criteriaDesc')}
             </p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -238,23 +234,20 @@ const Formacao = () => {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fadeUp} className="text-center mb-12">
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
-              Tenho interesse, como me inscrever?
+              {t('formacao.groupsEyebrow')}
             </span>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-              Entre no grupo da turma do seu estado
+              {t('formacao.groupsTitle')}
             </h2>
             <p className="text-base text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              Se você se enquadra em pelo menos um dos critérios e tem interesse em tornar-se
-              um psicoterapeuta reencarnacionista, escolha um dos grupos abertos abaixo. São
-              espaços sem compromisso, organizados por turma e estado, para tirar dúvidas e
-              receber mais informações.
+              {t('formacao.groupsDesc')}
             </p>
           </motion.div>
           <div className="grid sm:grid-cols-2 gap-4">
-            {TURMAS.map((t, i) => (
+            {TURMAS.map((turma, i) => (
               <motion.a
-                key={t.local}
-                href={t.link}
+                key={turma.local}
+                href={turma.link}
                 target="_blank"
                 rel="noopener noreferrer"
                 {...fadeUp}
@@ -266,13 +259,13 @@ const Formacao = () => {
                     <WhatsAppIcon className="w-6 h-6" />
                   </div>
                   <div className="text-left">
-                    <p className="font-semibold text-base text-emerald-950">Turma de {t.local}</p>
-                    <p className="text-sm text-emerald-800/80">{t.data}</p>
-                    <p className="text-[11px] text-emerald-700 mt-0.5">Toque para entrar no grupo do WhatsApp</p>
+                    <p className="font-semibold text-base text-emerald-950">{t('formacao.classOf')} {turma.local}</p>
+                    <p className="text-sm text-emerald-800/80">{turma.data}</p>
+                    <p className="text-[11px] text-emerald-700 mt-0.5">{t('formacao.joinWhats')}</p>
                   </div>
                 </div>
                 <span className="text-sm font-medium text-emerald-700 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                  Entrar →
+                  {t('formacao.enter')}
                 </span>
               </motion.a>
             ))}

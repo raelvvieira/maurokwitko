@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Check, ChevronDown, Globe } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { SUPPORTED_LANGUAGES } from '@/i18n';
+import { FlagByCode } from './Flags';
 import { useState } from 'react';
 
 interface LanguageSwitcherProps {
@@ -32,15 +33,12 @@ const LanguageSwitcher = ({ variant = 'header' }: LanguageSwitcherProps) => {
       <PopoverTrigger asChild>
         <button
           aria-label={t('language.label') as string}
-          className={`inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/70 backdrop-blur px-3 py-2 text-sm font-semibold hover:bg-secondary/70 transition-colors shadow-sm ${
+          className={`inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/70 backdrop-blur px-2.5 py-2 hover:bg-secondary/70 transition-colors shadow-sm ${
             variant === 'inline' ? 'w-full justify-center' : ''
           }`}
         >
-          <span className="text-base leading-none" aria-hidden>
-            {current.flag}
-          </span>
-          <span className="text-xs tracking-wide">{current.short}</span>
-          <ChevronDown className={`w-3 h-3 transition-transform ${open ? 'rotate-180' : ''}`} />
+          <FlagByCode code={current.code} className="w-6 h-4" />
+          <ChevronDown className={`w-3 h-3 text-muted-foreground transition-transform ${open ? 'rotate-180' : ''}`} />
         </button>
       </PopoverTrigger>
       <PopoverContent align="end" sideOffset={8} className="w-56 p-2 rounded-2xl">
@@ -61,9 +59,7 @@ const LanguageSwitcher = ({ variant = 'header' }: LanguageSwitcherProps) => {
                 }`}
               >
                 <span className="inline-flex items-center gap-2.5">
-                  <span className="text-lg leading-none" aria-hidden>
-                    {lang.flag}
-                  </span>
+                  <FlagByCode code={lang.code} className="w-6 h-4" />
                   {lang.label}
                 </span>
                 {active && <Check className="w-4 h-4" />}

@@ -176,7 +176,10 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
 
 const Home = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [ebooks, setEbooks] = useState<Ebook[]>([]);
+  const formacaoItems = t('home.formacao.items', { returnObjects: true }) as string[];
+  const aboutItems = t('home.about.items', { returnObjects: true }) as string[];
 
   useEffect(() => {
     supabase
@@ -201,10 +204,10 @@ const Home = () => {
         <div className="max-w-6xl mx-auto px-5 md:px-6 mb-10">
           <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4">
             <div>
-              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Bibliografia</span>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Aprenda Com Meus Livros</h2>
+              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('home.books.eyebrow')}</span>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">{t('home.books.title')}</h2>
               <p className="text-muted-foreground mt-3 max-w-xl">
-                Quase 30 anos de experiência clínica condensados em obras que orientam o caminho da reforma íntima.
+                {t('home.books.desc')}
               </p>
             </div>
           </motion.div>
@@ -230,7 +233,7 @@ const Home = () => {
                 {...greenButtonAnim}
                 className="mt-2 w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-full bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
               >
-                Saiba Mais <ArrowRight className="w-3 h-3" />
+                {t('common.readMore')} <ArrowRight className="w-3 h-3" />
               </motion.span>
             </Link>
           )}

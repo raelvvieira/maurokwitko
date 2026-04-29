@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Check, Quote, Mail, MessageCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { BOOKS } from '@/data/books';

@@ -12,19 +12,26 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'es', short: 'ES', label: 'Español', flag: '🇪🇸' },
 ] as const;
 
+export const getArrayTranslation = <T = string,>(value: unknown): T[] => {
+  return Array.isArray(value) ? (value as T[]) : [];
+};
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
       'pt-BR': { translation: ptBR },
+      pt: { translation: ptBR },
       en: { translation: en },
       es: { translation: es },
     },
     fallbackLng: 'pt-BR',
-    supportedLngs: ['pt-BR', 'en', 'es'],
+    supportedLngs: ['pt-BR', 'pt', 'en', 'es'],
     nonExplicitSupportedLngs: true,
+    load: 'all',
     interpolation: { escapeValue: false },
+    react: { useSuspense: false },
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage'],

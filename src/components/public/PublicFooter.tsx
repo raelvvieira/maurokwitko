@@ -1,7 +1,11 @@
 import { Instagram, Youtube, Facebook, Mail } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo-mauro-kwitko.png';
 
 const PublicFooter = () => {
+  const { t } = useTranslation();
+  const schedule = t('footer.schedule', { returnObjects: true }) as string[];
+
   return (
     <footer className="bg-[hsl(210_25%_12%)] text-white/80">
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-14 md:py-20">
@@ -15,35 +19,34 @@ const PublicFooter = () => {
               />
             </div>
             <p className="text-sm text-white/60 leading-relaxed max-w-xs">
-              Integrando ciência psicológica e despertar espiritual há mais de três décadas.
+              {t('footer.tagline')}
             </p>
           </div>
 
           <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase text-white/90 mb-4">Navegação</h4>
+            <h4 className="text-xs font-bold tracking-widest uppercase text-white/90 mb-4">{t('footer.navigation')}</h4>
             <ul className="space-y-2.5 text-sm">
-              <li><a href="#home" className="text-white/60 hover:text-white transition-colors">Home</a></li>
-              <li><a href="#cursos" className="text-white/60 hover:text-white transition-colors">Cursos</a></li>
-              <li><a href="#livros" className="text-white/60 hover:text-white transition-colors">Livros</a></li>
-              <li><a href="#hinos" className="text-white/60 hover:text-white transition-colors">Hinos</a></li>
-              <li><a href="#artigos" className="text-white/60 hover:text-white transition-colors">Artigos</a></li>
+              <li><a href="#home" className="text-white/60 hover:text-white transition-colors">{t('footer.links.home')}</a></li>
+              <li><a href="#cursos" className="text-white/60 hover:text-white transition-colors">{t('footer.links.cursos')}</a></li>
+              <li><a href="#livros" className="text-white/60 hover:text-white transition-colors">{t('footer.links.livros')}</a></li>
+              <li><a href="#hinos" className="text-white/60 hover:text-white transition-colors">{t('footer.links.hinos')}</a></li>
+              <li><a href="#artigos" className="text-white/60 hover:text-white transition-colors">{t('footer.links.artigos')}</a></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase text-white/90 mb-4">Atendimento</h4>
+            <h4 className="text-xs font-bold tracking-widest uppercase text-white/90 mb-4">{t('footer.service')}</h4>
             <ul className="space-y-2.5 text-sm text-white/60">
-              <li>Segunda a Sexta</li>
-              <li>09h — 19h</li>
-              <li className="pt-2">Porto Alegre — RS</li>
-              <li>Atendimento online</li>
+              {Array.isArray(schedule) && schedule.map((s) => <li key={s}>{s}</li>)}
+              <li className="pt-2">{t('footer.location')}</li>
+              <li>{t('footer.online')}</li>
             </ul>
           </div>
 
           <div className="col-span-2 md:col-span-1">
-            <h4 className="text-xs font-bold tracking-widest uppercase text-white/90 mb-4">Newsletter</h4>
+            <h4 className="text-xs font-bold tracking-widest uppercase text-white/90 mb-4">{t('footer.newsletter')}</h4>
             <p className="text-sm text-white/60 mb-4">
-              Receba reflexões e novidades.
+              {t('footer.newsletterDesc')}
             </p>
             <form
               onSubmit={(e) => e.preventDefault()}
@@ -61,7 +64,7 @@ const PublicFooter = () => {
                 type="submit"
                 className="px-5 py-2.5 rounded-full bg-success text-success-foreground text-sm font-semibold hover:bg-success/90 transition-colors"
               >
-                Inscrever
+                {t('footer.subscribe')}
               </button>
             </form>
           </div>
@@ -69,7 +72,7 @@ const PublicFooter = () => {
 
         <div className="mt-14 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/50">
-            © {new Date().getFullYear()} Dr. Mauro Kwitko. Todos os direitos reservados.
+            © {new Date().getFullYear()} Dr. Mauro Kwitko. {t('footer.rights')}
           </p>
           <div className="flex items-center gap-3">
             <a href="https://www.instagram.com/maurokwitko/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 transition-colors">

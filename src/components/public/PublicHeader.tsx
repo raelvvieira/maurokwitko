@@ -3,34 +3,35 @@ import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo-mauro-kwitko.png';
-
-const COURSES = [
-  { label: 'Formação em Psicoterapia Reencarnacionista', href: '/formacao' },
-  { label: 'Curso On-line: A Psicologia da Reencarnação', href: '/curso-online' },
-];
-
-const RADIO = [
-  { label: 'Rádio com Dr. Mauro', href: '/radio' },
-];
-
-const NAV: { label: string; href?: string; children?: { label: string; href: string }[] }[] = [
-  { label: 'Home', href: '/' },
-  { label: 'Quem Sou Eu', href: '/quem-sou-eu' },
-  { label: 'Clube de Estudos', href: '/clube-de-estudos' },
-  { label: 'Cursos', children: COURSES },
-  { label: 'Livros e E-books', href: '/livros-e-ebooks' },
-  { label: 'Hinos Espirituais', href: '/hinos-espirituais' },
-  { label: 'Rádio', children: RADIO },
-  { label: 'Artigos', href: '/artigos' },
-];
+import LanguageSwitcher from './LanguageSwitcher';
 
 const PublicHeader = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpenMenu, setMobileOpenMenu] = useState<string | null>(null);
+
+  const COURSES = [
+    { label: t('header.menu.formacao'), href: '/formacao' },
+    { label: t('header.menu.cursoOnline'), href: '/curso-online' },
+  ];
+
+  const RADIO = [{ label: t('header.menu.radioCom'), href: '/radio' }];
+
+  const NAV: { label: string; href?: string; children?: { label: string; href: string }[] }[] = [
+    { label: t('header.menu.home'), href: '/' },
+    { label: t('header.menu.quemSouEu'), href: '/quem-sou-eu' },
+    { label: t('header.menu.clube'), href: '/clube-de-estudos' },
+    { label: t('header.menu.cursos'), children: COURSES },
+    { label: t('header.menu.livros'), href: '/livros-e-ebooks' },
+    { label: t('header.menu.hinos'), href: '/hinos-espirituais' },
+    { label: t('header.menu.radio'), children: RADIO },
+    { label: t('header.menu.artigos'), href: '/artigos' },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -39,7 +40,6 @@ const PublicHeader = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Lock body scroll while drawer open
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -69,11 +69,14 @@ const PublicHeader = () => {
             style={{ willChange: 'transform' }}
             className="lg:hidden fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-background z-[61] flex flex-col p-6 overflow-y-auto shadow-2xl"
           >
-            <div className="flex items-center justify-between mb-8">
-              <span className="font-bold">Menu</span>
-              <button onClick={() => setOpen(false)} className="p-1.5 rounded-lg hover:bg-secondary/60" aria-label="Fechar menu">
+            <div className="flex items-center justify-between mb-6">
+              <span className="font-bold">{t('header.menuLabel')}</span>
+              <button onClick={() => setOpen(false)} className="p-1.5 rounded-lg hover:bg-secondary/60" aria-label={t('header.closeMenu') as string}>
                 <X className="w-5 h-5" />
               </button>
+            </div>
+            <div className="mb-4">
+              <LanguageSwitcher variant="inline" />
             </div>
             <nav className="flex flex-col gap-1">
               {NAV.map((item) =>
@@ -128,7 +131,7 @@ const PublicHeader = () => {
               }}
               className="mt-6 w-full px-5 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all"
             >
-              Entrar no Clube
+              {t('header.cta')}
             </button>
           </motion.div>
         </>
@@ -207,16 +210,22 @@ const PublicHeader = () => {
         </nav>
 
         <div className="flex items-center gap-2">
+          <div className="hidden md:block">
+            <LanguageSwitcher />
+          </div>
           <button
             onClick={() => navigate('/login')}
             className="hidden md:inline-flex items-center px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
           >
-            Entrar no Clube
+            {t('header.cta')}
           </button>
+          <div className="md:hidden">
+            <LanguageSwitcher />
+          </div>
           <button
             onClick={() => setOpen(true)}
             className="lg:hidden p-2 rounded-lg hover:bg-secondary/60 transition-colors"
-            aria-label="Abrir menu"
+            aria-label={t('header.openMenu') as string}
           >
             <Menu className="w-5 h-5" />
           </button>

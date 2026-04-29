@@ -22,14 +22,23 @@
     "tagline": "Integrating psychological science and spiritual awakening for over three decades.",
     "navigation": "Navigation",
     "service": "Hours",
-    "schedule": ["Monday to Friday", "9am — 7pm"],
+    "schedule": [
+      "Monday to Friday",
+      "9am — 7pm"
+    ],
     "location": "Porto Alegre — Brazil",
     "online": "Online consultations",
     "newsletter": "Newsletter",
     "newsletterDesc": "Receive reflections and updates.",
     "subscribe": "Subscribe",
     "rights": "All rights reserved.",
-    "links": { "home": "Home", "cursos": "Courses", "livros": "Books", "hinos": "Hymns", "artigos": "Articles" }
+    "links": {
+      "home": "Home",
+      "cursos": "Courses",
+      "livros": "Books",
+      "hinos": "Hymns",
+      "artigos": "Articles"
+    }
   },
   "language": {
     "label": "Language",
@@ -81,7 +90,11 @@
       "titleStart": "Training in ",
       "titleAccent": "Reincarnationist Psychotherapy",
       "desc": "A new psychological vision based on Reincarnation, so we can truly take advantage of this incarnation. Complete training for therapists to integrate Regression Therapy into clinical practice.",
-      "items": ["Ethical Inquiry into the Unconscious", "Spiritual Anatomy & Karma", "Clinical Cases & Supervision"],
+      "items": [
+        "Ethical Inquiry into the Unconscious",
+        "Spiritual Anatomy & Karma",
+        "Clinical Cases & Supervision"
+      ],
       "cta": "Discover the Training"
     },
     "ebooks": {
@@ -100,14 +113,24 @@
         "More than 70 classes graduated from the Reincarnationist Psychotherapy Course",
         "25 books published (physical and e-books)"
       ],
-      "stats": { "atendimentos": "Sessions", "livros": "Books", "turmas": "Classes" }
+      "stats": {
+        "atendimentos": "Sessions",
+        "livros": "Books",
+        "turmas": "Classes"
+      }
     },
-    "gallery": { "eyebrow": "Trajectory", "title": "Moments of the Journey" },
+    "gallery": {
+      "eyebrow": "Trajectory",
+      "title": "Moments of the Journey"
+    },
     "quote": {
       "text": "Healing is not just the absence of symptoms, but the presence of meaning found on the soul's journey through time.",
       "author": "— Dr. Mauro Kwitko"
     },
-    "articles": { "eyebrow": "Reflections", "title": "Recent Articles" },
+    "articles": {
+      "eyebrow": "Reflections",
+      "title": "Recent Articles"
+    },
     "contact": {
       "eyebrow": "Contact",
       "titleStart": "Let's ",
@@ -127,10 +150,22 @@
       "cancel": "Cancel anytime"
     },
     "benefits": [
-      { "title": "Active community", "desc": "Exchange ideas with professionals pursuing inner reform." },
-      { "title": "VIP WhatsApp group", "desc": "Daily interaction and direct support." },
-      { "title": "Exclusive lives", "desc": "First-hand interviews with special guests." },
-      { "title": "Complete library", "desc": "E-books, classes, hymns and recorded course." }
+      {
+        "title": "Active community",
+        "desc": "Exchange ideas with professionals pursuing inner reform."
+      },
+      {
+        "title": "VIP WhatsApp group",
+        "desc": "Daily interaction and direct support."
+      },
+      {
+        "title": "Exclusive lives",
+        "desc": "First-hand interviews with special guests."
+      },
+      {
+        "title": "Complete library",
+        "desc": "E-books, classes, hymns and recorded course."
+      }
     ],
     "perks": {
       "ebooksTitleA": "All of Dr. Mauro's e-books,",
@@ -146,9 +181,18 @@
       "desc": "E-books, classes, lives, hymns and the complete course — all in one place."
     },
     "features": [
-      { "title": "Access E-books and Future Releases", "desc": "Growing digital library of Dr. Mauro Kwitko's works; new releases reach members first." },
-      { "title": "Lives and Recorded Classes", "desc": "Live meetings with special guests and a complete library of classes to revisit anytime." },
-      { "title": "Recorded Course: Inner Reform", "desc": "Full access to the course \"The Psychology of Reincarnation\", with over 20 modules." }
+      {
+        "title": "Access E-books and Future Releases",
+        "desc": "Growing digital library of Dr. Mauro Kwitko's works; new releases reach members first."
+      },
+      {
+        "title": "Lives and Recorded Classes",
+        "desc": "Live meetings with special guests and a complete library of classes to revisit anytime."
+      },
+      {
+        "title": "Recorded Course: Inner Reform",
+        "desc": "Full access to the course \"The Psychology of Reincarnation\", with over 20 modules."
+      }
     ],
     "hinarios": {
       "title": "Complete hymnals",
@@ -187,10 +231,22 @@
       "eyebrow": "FAQ",
       "title": "Frequently asked questions",
       "items": [
-        { "q": "What do I get when I subscribe?", "a": "Access to the community, VIP WhatsApp group, live sessions, e-book library, recorded classes, hymns and the complete \"Inner Reform\" course." },
-        { "q": "Can I cancel anytime?", "a": "Yes. The subscription is monthly and can be canceled at any time, with no penalty." },
-        { "q": "How do I access the content?", "a": "After subscribing you receive immediate access to the platform and the WhatsApp group." },
-        { "q": "Who can join?", "a": "The Club is open to psychotherapists, physicians, health professionals and anyone seeking to deepen inner reform and spirituality." }
+        {
+          "q": "What do I get when I subscribe?",
+          "a": "Access to the community, VIP WhatsApp group, live sessions, e-book library, recorded classes, hymns and the complete \"Inner Reform\" course."
+        },
+        {
+          "q": "Can I cancel anytime?",
+          "a": "Yes. The subscription is monthly and can be canceled at any time, with no penalty."
+        },
+        {
+          "q": "How do I access the content?",
+          "a": "After subscribing you receive immediate access to the platform and the WhatsApp group."
+        },
+        {
+          "q": "Who can join?",
+          "a": "The Club is open to psychotherapists, physicians, health professionals and anyone seeking to deepen inner reform and spirituality."
+        }
       ]
     },
     "ctaFinal": {
@@ -216,9 +272,18 @@
     "spotifyDesc": "Listen to Dr. Mauro's hymns, meditations and podcasts in your favorite app.",
     "spotifyCta": "Open on Spotify",
     "playlists": [
-      { "title": "Hymns of Peace", "description": "Gentle compositions for meditation and inner tranquility." },
-      { "title": "Hymns of Love", "description": "Songs celebrating universal love and fraternity." },
-      { "title": "Hymns of Faith", "description": "Hymns that strengthen the connection with the Divine and inner faith." }
+      {
+        "title": "Hymns of Peace",
+        "description": "Gentle compositions for meditation and inner tranquility."
+      },
+      {
+        "title": "Hymns of Love",
+        "description": "Songs celebrating universal love and fraternity."
+      },
+      {
+        "title": "Hymns of Faith",
+        "description": "Hymns that strengthen the connection with the Divine and inner faith."
+      }
     ]
   },
   "radio": {
@@ -364,5 +429,100 @@
     "ctaTitle": "Deepen your studies with my teachings",
     "ctaDesc": "Access courses, books, e-books and exclusive live sessions in the Study Club.",
     "ctaButton": "Enter the Study Club"
+  },
+  "books": {
+    "tratando-fobia-panico-depressao": {
+      "title": "Treating Phobia, Panic and Depression with Regression Therapy – 3rd Ed.",
+      "synopsis": "This book aims to show people who suffer from these conditions that great improvement, and even healing, is possible — but to achieve that we need to find the situations that originated them, which in the vast majority of cases lie in traumatic events from other incarnations to which they remain attuned to this day.\n\nIn this book, Dr. Mauro — physician, founder and patron of the School of Reincarnationist Psychotherapy — first presents the traditional, non-reincarnationist view of these conditions, and then the reincarnationist view. The former is limited to the current life and treats us as if we were our brain; the latter sees us as energetic beings, materialized in an apparently physical, multidimensional body.\n\nIt also includes cases of Inquiry into the Unconscious (\"Regression\") with people experiencing these resonances, revealing the origin of the symptoms of Phobias, Panic and Depression in their past lives, hidden within their Unconscious. By accessing and remembering until everything has passed and they feel well, the disconnection takes place, leading to great improvements and many cures."
+    },
+    "evoluir-espiritualmente-mundo-de-drogas": {
+      "title": "How to Evolve Spiritually in a World of Drugs",
+      "synopsis": "In this book, Dr. Mauro — physician, founder and patron of the School of Reincarnationist Psychotherapy — addresses every kind of drug that afflicts humanity, including the System-drug we are immersed in, responsible for this true drug epidemic that simultaneously creates and encourages drug use while pretending to fight it.\n\nWe are in a reincarnation cycle on this planet, far from the Central Nucleus of the Universe, with a purpose: to learn about the inferior states existing here and, by freeing ourselves from them, return to the state of purity we were in before arriving.\n\nAmong these inferiorities, evil people created the so-called drugs, hypocritically divided into two classes: the legal ones, which enrich the official cartels, and the illegal ones, which enrich the marginal cartels.\n\nThis book was originally going to be called \"How to evolve spiritually in a drug of a world\", but the publisher asked the author to move \"drug\" elsewhere in the title. To this day, the author isn't sure he was right to accept that request."
+    },
+    "fascinante-vida-de-mirta-kassov": {
+      "title": "The Fascinating Life of Mirta Kassov: The Lessons and Learnings of a Regression Therapist",
+      "synopsis": "– Good afternoon, are you Dr. Mirta Kassov?\n– Yes, ma'am.\n– Are you the one who works with regression?\n– I am.\n– May I come up? I need to talk to you, to find out if you can help me. I have a phobia, and they say it has no cure — that I have to live with it, take medication, do desensitization, expose myself, but I…\n– Yes, I know. Come in, I was waiting for you.\n– You were waiting for me? How did you know I would come here?\n– Shall we go up?\n\nThis scene took place after Carolina spent the whole day looking for a certain Dr. Mirta, a regression therapist whose address nobody knew exactly — they said it was somewhere in a certain neighborhood, and she went.\n\nThis is how Dr. Mauro Kwitko's book begins — and, by coincidence, he shares the same initials as Dr. Mirta Kassov."
+    },
+    "20-casos-de-regressao": {
+      "title": "20 Cases of Regression (7th Ed.)",
+      "synopsis": "Twenty true stories of people who found, in their past lives, the explanation for and liberation from symptoms such as Phobias, Panic Syndrome, severe Depression, low self-esteem, shyness, fear of rejection, feelings of abandonment, loneliness, ideas of persecution, migraines, fibromyalgia and other ailments. Their accounts of passing through the Umbral, experiences in the Astral Plane, encounters with Spiritual Guides and disincarnated relatives, the return to Earth, the intrauterine period, and more. A revolutionary and enlightening book that shows us how to face this earthly journey with much more responsibility and understanding, allowing us to fulfill our true pre-reincarnation missions."
+    },
+    "terapia-de-regressao-perguntas-e-respostas": {
+      "title": "Regression Therapy: Questions and Answers",
+      "synopsis": "This new edition of \"Regression Therapy: questions and answers\", after the great success of the previous ones, arrives completely reformulated, updated and expanded, with new questions, new answers and new chapters.\n\nIn this book, Dr. Mauro teaches what Regression Therapy is, warns about the precautions we must take when choosing to undergo it, its indications and contraindications, its physical, psychological and karmic risks, the fear of \"staying there\", who the pioneers were, the main Schools in Brazil and abroad, how to reconcile Regression with the Law of Forgetfulness, and much more!\n\nFor those who want to better understand what it means to remember past lives, why to do so, how it can benefit them, and which professional to choose for such a delicate procedure, this book is a guide made for that.\n\nAnd for health professionals who wish to know the history of this Therapy that goes beyond Genetics and uncovers our Unconscious — a work begun by Freud, Jung and continued today by various more contemporary Schools — this book can open new conscious and professional horizons."
+    },
+    "terapia-da-reforma-intima": {
+      "title": "The Therapy of Inner Reform",
+      "synopsis": "This is a foundational book of the School of Reincarnationist Psychotherapy, the greatest revolution in the history of Psychology since Freud, as it incorporates our previous incarnations into the diagnostic, psychotherapeutic and therapeutic framework for chronic illnesses — physical, emotional or mental.\n\nThis new vision is a creation of a group of Spiritual Beings from the Astral Plane, and has been transmitted to Dr. Mauro since 1996. It is the same Therapy used in the Inter-life Period, with the difference that the great \"Screen\" here is mental rather than holographic, for now. This mental Screen is the Inquiry into the Unconscious (\"Regression\"), ethical and respectful of the Law of Forgetfulness.\n\nReincarnation was removed from the memory of people on the western side of our planet by a decision of the Second Council of Constantinople in 553 A.D., convened solely to decree that Reincarnation does not exist. As a result, official Philosophy, Medicine (including Psychiatry) and Psychology took shape as non-reincarnationist — that is, without realizing it, they followed this religious dogma."
+    },
+    "jovens-guerreiros-guerreiras-da-luz": {
+      "title": "Young Warriors of the Light",
+      "synopsis": "The purpose of this book is to bring a Message to young people so that they remember who they are, why they reincarnated, what they came to do here on Earth, and how to free themselves from the power of the System that seeks to prevent them from fulfilling their Mission: to create a new Era for humanity.\n\nYoung people are, in great part, Spirits who came to bring more Light, Peace, Harmony, Solidarity and Fraternity to this planet. But to achieve this spiritual goal they need to remember it and free themselves from the influence that a System based solely on profit exerts over them.\n\nThe Message of this book is a warning to these Young Emissaries of the Light about the perverse tactics used by the System to dominate their minds and put them in its service. They must be careful with what is placed in their minds from a very early age, taking care not to be deceived by the \"normal way of things\" and by phrases like \"to be young is…\"."
+    }
+  },
+  "articleTitles": {
+    "transtorno-do-espectro-autista": "Autism Spectrum Disorder",
+    "beneficios-contraindicacoes-da-regressao": "Benefits and Contraindications of Regression",
+    "investigacao-do-inconsciente-em-criancas": "Inquiry into the Unconscious in Children",
+    "mensagem-aos-espiritas": "Message to Spiritists",
+    "o-livro-dos-espiritos": "The Spirits' Book",
+    "a-etica-da-investigacao-do-inconsciente": "The Ethics of the Inquiry into the Unconscious",
+    "mensagem-aos-psicologos-e-psiquiatras": "Message to Psychologists and Psychiatrists",
+    "o-tratamento": "The Treatment",
+    "por-que-a-psicologia-e-a-psiquiatria-nao-lidam-com-a-reencarnacao": "Why don't Psychology and Psychiatry deal with Reincarnation?",
+    "psicoterapia-para-quem-ouve-vozes": "Psychotherapy for those who hear voices, and their families",
+    "a-verdadeira-e-a-falsa-rebeldia-jovem": "True and false youth rebellion",
+    "freud-alem-da-vida": "Freud beyond life",
+    "visao-espiritual-fobias-panico-depressao-dores-cronicas": "A spiritual view of phobias, panic disorder, severe depression, chronic pain, etc.",
+    "depressao": "Depression",
+    "fibromialgia": "Fibromyalgia",
+    "transtorno-do-panico": "Panic Disorder",
+    "jovens-guerreiros-da-luz-e-a-cannabis": "The young Warriors of the Light and Cannabis",
+    "fobias": "Phobias"
+  },
+  "articleExcerpts": {
+    "transtorno-do-espectro-autista": "A pre-genetic reflection on ASD: causes from past lives, the Spirit's \"energetic armor\", and the three aspects of treatment.",
+    "beneficios-contraindicacoes-da-regressao": "The awareness and disconnection benefits of the Inquiry into the Unconscious — and the cases in which this procedure is contraindicated.",
+    "investigacao-do-inconsciente-em-criancas": "How the procedure can be carried out for children, in person or at a distance, with the support of Spiritual Mentors.",
+    "mensagem-aos-espiritas": "A message to Spiritists about the reunion between Science, Psychology and Reincarnation in our time.",
+    "o-livro-dos-espiritos": "Reflections on Allan Kardec's work and its importance for a reincarnationist view of existence.",
+    "a-etica-da-investigacao-do-inconsciente": "The ethical principles guiding Regression while respecting the Law of Forgetfulness and each person's Spiritual Mentors.",
+    "mensagem-aos-psicologos-e-psiquiatras": "An invitation to the new generations of mental-health professionals to integrate Reincarnation into clinical practice.",
+    "o-tratamento": "What treatment in Reincarnationist Psychotherapy involves and how it differs from traditional approaches.",
+    "por-que-a-psicologia-e-a-psiquiatria-nao-lidam-com-a-reencarnacao": "The historical and dogmatic roots that keep official Psychology and Psychiatry away from Reincarnation.",
+    "psicoterapia-para-quem-ouve-vozes": "How Reincarnationist Psychotherapy understands and welcomes people who hear voices, and guides their families.",
+    "a-verdadeira-e-a-falsa-rebeldia-jovem": "The difference between rebellion that serves the System and the one that reflects the spiritual mission of the young.",
+    "freud-alem-da-vida": "A reflection on the continuity of Freud's work in light of Reincarnation and the inquiry into the Unconscious.",
+    "visao-espiritual-fobias-panico-depressao-dores-cronicas": "A spiritual and reincarnationist reading of phobias, panic, severe depression and chronic pain.",
+    "depressao": "What depression is from the reincarnationist perspective and how to access its deepest causes.",
+    "fibromialgia": "The spiritual and energetic origin of fibromyalgia and the therapeutic paths to relieve it.",
+    "transtorno-do-panico": "How panic disorder connects to traumatic experiences from other lives that are still active in the Unconscious.",
+    "jovens-guerreiros-da-luz-e-a-cannabis": "A message to the young emissaries of the Light about the spiritual effects of cannabis use.",
+    "fobias": "How phobias reveal resonances from past lives and how they can be treated through the Inquiry into the Unconscious."
+  },
+  "bookReviews": {
+    "title": "Reader comments",
+    "subtitle": "Already read this book? Share your thoughts.",
+    "countOne": "comment",
+    "countMany": "comments",
+    "nameLabel": "Your name",
+    "namePlaceholder": "How you would like to appear",
+    "ratingLabel": "Your rating",
+    "commentLabel": "Your comment",
+    "commentPlaceholder": "Tell us what this read meant to you...",
+    "submit": "Submit comment",
+    "empty": "Be the first to comment on this book.",
+    "errorName": "Please enter your name.",
+    "errorNameLong": "Name is too long.",
+    "errorComment": "Please write a comment.",
+    "errorCommentLong": "Comment is too long.",
+    "errorRating": "Please give a rating.",
+    "errorSubmit": "We could not submit your comment. Please try again.",
+    "success": "Comment submitted. Thank you for reading!",
+    "starsAria": "star(s)"
+  },
+  "synopsis": {
+    "more": "Read more",
+    "less": "Read less"
   }
 }

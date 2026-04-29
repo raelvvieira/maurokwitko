@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 type Props = { text: string };
 
-const COLLAPSED_LINES = 5;
-
 const ExpandableSynopsis = ({ text }: Props) => {
+  const { t } = useTranslation();
   const ref = useRef<HTMLParagraphElement>(null);
   const [overflows, setOverflows] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -13,7 +13,6 @@ const ExpandableSynopsis = ({ text }: Props) => {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // Compare scrollHeight to clamped offsetHeight to detect overflow
     requestAnimationFrame(() => {
       setOverflows(el.scrollHeight > el.clientHeight + 2);
     });
@@ -36,9 +35,9 @@ const ExpandableSynopsis = ({ text }: Props) => {
           className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
         >
           {expanded ? (
-            <>Ler menos <ChevronUp className="w-4 h-4" /></>
+            <>{t('synopsis.less')} <ChevronUp className="w-4 h-4" /></>
           ) : (
-            <>Ler mais <ChevronDown className="w-4 h-4" /></>
+            <>{t('synopsis.more')} <ChevronDown className="w-4 h-4" /></>
           )}
         </button>
       )}
@@ -47,3 +46,4 @@ const ExpandableSynopsis = ({ text }: Props) => {
 };
 
 export default ExpandableSynopsis;
+

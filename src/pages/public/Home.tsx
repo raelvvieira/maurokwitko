@@ -461,9 +461,9 @@ const Home = () => {
                   </div>
                   <div className="p-5">
                     <h3 className="text-lg font-bold tracking-tight leading-snug group-hover:text-primary transition-colors">
-                      {art.title}
+                      {t(`articleTitles.${art.slug}`, { defaultValue: art.title })}
                     </h3>
-                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-2">{art.excerpt}</p>
+                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-2">{t(`articleExcerpts.${art.slug}`, { defaultValue: art.excerpt })}</p>
                     <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:gap-2 transition-all">
                       {t('common.readArticle')} <ArrowRight className="w-3.5 h-3.5" />
                     </span>

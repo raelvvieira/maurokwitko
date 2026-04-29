@@ -73,7 +73,7 @@ const LivrosEbooks = () => {
                 </Link>
                 <div className="p-3 md:p-5 flex flex-col gap-2 md:gap-3 flex-1">
                   <h3 className="font-semibold text-xs md:text-base leading-snug line-clamp-3 min-h-[3rem] md:min-h-[3.5rem]">
-                    {b.title}
+                    {t(`books.${b.slug}.title`, { defaultValue: b.title })}
                   </h3>
                   <p className="text-base md:text-lg font-bold text-primary">{b.price}</p>
                   <Link

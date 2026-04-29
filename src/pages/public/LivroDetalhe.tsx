@@ -34,9 +34,9 @@ const LivroDetalhe = () => {
   if (tipo === 'fisico') {
     const book = BOOKS.find((b) => b.slug === id);
     if (!book) return <Navigate to="/livros-e-ebooks" replace />;
-    titulo = book.title;
+    titulo = t(`books.${book.slug}.title`, { defaultValue: book.title });
     cover = book.cover;
-    synopsis = book.synopsis || '';
+    synopsis = t(`books.${book.slug}.synopsis`, { defaultValue: book.synopsis || '' });
     videoUrl = book.videoUrl;
     preco = book.price;
     comprarLink = book.link;

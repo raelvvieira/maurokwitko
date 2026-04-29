@@ -129,7 +129,7 @@ const PublicHeader = () => {
                 setOpen(false);
                 navigate('/login');
               }}
-              className="mt-6 w-full px-5 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all"
+              className="mt-6 w-full whitespace-nowrap px-5 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all"
             >
               {t('header.cta')}
             </button>
@@ -215,7 +215,7 @@ const PublicHeader = () => {
           </div>
           <button
             onClick={() => navigate('/login')}
-            className="hidden md:inline-flex items-center px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
+            className="hidden md:inline-flex items-center whitespace-nowrap px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
           >
             {t('header.cta')}
           </button>

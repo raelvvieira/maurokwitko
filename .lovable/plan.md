@@ -1,46 +1,67 @@
-# Plan — botão CTA + traduções restantes
+## Plano — corrigir mudança de idioma nos artigos
 
-## 1. Corrigir botão "Entrar no Clube" (cabeçalho)
+O problema restante está na página de detalhe do artigo (`/artigos/:slug`): a listagem e a Home já usam `articleTitles` e `articleExcerpts`, mas o detalhe ainda renderiza diretamente `article.title` e `article.body`, que vêm fixos em português de `src/data/articles.ts`.
 
-O botão fica pequeno e quebra em 3 linhas em todos os idiomas (PT "Entrar no Clube", EN "Enter the Club", ES "Entrar en el Club"). Aplicar `whitespace-nowrap` em ambos os botões CTA do header (desktop e drawer mobile) em `src/components/public/PublicHeader.tsx`. Sem redução de fonte.
+### 1. Traduzir o título no detalhe do artigo
 
-## 2. Traduzir títulos e sinopses dos livros físicos
+Em `src/pages/public/ArtigoDetalhe.tsx`, trocar:
 
-Hoje `src/data/books.ts` tem `title` e `synopsis` fixos em PT. Vou:
+```tsx
+{article.title}
+```
 
-- Adicionar à estrutura `Book` os campos `titleI18n` e `synopsisI18n` (chaves no JSON i18n) — opcional, com fallback ao texto PT atual.
-- Criar nos JSONs (`pt-BR`, `en`, `es`) o nó `books.<slug>.title` e `books.<slug>.synopsis` para os 8 livros físicos.
-- Em `LivrosEbooks.tsx` e `LivroDetalhe.tsx`, ler via `t(\`books.\${slug}.title\`, { defaultValue: book.title })` e idem para synopsis.
+por uma leitura via i18n:
 
-Resultado: título e sinopse mudam conforme o idioma. Os livros digitais (e-books) vêm do banco — esses ficarão em PT (não há infraestrutura de tradução em DB). Vou marcar isso na seção técnica.
+```tsx
+{t(`articleTitles.${article.slug}`, { defaultValue: article.title })}
+```
 
-## 3. Traduzir o card "Comentários de leitores" (BookReviews)
+Também ajustar o `alt` da imagem para usar o título traduzido.
 
-Em `src/components/public/BookReviews.tsx` há textos fixos em PT:
-"Comentários de leitores", "Já leu esse livro?...", "Seu nome", "Sua nota", "Seu comentário", "Enviar comentário", "Seja o primeiro a comentar...", placeholders, mensagens de validação e toasts, formato de data ("pt-BR" → idioma corrente), pluralização "comentário(s)".
+### 2. Traduzir o corpo dos artigos
 
-Adicionar nó `bookReviews.*` nos três JSONs e refatorar o componente para `useTranslation()`. A data passa a usar `i18n.language`.
+Adicionar nos arquivos de tradução (`pt-BR.json`, `en.json`, `es.json`) uma nova estrutura para o corpo completo dos artigos, por slug:
 
-## 4. Traduzir os excerpts dos artigos (home + listagem)
+```json
+"articleBodies": {
+  "beneficios-contraindicacoes-da-regressao": [
+    "...",
+    "__SUB__...",
+    "__LIST__...||..."
+  ]
+}
+```
 
-Os 19 artigos em `src/data/articles.ts` têm `excerpt` em PT. Vou:
+Manter o mesmo formato atual do `body`:
 
-- Adicionar nos JSONs o nó `articleExcerpts.<slug>` para os 19 artigos (3 idiomas).
-- Em `Home.tsx` (cards "Recent Articles") e `Artigos.tsx` (listagem), trocar `art.excerpt` por `t(\`articleExcerpts.\${art.slug}\`, { defaultValue: art.excerpt })`.
-- Também adicionar `articleTitles.<slug>` para traduzir o título dos cards. O corpo (`body`) do artigo permanece em PT — é muito longo e o usuário não pediu tradução do conteúdo do artigo em si.
+- texto comum = parágrafo
+- `__SUB__` = subtítulo
+- `__LIST__` com itens separados por `||` = lista
+- `__QUOTE__` com autor opcional = citação
 
-## Resumo de arquivos alterados
+### 3. Usar o body traduzido com fallback seguro
 
-- `src/components/public/PublicHeader.tsx` — `whitespace-nowrap` nos 2 CTAs.
-- `src/components/public/BookReviews.tsx` — i18n completo.
-- `src/pages/public/Home.tsx` — título/excerpt dos artigos via `t()`.
-- `src/pages/public/Artigos.tsx` — idem.
-- `src/pages/public/LivrosEbooks.tsx` — título físico via `t()`.
-- `src/pages/public/LivroDetalhe.tsx` — título e sinopse via `t()`.
-- `src/i18n/locales/pt-BR.json`, `en.json`, `es.json` — novos nós `books`, `articleTitles`, `articleExcerpts`, `bookReviews`.
+Em `ArtigoDetalhe.tsx`, trocar o render de:
 
-## Notas técnicas
+```tsx
+article.body.map(...)
+```
 
-- E-books (vindos do banco) continuam em PT — não há coluna multilíngue. Posso adicionar isso em uma próxima iteração se desejar.
-- Corpos completos dos artigos (textos longos) continuam em PT — fora do escopo deste pedido.
-- Total: ~8 sinopses + 19 excerpts × 3 idiomas. Será gerado de uma vez em cada locale.
+para uma variável `articleBody`, obtida com `t(..., { returnObjects: true })` e validada com `getArrayTranslation`.
+
+Se alguma tradução do corpo ainda não existir, o componente continuará usando o `article.body` original em português, evitando tela quebrada.
+
+### 4. Garantir o artigo atual primeiro
+
+Como o usuário está em `/artigos/beneficios-contraindicacoes-da-regressao`, começarei garantindo a tradução completa desse artigo em inglês e espanhol. Em seguida, deixarei a estrutura preparada para todos os demais slugs, com fallback funcionando.
+
+### Arquivos a alterar
+
+- `src/pages/public/ArtigoDetalhe.tsx`
+- `src/i18n/locales/pt-BR.json`
+- `src/i18n/locales/en.json`
+- `src/i18n/locales/es.json`
+
+### Resultado esperado
+
+Ao selecionar EN ou ES no cabeçalho, a página do artigo atual passará a atualizar título, imagem `alt` e corpo do artigo sem precisar recarregar a página, mantendo fallback em português caso algum artigo ainda não tenha corpo traduzido.

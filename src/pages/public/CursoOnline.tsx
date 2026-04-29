@@ -110,8 +110,8 @@ const CursoOnline = () => {
       {/* MÓDULOS */}
       <section className="max-w-6xl mx-auto px-5 md:px-6 mt-16">
         <div className="text-center mb-10">
-          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Conteúdo</span>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Módulos do Curso</h2>
+          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('cursoOnline.modulesEyebrow')}</span>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">{t('cursoOnline.modulesTitle')}</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {MODULES.map((m, i) => (
@@ -135,10 +135,10 @@ const CursoOnline = () => {
       {/* AULAS GRATUITAS */}
       <section className="max-w-6xl mx-auto px-5 md:px-6 mt-24">
         <div className="text-center mb-10">
-          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Experimente</span>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Duas aulas gratuitas</h2>
+          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('cursoOnline.freeEyebrow')}</span>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">{t('cursoOnline.freeTitle')}</h2>
           <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
-            Conheça o conteúdo do curso assistindo a estas duas aulas, por nossa conta.
+            {t('cursoOnline.freeDesc')}
           </p>
         </div>
         <div className="grid md:grid-cols-2 gap-6">

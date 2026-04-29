@@ -244,10 +244,10 @@ const Formacao = () => {
             </p>
           </motion.div>
           <div className="grid sm:grid-cols-2 gap-4">
-            {TURMAS.map((t, i) => (
+            {TURMAS.map((turma, i) => (
               <motion.a
-                key={t.local}
-                href={t.link}
+                key={turma.local}
+                href={turma.link}
                 target="_blank"
                 rel="noopener noreferrer"
                 {...fadeUp}
@@ -259,8 +259,8 @@ const Formacao = () => {
                     <WhatsAppIcon className="w-6 h-6" />
                   </div>
                   <div className="text-left">
-                    <p className="font-semibold text-base text-emerald-950">{t('formacao.classOf')} {t.local}</p>
-                    <p className="text-sm text-emerald-800/80">{t.data}</p>
+                    <p className="font-semibold text-base text-emerald-950">{t('formacao.classOf')} {turma.local}</p>
+                    <p className="text-sm text-emerald-800/80">{turma.data}</p>
                     <p className="text-[11px] text-emerald-700 mt-0.5">{t('formacao.joinWhats')}</p>
                   </div>
                 </div>

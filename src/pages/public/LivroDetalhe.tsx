@@ -1,6 +1,7 @@
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ShoppingCart, Gift, Tag, Sparkles, BookOpen, Video } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { BOOKS } from '@/data/books';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import Marquee from '@/components/public/Marquee';
@@ -14,6 +15,7 @@ const youtubeEmbed = (url?: string) => {
 };
 
 const LivroDetalhe = () => {
+  const { t } = useTranslation();
   const { tipo, id } = useParams<{ tipo: string; id: string }>();
   const { ebooks } = useEbooks();
 
@@ -34,7 +36,7 @@ const LivroDetalhe = () => {
     if (!book) return <Navigate to="/livros-e-ebooks" replace />;
     titulo = book.title;
     cover = book.cover;
-    synopsis = book.synopsis || 'Sinopse em breve.';
+    synopsis = book.synopsis || '';
     videoUrl = book.videoUrl;
     preco = book.price;
     comprarLink = book.link;
@@ -49,16 +51,14 @@ const LivroDetalhe = () => {
       titulo = ebook.title;
       autor = ebook.author;
       cover = ebook.cover_url || '';
-      synopsis = ebook.description || 'Sinopse em breve.';
+      synopsis = ebook.description || '';
       videoUrl = (ebook as any).video_url || undefined;
-      // E-books: "Comprar" leva para a Amazon (não expor PDF). Acesso ao PDF é só dentro do Clube de Estudos.
       comprarLink = 'https://www.amazon.com.br/s?k=Dr.+Mauro+Kwitko';
     }
   }
 
   const embed = youtubeEmbed(videoUrl);
 
-  // Sugestões: outros livros + ebooks (exclui o atual)
   const sugestoes = [
     ...BOOKS.filter((b) => !(tipo === 'fisico' && b.slug === id)).map((b) => ({
       key: 'f-' + b.slug,
@@ -88,7 +88,7 @@ const LivroDetalhe = () => {
             to="/livros-e-ebooks"
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors mb-6"
           >
-            <ArrowLeft className="w-4 h-4" /> Voltar ao catálogo
+            <ArrowLeft className="w-4 h-4" /> {t('livroDetalhe.back')}
           </Link>
 
           <div className="grid md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-8 md:gap-12">
@@ -124,10 +124,10 @@ const LivroDetalhe = () => {
             >
               <div>
                 <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
-                  {tipo === 'fisico' ? 'Livro Físico' : 'E-book'}
+                  {tipo === 'fisico' ? t('livroDetalhe.fisico') : t('livroDetalhe.ebook')}
                 </span>
                 <h1 className="text-3xl md:text-5xl font-bold tracking-tight leading-[1.1] mb-2">{titulo}</h1>
-                <p className="text-base text-muted-foreground">por {autor}</p>
+                <p className="text-base text-muted-foreground">{t('livroDetalhe.by')} {autor}</p>
               </div>
 
               {tipo === 'fisico' && (
@@ -136,7 +136,7 @@ const LivroDetalhe = () => {
 
               <div>
                 <h2 className="text-sm font-semibold tracking-[0.18em] text-foreground/60 uppercase mb-2">
-                  Sinopse
+                  {t('livroDetalhe.synopsis')}
                 </h2>
                 <ExpandableSynopsis text={synopsis} />
               </div>
@@ -146,14 +146,14 @@ const LivroDetalhe = () => {
                 <div className="flex items-center gap-2 mb-3">
                   <Video className="w-4 h-4 text-primary" />
                   <h3 className="text-sm font-semibold tracking-[0.18em] text-foreground/70 uppercase">
-                    Comentário do Autor
+                    {t('livroDetalhe.authorComment')}
                   </h3>
                 </div>
                 {embed ? (
                   <div className="aspect-video rounded-xl overflow-hidden bg-black">
                     <iframe
                       src={embed}
-                      title={`Comentário do autor — ${titulo}`}
+                      title={titulo}
                       className="w-full h-full"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
@@ -161,7 +161,7 @@ const LivroDetalhe = () => {
                   </div>
                 ) : (
                   <div className="aspect-video rounded-xl bg-background/60 border border-dashed border-border flex items-center justify-center text-sm text-muted-foreground">
-                    Vídeo de apresentação em breve.
+                    {t('livroDetalhe.videoSoon')}
                   </div>
                 )}
               </div>
@@ -175,7 +175,7 @@ const LivroDetalhe = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl"
                   >
-                    <ShoppingCart className="w-5 h-5" /> Comprar
+                    <ShoppingCart className="w-5 h-5" /> {t('livroDetalhe.buy')}
                   </a>
                   <motion.div
                     animate={{ scale: [1, 1.03, 1] }}
@@ -185,7 +185,7 @@ const LivroDetalhe = () => {
                       to="/clube-de-estudos"
                       className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-50 text-emerald-800 font-semibold border-2 border-emerald-300 hover:border-emerald-500 hover:bg-emerald-100 transition-colors"
                     >
-                      <Tag className="w-5 h-5" /> Comprar com 20% de Desconto
+                      <Tag className="w-5 h-5" /> {t('livroDetalhe.buyDiscount')}
                     </Link>
                   </motion.div>
                   <Link
@@ -198,13 +198,12 @@ const LivroDetalhe = () => {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-emerald-800 mb-1">
-                          Membro do Clube ganha 20% de desconto
+                          {t('livroDetalhe.discountTitle')}
                         </p>
                         <p className="text-sm text-emerald-900/75 leading-relaxed">
-                          Membros do Clube de Estudos do Dr. Mauro Kwitko ganham 20% de desconto em
-                          todos os livros físicos.{' '}
+                          {t('livroDetalhe.discountDesc')}{' '}
                           <span className="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
-                            Conhecer o Clube →
+                            {t('livroDetalhe.knowClub')}
                           </span>
                         </p>
                       </div>
@@ -219,7 +218,7 @@ const LivroDetalhe = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl"
                   >
-                    <ShoppingCart className="w-5 h-5" /> Comprar
+                    <ShoppingCart className="w-5 h-5" /> {t('livroDetalhe.buy')}
                   </a>
                   <motion.div
                     animate={{ scale: [1, 1.03, 1] }}
@@ -229,7 +228,7 @@ const LivroDetalhe = () => {
                       to="/clube-de-estudos"
                       className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-50 text-emerald-800 font-semibold border-2 border-emerald-300 hover:border-emerald-500 hover:bg-emerald-100 transition-colors"
                     >
-                      <Gift className="w-5 h-5" /> Adquirir Gratuitamente
+                      <Gift className="w-5 h-5" /> {t('livroDetalhe.getFree')}
                     </Link>
                   </motion.div>
                   <Link
@@ -242,13 +241,12 @@ const LivroDetalhe = () => {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-emerald-800 mb-1">
-                          Acesso gratuito para assinantes
+                          {t('livroDetalhe.freeTitle')}
                         </p>
                         <p className="text-sm text-emerald-900/75 leading-relaxed">
-                          Assinantes do Clube de Estudos do Dr. Mauro Kwitko têm acesso gratuito a
-                          todos os e-books publicados.{' '}
+                          {t('livroDetalhe.freeDesc')}{' '}
                           <span className="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
-                            Conhecer o Clube →
+                            {t('livroDetalhe.knowClub')}
                           </span>
                         </p>
                       </div>
@@ -271,9 +269,9 @@ const LivroDetalhe = () => {
         <section className="py-16 md:py-20 px-5 md:px-6 bg-secondary/30">
           <div className="max-w-7xl mx-auto mb-8 md:mb-10 text-center">
             <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-2">
-              Você também pode gostar
+              {t('livroDetalhe.alsoLikeEyebrow')}
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Todas as obras do autor</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{t('livroDetalhe.alsoLikeTitle')}</h2>
           </div>
           <Marquee
             items={sugestoes}

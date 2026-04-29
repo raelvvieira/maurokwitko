@@ -1,0 +1,120 @@
+{
+  "header": {
+    "menu": {
+      "home": "Home",
+      "quemSouEu": "Quem Sou Eu",
+      "clube": "Clube de Estudos",
+      "cursos": "Cursos",
+      "livros": "Livros e E-books",
+      "hinos": "Hinos Espirituais",
+      "radio": "Rádio",
+      "artigos": "Artigos",
+      "formacao": "Formação em Psicoterapia Reencarnacionista",
+      "cursoOnline": "Curso On-line: A Psicologia da Reencarnação",
+      "radioCom": "Rádio com Dr. Mauro"
+    },
+    "cta": "Entrar no Clube",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "menuLabel": "Menu"
+  },
+  "footer": {
+    "tagline": "Integrando ciência psicológica e despertar espiritual há mais de três décadas.",
+    "navigation": "Navegação",
+    "service": "Atendimento",
+    "schedule": ["Segunda a Sexta", "09h — 19h"],
+    "location": "Porto Alegre — RS",
+    "online": "Atendimento online",
+    "newsletter": "Newsletter",
+    "newsletterDesc": "Receba reflexões e novidades.",
+    "subscribe": "Inscrever",
+    "rights": "Todos os direitos reservados.",
+    "links": { "home": "Home", "cursos": "Cursos", "livros": "Livros", "hinos": "Hinos", "artigos": "Artigos" }
+  },
+  "language": {
+    "label": "Idioma",
+    "pt": "Português",
+    "en": "Inglês",
+    "es": "Espanhol"
+  },
+  "common": {
+    "readMore": "Saiba Mais",
+    "readLess": "Ver menos",
+    "viewAll": "Ver todos",
+    "readArticle": "Ler artigo",
+    "loading": "Carregando..."
+  },
+  "home": {
+    "slides": {
+      "1": {
+        "eyebrow": "30+ anos de prática clínica e formação",
+        "titleStart": "Psicoterapia Reencarnacionista e ",
+        "titleAccent": "Investigação do Inconsciente",
+        "description": "Há mais de três décadas, o Dr. Mauro Kwitko, médico, fundador e presidente da Associação Brasileira de Psicoterapia Reencarnacionista trabalha para integrar a Reencarnação às Instituições Oficiais de Saúde, enquanto um tema da área da saúde, não como um assunto religioso, espiritual.",
+        "cta": "Conheça nossa Formação",
+        "caption": "CRM 5761 · UFRGS · Fundador da ABPR"
+      },
+      "2": {
+        "eyebrow": "Comunidade exclusiva de membros",
+        "titleStart": "Clube de Estudos ",
+        "titleAccent": "Dr. Mauro Kwitko",
+        "description": "Acesse aulas, hinos espirituais, e-books, rádio e uma comunidade ativa em torno da Psicoterapia Reencarnacionista. Tudo num só lugar, com curadoria do Dr. Mauro.",
+        "cta": "Entrar no Clube",
+        "caption": "Aulas, hinos, e-books e comunidade"
+      },
+      "3": {
+        "eyebrow": "Curso online completo",
+        "titleStart": "A Psicologia da ",
+        "titleAccent": "Reencarnação",
+        "description": "Aprenda no seu ritmo os fundamentos da Psicoterapia Reencarnacionista, condensados em quase 30 anos de prática clínica. R$ 297 — em até 12x.",
+        "cta": "Conhecer o Curso Online",
+        "caption": "Acesso vitalício · 2 aulas gratuitas"
+      }
+    },
+    "books": {
+      "eyebrow": "Bibliografia",
+      "title": "Aprenda Com Meus Livros",
+      "desc": "Quase 30 anos de experiência clínica condensados em obras que orientam o caminho da reforma íntima."
+    },
+    "formacao": {
+      "badge": "Inscrições Abertas",
+      "titleStart": "Formação em ",
+      "titleAccent": "Psicoterapia Reencarnacionista",
+      "desc": "Uma nova visão psicológica baseada na Reencarnação, para que possamos realmente aproveitar a encarnação. Formação completa para terapeutas integrarem a Terapia de Regressão à prática clínica.",
+      "items": ["Investigação ética do Inconsciente", "Anatomia Espiritual & Karma", "Casos Clínicos & Supervisão"],
+      "cta": "Conhecer a Formação"
+    },
+    "ebooks": {
+      "eyebrow": "E-books",
+      "title": "Adquira ou acesse gratuitamente no Clube de Estudos",
+      "desc": "Acesse a biblioteca completa de e-books como membro do Clube."
+    },
+    "about": {
+      "eyebrow": "Quem Sou Eu",
+      "titleStart": "Olá, sou ",
+      "titleAccent": "Dr. Mauro",
+      "desc": "Há cerca de 30 anos venho me dedicando a orientar pessoas — no consultório, nas palestras e nos cursos — a recordarem que somos Espíritos encarnados, com finalidades próprias a cada um.",
+      "items": [
+        "Fundador e patrono da Associação Brasileira de Psicoterapia Reencarnacionista (ABPR)",
+        "Mais de 10.000 Investigações do Inconsciente (Regressões) realizadas",
+        "Mais de 70 turmas formadas no Curso de Psicoterapia Reencarnacionista",
+        "25 livros publicados (físicos e e-books)"
+      ],
+      "stats": { "atendimentos": "Atendimentos", "livros": "Livros", "turmas": "Turmas" }
+    },
+    "gallery": { "eyebrow": "Trajetória", "title": "Momentos da Jornada" },
+    "quote": {
+      "text": "Curar não é apenas a ausência de sintomas, mas a presença de sentido encontrado na jornada da alma através do tempo.",
+      "author": "— Dr. Mauro Kwitko"
+    },
+    "articles": { "eyebrow": "Reflexões", "title": "Artigos Recentes" },
+    "contact": {
+      "eyebrow": "Contato",
+      "titleStart": "Vamos ",
+      "titleAccent": "conversar",
+      "desc": "Me envie uma mensagem para que possamos conversar.",
+      "email": "Enviar mensagem",
+      "whatsapp": "WhatsApp"
+    }
+  }
+}

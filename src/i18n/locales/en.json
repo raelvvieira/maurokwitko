@@ -1,0 +1,120 @@
+{
+  "header": {
+    "menu": {
+      "home": "Home",
+      "quemSouEu": "About Me",
+      "clube": "Study Club",
+      "cursos": "Courses",
+      "livros": "Books & E-books",
+      "hinos": "Spiritual Hymns",
+      "radio": "Radio",
+      "artigos": "Articles",
+      "formacao": "Training in Reincarnationist Psychotherapy",
+      "cursoOnline": "Online Course: The Psychology of Reincarnation",
+      "radioCom": "Radio with Dr. Mauro"
+    },
+    "cta": "Enter the Club",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menuLabel": "Menu"
+  },
+  "footer": {
+    "tagline": "Integrating psychological science and spiritual awakening for over three decades.",
+    "navigation": "Navigation",
+    "service": "Hours",
+    "schedule": ["Monday to Friday", "9am — 7pm"],
+    "location": "Porto Alegre — Brazil",
+    "online": "Online consultations",
+    "newsletter": "Newsletter",
+    "newsletterDesc": "Receive reflections and updates.",
+    "subscribe": "Subscribe",
+    "rights": "All rights reserved.",
+    "links": { "home": "Home", "cursos": "Courses", "livros": "Books", "hinos": "Hymns", "artigos": "Articles" }
+  },
+  "language": {
+    "label": "Language",
+    "pt": "Portuguese",
+    "en": "English",
+    "es": "Spanish"
+  },
+  "common": {
+    "readMore": "Learn More",
+    "readLess": "Show less",
+    "viewAll": "View all",
+    "readArticle": "Read article",
+    "loading": "Loading..."
+  },
+  "home": {
+    "slides": {
+      "1": {
+        "eyebrow": "30+ years of clinical practice and training",
+        "titleStart": "Reincarnationist Psychotherapy and ",
+        "titleAccent": "Inquiry into the Unconscious",
+        "description": "For over three decades, Dr. Mauro Kwitko — physician, founder and president of the Brazilian Association of Reincarnationist Psychotherapy — has worked to integrate Reincarnation into Official Health Institutions as a health subject, not a religious or spiritual one.",
+        "cta": "Discover our Training",
+        "caption": "CRM 5761 · UFRGS · Founder of ABPR"
+      },
+      "2": {
+        "eyebrow": "Exclusive members community",
+        "titleStart": "Study Club ",
+        "titleAccent": "Dr. Mauro Kwitko",
+        "description": "Access classes, spiritual hymns, e-books, radio and an active community around Reincarnationist Psychotherapy. Everything in one place, curated by Dr. Mauro.",
+        "cta": "Enter the Club",
+        "caption": "Classes, hymns, e-books and community"
+      },
+      "3": {
+        "eyebrow": "Complete online course",
+        "titleStart": "The Psychology of ",
+        "titleAccent": "Reincarnation",
+        "description": "Learn at your own pace the foundations of Reincarnationist Psychotherapy, condensed from nearly 30 years of clinical practice. R$ 297 — up to 12 installments.",
+        "cta": "Explore the Online Course",
+        "caption": "Lifetime access · 2 free classes"
+      }
+    },
+    "books": {
+      "eyebrow": "Bibliography",
+      "title": "Learn With My Books",
+      "desc": "Nearly 30 years of clinical experience condensed into works that guide the path of inner reform."
+    },
+    "formacao": {
+      "badge": "Enrollment Open",
+      "titleStart": "Training in ",
+      "titleAccent": "Reincarnationist Psychotherapy",
+      "desc": "A new psychological vision based on Reincarnation, so we can truly take advantage of this incarnation. Complete training for therapists to integrate Regression Therapy into clinical practice.",
+      "items": ["Ethical Inquiry into the Unconscious", "Spiritual Anatomy & Karma", "Clinical Cases & Supervision"],
+      "cta": "Discover the Training"
+    },
+    "ebooks": {
+      "eyebrow": "E-books",
+      "title": "Buy or access for free at the Study Club",
+      "desc": "Access the complete e-book library as a Club member."
+    },
+    "about": {
+      "eyebrow": "About Me",
+      "titleStart": "Hi, I'm ",
+      "titleAccent": "Dr. Mauro",
+      "desc": "For about 30 years I have devoted myself to guiding people — at the office, in lectures and courses — to remember that we are incarnated Spirits, each with our own purposes.",
+      "items": [
+        "Founder and patron of the Brazilian Association of Reincarnationist Psychotherapy (ABPR)",
+        "More than 10,000 Inquiries into the Unconscious (Regressions) performed",
+        "More than 70 classes graduated from the Reincarnationist Psychotherapy Course",
+        "25 books published (physical and e-books)"
+      ],
+      "stats": { "atendimentos": "Sessions", "livros": "Books", "turmas": "Classes" }
+    },
+    "gallery": { "eyebrow": "Trajectory", "title": "Moments of the Journey" },
+    "quote": {
+      "text": "Healing is not just the absence of symptoms, but the presence of meaning found on the soul's journey through time.",
+      "author": "— Dr. Mauro Kwitko"
+    },
+    "articles": { "eyebrow": "Reflections", "title": "Recent Articles" },
+    "contact": {
+      "eyebrow": "Contact",
+      "titleStart": "Let's ",
+      "titleAccent": "talk",
+      "desc": "Send me a message so we can talk.",
+      "email": "Send a message",
+      "whatsapp": "WhatsApp"
+    }
+  }
+}

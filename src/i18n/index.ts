@@ -30,7 +30,6 @@ i18n
       caches: ['localStorage'],
       lookupLocalStorage: 'i18nextLng',
     },
-    returnObjects: true,
   });
 
 // Keep <html lang> in sync

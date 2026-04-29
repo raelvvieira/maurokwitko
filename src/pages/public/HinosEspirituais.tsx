@@ -56,18 +56,22 @@ type PlayerMode = 'tracks' | 'playlist';
 type ActiveAlbum = { title: string; cover: string; tracks: Track[]; playlistId: string };
 
 const HinosEspirituais = () => {
+  const { t } = useTranslation();
   const { albums } = useAlbums();
   const [activeAlbum, setActiveAlbum] = useState<ActiveAlbum | null>(null);
   const [activeTrackId, setActiveTrackId] = useState<string | null>(null);
   const [playerMode, setPlayerMode] = useState<PlayerMode>('tracks');
 
+  const playlistTitle = (i: number) => t(`hinos.playlists.${i}.title`);
+  const playlistDesc = (i: number) => t(`hinos.playlists.${i}.description`);
+
   const buildAlbum = (p: PlaylistMeta): ActiveAlbum => {
     const dbAlbum = albums.find((a) => a.title.trim().toLowerCase() === p.matchTitle);
-    const tracks: Track[] = (dbAlbum?.tracks ?? []).map((t) => ({
-      id: extractYouTubeId(t.youtubeUrl),
-      title: t.title,
+    const tracks: Track[] = (dbAlbum?.tracks ?? []).map((tr) => ({
+      id: extractYouTubeId(tr.youtubeUrl),
+      title: tr.title,
     }));
-    return { title: p.title, cover: p.cover, tracks, playlistId: p.playlistId };
+    return { title: playlistTitle(p.index), cover: p.cover, tracks, playlistId: p.playlistId };
   };
 
   const openTracks = (p: PlaylistMeta) => {
@@ -100,17 +104,17 @@ const HinosEspirituais = () => {
         transition={{ duration: 0.6 }}
         className="text-center mb-12"
       >
-        <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Música & Espiritualidade</span>
-        <h1 className="text-3xl md:text-5xl font-bold tracking-tight mt-3">Hinos Espirituais</h1>
+        <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('hinos.eyebrow')}</span>
+        <h1 className="text-3xl md:text-5xl font-bold tracking-tight mt-3">{t('hinos.title')}</h1>
         <p className="text-muted-foreground mt-4 max-w-2xl mx-auto leading-relaxed">
-          Coletâneas de hinos selecionados pelo Dr. Mauro Kwitko para acompanhar momentos de meditação, estudo e reflexão.
+          {t('hinos.desc')}
         </p>
       </motion.div>
 
       <div className="grid md:grid-cols-3 gap-6">
         {PLAYLISTS.map((p, i) => (
           <motion.div
-            key={p.title}
+            key={p.matchTitle}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
@@ -119,26 +123,26 @@ const HinosEspirituais = () => {
             <div className="aspect-square overflow-hidden bg-muted">
               <img
                 src={p.cover}
-                alt={p.title}
+                alt={playlistTitle(p.index)}
                 loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </div>
             <div className="p-6 space-y-4">
-              <h3 className="text-lg font-bold">{p.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{p.description}</p>
+              <h3 className="text-lg font-bold">{playlistTitle(p.index)}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{playlistDesc(p.index)}</p>
               <div className="space-y-2">
                 <button
                   onClick={() => openTracks(p)}
                   className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
                 >
-                  Ver Hinos <ListMusic className="w-4 h-4" />
+                  {t('hinos.viewHymns')} <ListMusic className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => openPlaylist(p)}
                   className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-emerald-600/40 text-emerald-700 dark:text-emerald-400 text-sm font-semibold hover:bg-emerald-600/10 transition-colors"
                 >
-                  Ouvir Álbum Completo <Play className="w-4 h-4" />
+                  {t('hinos.playAlbum')} <Play className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -161,9 +165,9 @@ const HinosEspirituais = () => {
             </svg>
           </div>
           <div className="flex-1 text-center md:text-left">
-            <h3 className="text-xl md:text-2xl font-bold">Me encontre também no Spotify</h3>
+            <h3 className="text-xl md:text-2xl font-bold">{t('hinos.spotifyTitle')}</h3>
             <p className="text-sm md:text-base text-white/85 mt-2 leading-relaxed">
-              Ouça hinos, meditações e podcasts do Dr. Mauro direto no seu app preferido.
+              {t('hinos.spotifyDesc')}
             </p>
           </div>
           <a
@@ -172,7 +176,7 @@ const HinosEspirituais = () => {
             rel="noopener noreferrer"
             className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-emerald-700 text-sm font-bold hover:bg-white/90 transition-colors shadow-md"
           >
-            Abrir no Spotify <ExternalLink className="w-4 h-4" />
+            {t('hinos.spotifyCta')} <ExternalLink className="w-4 h-4" />
           </a>
         </div>
       </motion.div>
@@ -197,14 +201,14 @@ const HinosEspirituais = () => {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-white/60 text-sm">
-                      Nenhuma faixa disponível.
+                      {t('hinos.noTrackAvailable')}
                     </div>
                   )}
                 </div>
                 <div className="p-5 flex items-center gap-4 border-t border-border/40">
                   <img src={activeAlbum.cover} alt="" className="w-14 h-14 rounded-lg object-cover" />
                   <div>
-                    <p className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Tocando</p>
+                    <p className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('hinos.playing')}</p>
                     <h3 className="font-bold leading-tight">{activeAlbum.title}</h3>
                   </div>
                 </div>
@@ -214,36 +218,36 @@ const HinosEspirituais = () => {
               <div className="border-l border-border/40 max-h-[480px] md:max-h-[560px] overflow-y-auto">
                 {playerMode === 'playlist' ? (
                   <div className="p-6 text-sm text-muted-foreground space-y-2">
-                    <p className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Modo álbum</p>
-                    <p className="font-medium text-foreground">Reproduzindo álbum completo em sequência.</p>
-                    <p>As faixas tocam automaticamente, uma após a outra, direto do YouTube.</p>
+                    <p className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('hinos.albumMode')}</p>
+                    <p className="font-medium text-foreground">{t('hinos.albumModeTitle')}</p>
+                    <p>{t('hinos.albumModeDesc')}</p>
                   </div>
                 ) : (
                   <>
                     {activeAlbum.tracks.length === 0 && (
-                      <div className="p-6 text-sm text-muted-foreground">Nenhuma faixa cadastrada neste hinário.</div>
+                      <div className="p-6 text-sm text-muted-foreground">{t('hinos.noTracks')}</div>
                     )}
-                    {activeAlbum.tracks.map((t, idx) => {
-                      const active = activeTrackId === t.id;
+                    {activeAlbum.tracks.map((tr, idx) => {
+                      const active = activeTrackId === tr.id;
                       return (
                         <button
-                          key={`${t.id}-${idx}`}
-                          onClick={() => setActiveTrackId(t.id)}
+                          key={`${tr.id}-${idx}`}
+                          onClick={() => setActiveTrackId(tr.id)}
                           className={`w-full text-left p-3 flex items-center gap-3 border-b border-border/40 transition-colors ${
                             active ? 'bg-primary/10' : 'hover:bg-secondary/60'
                           }`}
                         >
                           <div className="relative w-20 h-12 rounded-md overflow-hidden bg-muted shrink-0">
                             <img
-                              src={`https://img.youtube.com/vi/${t.id}/mqdefault.jpg`}
+                              src={`https://img.youtube.com/vi/${tr.id}/mqdefault.jpg`}
                               alt=""
                               loading="lazy"
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs text-muted-foreground">Faixa {idx + 1}</p>
-                            <p className="text-sm font-medium truncate">{t.title}</p>
+                            <p className="text-xs text-muted-foreground">{t('hinos.track')} {idx + 1}</p>
+                            <p className="text-sm font-medium truncate">{tr.title}</p>
                           </div>
                           {active && <Play className="w-4 h-4 text-primary shrink-0" />}
                         </button>

@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import Marquee from '@/components/public/Marquee';
+import { getArrayTranslation } from '@/i18n';
 
 const HINOS_COVERS = [
   'https://i.ibb.co/v6fpPVzb/HINOS-DE-PAZ-2.png',
@@ -36,11 +37,11 @@ const ClubeDeEstudos = () => {
   const { ebooks } = useEbooks();
   const ebookCovers = ebooks.filter((e) => e.cover_url);
 
-  const benefits = t('clube.benefits', { returnObjects: true }) as { title: string; desc: string }[];
-  const features = t('clube.features', { returnObjects: true }) as { title: string; desc: string }[];
-  const priceIncludes = t('clube.price.includes', { returnObjects: true }) as string[];
-  const communityItems = t('clube.community.items', { returnObjects: true }) as string[];
-  const faq = t('clube.faq.items', { returnObjects: true }) as { q: string; a: string }[];
+  const benefits = getArrayTranslation<{ title: string; desc: string }>(t('clube.benefits', { returnObjects: true }));
+  const features = getArrayTranslation<{ title: string; desc: string }>(t('clube.features', { returnObjects: true }));
+  const priceIncludes = getArrayTranslation<string>(t('clube.price.includes', { returnObjects: true }));
+  const communityItems = getArrayTranslation<string>(t('clube.community.items', { returnObjects: true }));
+  const faq = getArrayTranslation<{ q: string; a: string }>(t('clube.faq.items', { returnObjects: true }));
 
   return (
     <div className="pt-24 md:pt-32 pb-16 overflow-hidden">

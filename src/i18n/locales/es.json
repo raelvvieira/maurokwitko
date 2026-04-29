@@ -116,5 +116,132 @@
       "email": "Enviar mensaje",
       "whatsapp": "WhatsApp"
     }
+  },
+  "clube": {
+    "hero": {
+      "eyebrow": "Comunidad Exclusiva",
+      "titleStart": "Club de Estudios",
+      "titleAccent": "Dr. Mauro Kwitko",
+      "desc": "Forma parte de una comunidad viva de psicoterapeutas, médicos y demás profesionales de la salud que buscan profundizar la reforma íntima, la espiritualidad y la Psicoterapia Reencarnacionista.",
+      "cta": "Suscríbete ahora — R$ 29/mes",
+      "cancel": "Cancela cuando quieras"
+    },
+    "benefits": [
+      { "title": "Comunidad activa", "desc": "Intercambia ideas con profesionales en búsqueda de la reforma íntima." },
+      { "title": "Grupo VIP en WhatsApp", "desc": "Convivencia diaria y soporte directo." },
+      { "title": "Lives exclusivos", "desc": "Entrevistas de primera mano con invitados especiales." },
+      { "title": "Acervo completo", "desc": "E-books, clases, himnos y curso grabado." }
+    ],
+    "perks": {
+      "ebooksTitleA": "Todos los e-books del Dr. Mauro,",
+      "ebooksTitleB": "totalmente gratis",
+      "ebooksDesc": "Como miembro del Club, descargas y lees todos los e-books publicados por el Dr. Mauro Kwitko sin pagar nada extra — y los próximos lanzamientos llegan primero a ti.",
+      "discountTitleA": "20% de descuento",
+      "discountTitleB": "en todos los libros físicos",
+      "discountDesc": "Los miembros reciben 20% de descuento en la compra de cualquier libro físico publicado por el Dr. Mauro por la editorial BesouroBox."
+    },
+    "acervo": {
+      "eyebrow": "Acervo",
+      "title": "Accede a todos los contenidos del Dr. Mauro",
+      "desc": "E-books, clases, lives, himnos y curso completo — todo en un solo lugar."
+    },
+    "features": [
+      { "title": "Accede a E-books y Futuros Lanzamientos", "desc": "Biblioteca digital creciente con obras del Dr. Mauro Kwitko; los lanzamientos llegan primero a los miembros." },
+      { "title": "Lives y Clases Grabadas", "desc": "Encuentros en vivo con invitados especiales y biblioteca completa de clases para revisar cuando quieras." },
+      { "title": "Curso Grabado: La Reforma Íntima", "desc": "Acceso integral al curso \"La Psicología de la Reencarnación\", con más de 20 módulos." }
+    ],
+    "hinarios": {
+      "title": "Himnarios completos",
+      "desc": "Colecciones de himnos para meditación, estudio y reflexión — Himnos de Paz, Amor y Fe."
+    },
+    "community": {
+      "eyebrow": "Más que contenido",
+      "title": "Una comunidad viva",
+      "desc": "El corazón del Club es el intercambio entre psicoterapeutas, médicos y demás profesionales de la salud que buscan profundizar la reforma íntima, la espiritualidad y la Psicoterapia Reencarnacionista — junto a personas comunes que enriquecen este camino.",
+      "items": [
+        "Conversar en foros internos",
+        "Comentar clases y relatos clínicos",
+        "Publicar tus propias experiencias",
+        "Participar del grupo VIP en WhatsApp",
+        "Recibir primero los lives con entrevistados",
+        "Intercambios con profesionales de diversas áreas"
+      ]
+    },
+    "price": {
+      "badge": "Acceso Mensual",
+      "title": "Acceso al Club de Estudios",
+      "perMonth": "/mes",
+      "includes": [
+        "Comunidad exclusiva",
+        "Grupo VIP en WhatsApp",
+        "Lives con invitados especiales",
+        "Acervo de e-books y clases",
+        "Himnarios completos",
+        "Curso La Reforma Íntima",
+        "Cancela cuando quieras"
+      ],
+      "cta": "Suscribirse ahora",
+      "note": "Cancela cuando quieras, sin multa."
+    },
+    "faq": {
+      "eyebrow": "Dudas",
+      "title": "Preguntas frecuentes",
+      "items": [
+        { "q": "¿Qué recibo al suscribirme?", "a": "Acceso a la comunidad, grupo VIP en WhatsApp, lives en vivo, acervo de e-books, clases grabadas, himnos y el curso completo \"La Reforma Íntima\"." },
+        { "q": "¿Puedo cancelar cuando quiera?", "a": "Sí. La suscripción es mensual y se puede cancelar en cualquier momento, sin multas." },
+        { "q": "¿Cómo accedo al contenido?", "a": "Tras la suscripción recibes acceso inmediato a la plataforma y al grupo de WhatsApp." },
+        { "q": "¿Quién puede participar?", "a": "El Club está abierto a psicoterapeutas, médicos, profesionales de la salud y cualquier persona que busque profundizar la reforma íntima y la espiritualidad." }
+      ]
+    },
+    "ctaFinal": {
+      "title": "Tu camino comienza aquí",
+      "desc": "Únete hoy a la comunidad del Dr. Mauro Kwitko.",
+      "button": "Suscríbete por R$ 29/mes"
+    }
+  },
+  "hinos": {
+    "eyebrow": "Música y Espiritualidad",
+    "title": "Himnos Espirituales",
+    "desc": "Colecciones de himnos seleccionados por el Dr. Mauro Kwitko para acompañar momentos de meditación, estudio y reflexión.",
+    "viewHymns": "Ver Himnos",
+    "playAlbum": "Escuchar Álbum Completo",
+    "playing": "Reproduciendo",
+    "albumMode": "Modo álbum",
+    "albumModeTitle": "Reproduciendo el álbum completo en secuencia.",
+    "albumModeDesc": "Las pistas se reproducen automáticamente, una tras otra, directo de YouTube.",
+    "noTracks": "Ninguna pista registrada en este himnario.",
+    "noTrackAvailable": "Ninguna pista disponible.",
+    "track": "Pista",
+    "spotifyTitle": "Encuéntrame también en Spotify",
+    "spotifyDesc": "Escucha himnos, meditaciones y podcasts del Dr. Mauro directo en tu app favorita.",
+    "spotifyCta": "Abrir en Spotify",
+    "playlists": [
+      { "title": "Himnos de Paz", "description": "Composiciones suaves para meditación y tranquilidad interior." },
+      { "title": "Himnos de Amor", "description": "Cánticos que celebran el amor universal y la fraternidad." },
+      { "title": "Himnos de Fe", "description": "Himnos que fortalecen la conexión con lo Divino y la fe interior." }
+    ]
+  },
+  "radio": {
+    "eyebrow": "Programas al aire",
+    "title": "Radio con Dr. Mauro",
+    "desc": "Acompaña los programas semanales del Dr. Mauro en estas radios espiritualistas. Los programas anteriores búscalos en el Menú.",
+    "listen": "Escuchar Ahora",
+    "days": {
+      "Segunda": "Lunes",
+      "Terça": "Martes",
+      "Quarta": "Miércoles",
+      "Quinta": "Jueves",
+      "Sexta": "Viernes",
+      "Sábado": "Sábado",
+      "Domingo": "Domingo"
+    }
+  },
+  "artigoDetalhe": {
+    "back": "Volver a Artículos",
+    "label": "Artículo",
+    "by": "por Dr. Mauro Kwitko",
+    "ctaTitle": "¿Quieres profundizar tus estudios?",
+    "ctaDesc": "Forma parte del Club de Estudios del Dr. Mauro Kwitko y accede a la biblioteca completa de e-books, cursos, himnos y materiales exclusivos.",
+    "ctaButton": "Conocer el Club de Estudios"
   }
 }

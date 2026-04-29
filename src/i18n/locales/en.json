@@ -116,5 +116,132 @@
       "email": "Send a message",
       "whatsapp": "WhatsApp"
     }
+  },
+  "clube": {
+    "hero": {
+      "eyebrow": "Exclusive Community",
+      "titleStart": "Study Club",
+      "titleAccent": "Dr. Mauro Kwitko",
+      "desc": "Join a vibrant community of psychotherapists, physicians and other health professionals seeking to deepen inner reform, spirituality and Reincarnationist Psychotherapy.",
+      "cta": "Subscribe now — R$ 29/month",
+      "cancel": "Cancel anytime"
+    },
+    "benefits": [
+      { "title": "Active community", "desc": "Exchange ideas with professionals pursuing inner reform." },
+      { "title": "VIP WhatsApp group", "desc": "Daily interaction and direct support." },
+      { "title": "Exclusive lives", "desc": "First-hand interviews with special guests." },
+      { "title": "Complete library", "desc": "E-books, classes, hymns and recorded course." }
+    ],
+    "perks": {
+      "ebooksTitleA": "All of Dr. Mauro's e-books,",
+      "ebooksTitleB": "completely free",
+      "ebooksDesc": "As a Club member you download and read every e-book published by Dr. Mauro Kwitko at no extra cost — and upcoming releases reach you first.",
+      "discountTitleA": "20% discount",
+      "discountTitleB": "on all physical books",
+      "discountDesc": "Members get 20% off any physical book published by Dr. Mauro through the BesouroBox publishing house."
+    },
+    "acervo": {
+      "eyebrow": "Library",
+      "title": "Access all of Dr. Mauro's content",
+      "desc": "E-books, classes, lives, hymns and the complete course — all in one place."
+    },
+    "features": [
+      { "title": "Access E-books and Future Releases", "desc": "Growing digital library of Dr. Mauro Kwitko's works; new releases reach members first." },
+      { "title": "Lives and Recorded Classes", "desc": "Live meetings with special guests and a complete library of classes to revisit anytime." },
+      { "title": "Recorded Course: Inner Reform", "desc": "Full access to the course \"The Psychology of Reincarnation\", with over 20 modules." }
+    ],
+    "hinarios": {
+      "title": "Complete hymnals",
+      "desc": "Hymn collections for meditation, study and reflection — Hymns of Peace, Love and Faith."
+    },
+    "community": {
+      "eyebrow": "More than content",
+      "title": "A living community",
+      "desc": "The heart of the Club is the exchange between psychotherapists, physicians and other health professionals seeking to deepen inner reform, spirituality and Reincarnationist Psychotherapy — alongside ordinary people enriching this journey.",
+      "items": [
+        "Talk in internal forums",
+        "Comment on classes and clinical reports",
+        "Post your own experiences",
+        "Join the VIP WhatsApp group",
+        "Get first access to lives with guests",
+        "Exchange with professionals from many fields"
+      ]
+    },
+    "price": {
+      "badge": "Monthly Access",
+      "title": "Access to the Study Club",
+      "perMonth": "/month",
+      "includes": [
+        "Exclusive community",
+        "VIP WhatsApp group",
+        "Lives with special guests",
+        "Library of e-books and classes",
+        "Complete hymnals",
+        "Inner Reform course",
+        "Cancel anytime"
+      ],
+      "cta": "Subscribe now",
+      "note": "Cancel anytime, no penalty."
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Frequently asked questions",
+      "items": [
+        { "q": "What do I get when I subscribe?", "a": "Access to the community, VIP WhatsApp group, live sessions, e-book library, recorded classes, hymns and the complete \"Inner Reform\" course." },
+        { "q": "Can I cancel anytime?", "a": "Yes. The subscription is monthly and can be canceled at any time, with no penalty." },
+        { "q": "How do I access the content?", "a": "After subscribing you receive immediate access to the platform and the WhatsApp group." },
+        { "q": "Who can join?", "a": "The Club is open to psychotherapists, physicians, health professionals and anyone seeking to deepen inner reform and spirituality." }
+      ]
+    },
+    "ctaFinal": {
+      "title": "Your journey begins here",
+      "desc": "Join Dr. Mauro Kwitko's community today.",
+      "button": "Subscribe for R$ 29/month"
+    }
+  },
+  "hinos": {
+    "eyebrow": "Music & Spirituality",
+    "title": "Spiritual Hymns",
+    "desc": "Hymn collections curated by Dr. Mauro Kwitko to accompany moments of meditation, study and reflection.",
+    "viewHymns": "View Hymns",
+    "playAlbum": "Play Full Album",
+    "playing": "Now playing",
+    "albumMode": "Album mode",
+    "albumModeTitle": "Playing the full album in sequence.",
+    "albumModeDesc": "Tracks play automatically, one after another, straight from YouTube.",
+    "noTracks": "No tracks registered for this hymnal.",
+    "noTrackAvailable": "No track available.",
+    "track": "Track",
+    "spotifyTitle": "Find me on Spotify too",
+    "spotifyDesc": "Listen to Dr. Mauro's hymns, meditations and podcasts in your favorite app.",
+    "spotifyCta": "Open on Spotify",
+    "playlists": [
+      { "title": "Hymns of Peace", "description": "Gentle compositions for meditation and inner tranquility." },
+      { "title": "Hymns of Love", "description": "Songs celebrating universal love and fraternity." },
+      { "title": "Hymns of Faith", "description": "Hymns that strengthen the connection with the Divine and inner faith." }
+    ]
+  },
+  "radio": {
+    "eyebrow": "Programs on air",
+    "title": "Radio with Dr. Mauro",
+    "desc": "Follow Dr. Mauro's weekly programs on these spiritualist radios. For previous shows, check the Menu.",
+    "listen": "Listen Now",
+    "days": {
+      "Segunda": "Monday",
+      "Terça": "Tuesday",
+      "Quarta": "Wednesday",
+      "Quinta": "Thursday",
+      "Sexta": "Friday",
+      "Sábado": "Saturday",
+      "Domingo": "Sunday"
+    }
+  },
+  "artigoDetalhe": {
+    "back": "Back to Articles",
+    "label": "Article",
+    "by": "by Dr. Mauro Kwitko",
+    "ctaTitle": "Want to deepen your studies?",
+    "ctaDesc": "Join Dr. Mauro Kwitko's Study Club and get access to the complete library of e-books, courses, hymns and exclusive materials.",
+    "ctaButton": "Discover the Study Club"
   }
 }

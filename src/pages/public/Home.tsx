@@ -10,6 +10,7 @@ import { ARTICLES } from '@/data/articles';
 import { getArticleImage } from '@/data/articleImages';
 import { supabase } from '@/integrations/supabase/client';
 import { Marquee } from '@/components/public/Marquee';
+import { getArrayTranslation } from '@/i18n';
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -178,8 +179,8 @@ const Home = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [ebooks, setEbooks] = useState<Ebook[]>([]);
-  const formacaoItems = t('home.formacao.items', { returnObjects: true }) as string[];
-  const aboutItems = t('home.about.items', { returnObjects: true }) as string[];
+  const formacaoItems = getArrayTranslation<string>(t('home.formacao.items', { returnObjects: true }));
+  const aboutItems = getArrayTranslation<string>(t('home.about.items', { returnObjects: true }));
 
   useEffect(() => {
     supabase

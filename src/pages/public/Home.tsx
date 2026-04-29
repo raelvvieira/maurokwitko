@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Check, Quote, Mail, MessageCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { BOOKS } from '@/data/books';
@@ -48,46 +49,32 @@ type Slide = {
   caption: string;
 };
 
-const HERO_SLIDES: Slide[] = [
-  {
-    eyebrow: '30+ anos de prática clínica e formação',
-    titleStart: 'Psicoterapia Reencarnacionista e ',
-    titleAccent: 'Investigação do Inconsciente',
-    description:
-      'Há mais de três décadas, o Dr. Mauro Kwitko, médico, fundador e presidente da Associação Brasileira de Psicoterapia Reencarnacionista trabalha para integrar a Reencarnação às Instituições Oficiais de Saúde, enquanto um tema da área da saúde, não como um assunto religioso, espiritual.',
-    ctaLabel: 'Conheça nossa Formação',
-    ctaHref: '/formacao',
-    image: 'https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg',
-    imageAlt: 'Dr. Mauro Kwitko',
-    caption: 'CRM 5761 · UFRGS · Fundador da ABPR',
-  },
-  {
-    eyebrow: 'Comunidade exclusiva de membros',
-    titleStart: 'Clube de Estudos ',
-    titleAccent: 'Dr. Mauro Kwitko',
-    description:
-      'Acesse aulas, hinos espirituais, e-books, rádio e uma comunidade ativa em torno da Psicoterapia Reencarnacionista. Tudo num só lugar, com curadoria do Dr. Mauro.',
-    ctaLabel: 'Entrar no Clube',
-    ctaHref: '/clube-de-estudos',
-    image: 'https://i.ibb.co/HDQbPzRX/AULAS-PR-TICAS.jpg',
-    imageAlt: 'Clube de Estudos',
-    caption: 'Aulas, hinos, e-books e comunidade',
-  },
-  {
-    eyebrow: 'Curso online completo',
-    titleStart: 'A Psicologia da ',
-    titleAccent: 'Reencarnação',
-    description:
-      'Aprenda no seu ritmo os fundamentos da Psicoterapia Reencarnacionista, condensados em quase 30 anos de prática clínica. R$ 297 — em até 12x.',
-    ctaLabel: 'Conhecer o Curso Online',
-    ctaHref: '/curso-online',
-    image: 'https://i.ibb.co/MDJBY2J0/AULAS-TE-RICAS.jpg',
-    imageAlt: 'Curso Online',
-    caption: 'Acesso vitalício · 2 aulas gratuitas',
-  },
+const SLIDE_IMAGES: { ctaHref: string; image: string; imageAlt: string }[] = [
+  { ctaHref: '/formacao', image: 'https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg', imageAlt: 'Dr. Mauro Kwitko' },
+  { ctaHref: '/clube-de-estudos', image: 'https://i.ibb.co/HDQbPzRX/AULAS-PR-TICAS.jpg', imageAlt: 'Clube de Estudos' },
+  { ctaHref: '/curso-online', image: 'https://i.ibb.co/MDJBY2J0/AULAS-TE-RICAS.jpg', imageAlt: 'Curso Online' },
 ];
 
+const useHeroSlides = (): Slide[] => {
+  const { t } = useTranslation();
+  return SLIDE_IMAGES.map((s, i) => {
+    const k = `home.slides.${i + 1}`;
+    return {
+      eyebrow: t(`${k}.eyebrow`),
+      titleStart: t(`${k}.titleStart`),
+      titleAccent: t(`${k}.titleAccent`),
+      description: t(`${k}.description`),
+      ctaLabel: t(`${k}.cta`),
+      ctaHref: s.ctaHref,
+      image: s.image,
+      imageAlt: s.imageAlt,
+      caption: t(`${k}.caption`),
+    };
+  });
+};
+
 const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
+  const HERO_SLIDES = useHeroSlides();
   const prefersReducedMotion =
     typeof window !== 'undefined' &&
     window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -189,7 +176,10 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
 
 const Home = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [ebooks, setEbooks] = useState<Ebook[]>([]);
+  const formacaoItems = t('home.formacao.items', { returnObjects: true }) as string[];
+  const aboutItems = t('home.about.items', { returnObjects: true }) as string[];
 
   useEffect(() => {
     supabase
@@ -214,10 +204,10 @@ const Home = () => {
         <div className="max-w-6xl mx-auto px-5 md:px-6 mb-10">
           <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4">
             <div>
-              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Bibliografia</span>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Aprenda Com Meus Livros</h2>
+              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('home.books.eyebrow')}</span>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">{t('home.books.title')}</h2>
               <p className="text-muted-foreground mt-3 max-w-xl">
-                Quase 30 anos de experiência clínica condensados em obras que orientam o caminho da reforma íntima.
+                {t('home.books.desc')}
               </p>
             </div>
           </motion.div>
@@ -243,7 +233,7 @@ const Home = () => {
                 {...greenButtonAnim}
                 className="mt-2 w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-full bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
               >
-                Saiba Mais <ArrowRight className="w-3 h-3" />
+                {t('common.readMore')} <ArrowRight className="w-3 h-3" />
               </motion.span>
             </Link>
           )}
@@ -259,16 +249,16 @@ const Home = () => {
           >
             <div className="relative space-y-6">
               <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold tracking-wider uppercase">
-                Inscrições Abertas
+                {t('home.formacao.badge')}
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-                Formação em <span className="italic font-serif text-primary">Psicoterapia Reencarnacionista</span>
+                {t('home.formacao.titleStart')}<span className="italic font-serif text-primary">{t('home.formacao.titleAccent')}</span>
               </h2>
               <p className="text-muted-foreground leading-relaxed max-w-md">
-                Uma nova visão psicológica baseada na Reencarnação, para que possamos realmente aproveitar a encarnação. Formação completa para terapeutas integrarem a Terapia de Regressão à prática clínica.
+                {t('home.formacao.desc')}
               </p>
               <ul className="space-y-3 pt-2">
-                {['Investigação ética do Inconsciente', 'Anatomia Espiritual & Karma', 'Casos Clínicos & Supervisão'].map((item) => (
+                {formacaoItems.map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm text-foreground/80">
                     <span className="mt-0.5 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <Check className="w-3 h-3 text-primary" />
@@ -281,7 +271,7 @@ const Home = () => {
                 onClick={() => navigate('/formacao')}
                 className="inline-flex items-center gap-2 mt-4 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm hover:shadow-md"
               >
-                Conhecer a Formação <ArrowRight className="w-4 h-4" />
+                {t('home.formacao.cta')} <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
@@ -303,10 +293,10 @@ const Home = () => {
           <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl -z-10" />
           <div className="max-w-6xl mx-auto px-5 md:px-6 mb-10">
             <motion.div {...fadeUp}>
-              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">E-books</span>
-              <h3 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Adquira ou acesse gratuitamente no Clube de Estudos</h3>
+              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('home.ebooks.eyebrow')}</span>
+              <h3 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">{t('home.ebooks.title')}</h3>
               <p className="text-muted-foreground mt-3 max-w-xl text-sm md:text-base">
-                Acesse a biblioteca completa de e-books como membro do Clube.
+                {t('home.ebooks.desc')}
               </p>
             </motion.div>
           </div>
@@ -333,7 +323,7 @@ const Home = () => {
                   {...greenButtonAnim}
                   className="mt-2 w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-full bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
                 >
-                  Saiba Mais <ArrowRight className="w-3 h-3" />
+                  {t('common.readMore')} <ArrowRight className="w-3 h-3" />
                 </motion.span>
               </Link>
             )}
@@ -356,20 +346,15 @@ const Home = () => {
           </motion.div>
 
           <motion.div {...fadeUp} className="space-y-6 order-1 md:order-2">
-            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Quem Sou Eu</span>
+            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('home.about.eyebrow')}</span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-              Olá, sou <span className="italic font-serif text-primary">Dr. Mauro</span>
+              {t('home.about.titleStart')}<span className="italic font-serif text-primary">{t('home.about.titleAccent')}</span>
             </h2>
             <p className="text-muted-foreground leading-relaxed text-base md:text-lg">
-              Há cerca de 30 anos venho me dedicando a orientar pessoas — no consultório, nas palestras e nos cursos — a recordarem que somos Espíritos encarnados, com finalidades próprias a cada um.
+              {t('home.about.desc')}
             </p>
             <ul className="space-y-3 pt-2">
-              {[
-                'Fundador e patrono da Associação Brasileira de Psicoterapia Reencarnacionista (ABPR)',
-                'Mais de 10.000 Investigações do Inconsciente (Regressões) realizadas',
-                'Mais de 70 turmas formadas no Curso de Psicoterapia Reencarnacionista',
-                '25 livros publicados (físicos e e-books)',
-              ].map((item) => (
+              {aboutItems.map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm md:text-base text-foreground/85">
                   <span className="mt-1 w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
                     <Check className="w-3 h-3 text-primary" />
@@ -381,15 +366,15 @@ const Home = () => {
             <div className="grid grid-cols-3 gap-4 pt-6 border-t border-border/40">
               <div>
                 <p className="text-2xl md:text-3xl font-bold tracking-tight">10k+</p>
-                <p className="text-xs text-muted-foreground mt-1">Atendimentos</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('home.about.stats.atendimentos')}</p>
               </div>
               <div>
                 <p className="text-2xl md:text-3xl font-bold tracking-tight">25</p>
-                <p className="text-xs text-muted-foreground mt-1">Livros</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('home.about.stats.livros')}</p>
               </div>
               <div>
                 <p className="text-2xl md:text-3xl font-bold tracking-tight">70+</p>
-                <p className="text-xs text-muted-foreground mt-1">Turmas</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('home.about.stats.turmas')}</p>
               </div>
             </div>
           </motion.div>
@@ -400,8 +385,8 @@ const Home = () => {
       <section className="py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-5 md:px-6">
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-10">
-            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Trajetória</span>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Momentos da Jornada</h2>
+            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('home.gallery.eyebrow')}</span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">{t('home.gallery.title')}</h2>
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
@@ -433,10 +418,10 @@ const Home = () => {
         <motion.div {...fadeUp} className="max-w-3xl mx-auto px-5 md:px-6 text-center">
           <Quote className="w-10 h-10 text-primary/40 mx-auto mb-6" />
           <p className="font-serif italic text-2xl md:text-3xl lg:text-4xl leading-snug text-foreground">
-            "Curar não é apenas a ausência de sintomas, mas a presença de sentido encontrado na jornada da alma através do tempo."
+            "{t('home.quote.text')}"
           </p>
           <p className="mt-8 text-xs font-bold tracking-[0.2em] text-muted-foreground uppercase">
-            — Dr. Mauro Kwitko
+            {t('home.quote.author')}
           </p>
         </motion.div>
       </section>
@@ -446,11 +431,11 @@ const Home = () => {
         <div className="max-w-6xl mx-auto px-5 md:px-6">
           <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4 mb-10">
             <div>
-              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Reflexões</span>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Artigos Recentes</h2>
+              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('home.articles.eyebrow')}</span>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">{t('home.articles.title')}</h2>
             </div>
             <Link to="/artigos" className="text-sm font-semibold text-primary hover:underline inline-flex items-center gap-1">
-              Ver todos <ArrowRight className="w-4 h-4" />
+              {t('common.viewAll')} <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
 
@@ -479,7 +464,7 @@ const Home = () => {
                     </h3>
                     <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-2">{art.excerpt}</p>
                     <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:gap-2 transition-all">
-                      Ler artigo <ArrowRight className="w-3.5 h-3.5" />
+                      {t('common.readArticle')} <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </Link>
@@ -492,19 +477,19 @@ const Home = () => {
       {/* CONTATO */}
       <section id="contato" className="py-12 md:py-16 bg-secondary/30 border-t border-border/40">
         <motion.div {...fadeUp} className="max-w-3xl mx-auto px-5 md:px-6 text-center">
-          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Contato</span>
+          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('home.contact.eyebrow')}</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mt-3 leading-tight">
-            Vamos <span className="italic font-serif text-primary">conversar</span>
+            {t('home.contact.titleStart')}<span className="italic font-serif text-primary">{t('home.contact.titleAccent')}</span>
           </h2>
           <p className="text-muted-foreground mt-5 leading-relaxed text-base md:text-lg">
-            Me envie uma mensagem para que possamos conversar.
+            {t('home.contact.desc')}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
             <a
               href="mailto:contato@maurokwitko.com.br"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
             >
-              <Mail className="w-4 h-4" /> Enviar mensagem
+              <Mail className="w-4 h-4" /> {t('home.contact.email')}
             </a>
             <a
               href="https://wa.me/5551999999999"
@@ -512,7 +497,7 @@ const Home = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-success text-success-foreground text-sm font-semibold hover:bg-success/90 transition-colors"
             >
-              <MessageCircle className="w-4 h-4" /> WhatsApp
+              <MessageCircle className="w-4 h-4" /> {t('home.contact.whatsapp')}
             </a>
           </div>
         </motion.div>

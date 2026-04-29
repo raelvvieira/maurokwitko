@@ -346,20 +346,15 @@ const Home = () => {
           </motion.div>
 
           <motion.div {...fadeUp} className="space-y-6 order-1 md:order-2">
-            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Quem Sou Eu</span>
+            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('home.about.eyebrow')}</span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-              Olá, sou <span className="italic font-serif text-primary">Dr. Mauro</span>
+              {t('home.about.titleStart')}<span className="italic font-serif text-primary">{t('home.about.titleAccent')}</span>
             </h2>
             <p className="text-muted-foreground leading-relaxed text-base md:text-lg">
-              Há cerca de 30 anos venho me dedicando a orientar pessoas — no consultório, nas palestras e nos cursos — a recordarem que somos Espíritos encarnados, com finalidades próprias a cada um.
+              {t('home.about.desc')}
             </p>
             <ul className="space-y-3 pt-2">
-              {[
-                'Fundador e patrono da Associação Brasileira de Psicoterapia Reencarnacionista (ABPR)',
-                'Mais de 10.000 Investigações do Inconsciente (Regressões) realizadas',
-                'Mais de 70 turmas formadas no Curso de Psicoterapia Reencarnacionista',
-                '25 livros publicados (físicos e e-books)',
-              ].map((item) => (
+              {aboutItems.map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm md:text-base text-foreground/85">
                   <span className="mt-1 w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
                     <Check className="w-3 h-3 text-primary" />
@@ -371,15 +366,15 @@ const Home = () => {
             <div className="grid grid-cols-3 gap-4 pt-6 border-t border-border/40">
               <div>
                 <p className="text-2xl md:text-3xl font-bold tracking-tight">10k+</p>
-                <p className="text-xs text-muted-foreground mt-1">Atendimentos</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('home.about.stats.atendimentos')}</p>
               </div>
               <div>
                 <p className="text-2xl md:text-3xl font-bold tracking-tight">25</p>
-                <p className="text-xs text-muted-foreground mt-1">Livros</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('home.about.stats.livros')}</p>
               </div>
               <div>
                 <p className="text-2xl md:text-3xl font-bold tracking-tight">70+</p>
-                <p className="text-xs text-muted-foreground mt-1">Turmas</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('home.about.stats.turmas')}</p>
               </div>
             </div>
           </motion.div>
@@ -390,8 +385,8 @@ const Home = () => {
       <section className="py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-5 md:px-6">
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-10">
-            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Trajetória</span>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">Momentos da Jornada</h2>
+            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('home.gallery.eyebrow')}</span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">{t('home.gallery.title')}</h2>
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">

@@ -307,7 +307,9 @@
     "by": "by Dr. Mauro Kwitko",
     "ctaTitle": "Want to deepen your studies?",
     "ctaDesc": "Join Dr. Mauro Kwitko's Study Club and get access to the complete library of e-books, courses, hymns and exclusive materials.",
-    "ctaButton": "Discover the Study Club"
+    "ctaButton": "Discover the Study Club",
+    "notFound": "Article not found.",
+    "backShort": "Back to Articles"
   },
   "livros": {
     "eyebrow": "Catalog",

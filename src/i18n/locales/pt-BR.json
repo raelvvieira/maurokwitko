@@ -307,7 +307,9 @@
     "by": "por Dr. Mauro Kwitko",
     "ctaTitle": "Quer aprofundar seus estudos?",
     "ctaDesc": "Faça parte do Clube de Estudos do Dr. Mauro Kwitko e tenha acesso à biblioteca completa de e-books, cursos, hinos e materiais exclusivos.",
-    "ctaButton": "Conhecer o Clube de Estudos"
+    "ctaButton": "Conhecer o Clube de Estudos",
+    "notFound": "Artigo não encontrado.",
+    "backShort": "Voltar aos Artigos"
   },
   "livros": {
     "eyebrow": "Catálogo",

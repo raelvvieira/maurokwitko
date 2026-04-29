@@ -1,24 +1,32 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { ARTICLES } from '@/data/articles';
 import { getArticleImage } from '@/data/articleImages';
+import { getArrayTranslation } from '@/i18n';
 
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const article = ARTICLES.find((a) => a.slug === id);
 
   if (!article) {
     return (
       <div className="max-w-3xl mx-auto space-y-6">
         <button onClick={() => navigate('/app/blog')} className="flex items-center gap-2 text-sm text-primary hover:underline">
-          <ArrowLeft className="w-4 h-4" /> Voltar aos Artigos
+          <ArrowLeft className="w-4 h-4" /> {t('artigoDetalhe.backShort')}
         </button>
-        <div className="glass-card text-center text-sm text-muted-foreground py-12">Artigo não encontrado.</div>
+        <div className="glass-card text-center text-sm text-muted-foreground py-12">{t('artigoDetalhe.notFound')}</div>
       </div>
     );
   }
+
+  const translatedTitle = t(`articleTitles.${article.slug}`, { defaultValue: article.title });
+  const translatedBodyRaw = t(`articleBodies.${article.slug}`, { returnObjects: true, defaultValue: article.body });
+  const translatedBody = getArrayTranslation<string>(translatedBodyRaw);
+  const body = translatedBody.length === article.body.length ? translatedBody : article.body;
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -26,7 +34,7 @@ const BlogPost = () => {
         onClick={() => navigate('/app/blog')}
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors mb-6"
       >
-        <ArrowLeft className="w-4 h-4" /> Voltar aos Artigos
+        <ArrowLeft className="w-4 h-4" /> {t('artigoDetalhe.backShort')}
       </button>
 
       <motion.header
@@ -36,12 +44,12 @@ const BlogPost = () => {
         className="mb-8"
       >
         <span className="inline-block text-[11px] font-bold tracking-[0.2em] text-primary uppercase mb-3">
-          Artigo
+          {t('artigoDetalhe.label')}
         </span>
         <h1 className="text-2xl md:text-4xl font-bold tracking-tight leading-[1.15]">
-          {article.title}
+          {translatedTitle}
         </h1>
-        <p className="mt-3 text-sm font-medium text-muted-foreground">por Dr. Mauro Kwitko</p>
+        <p className="mt-3 text-sm font-medium text-muted-foreground">{t('artigoDetalhe.by')}</p>
       </motion.header>
 
       <motion.div
@@ -52,7 +60,7 @@ const BlogPost = () => {
       >
         <img
           src={getArticleImage(article.slug)}
-          alt={article.title}
+          alt={translatedTitle}
           className="w-full h-full object-cover"
         />
       </motion.div>
@@ -63,7 +71,7 @@ const BlogPost = () => {
         transition={{ duration: 0.4, delay: 0.1 }}
         className="space-y-5 text-base md:text-lg leading-relaxed text-foreground/85"
       >
-        {article.body.map((para, idx) => {
+        {body.map((para, idx) => {
           if (para.startsWith('__LIST__')) {
             const items = para.replace('__LIST__', '').split('||');
             return (

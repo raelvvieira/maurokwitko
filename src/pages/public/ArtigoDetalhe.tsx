@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ARTICLES } from '@/data/articles';
 import { getArticleImage } from '@/data/articleImages';
+import { getArrayTranslation } from '@/i18n';
 
 const ArtigoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -11,6 +12,11 @@ const ArtigoDetalhe = () => {
   const article = ARTICLES.find((a) => a.slug === slug);
 
   if (!article) return <Navigate to="/artigos" replace />;
+
+  const translatedTitle = t(`articleTitles.${article.slug}`, { defaultValue: article.title });
+  const translatedBodyRaw = t(`articleBodies.${article.slug}`, { returnObjects: true, defaultValue: article.body });
+  const translatedBody = getArrayTranslation<string>(translatedBodyRaw);
+  const body = translatedBody.length === article.body.length ? translatedBody : article.body;
 
   return (
     <div className="bg-background">

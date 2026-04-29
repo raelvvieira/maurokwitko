@@ -22,14 +22,23 @@
     "tagline": "Integrando ciencia psicológica y despertar espiritual hace más de tres décadas.",
     "navigation": "Navegación",
     "service": "Atención",
-    "schedule": ["Lunes a Viernes", "9h — 19h"],
+    "schedule": [
+      "Lunes a Viernes",
+      "9h — 19h"
+    ],
     "location": "Porto Alegre — Brasil",
     "online": "Atención online",
     "newsletter": "Newsletter",
     "newsletterDesc": "Recibe reflexiones y novedades.",
     "subscribe": "Suscribirse",
     "rights": "Todos los derechos reservados.",
-    "links": { "home": "Inicio", "cursos": "Cursos", "livros": "Libros", "hinos": "Himnos", "artigos": "Artículos" }
+    "links": {
+      "home": "Inicio",
+      "cursos": "Cursos",
+      "livros": "Libros",
+      "hinos": "Himnos",
+      "artigos": "Artículos"
+    }
   },
   "language": {
     "label": "Idioma",
@@ -81,7 +90,11 @@
       "titleStart": "Formación en ",
       "titleAccent": "Psicoterapia Reencarnacionista",
       "desc": "Una nueva visión psicológica basada en la Reencarnación, para que podamos realmente aprovechar la encarnación. Formación completa para terapeutas que integran la Terapia de Regresión a la práctica clínica.",
-      "items": ["Investigación ética del Inconsciente", "Anatomía Espiritual y Karma", "Casos Clínicos y Supervisión"],
+      "items": [
+        "Investigación ética del Inconsciente",
+        "Anatomía Espiritual y Karma",
+        "Casos Clínicos y Supervisión"
+      ],
       "cta": "Conocer la Formación"
     },
     "ebooks": {
@@ -100,14 +113,24 @@
         "Más de 70 clases formadas en el Curso de Psicoterapia Reencarnacionista",
         "25 libros publicados (físicos y e-books)"
       ],
-      "stats": { "atendimentos": "Atenciones", "livros": "Libros", "turmas": "Clases" }
+      "stats": {
+        "atendimentos": "Atenciones",
+        "livros": "Libros",
+        "turmas": "Clases"
+      }
     },
-    "gallery": { "eyebrow": "Trayectoria", "title": "Momentos del Camino" },
+    "gallery": {
+      "eyebrow": "Trayectoria",
+      "title": "Momentos del Camino"
+    },
     "quote": {
       "text": "Curar no es solo la ausencia de síntomas, sino la presencia de sentido encontrado en el camino del alma a través del tiempo.",
       "author": "— Dr. Mauro Kwitko"
     },
-    "articles": { "eyebrow": "Reflexiones", "title": "Artículos Recientes" },
+    "articles": {
+      "eyebrow": "Reflexiones",
+      "title": "Artículos Recientes"
+    },
     "contact": {
       "eyebrow": "Contacto",
       "titleStart": "Vamos a ",
@@ -127,10 +150,22 @@
       "cancel": "Cancela cuando quieras"
     },
     "benefits": [
-      { "title": "Comunidad activa", "desc": "Intercambia ideas con profesionales en búsqueda de la reforma íntima." },
-      { "title": "Grupo VIP en WhatsApp", "desc": "Convivencia diaria y soporte directo." },
-      { "title": "Lives exclusivos", "desc": "Entrevistas de primera mano con invitados especiales." },
-      { "title": "Acervo completo", "desc": "E-books, clases, himnos y curso grabado." }
+      {
+        "title": "Comunidad activa",
+        "desc": "Intercambia ideas con profesionales en búsqueda de la reforma íntima."
+      },
+      {
+        "title": "Grupo VIP en WhatsApp",
+        "desc": "Convivencia diaria y soporte directo."
+      },
+      {
+        "title": "Lives exclusivos",
+        "desc": "Entrevistas de primera mano con invitados especiales."
+      },
+      {
+        "title": "Acervo completo",
+        "desc": "E-books, clases, himnos y curso grabado."
+      }
     ],
     "perks": {
       "ebooksTitleA": "Todos los e-books del Dr. Mauro,",
@@ -146,9 +181,18 @@
       "desc": "E-books, clases, lives, himnos y curso completo — todo en un solo lugar."
     },
     "features": [
-      { "title": "Accede a E-books y Futuros Lanzamientos", "desc": "Biblioteca digital creciente con obras del Dr. Mauro Kwitko; los lanzamientos llegan primero a los miembros." },
-      { "title": "Lives y Clases Grabadas", "desc": "Encuentros en vivo con invitados especiales y biblioteca completa de clases para revisar cuando quieras." },
-      { "title": "Curso Grabado: La Reforma Íntima", "desc": "Acceso integral al curso \"La Psicología de la Reencarnación\", con más de 20 módulos." }
+      {
+        "title": "Accede a E-books y Futuros Lanzamientos",
+        "desc": "Biblioteca digital creciente con obras del Dr. Mauro Kwitko; los lanzamientos llegan primero a los miembros."
+      },
+      {
+        "title": "Lives y Clases Grabadas",
+        "desc": "Encuentros en vivo con invitados especiales y biblioteca completa de clases para revisar cuando quieras."
+      },
+      {
+        "title": "Curso Grabado: La Reforma Íntima",
+        "desc": "Acceso integral al curso \"La Psicología de la Reencarnación\", con más de 20 módulos."
+      }
     ],
     "hinarios": {
       "title": "Himnarios completos",
@@ -187,10 +231,22 @@
       "eyebrow": "Dudas",
       "title": "Preguntas frecuentes",
       "items": [
-        { "q": "¿Qué recibo al suscribirme?", "a": "Acceso a la comunidad, grupo VIP en WhatsApp, lives en vivo, acervo de e-books, clases grabadas, himnos y el curso completo \"La Reforma Íntima\"." },
-        { "q": "¿Puedo cancelar cuando quiera?", "a": "Sí. La suscripción es mensual y se puede cancelar en cualquier momento, sin multas." },
-        { "q": "¿Cómo accedo al contenido?", "a": "Tras la suscripción recibes acceso inmediato a la plataforma y al grupo de WhatsApp." },
-        { "q": "¿Quién puede participar?", "a": "El Club está abierto a psicoterapeutas, médicos, profesionales de la salud y cualquier persona que busque profundizar la reforma íntima y la espiritualidad." }
+        {
+          "q": "¿Qué recibo al suscribirme?",
+          "a": "Acceso a la comunidad, grupo VIP en WhatsApp, lives en vivo, acervo de e-books, clases grabadas, himnos y el curso completo \"La Reforma Íntima\"."
+        },
+        {
+          "q": "¿Puedo cancelar cuando quiera?",
+          "a": "Sí. La suscripción es mensual y se puede cancelar en cualquier momento, sin multas."
+        },
+        {
+          "q": "¿Cómo accedo al contenido?",
+          "a": "Tras la suscripción recibes acceso inmediato a la plataforma y al grupo de WhatsApp."
+        },
+        {
+          "q": "¿Quién puede participar?",
+          "a": "El Club está abierto a psicoterapeutas, médicos, profesionales de la salud y cualquier persona que busque profundizar la reforma íntima y la espiritualidad."
+        }
       ]
     },
     "ctaFinal": {
@@ -216,9 +272,18 @@
     "spotifyDesc": "Escucha himnos, meditaciones y podcasts del Dr. Mauro directo en tu app favorita.",
     "spotifyCta": "Abrir en Spotify",
     "playlists": [
-      { "title": "Himnos de Paz", "description": "Composiciones suaves para meditación y tranquilidad interior." },
-      { "title": "Himnos de Amor", "description": "Cánticos que celebran el amor universal y la fraternidad." },
-      { "title": "Himnos de Fe", "description": "Himnos que fortalecen la conexión con lo Divino y la fe interior." }
+      {
+        "title": "Himnos de Paz",
+        "description": "Composiciones suaves para meditación y tranquilidad interior."
+      },
+      {
+        "title": "Himnos de Amor",
+        "description": "Cánticos que celebran el amor universal y la fraternidad."
+      },
+      {
+        "title": "Himnos de Fe",
+        "description": "Himnos que fortalecen la conexión con lo Divino y la fe interior."
+      }
     ]
   },
   "radio": {
@@ -364,5 +429,100 @@
     "ctaTitle": "Profundiza en mis enseñanzas",
     "ctaDesc": "Accede a cursos, libros, e-books y vivos exclusivos en el Club de Estudios.",
     "ctaButton": "Entrar al Club de Estudios"
+  },
+  "books": {
+    "tratando-fobia-panico-depressao": {
+      "title": "Tratando Fobia, Pánico y Depresión con Terapia de Regresión – 3ª Ed.",
+      "synopsis": "Este libro busca mostrar a las personas que sufren estos malestares que es posible mejorar mucho e incluso curarse, pero para ello es necesario encontrar las situaciones que los originaron, lo cual, en la inmensa mayoría de los casos, está en situaciones traumáticas de otras encarnaciones a las que aún hoy permanecen sintonizadas.\n\nEn este libro, el Dr. Mauro —médico, fundador y patrono de la Escuela de Psicoterapia Reencarnacionista— presenta primero la visión tradicional, no reencarnacionista, de estos malestares, y luego la visión reencarnacionista. La primera limitada a la vida actual y viéndonos como si fuésemos nuestro cerebro; la segunda viéndonos como un ser energético, materializado en un cuerpo aparentemente físico y multidimensional.\n\nIncluye también casos de Investigación del Inconsciente (\"Regresión\") de personas con estas resonancias, que muestran el origen de los síntomas de las Fobias, del Pánico y de la Depresión en sus encarnaciones pasadas, ocultos dentro de su Inconsciente. Mediante el acceso y el recuerdo hasta que todo ha pasado y se sienten bien, se promueve el desligamiento, obteniendo así grandes mejorías y muchas curaciones."
+    },
+    "evoluir-espiritualmente-mundo-de-drogas": {
+      "title": "Cómo Evolucionar Espiritualmente en un Mundo de Drogas",
+      "synopsis": "En este libro, el Dr. Mauro —médico, fundador y patrono de la Escuela de Psicoterapia Reencarnacionista— aborda todos los tipos de drogas que asolan a la humanidad, incluida la droga del Sistema en el que estamos inmersos, responsable de esta verdadera epidemia de drogas que, al mismo tiempo que crea y estimula su uso, finge combatirla.\n\nEstamos en un ciclo reencarnatorio en este planeta, distante del Núcleo Central del Universo, con una finalidad: aprender lo que son las inferioridades aquí existentes y, liberándonos de ellas, regresar al estado de pureza en que estábamos antes de llegar aquí.\n\nEntre esas inferioridades, personas malvadas crearon las llamadas drogas, hipócritamente divididas en 2 clases: las lícitas, que enriquecen a las mafias oficiales, y las ilícitas, que enriquecen a las mafias marginales.\n\nEste libro iba a llamarse \"Cómo evolucionar espiritualmente en una droga de mundo\"; la editorial le pidió cambiar de lugar la palabra \"droga\" en el título. Hasta hoy el autor no sabe si acertó al aceptar ese pedido."
+    },
+    "fascinante-vida-de-mirta-kassov": {
+      "title": "La Fascinante Vida de Mirta Kassov: Las Lecciones y Aprendizajes de un Terapeuta de Regresión",
+      "synopsis": "– Buenas tardes, ¿es usted el Dr. Mirta Kassov?\n– Sí, señora.\n– ¿Es usted quien trabaja con regresión?\n– Yo mismo.\n– ¿Puedo subir? Necesito hablar con usted, saber si puede ayudarme; tengo una fobia y dicen que no tiene cura, que debo acostumbrarme, tomar medicamentos, hacer desensibilización, exponerme, pero yo…\n– Sí, lo sé, entre, la estaba esperando.\n– ¿Me estaba esperando? ¿Cómo sabía que vendría?\n– ¿Subimos?\n\nEsta escena ocurrió después de que Carolina pasara todo el día buscando a un tal Dr. Mirta, un terapeuta de regresión cuya dirección nadie sabía con exactitud; le dijeron que era más o menos en cierto barrio, y allí fue.\n\nAsí comienza este libro del Dr. Mauro Kwitko, que por coincidencia comparte las mismas iniciales que el Dr. Mirta Kassov."
+    },
+    "20-casos-de-regressao": {
+      "title": "20 Casos de Regresión (7ª Ed.)",
+      "synopsis": "Veinte historias reales de personas que encontraron, en sus vidas pasadas, la explicación y la liberación de síntomas como Fobias, Síndrome del Pánico, Depresión severa, baja autoestima, timidez, miedo al rechazo, sentimiento de abandono, sensación de soledad, ideas de persecución, migraña, fibromialgia y otros males. Relatos de sus pasos por el Umbral, vivencias en el Plano Astral, encuentros con Guías Espirituales y familiares desencarnados, el regreso a la Tierra, el período intrauterino, etc. Un libro revolucionario y esclarecedor que nos muestra cómo enfrentar con mucha más responsabilidad y entendimiento esta jornada terrena, dándonos la oportunidad de cumplir nuestras verdaderas misiones pre-reencarnatorias."
+    },
+    "terapia-de-regressao-perguntas-e-respostas": {
+      "title": "Terapia de Regresión: Preguntas y Respuestas",
+      "synopsis": "Esta nueva edición de \"Terapia de Regresión: preguntas y respuestas\", tras el gran éxito de las anteriores, llega totalmente reformulada, actualizada y ampliada, con nuevas preguntas, nuevas respuestas y nuevos capítulos.\n\nEn este libro, el Dr. Mauro enseña qué es la Terapia de Regresión, advierte sobre los cuidados necesarios al optar por esta Terapia, cuáles son sus indicaciones y contraindicaciones, sus riesgos físicos, psicológicos y kármicos, el temor a \"quedarse allí\", quiénes fueron los pioneros, cuáles son las principales Escuelas en Brasil y en el exterior, cómo es posible conciliar la Regresión con la Ley del Olvido, y mucho más.\n\nPara quienes desean entender mejor qué significa recordar vidas pasadas, para qué hacerlo, en qué pueden beneficiarse y qué profesional elegir para someterse a un procedimiento tan delicado, este libro es una guía hecha para eso.\n\nY para los profesionales de la salud que desean conocer la historia de esta Terapia que va más allá de la Genética y desnuda nuestro Inconsciente —trabajo iniciado por Freud, Jung y continuado por varias Escuelas más contemporáneas— este libro puede abrir nuevos horizontes conscientes y profesionales."
+    },
+    "terapia-da-reforma-intima": {
+      "title": "La Terapia de la Reforma Íntima",
+      "synopsis": "Este es un libro fundamental de la Escuela de Psicoterapia Reencarnacionista, la mayor revolución en la historia de la Psicología desde Freud, por incorporar nuestras encarnaciones anteriores al marco diagnóstico, psicoterapéutico y terapéutico de las enfermedades crónicas, ya sean físicas, emocionales o mentales.\n\nEsta nueva visión es creación de un grupo de Seres Espirituales del Plano Astral y viene siendo transmitida al Dr. Mauro desde 1996. Es la misma Terapia utilizada en el Período Intervidas, con la diferencia de que la gran \"Pantalla\" aquí es mental y no holográfica, por ahora. Esta Pantalla mental es la Investigación del Inconsciente (\"Regresión\"), ética y respetuosa de la Ley del Olvido.\n\nLa Reencarnación fue retirada de la memoria de las personas del lado occidental de nuestro planeta por una decisión del II Concilio de Constantinopla en 553 d.C., convocado únicamente para decretar que la Reencarnación no existe. Debido a ello, se formaron la Filosofía, la Medicina (incluida la Psiquiatría) y la Psicología oficiales como no reencarnacionistas; es decir, sin percibirlo, siguieron ese dogma religioso."
+    },
+    "jovens-guerreiros-guerreiras-da-luz": {
+      "title": "Jóvenes Guerreros y Guerreras de la Luz",
+      "synopsis": "La finalidad de este libro es llevar un Mensaje a los jóvenes para que recuerden quiénes son, para qué reencarnaron, qué vinieron a hacer aquí en la Tierra y cómo liberarse del poder del Sistema que busca impedirles cumplir su Misión: crear una nueva Era para la humanidad.\n\nLos jóvenes, en gran parte, son Espíritus que vinieron a traer más Luz, Paz, Armonía, Solidaridad y Fraternidad a este planeta. Pero para concretar este objetivo espiritual necesitan recordarlo y liberarse de la influencia que un Sistema basado únicamente en el lucro ejerce sobre ellos.\n\nEl Mensaje de este libro es una advertencia a estos Jóvenes Emisarios de la Luz acerca de las tácticas perversas utilizadas por el Sistema para dominar su mente y ponerlos a su servicio. Deben estar atentos a lo que se les coloca en la cabeza desde muy pequeños, cuidando de no ser engañados con lo \"normal de las cosas\" y con frases como \"ser joven es…\"."
+    }
+  },
+  "articleTitles": {
+    "transtorno-do-espectro-autista": "Trastorno del Espectro Autista",
+    "beneficios-contraindicacoes-da-regressao": "Beneficios y Contraindicaciones de la Regresión",
+    "investigacao-do-inconsciente-em-criancas": "Investigación del Inconsciente en Niños",
+    "mensagem-aos-espiritas": "Mensaje a los Espíritas",
+    "o-livro-dos-espiritos": "El Libro de los Espíritus",
+    "a-etica-da-investigacao-do-inconsciente": "La Ética de la Investigación del Inconsciente",
+    "mensagem-aos-psicologos-e-psiquiatras": "Mensaje a psicólogos y psiquiatras",
+    "o-tratamento": "El Tratamiento",
+    "por-que-a-psicologia-e-a-psiquiatria-nao-lidam-com-a-reencarnacao": "¿Por qué la Psicología y la Psiquiatría no se ocupan de la Reencarnación?",
+    "psicoterapia-para-quem-ouve-vozes": "Psicoterapia para quienes oyen voces y sus familiares",
+    "a-verdadeira-e-a-falsa-rebeldia-jovem": "La verdadera y la falsa rebeldía juvenil",
+    "freud-alem-da-vida": "Freud más allá de la vida",
+    "visao-espiritual-fobias-panico-depressao-dores-cronicas": "Una visión espiritual de las fobias, el trastorno de pánico, la depresión severa, los dolores crónicos, etc.",
+    "depressao": "Depresión",
+    "fibromialgia": "Fibromialgia",
+    "transtorno-do-panico": "Trastorno de Pánico",
+    "jovens-guerreiros-da-luz-e-a-cannabis": "Los jóvenes Guerreros y Guerreras de la Luz y la Cannabis",
+    "fobias": "Fobias"
+  },
+  "articleExcerpts": {
+    "transtorno-do-espectro-autista": "Una reflexión pre-genética sobre el TEA: causas en vidas pasadas, la \"armadura energética\" del Espíritu y los tres aspectos del tratamiento.",
+    "beneficios-contraindicacoes-da-regressao": "Los beneficios de toma de conciencia y desligamiento de la Investigación del Inconsciente — y los casos en que está contraindicada.",
+    "investigacao-do-inconsciente-em-criancas": "Cómo puede realizarse el procedimiento en beneficio de los niños, presencialmente o a distancia, con apoyo de los Mentores Espirituales.",
+    "mensagem-aos-espiritas": "Un mensaje dirigido a los espíritas sobre el reencuentro entre Ciencia, Psicología y Reencarnación en nuestro tiempo.",
+    "o-livro-dos-espiritos": "Reflexiones sobre la obra de Allan Kardec y su importancia para una visión reencarnacionista de la existencia.",
+    "a-etica-da-investigacao-do-inconsciente": "Los principios éticos que orientan la Regresión respetando la Ley del Olvido y a los Mentores Espirituales de cada persona.",
+    "mensagem-aos-psicologos-e-psiquiatras": "Una invitación a las nuevas generaciones de profesionales de la salud mental para integrar la Reencarnación a la clínica.",
+    "o-tratamento": "Qué implica el tratamiento en la Psicoterapia Reencarnacionista y cómo se diferencia de los enfoques tradicionales.",
+    "por-que-a-psicologia-e-a-psiquiatria-nao-lidam-com-a-reencarnacao": "Las raíces históricas y dogmáticas que mantienen alejadas a la Psicología y a la Psiquiatría oficiales de la Reencarnación.",
+    "psicoterapia-para-quem-ouve-vozes": "Cómo la Psicoterapia Reencarnacionista comprende y acoge a las personas que oyen voces y orienta a sus familiares.",
+    "a-verdadeira-e-a-falsa-rebeldia-jovem": "La diferencia entre la rebeldía que sirve al Sistema y la que refleja la misión espiritual de los jóvenes.",
+    "freud-alem-da-vida": "Una reflexión sobre la continuidad de la obra de Freud a la luz de la Reencarnación y de la investigación del Inconsciente.",
+    "visao-espiritual-fobias-panico-depressao-dores-cronicas": "Una lectura espiritual y reencarnacionista de las fobias, el pánico, la depresión severa y los dolores crónicos.",
+    "depressao": "Qué es la depresión bajo la mirada reencarnacionista y cómo acceder a sus causas más profundas.",
+    "fibromialgia": "El origen espiritual y energético de la fibromialgia y los caminos terapéuticos para su alivio.",
+    "transtorno-do-panico": "Cómo el trastorno de pánico se conecta con vivencias traumáticas de otras vidas, aún activas en el Inconsciente.",
+    "jovens-guerreiros-da-luz-e-a-cannabis": "Un mensaje a los jóvenes emisarios de la Luz sobre los efectos espirituales del uso del Cannabis.",
+    "fobias": "Cómo las fobias revelan resonancias de vidas pasadas y cómo pueden tratarse mediante la Investigación del Inconsciente."
+  },
+  "bookReviews": {
+    "title": "Comentarios de lectores",
+    "subtitle": "¿Ya leíste este libro? Comparte tu opinión.",
+    "countOne": "comentario",
+    "countMany": "comentarios",
+    "nameLabel": "Tu nombre",
+    "namePlaceholder": "Cómo deseas aparecer",
+    "ratingLabel": "Tu calificación",
+    "commentLabel": "Tu comentario",
+    "commentPlaceholder": "Cuéntanos lo que esta lectura significó para ti...",
+    "submit": "Enviar comentario",
+    "empty": "Sé el primero en comentar este libro.",
+    "errorName": "Indica tu nombre.",
+    "errorNameLong": "El nombre es demasiado largo.",
+    "errorComment": "Escribe un comentario.",
+    "errorCommentLong": "El comentario es demasiado largo.",
+    "errorRating": "Asigna una calificación.",
+    "errorSubmit": "No pudimos enviar tu comentario. Inténtalo de nuevo.",
+    "success": "¡Comentario enviado. Gracias por tu lectura!",
+    "starsAria": "estrella(s)"
+  },
+  "synopsis": {
+    "more": "Leer más",
+    "less": "Leer menos"
   }
 }

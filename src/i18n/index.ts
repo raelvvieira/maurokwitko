@@ -29,9 +29,9 @@ i18n
     fallbackLng: 'pt-BR',
     supportedLngs: ['pt-BR', 'pt', 'en', 'es'],
     nonExplicitSupportedLngs: true,
-    load: 'all',
+    partialBundledLanguages: true,
     interpolation: { escapeValue: false },
-    react: { useSuspense: false },
+    react: { useSuspense: false, bindI18n: 'languageChanged loaded' },
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage'],

@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
 import { Play, ExternalLink, ListMusic } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useAlbums } from '@/hooks/useSupabaseData';
 
 type PlaylistMeta = {
-  matchTitle: string; // matches album title in DB (case-insensitive)
-  title: string;
-  description: string;
+  matchTitle: string; // matches album title in DB (case-insensitive, always pt)
+  index: number; // index into i18n hinos.playlists array
   cover: string;
   playlistId: string;
 };
@@ -15,22 +15,19 @@ type PlaylistMeta = {
 const PLAYLISTS: PlaylistMeta[] = [
   {
     matchTitle: 'hinos de paz',
-    title: 'Hinos de Paz',
-    description: 'Composições suaves para meditação e tranquilidade interior.',
+    index: 0,
     cover: 'https://i.ibb.co/v6fpPVzb/HINOS-DE-PAZ-2.png',
     playlistId: 'PLG7GxMRJ1lg1lkiGi6HLMAJhCq7NLfk7X',
   },
   {
     matchTitle: 'hinos de amor',
-    title: 'Hinos de Amor',
-    description: 'Cânticos que celebram o amor universal e a fraternidade.',
+    index: 1,
     cover: 'https://i.ibb.co/q3GHxr4p/HINOS-DE-AMOR-2.png',
     playlistId: 'PLG7GxMRJ1lg2Pn2UzVXanS5k7_8beIBVy',
   },
   {
     matchTitle: 'hinos de fé',
-    title: 'Hinos de Fé',
-    description: 'Hinos que fortalecem a conexão com o Divino e a fé interior.',
+    index: 2,
     cover: 'https://i.ibb.co/TDs4sdxQ/HINOS-DE-F-2-2.png',
     playlistId: 'PLG7GxMRJ1lg26AzCi0oOcrNZVir0SOc1j',
   },

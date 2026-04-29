@@ -249,16 +249,16 @@ const Home = () => {
           >
             <div className="relative space-y-6">
               <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold tracking-wider uppercase">
-                Inscrições Abertas
+                {t('home.formacao.badge')}
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-                Formação em <span className="italic font-serif text-primary">Psicoterapia Reencarnacionista</span>
+                {t('home.formacao.titleStart')}<span className="italic font-serif text-primary">{t('home.formacao.titleAccent')}</span>
               </h2>
               <p className="text-muted-foreground leading-relaxed max-w-md">
-                Uma nova visão psicológica baseada na Reencarnação, para que possamos realmente aproveitar a encarnação. Formação completa para terapeutas integrarem a Terapia de Regressão à prática clínica.
+                {t('home.formacao.desc')}
               </p>
               <ul className="space-y-3 pt-2">
-                {['Investigação ética do Inconsciente', 'Anatomia Espiritual & Karma', 'Casos Clínicos & Supervisão'].map((item) => (
+                {formacaoItems.map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm text-foreground/80">
                     <span className="mt-0.5 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <Check className="w-3 h-3 text-primary" />
@@ -271,7 +271,7 @@ const Home = () => {
                 onClick={() => navigate('/formacao')}
                 className="inline-flex items-center gap-2 mt-4 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm hover:shadow-md"
               >
-                Conhecer a Formação <ArrowRight className="w-4 h-4" />
+                {t('home.formacao.cta')} <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
@@ -293,10 +293,10 @@ const Home = () => {
           <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl -z-10" />
           <div className="max-w-6xl mx-auto px-5 md:px-6 mb-10">
             <motion.div {...fadeUp}>
-              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">E-books</span>
-              <h3 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Adquira ou acesse gratuitamente no Clube de Estudos</h3>
+              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('home.ebooks.eyebrow')}</span>
+              <h3 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">{t('home.ebooks.title')}</h3>
               <p className="text-muted-foreground mt-3 max-w-xl text-sm md:text-base">
-                Acesse a biblioteca completa de e-books como membro do Clube.
+                {t('home.ebooks.desc')}
               </p>
             </motion.div>
           </div>
@@ -323,7 +323,7 @@ const Home = () => {
                   {...greenButtonAnim}
                   className="mt-2 w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-full bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
                 >
-                  Saiba Mais <ArrowRight className="w-3 h-3" />
+                  {t('common.readMore')} <ArrowRight className="w-3 h-3" />
                 </motion.span>
               </Link>
             )}

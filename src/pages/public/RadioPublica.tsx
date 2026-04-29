@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Radio as RadioIcon, Clock, ExternalLink } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const programs = [
   {
@@ -7,8 +8,8 @@ const programs = [
     cover: 'https://i.ibb.co/rR9yNcSP/paranormal-plus.png',
     link: 'https://share.google/6Cy2SpzzA1ldiRcZI',
     schedule: [
-      { day: 'Segunda', time: '11h' },
-      { day: 'Quarta', time: '23h' },
+      { dayKey: 'Segunda', time: '11h' },
+      { dayKey: 'Quarta', time: '23h' },
     ],
   },
   {
@@ -16,13 +17,14 @@ const programs = [
     cover: 'https://i.ibb.co/qYw9jzGK/soulcast-plus.png',
     link: 'https://share.google/6KqsdxSlcSPjlNROg',
     schedule: [
-      { day: 'Domingo', time: '20h' },
-      { day: 'Terça', time: '15:30' },
+      { dayKey: 'Domingo', time: '20h' },
+      { dayKey: 'Terça', time: '15:30' },
     ],
   },
 ];
 
 const RadioPublica = () => {
+  const { t } = useTranslation();
   return (
     <div className="pt-24 md:pt-32 pb-16 max-w-5xl mx-auto px-5 md:px-6">
       <motion.div
@@ -31,12 +33,12 @@ const RadioPublica = () => {
         transition={{ duration: 0.6 }}
         className="text-center mb-12"
       >
-        <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Programas no ar</span>
+        <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('radio.eyebrow')}</span>
         <h1 className="text-3xl md:text-5xl font-bold tracking-tight mt-3 flex items-center justify-center gap-3">
-          <RadioIcon className="w-8 h-8 md:w-10 md:h-10 text-primary" /> Rádio com Dr. Mauro
+          <RadioIcon className="w-8 h-8 md:w-10 md:h-10 text-primary" /> {t('radio.title')}
         </h1>
         <p className="text-muted-foreground mt-4 max-w-2xl mx-auto leading-relaxed">
-          Acompanhe os programas semanais do Dr. Mauro nessas rádios espiritualistas. Os programas anteriores busque no Menu.
+          {t('radio.desc')}
         </p>
       </motion.div>
 
@@ -54,10 +56,10 @@ const RadioPublica = () => {
               <h2 className="text-lg font-bold mb-3">{program.name}</h2>
               <div className="space-y-2 mb-5">
                 {program.schedule.map((s) => (
-                  <div key={s.day} className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <div key={s.dayKey} className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="w-4 h-4 text-primary" />
                     <span>
-                      {s.day} — <strong className="text-foreground">{s.time}</strong>
+                      {t(`radio.days.${s.dayKey}`)} — <strong className="text-foreground">{s.time}</strong>
                     </span>
                   </div>
                 ))}
@@ -68,7 +70,7 @@ const RadioPublica = () => {
                 rel="noopener noreferrer"
                 className="mt-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
               >
-                Escutar Agora <ExternalLink className="w-4 h-4" />
+                {t('radio.listen')} <ExternalLink className="w-4 h-4" />
               </a>
             </div>
           </motion.div>

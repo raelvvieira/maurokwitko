@@ -1,11 +1,13 @@
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { ARTICLES } from '@/data/articles';
 import { getArticleImage } from '@/data/articleImages';
 
 const ArtigoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { t } = useTranslation();
   const article = ARTICLES.find((a) => a.slug === slug);
 
   if (!article) return <Navigate to="/artigos" replace />;
@@ -18,7 +20,7 @@ const ArtigoDetalhe = () => {
             to="/artigos"
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors mb-8"
           >
-            <ArrowLeft className="w-4 h-4" /> Voltar para Artigos
+            <ArrowLeft className="w-4 h-4" /> {t('artigoDetalhe.back')}
           </Link>
 
           <motion.header
@@ -28,12 +30,12 @@ const ArtigoDetalhe = () => {
             className="mb-10 md:mb-14"
           >
             <span className="inline-block text-[11px] font-bold tracking-[0.2em] text-primary uppercase mb-4">
-              Artigo
+              {t('artigoDetalhe.label')}
             </span>
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
               {article.title}
             </h1>
-            <p className="mt-5 text-sm font-medium text-muted-foreground">por Dr. Mauro Kwitko</p>
+            <p className="mt-5 text-sm font-medium text-muted-foreground">{t('artigoDetalhe.by')}</p>
           </motion.header>
 
           <motion.div
@@ -97,16 +99,16 @@ const ArtigoDetalhe = () => {
 
           <div className="mt-16 md:mt-20 rounded-3xl bg-primary/5 border border-primary/20 p-8 md:p-10 text-center">
             <h3 className="text-xl md:text-2xl font-bold tracking-tight">
-              Quer aprofundar seus estudos?
+              {t('artigoDetalhe.ctaTitle')}
             </h3>
             <p className="mt-3 text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
-              Faça parte do Clube de Estudos do Dr. Mauro Kwitko e tenha acesso à biblioteca completa de e-books, cursos, hinos e materiais exclusivos.
+              {t('artigoDetalhe.ctaDesc')}
             </p>
             <Link
               to="/login"
               className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
             >
-              Conhecer o Clube de Estudos <ArrowRight className="w-4 h-4" />
+              {t('artigoDetalhe.ctaButton')} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

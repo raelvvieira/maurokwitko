@@ -1,10 +1,11 @@
 import { Instagram, Youtube, Facebook, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo-mauro-kwitko.png';
+import { getArrayTranslation } from '@/i18n';
 
 const PublicFooter = () => {
   const { t } = useTranslation();
-  const schedule = t('footer.schedule', { returnObjects: true }) as string[];
+  const schedule = getArrayTranslation<string>(t('footer.schedule', { returnObjects: true }));
 
   return (
     <footer className="bg-[hsl(210_25%_12%)] text-white/80">

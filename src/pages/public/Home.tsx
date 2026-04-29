@@ -418,10 +418,10 @@ const Home = () => {
         <motion.div {...fadeUp} className="max-w-3xl mx-auto px-5 md:px-6 text-center">
           <Quote className="w-10 h-10 text-primary/40 mx-auto mb-6" />
           <p className="font-serif italic text-2xl md:text-3xl lg:text-4xl leading-snug text-foreground">
-            "Curar não é apenas a ausência de sintomas, mas a presença de sentido encontrado na jornada da alma através do tempo."
+            "{t('home.quote.text')}"
           </p>
           <p className="mt-8 text-xs font-bold tracking-[0.2em] text-muted-foreground uppercase">
-            — Dr. Mauro Kwitko
+            {t('home.quote.author')}
           </p>
         </motion.div>
       </section>
@@ -431,11 +431,11 @@ const Home = () => {
         <div className="max-w-6xl mx-auto px-5 md:px-6">
           <motion.div {...fadeUp} className="flex items-end justify-between flex-wrap gap-4 mb-10">
             <div>
-              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Reflexões</span>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">Artigos Recentes</h2>
+              <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('home.articles.eyebrow')}</span>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-2">{t('home.articles.title')}</h2>
             </div>
             <Link to="/artigos" className="text-sm font-semibold text-primary hover:underline inline-flex items-center gap-1">
-              Ver todos <ArrowRight className="w-4 h-4" />
+              {t('common.viewAll')} <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
 
@@ -464,7 +464,7 @@ const Home = () => {
                     </h3>
                     <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-2">{art.excerpt}</p>
                     <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:gap-2 transition-all">
-                      Ler artigo <ArrowRight className="w-3.5 h-3.5" />
+                      {t('common.readArticle')} <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </Link>
@@ -477,19 +477,19 @@ const Home = () => {
       {/* CONTATO */}
       <section id="contato" className="py-12 md:py-16 bg-secondary/30 border-t border-border/40">
         <motion.div {...fadeUp} className="max-w-3xl mx-auto px-5 md:px-6 text-center">
-          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">Contato</span>
+          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('home.contact.eyebrow')}</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mt-3 leading-tight">
-            Vamos <span className="italic font-serif text-primary">conversar</span>
+            {t('home.contact.titleStart')}<span className="italic font-serif text-primary">{t('home.contact.titleAccent')}</span>
           </h2>
           <p className="text-muted-foreground mt-5 leading-relaxed text-base md:text-lg">
-            Me envie uma mensagem para que possamos conversar.
+            {t('home.contact.desc')}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
             <a
               href="mailto:contato@maurokwitko.com.br"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
             >
-              <Mail className="w-4 h-4" /> Enviar mensagem
+              <Mail className="w-4 h-4" /> {t('home.contact.email')}
             </a>
             <a
               href="https://wa.me/5551999999999"
@@ -497,7 +497,7 @@ const Home = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-success text-success-foreground text-sm font-semibold hover:bg-success/90 transition-colors"
             >
-              <MessageCircle className="w-4 h-4" /> WhatsApp
+              <MessageCircle className="w-4 h-4" /> {t('home.contact.whatsapp')}
             </a>
           </div>
         </motion.div>

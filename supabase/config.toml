@@ -19,3 +19,5 @@ project_id = "khztwxgobacabfvaeves"
     verify_jwt = false
   [functions.handle-email-suppression]
     verify_jwt = false
+  [functions.translate-article]
+    verify_jwt = true

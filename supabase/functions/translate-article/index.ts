@@ -97,12 +97,14 @@ Deno.serve(async (req) => {
     }
 
     const body = await req.json();
-    const { slug, title_pt, excerpt_pt, body_pt, deleteOverride } = body as {
+    const { slug, title_pt, excerpt_pt, body_pt, deleteOverride, is_custom, image_url } = body as {
       slug?: string;
       title_pt?: string;
       excerpt_pt?: string;
       body_pt?: Block[];
       deleteOverride?: boolean;
+      is_custom?: boolean;
+      image_url?: string | null;
     };
 
     if (!slug || typeof slug !== 'string') return json({ error: 'slug required' }, 400);
@@ -134,7 +136,7 @@ Deno.serve(async (req) => {
     const [title_en, excerpt_en, ...body_en] = enAll;
     const [title_es, excerpt_es, ...body_es] = esAll;
 
-    const { error } = await admin.from('article_overrides').upsert({
+    const upsertPayload: Record<string, unknown> = {
       slug,
       title_pt,
       excerpt_pt: excerpt_pt ?? '',
@@ -147,7 +149,11 @@ Deno.serve(async (req) => {
       body_es,
       updated_by: userData.user?.id,
       updated_at: new Date().toISOString(),
-    });
+    };
+    if (typeof is_custom === 'boolean') upsertPayload.is_custom = is_custom;
+    if (image_url !== undefined) upsertPayload.image_url = image_url;
+
+    const { error } = await admin.from('article_overrides').upsert(upsertPayload);
 
     if (error) return json({ error: error.message }, 500);
     return json({ ok: true });

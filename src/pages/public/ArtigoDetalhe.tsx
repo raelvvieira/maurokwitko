@@ -1,22 +1,40 @@
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Pencil } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 import { ARTICLES } from '@/data/articles';
 import { getArticleImage } from '@/data/articleImages';
 import { getArrayTranslation } from '@/i18n';
+import { useArticleOverrides, applyOverride, pickLang } from '@/hooks/useArticleOverrides';
+import { useAuth } from '@/hooks/useAuth';
+import ArticleEditorDrawer from '@/components/admin/ArticleEditorDrawer';
 
 const ArtigoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const article = ARTICLES.find((a) => a.slug === slug);
+  const { overrides, refetch } = useArticleOverrides();
+  const { isAdmin } = useAuth();
+  const [editing, setEditing] = useState(false);
 
   if (!article) return <Navigate to="/artigos" replace />;
 
-  const translatedTitle = t(`articleTitles.${article.slug}`, { defaultValue: article.title });
-  const translatedBodyRaw = t(`articleBodies.${article.slug}`, { returnObjects: true, defaultValue: article.body });
-  const translatedBody = getArrayTranslation<string>(translatedBodyRaw);
-  const body = translatedBody.length === article.body.length ? translatedBody : article.body;
+  const lang = pickLang(i18n.language);
+  const ov = overrides.get(article.slug);
+
+  let translatedTitle: string;
+  let body: string[];
+  if (ov) {
+    const v = applyOverride(article, ov, lang);
+    translatedTitle = v.title;
+    body = v.body;
+  } else {
+    translatedTitle = t(`articleTitles.${article.slug}`, { defaultValue: article.title });
+    const translatedBodyRaw = t(`articleBodies.${article.slug}`, { returnObjects: true, defaultValue: article.body });
+    const translatedBody = getArrayTranslation<string>(translatedBodyRaw);
+    body = translatedBody.length === article.body.length ? translatedBody : article.body;
+  }
 
   return (
     <div className="bg-background">

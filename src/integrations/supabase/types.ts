@@ -70,6 +70,51 @@ export type Database = {
         }
         Relationships: []
       }
+      article_overrides: {
+        Row: {
+          body_en: Json | null
+          body_es: Json | null
+          body_pt: Json
+          excerpt_en: string | null
+          excerpt_es: string | null
+          excerpt_pt: string
+          slug: string
+          title_en: string | null
+          title_es: string | null
+          title_pt: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          body_en?: Json | null
+          body_es?: Json | null
+          body_pt?: Json
+          excerpt_en?: string | null
+          excerpt_es?: string | null
+          excerpt_pt?: string
+          slug: string
+          title_en?: string | null
+          title_es?: string | null
+          title_pt: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          body_en?: Json | null
+          body_es?: Json | null
+          body_pt?: Json
+          excerpt_en?: string | null
+          excerpt_es?: string | null
+          excerpt_pt?: string
+          slug?: string
+          title_en?: string | null
+          title_es?: string | null
+          title_pt?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author: string

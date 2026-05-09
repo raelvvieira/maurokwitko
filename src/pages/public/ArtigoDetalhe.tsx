@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Pencil } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import { ARTICLES } from '@/data/articles';
+
 import { getArticleImage } from '@/data/articleImages';
 import { getArrayTranslation } from '@/i18n';
 import { useArticleOverrides, applyOverride, pickLang, findArticle } from '@/hooks/useArticleOverrides';

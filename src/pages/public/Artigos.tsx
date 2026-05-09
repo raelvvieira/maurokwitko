@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Pencil } from 'lucide-react';
+import { ArrowRight, Pencil, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import { ARTICLES } from '@/data/articles';
+import { useMemo, useState } from 'react';
+import { ARTICLES, type Article } from '@/data/articles';
 import { getArticleImage } from '@/data/articleImages';
 import { useArticleOverrides, applyOverride, pickLang } from '@/hooks/useArticleOverrides';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,11 +12,17 @@ import ArticleEditorDrawer from '@/components/admin/ArticleEditorDrawer';
 const Artigos = () => {
   const { t, i18n } = useTranslation();
   const lang = pickLang(i18n.language);
-  const { overrides, refetch } = useArticleOverrides();
+  const { overrides, refetch, customArticles } = useArticleOverrides();
   const { isAdmin } = useAuth();
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
+  const [creating, setCreating] = useState(false);
 
-  const editingArticle = ARTICLES.find((a) => a.slug === editingSlug);
+  const allArticles: Article[] = useMemo(
+    () => [...customArticles, ...ARTICLES],
+    [customArticles],
+  );
+
+  const editingArticle = allArticles.find((a) => a.slug === editingSlug);
 
   return (
     <div className="bg-background">
@@ -32,30 +38,38 @@ const Artigos = () => {
             {t('artigos.desc')}
           </p>
           {isAdmin && (
-            <p className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold">
-              <Pencil className="w-3.5 h-3.5" /> Modo admin: clique em "Editar" em qualquer artigo
-            </p>
+            <div className="mt-5 flex flex-wrap justify-center gap-3">
+              <button
+                onClick={() => setCreating(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold shadow hover:bg-primary/90"
+              >
+                <Plus className="w-4 h-4" /> Adicionar artigo
+              </button>
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold">
+                <Pencil className="w-3.5 h-3.5" /> Modo admin
+              </span>
+            </div>
           )}
         </div>
       </section>
 
       <section className="pb-24 md:pb-32 px-5 md:px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {ARTICLES.map((art, i) => {
+          {allArticles.map((art, i) => {
             const ov = overrides.get(art.slug);
-            // For PT i18n fallback, use the json titles/excerpts when no override
             const i18nTitle = t(`articleTitles.${art.slug}`, { defaultValue: art.title });
             const i18nExcerpt = t(`articleExcerpts.${art.slug}`, { defaultValue: art.excerpt });
             const view = ov
               ? applyOverride(art, ov, lang)
               : { title: i18nTitle, excerpt: i18nExcerpt, body: art.body };
+            const cover = ov?.image_url || getArticleImage(art.slug);
             return (
               <motion.article
                 key={art.slug}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
+                transition={{ duration: 0.5, delay: Math.min(i * 0.05, 0.4) }}
                 className="group relative rounded-3xl overflow-hidden bg-secondary/40 border border-border/60 hover:border-primary/40 hover:shadow-xl transition-all flex flex-col"
               >
                 {isAdmin && (
@@ -68,7 +82,7 @@ const Artigos = () => {
                 )}
                 <div className="aspect-[16/10] overflow-hidden bg-muted">
                   <img
-                    src={getArticleImage(art.slug)}
+                    src={cover}
                     alt={view.title}
                     loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -98,11 +112,18 @@ const Artigos = () => {
         <ArticleEditorDrawer
           open={!!editingSlug}
           onClose={() => setEditingSlug(null)}
+          mode="edit"
           article={editingArticle}
           override={overrides.get(editingArticle.slug)}
           onSaved={refetch}
         />
       )}
+      <ArticleEditorDrawer
+        open={creating}
+        onClose={() => setCreating(false)}
+        mode="create"
+        onSaved={refetch}
+      />
     </div>
   );
 };

@@ -1,33 +1,61 @@
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Pencil } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 import { ARTICLES } from '@/data/articles';
 import { getArticleImage } from '@/data/articleImages';
 import { getArrayTranslation } from '@/i18n';
+import { useArticleOverrides, applyOverride, pickLang } from '@/hooks/useArticleOverrides';
+import { useAuth } from '@/hooks/useAuth';
+import ArticleEditorDrawer from '@/components/admin/ArticleEditorDrawer';
 
 const ArtigoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const article = ARTICLES.find((a) => a.slug === slug);
+  const { overrides, refetch } = useArticleOverrides();
+  const { isAdmin } = useAuth();
+  const [editing, setEditing] = useState(false);
 
   if (!article) return <Navigate to="/artigos" replace />;
 
-  const translatedTitle = t(`articleTitles.${article.slug}`, { defaultValue: article.title });
-  const translatedBodyRaw = t(`articleBodies.${article.slug}`, { returnObjects: true, defaultValue: article.body });
-  const translatedBody = getArrayTranslation<string>(translatedBodyRaw);
-  const body = translatedBody.length === article.body.length ? translatedBody : article.body;
+  const lang = pickLang(i18n.language);
+  const ov = overrides.get(article.slug);
+
+  let translatedTitle: string;
+  let body: string[];
+  if (ov) {
+    const v = applyOverride(article, ov, lang);
+    translatedTitle = v.title;
+    body = v.body;
+  } else {
+    translatedTitle = t(`articleTitles.${article.slug}`, { defaultValue: article.title });
+    const translatedBodyRaw = t(`articleBodies.${article.slug}`, { returnObjects: true, defaultValue: article.body });
+    const translatedBody = getArrayTranslation<string>(translatedBodyRaw);
+    body = translatedBody.length === article.body.length ? translatedBody : article.body;
+  }
 
   return (
     <div className="bg-background">
       <section className="pt-28 md:pt-36 pb-16 md:pb-24 px-5 md:px-6">
         <div className="max-w-3xl mx-auto">
-          <Link
-            to="/artigos"
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors mb-8"
-          >
-            <ArrowLeft className="w-4 h-4" /> {t('artigoDetalhe.back')}
-          </Link>
+          <div className="flex items-center justify-between mb-8">
+            <Link
+              to="/artigos"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" /> {t('artigoDetalhe.back')}
+            </Link>
+            {isAdmin && (
+              <button
+                onClick={() => setEditing(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold shadow hover:bg-primary/90"
+              >
+                <Pencil className="w-3.5 h-3.5" /> Editar artigo
+              </button>
+            )}
+          </div>
 
           <motion.header
             initial={{ opacity: 0, y: 16 }}
@@ -119,6 +147,13 @@ const ArtigoDetalhe = () => {
           </div>
         </div>
       </section>
+      <ArticleEditorDrawer
+        open={editing}
+        onClose={() => setEditing(false)}
+        article={article}
+        override={ov}
+        onSaved={refetch}
+      />
     </div>
   );
 };

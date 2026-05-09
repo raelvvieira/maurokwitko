@@ -118,7 +118,7 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
                       <span className="inline-block text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
                         {slide.eyebrow}
                       </span>
-                      <h1 className="font-bold tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.05] break-words">
+                      <h1 className="font-bold tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.05] [overflow-wrap:normal] [word-break:normal] [hyphens:none]">
                         {slide.titleStart}
                         <span className="italic font-serif text-primary">{slide.titleAccent}</span>
                         {slide.titleEnd}

@@ -84,7 +84,7 @@ const ArtigoDetalhe = () => {
             className="aspect-[21/9] rounded-2xl overflow-hidden bg-muted ring-1 ring-border/40 shadow-md mb-10 md:mb-14"
           >
             <img
-              src={getArticleImage(article.slug)}
+              src={cover}
               alt={translatedTitle}
               className="w-full h-full object-cover"
             />

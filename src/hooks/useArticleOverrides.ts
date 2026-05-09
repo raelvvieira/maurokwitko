@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import type { Article } from '@/data/articles';
+import { ARTICLES, type Article } from '@/data/articles';
 
 export type ArticleOverride = {
   slug: string;
@@ -13,6 +13,8 @@ export type ArticleOverride = {
   title_es: string | null;
   excerpt_es: string | null;
   body_es: string[] | null;
+  is_custom: boolean;
+  image_url: string | null;
   updated_at: string;
 };
 
@@ -21,7 +23,10 @@ export function useArticleOverrides() {
   const [loading, setLoading] = useState(true);
 
   const refetch = useCallback(async () => {
-    const { data } = await supabase.from('article_overrides').select('*');
+    const { data } = await supabase
+      .from('article_overrides')
+      .select('*')
+      .order('updated_at', { ascending: false });
     if (data) {
       const m = new Map<string, ArticleOverride>();
       for (const row of data as any[]) m.set(row.slug, row as ArticleOverride);
@@ -34,7 +39,23 @@ export function useArticleOverrides() {
     refetch();
   }, [refetch]);
 
-  return { overrides, loading, refetch };
+  // List of custom articles (not in static ARTICLES) as Article-like objects
+  const customArticles: Article[] = useMemo(() => {
+    const list: Article[] = [];
+    for (const ov of overrides.values()) {
+      if (ov.is_custom) {
+        list.push({
+          slug: ov.slug,
+          title: ov.title_pt,
+          excerpt: ov.excerpt_pt,
+          body: ov.body_pt ?? [],
+        });
+      }
+    }
+    return list;
+  }, [overrides]);
+
+  return { overrides, loading, refetch, customArticles };
 }
 
 export function pickLang(language: string): 'pt' | 'en' | 'es' {
@@ -66,4 +87,20 @@ export function applyOverride(
     excerpt: e || override.excerpt_pt || article.excerpt,
     body: Array.isArray(b) && b.length > 0 ? b : (override.body_pt?.length ? override.body_pt : article.body),
   };
+}
+
+export function findArticle(slug: string, customArticles: Article[]): Article | undefined {
+  return ARTICLES.find((a) => a.slug === slug) || customArticles.find((a) => a.slug === slug);
+}
+
+export function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 80);
 }

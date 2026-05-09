@@ -40,12 +40,22 @@ const ArtigoDetalhe = () => {
     <div className="bg-background">
       <section className="pt-28 md:pt-36 pb-16 md:pb-24 px-5 md:px-6">
         <div className="max-w-3xl mx-auto">
-          <Link
-            to="/artigos"
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors mb-8"
-          >
-            <ArrowLeft className="w-4 h-4" /> {t('artigoDetalhe.back')}
-          </Link>
+          <div className="flex items-center justify-between mb-8">
+            <Link
+              to="/artigos"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" /> {t('artigoDetalhe.back')}
+            </Link>
+            {isAdmin && (
+              <button
+                onClick={() => setEditing(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold shadow hover:bg-primary/90"
+              >
+                <Pencil className="w-3.5 h-3.5" /> Editar artigo
+              </button>
+            )}
+          </div>
 
           <motion.header
             initial={{ opacity: 0, y: 16 }}
@@ -137,6 +147,13 @@ const ArtigoDetalhe = () => {
           </div>
         </div>
       </section>
+      <ArticleEditorDrawer
+        open={editing}
+        onClose={() => setEditing(false)}
+        article={article}
+        override={ov}
+        onSaved={refetch}
+      />
     </div>
   );
 };

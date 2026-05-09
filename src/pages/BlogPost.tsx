@@ -2,17 +2,21 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { ARTICLES } from '@/data/articles';
 import { getArticleImage } from '@/data/articleImages';
 import { getArrayTranslation } from '@/i18n';
+import { useArticleOverrides, applyOverride, pickLang, findArticle } from '@/hooks/useArticleOverrides';
 
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { t } = useTranslation();
-  const article = ARTICLES.find((a) => a.slug === id);
+  const { t, i18n } = useTranslation();
+  const lang = pickLang(i18n.language);
+  const { overrides, customArticles, loading } = useArticleOverrides();
+
+  const article = id ? findArticle(id, customArticles) : undefined;
 
   if (!article) {
+    if (loading) return <div className="text-center text-sm text-muted-foreground py-12">…</div>;
     return (
       <div className="max-w-3xl mx-auto space-y-6">
         <button onClick={() => navigate('/app/blog')} className="flex items-center gap-2 text-sm text-primary hover:underline">
@@ -23,10 +27,21 @@ const BlogPost = () => {
     );
   }
 
-  const translatedTitle = t(`articleTitles.${article.slug}`, { defaultValue: article.title });
-  const translatedBodyRaw = t(`articleBodies.${article.slug}`, { returnObjects: true, defaultValue: article.body });
-  const translatedBody = getArrayTranslation<string>(translatedBodyRaw);
-  const body = translatedBody.length === article.body.length ? translatedBody : article.body;
+  const ov = overrides.get(article.slug);
+  const cover = ov?.image_url || getArticleImage(article.slug);
+
+  let translatedTitle: string;
+  let body: string[];
+  if (ov) {
+    const v = applyOverride(article, ov, lang);
+    translatedTitle = v.title;
+    body = v.body;
+  } else {
+    translatedTitle = t(`articleTitles.${article.slug}`, { defaultValue: article.title });
+    const translatedBodyRaw = t(`articleBodies.${article.slug}`, { returnObjects: true, defaultValue: article.body });
+    const translatedBody = getArrayTranslation<string>(translatedBodyRaw);
+    body = translatedBody.length === article.body.length ? translatedBody : article.body;
+  }
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -59,7 +74,7 @@ const BlogPost = () => {
         className="aspect-[21/9] rounded-2xl overflow-hidden bg-muted ring-1 ring-border/40 shadow-md mb-10"
       >
         <img
-          src={getArticleImage(article.slug)}
+          src={cover}
           alt={translatedTitle}
           className="w-full h-full object-cover"
         />

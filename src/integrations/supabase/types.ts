@@ -78,6 +78,8 @@ export type Database = {
           excerpt_en: string | null
           excerpt_es: string | null
           excerpt_pt: string
+          image_url: string | null
+          is_custom: boolean
           slug: string
           title_en: string | null
           title_es: string | null
@@ -92,6 +94,8 @@ export type Database = {
           excerpt_en?: string | null
           excerpt_es?: string | null
           excerpt_pt?: string
+          image_url?: string | null
+          is_custom?: boolean
           slug: string
           title_en?: string | null
           title_es?: string | null
@@ -106,6 +110,8 @@ export type Database = {
           excerpt_en?: string | null
           excerpt_es?: string | null
           excerpt_pt?: string
+          image_url?: string | null
+          is_custom?: boolean
           slug?: string
           title_en?: string | null
           title_es?: string | null

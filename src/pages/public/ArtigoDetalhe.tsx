@@ -3,25 +3,30 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Pencil } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import { ARTICLES } from '@/data/articles';
+
 import { getArticleImage } from '@/data/articleImages';
 import { getArrayTranslation } from '@/i18n';
-import { useArticleOverrides, applyOverride, pickLang } from '@/hooks/useArticleOverrides';
+import { useArticleOverrides, applyOverride, pickLang, findArticle } from '@/hooks/useArticleOverrides';
 import { useAuth } from '@/hooks/useAuth';
 import ArticleEditorDrawer from '@/components/admin/ArticleEditorDrawer';
 
 const ArtigoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();
   const { t, i18n } = useTranslation();
-  const article = ARTICLES.find((a) => a.slug === slug);
-  const { overrides, refetch } = useArticleOverrides();
+  const { overrides, refetch, customArticles, loading } = useArticleOverrides();
   const { isAdmin } = useAuth();
   const [editing, setEditing] = useState(false);
 
-  if (!article) return <Navigate to="/artigos" replace />;
+  const article = slug ? findArticle(slug, customArticles) : undefined;
+
+  if (!article) {
+    if (loading) return <div className="pt-32 text-center text-sm text-muted-foreground">…</div>;
+    return <Navigate to="/artigos" replace />;
+  }
 
   const lang = pickLang(i18n.language);
   const ov = overrides.get(article.slug);
+  const cover = ov?.image_url || getArticleImage(article.slug);
 
   let translatedTitle: string;
   let body: string[];
@@ -79,7 +84,7 @@ const ArtigoDetalhe = () => {
             className="aspect-[21/9] rounded-2xl overflow-hidden bg-muted ring-1 ring-border/40 shadow-md mb-10 md:mb-14"
           >
             <img
-              src={getArticleImage(article.slug)}
+              src={cover}
               alt={translatedTitle}
               className="w-full h-full object-cover"
             />

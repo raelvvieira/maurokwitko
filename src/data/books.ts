@@ -1,3 +1,5 @@
+import jovensGuerreirosCover from '@/assets/jovens-guerreiros-cover.jpg';
+
 export type Book = {
   slug: string;
   title: string;
@@ -74,8 +76,7 @@ export const BOOKS: Book[] = [
     slug: 'jovens-guerreiros-guerreiras-da-luz',
     title: 'Jovens Guerreiros e Guerreiras da Luz',
     price: 'R$ 64,90',
-    cover: 'https://www.maurokwitko.com.br/wp-content/uploads/2022/09/Jovens-1.png',
-    coverScale: 1.22,
+    cover: jovensGuerreirosCover,
     link: 'https://www.amazon.com.br/Jovens-guerreiros-guerreiras-luz-adolescentes/dp/8555270901',
     videoUrl: 'https://youtu.be/wVbWLNojlLM',
     synopsis:

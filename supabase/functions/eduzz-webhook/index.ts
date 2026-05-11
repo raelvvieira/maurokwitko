@@ -99,6 +99,7 @@ Deno.serve(async (req) => {
         .eq('email', email)
         .maybeSingle()
 
+      const nowIso = new Date().toISOString()
       await supabase.from('paid_customers').upsert({
         email,
         name,
@@ -106,7 +107,8 @@ Deno.serve(async (req) => {
         eduzz_buyer_id: eduzzBuyerId,
         last_invoice_id: invoiceId,
         status: 'active',
-        first_paid_at: existing?.first_paid_at || new Date().toISOString(),
+        first_paid_at: existing?.first_paid_at || nowIso,
+        last_paid_at: nowIso,
         revoked_at: null,
         revoked_reason: null,
       }, { onConflict: 'email' })

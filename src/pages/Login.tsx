@@ -87,6 +87,22 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [blocked, setBlocked] = useState<BlockedInfo | null>(null);
+  const [requesting, setRequesting] = useState(false);
+  const [requestSent, setRequestSent] = useState(false);
+
+  const handleManualRequest = async () => {
+    const normalized = email.trim().toLowerCase();
+    if (!normalized) return;
+    setRequesting(true);
+    try {
+      await supabase.from('access_requests').insert({ email: normalized });
+      setRequestSent(true);
+    } catch (err) {
+      console.error('access request failed', err);
+    } finally {
+      setRequesting(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

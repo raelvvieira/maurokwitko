@@ -1,92 +1,88 @@
-# Plano
+## Objetivo
 
-## 1. Editor: uma única caixa de texto para todo o artigo
+Liberar o acesso ao Clube de forma mais tolerante, sem depender de API da Eduzz:
 
-Substituir os blocos individuais por um único `<textarea>` grande no `ArticleEditorDrawer`.
+1. Considerar **pago** quem teve o último pagamento confirmado há **menos de 35 dias** (cobre o ciclo mensal de 30 dias + 5 de tolerância para a próxima fatura ser gerada/cobrada).
+2. Garantir que **novos assinantes** consigam entrar imediatamente após pagar — mesmo antes do webhook chegar — através de um caminho de fallback.
 
-- Parágrafos separados por **linha em branco** (`\n\n`).
-- Marcadores especiais ficam visíveis como prefixo no início do parágrafo (já é o formato atual):
-  - `__SUB__Subtítulo`
-  - `__LIST__item 1||item 2||item 3`
-  - `__QUOTE__Texto da citação||Autor`
-- Ao abrir: `body_pt.join('\n\n')` preenche o textarea.
-- Ao salvar: `value.split(/\n{2,}/).map(s => s.trim()).filter(Boolean)` vira o `body_pt[]`.
-- Pequena legenda abaixo do campo explicando os 3 marcadores opcionais (para subtítulo/lista/citação). 99% dos casos serão só parágrafos comuns separados por linha em branco.
-- Mantém Título e Resumo em campos próprios.
-- Mantém botão "Restaurar versão original" e "Salvar e traduzir" (continua disparando a Edge Function `translate-article` que regera EN e ES).
+## Como funciona hoje (resumo do diagnóstico)
 
-## 2. Botão "Adicionar artigo"
+- O login (`passwordless-login`) consulta `paid_customers`. Se `status != 'active'` o usuário é bloqueado como **overdue**, sem olhar a data do último pagamento.
+- O webhook da Eduzz (`eduzz-webhook`) é a única fonte que popula `paid_customers`, e hoje a tabela está praticamente vazia (1 evento recebido, com assinatura inválida). Por isso muita gente que paga não entra.
+- Existe a tabela `legacy_active_users` para assinantes antigos do clube anterior — continua valendo.
 
-Em `/artigos` (e dentro do clube em `/app/blog`), aparece para os admins um botão **"Adicionar artigo"** ao lado do título.
+## O que vai mudar
 
-### Backend
-Migration adicionando colunas em `article_overrides`:
-- `is_custom boolean default false` — marca artigos criados pelo admin (sem entrada em `ARTICLES`).
-- `image_url text` — capa do artigo (opcional; quando vazio, usa fallback).
+### 1. Banco de dados
+- Adicionar coluna `last_paid_at timestamptz` em `paid_customers` (data do último pagamento confirmado).
+- Backfill: `last_paid_at = coalesce(first_paid_at, updated_at)` para registros existentes.
+- Índice em `lower(email)` para lookup rápido.
 
-Bucket público novo `article-images` com policies:
-- SELECT público.
-- INSERT/UPDATE/DELETE só para os 2 e-mails admin.
+### 2. Webhook Eduzz (`eduzz-webhook`)
+- Em todo evento de pagamento (`invoice_paid`/`invoice_completed`), atualizar `last_paid_at = now()` além de marcar `status='active'`. Isso cria a "régua" de 35 dias automaticamente a cada nova fatura.
+- Continuar revogando em refund/chargeback/cancelamento.
 
-Edge Function `translate-article` ganha:
-- Suporte a `is_custom: true` e `image_url` no payload (passa direto pro upsert).
-- Para custom, `slug` é gerado no client a partir do título (`slugify`) e enviado.
-- Continua traduzindo título + excerpt + body para EN/ES igual hoje.
+### 3. Lógica de classificação no login (`passwordless-login` + `check-paid-access`)
+Nova ordem de decisão para o e-mail:
 
-### Frontend
-Novo componente `ArticleCreatorDrawer` (mesmo visual do editor, com 1 textarea grande + título + resumo + upload de imagem):
-- Upload de imagem via `supabase.storage.from('article-images').upload(...)` → guarda `image_url` público.
-- Campo de slug auto-gerado a partir do título (editável).
-- Salvar dispara `translate-article` com `is_custom: true`.
+```text
+1. admin hard-coded                          → active (admin)
+2. legacy_active_users                       → active (legacy)
+3. paid_customers.status = 'active'          → active
+4. paid_customers existe E
+     last_paid_at >= now() - 35 dias E
+     status NÃO é revoked/canceled/refunded  → active (grace_period)
+5. paid_customers existe E revogado          → revoked
+6. paid_customers existe E vencido (>35d)    → overdue
+7. e-mail não consta em lugar nenhum         → pending_new_subscriber  (ver passo 4)
+```
 
-Hook `useArticleOverrides` retorna **lista combinada** de artigos para exibição:
-- Estáticos do `ARTICLES` (com override aplicado se houver).
-- Customizados: linhas de `article_overrides` com `is_custom = true` viram "Article-like" objects.
+A janela de 35 dias é configurável via constante (`GRACE_DAYS = 35`).
 
-Helper `getArticleImage(slug, overrideImageUrl?)`:
-- Se `overrideImageUrl` existir → usa.
-- Senão cai no mapping atual / fallback.
+### 4. Fallback para "novo assinante" (resolve o caso que você levantou)
+Quando o e-mail **não está em nenhuma tabela**, em vez de bloquear na hora:
 
-### Páginas atualizadas
-- `src/pages/public/Artigos.tsx`: lista combinada + botão "Adicionar artigo" para admin.
-- `src/pages/public/ArtigoDetalhe.tsx`: aceita slug custom (busca em ARTICLES OU em overrides custom).
-- `src/pages/Blog.tsx` (clube): mesma lista combinada — artigo novo aparece automaticamente para usuários logados.
-- `src/pages/BlogPost.tsx` (clube): aceita slug custom + aplica override.
+- A função tenta um “self-claim” leve antes de barrar:
+  - Procura nos `eduzz_webhook_log` dos últimos 40 dias um payload com aquele e-mail e evento de pagamento. Se encontrar, hidrata `paid_customers` na hora (`last_paid_at = data do evento`) e libera o acesso.
+- Se mesmo assim não achar, retorna um novo status `pending_new_subscriber` com mensagem amigável: “Recebemos seu pagamento? Aguarde alguns minutos para a Eduzz confirmar, ou clique aqui para nos avisar.” Botão envia um e-mail para você (admin) com o e-mail informado, para liberação manual.
 
-Tradução continua igual: a versão em PT é a fonte da verdade; EN/ES são geradas automaticamente pela Edge Function ao salvar (tanto editar quanto criar).
+Isso cobre os três cenários problemáticos:
+- Usuário acabou de pagar e webhook ainda não processou → entra pelo log.
+- Webhook chegou mas falhou (assinatura) → você vê o pedido manual e libera.
+- Pessoa sem pagamento real → continua bloqueada e direcionada ao checkout.
 
-## 3. Capa de "Jovens Guerreiros e Guerreiras da Luz"
-
-- Copiar `user-uploads://813aA-d7ZRL.jpg` para `src/assets/jovens-guerreiros-cover.jpg`.
-- Em `src/data/books.ts`, importar a imagem e trocar o campo `cover` do livro `jovens-guerreiros-guerreiras-da-luz` para usar o asset local (em vez da URL externa do WordPress).
-- Remover `coverScale: 1.22` (não necessário com a nova arte que já preenche bem).
+### 5. UI de login (`Login.tsx`)
+- Novo estado `pending_new_subscriber` com card explicando "Estamos confirmando seu pagamento" + botão **“Já paguei, me avise”** (chama uma função que registra o pedido e notifica o admin por e-mail).
+- Mensagem de **overdue** continua, mas só aparece quando passou de 35 dias.
 
 ## Detalhes técnicos
 
 ```text
-article_overrides (após migration)
-├── slug PK
-├── title_pt / excerpt_pt / body_pt (jsonb)
-├── title_en / excerpt_en / body_en
-├── title_es / excerpt_es / body_es
-├── is_custom boolean   ← novo
-├── image_url text      ← novo
-└── updated_at, updated_by
+paid_customers
+  + last_paid_at timestamptz
+  + idx_paid_customers_email_lower (lower(email))
 
-storage.buckets: article-images (public, admin-only write)
+passwordless-login / check-paid-access
+  GRACE_DAYS = 35
+  active = status='active'
+        OR last_paid_at >= now() - GRACE_DAYS
+  fallback: scanLatestWebhookFor(email) → upsert paid_customers
+  novo status retornado: 'pending_new_subscriber'
+
+eduzz-webhook
+  on PAID:
+    upsert paid_customers SET
+      status='active',
+      last_paid_at = now(),
+      last_invoice_id = invoiceId
 ```
 
-Fluxo de exibição:
-```text
-ARTICLES (estáticos) ─┐
-                      ├──► merge ──► UI (Artigos.tsx, Blog.tsx)
-overrides custom ─────┘            └─► aplica title/excerpt/body do idioma
-                                    └─► usa image_url se existir
-```
+## Fora do escopo
+- Integração com API da Eduzz (você confirmou que não existe API adequada).
+- Mudar o fluxo de checkout ou de webhook secret (mantém o atual).
+- Cron de sincronização periódica.
 
-## Resultado
-
-- Editor com **uma única caixa de texto** para todo o artigo.
-- Botão **"Adicionar artigo"** (admin) em `/artigos` que cria artigo novo com **upload de imagem** e texto único; aparece também no **clube** (`/app/blog`).
-- Tradução automática para EN e ES funciona igual em artigos editados e novos.
-- Capa do livro **Jovens Guerreiros e Guerreiras da Luz** trocada pela imagem enviada.
+## Resultado esperado
+- Quem pagou nos últimos 35 dias entra, mesmo se o status estiver desatualizado.
+- Quem acabou de assinar entra automaticamente se o webhook já registrou (mesmo com `status` divergente), e tem um caminho claro de pedido manual se ainda não.
+- Quem realmente não pagou continua sendo direcionado ao checkout.

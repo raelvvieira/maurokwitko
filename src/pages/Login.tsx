@@ -221,6 +221,26 @@ const Login = () => {
                     {blocked.checkoutLabel ?? 'Adquirir acesso ao Clube'}
                   </a>
                 )}
+                {blocked.showManualRequest && (
+                  requestSent ? (
+                    <p className="w-full mt-1 px-4 py-2 rounded-xl bg-primary/15 text-foreground text-xs text-center leading-relaxed">
+                      Recebemos sua solicitação. Vamos verificar e liberar seu acesso em breve.
+                    </p>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleManualRequest}
+                      disabled={requesting || !email.trim()}
+                      className="w-full mt-1 px-4 py-2 rounded-xl bg-secondary/70 text-foreground text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      {requesting ? (
+                        <><Loader2 className="w-4 h-4 animate-spin" /> Enviando...</>
+                      ) : (
+                        <>Já paguei, me avise</>
+                      )}
+                    </button>
+                  )
+                )}
               </div>
             )}
 

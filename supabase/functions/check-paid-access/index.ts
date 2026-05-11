@@ -11,11 +11,22 @@ const ADMIN_EMAILS = new Set([
   'mauroabpr@gmail.com',
 ])
 
+const GRACE_DAYS = 35
+const GRACE_MS = GRACE_DAYS * 24 * 60 * 60 * 1000
+const REVOKED_STATUSES = new Set(['revoked', 'canceled', 'cancelled', 'refunded'])
+
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
   { auth: { persistSession: false } },
 )
+
+function isWithinGrace(date: string | null | undefined): boolean {
+  if (!date) return false
+  const t = new Date(date).getTime()
+  if (Number.isNaN(t)) return false
+  return Date.now() - t <= GRACE_MS
+}
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
@@ -37,12 +48,11 @@ Deno.serve(async (req) => {
 
     const { data } = await supabase
       .from('paid_customers')
-      .select('status')
+      .select('status, last_paid_at')
       .eq('email', e)
       .maybeSingle()
 
     if (!data) {
-      // Fallback: check legacy users imported from old club
       const { data: legacy } = await supabase
         .from('legacy_active_users')
         .select('email')
@@ -58,7 +68,25 @@ Deno.serve(async (req) => {
       })
     }
 
-    return new Response(JSON.stringify({ paid: data.status === 'active', status: data.status }), {
+    if (data.status === 'active') {
+      return new Response(JSON.stringify({ paid: true, status: 'active' }), {
+        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    // Honour grace window even when status was flipped to overdue/revoked
+    if (isWithinGrace(data.last_paid_at) && !REVOKED_STATUSES.has(data.status)) {
+      return new Response(JSON.stringify({ paid: true, status: 'grace_period' }), {
+        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+    if (isWithinGrace(data.last_paid_at) && REVOKED_STATUSES.has(data.status)) {
+      return new Response(JSON.stringify({ paid: true, status: 'grace_period' }), {
+        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    return new Response(JSON.stringify({ paid: false, status: data.status }), {
       status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   } catch (e) {

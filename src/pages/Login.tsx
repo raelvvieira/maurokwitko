@@ -9,8 +9,8 @@ import logo from '@/assets/logo-mauro-kwitko.png';
 const CHECKOUT_URL = 'https://chk.eduzz.com/2445141';
 
 type StatusKind =
-  | 'active' | 'admin' | 'legacy'
-  | 'overdue' | 'revoked' | 'not_found'
+  | 'active' | 'admin' | 'legacy' | 'grace_period'
+  | 'overdue' | 'revoked' | 'not_found' | 'pending_new_subscriber'
   | 'invalid' | 'error';
 
 type BlockedInfo = {
@@ -19,10 +19,21 @@ type BlockedInfo = {
   message: string;
   showCheckout: boolean;
   checkoutLabel?: string;
+  showManualRequest?: boolean;
 };
 
 function buildBlockedInfo(status: StatusKind): BlockedInfo {
   switch (status) {
+    case 'pending_new_subscriber':
+      return {
+        status,
+        title: 'Estamos confirmando seu pagamento',
+        message:
+          'Não localizamos seu e-mail ainda — pode ser que a Eduzz esteja terminando de processar sua compra. Aguarde alguns minutos e tente novamente. Se você já pagou, clique no botão abaixo e nossa equipe libera seu acesso manualmente.',
+        showCheckout: true,
+        checkoutLabel: 'Ainda não comprei, quero adquirir',
+        showManualRequest: true,
+      };
     case 'overdue':
       return {
         status,
@@ -49,6 +60,7 @@ function buildBlockedInfo(status: StatusKind): BlockedInfo {
           'Para entrar no Clube de Estudos é preciso ter o acesso liberado. Se você já comprou, use o mesmo e-mail informado no checkout. Caso ainda não tenha, é só adquirir aqui:',
         showCheckout: true,
         checkoutLabel: 'Adquirir acesso ao Clube',
+        showManualRequest: true,
       };
     case 'invalid':
       return {

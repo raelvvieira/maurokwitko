@@ -628,6 +628,7 @@ export type Database = {
           first_paid_at: string | null
           id: string
           last_invoice_id: string | null
+          last_paid_at: string | null
           name: string | null
           phone: string | null
           revoked_at: string | null
@@ -642,6 +643,7 @@ export type Database = {
           first_paid_at?: string | null
           id?: string
           last_invoice_id?: string | null
+          last_paid_at?: string | null
           name?: string | null
           phone?: string | null
           revoked_at?: string | null
@@ -656,6 +658,7 @@ export type Database = {
           first_paid_at?: string | null
           id?: string
           last_invoice_id?: string | null
+          last_paid_at?: string | null
           name?: string | null
           phone?: string | null
           revoked_at?: string | null

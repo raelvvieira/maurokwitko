@@ -107,6 +107,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBlocked(null);
+    setRequestSent(false);
     setLoading(true);
 
     try {

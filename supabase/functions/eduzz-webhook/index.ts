@@ -3,7 +3,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
 }
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
@@ -33,6 +33,13 @@ const REVOKE_EVENTS: Record<string, string> = {
   'subscription_canceled': 'subscription_canceled',
 }
 
+function ok(extra: Record<string, unknown> = {}) {
+  return new Response(JSON.stringify({ ok: true, ...extra }), {
+    status: 200,
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  })
+}
+
 function isSecretValid(req: Request, body: any): boolean {
   // Eduzz can send the secret in different ways. Accept any of these locations.
   const headerSecret =
@@ -44,24 +51,42 @@ function isSecretValid(req: Request, body: any): boolean {
   const url = new URL(req.url)
   const querySecret = url.searchParams.get('secret') || ''
   const bodySecret = body?.secret || body?.api_key || ''
-  return [headerSecret, querySecret, bodySecret].some(s => s && s === WEBHOOK_SECRET)
+  return [headerSecret, querySecret, bodySecret].some((s) => s && s === WEBHOOK_SECRET)
 }
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
 
+  // GET → friendly health-check (Eduzz "Verificar URL" muitas vezes faz GET)
+  if (req.method === 'GET') {
+    return ok({ mode: 'health-check', message: 'Eduzz webhook online' })
+  }
+
   let body: any = {}
+  let rawText = ''
   try {
-    body = await req.json()
+    rawText = await req.text()
+    body = rawText ? JSON.parse(rawText) : {}
   } catch {
     body = {}
   }
 
   const event = body?.event || body?.type || body?.trigger || ''
   const eventId = body?.id || body?.event_id || body?.data?.id?.toString() || null
+
+  // Ping / teste vazio da Eduzz → sempre 200, sem gravar log nem exigir secret
+  const isPing =
+    !rawText ||
+    rawText.length < 5 ||
+    (!event && !body?.data && !body?.buyer && !body?.customer && !body?.email)
+
+  if (isPing) {
+    return ok({ mode: 'ping', received_at: new Date().toISOString() })
+  }
+
   const valid = isSecretValid(req, body)
 
-  // Always log
+  // Sempre logar (eventos reais)
   await supabase.from('eduzz_webhook_log').insert({
     event,
     event_id: eventId,
@@ -69,11 +94,10 @@ Deno.serve(async (req) => {
     signature_valid: valid,
   })
 
+  // Secret inválido: NÃO derrubar com 401 (Eduzz desativa o webhook após algumas falhas).
+  // Apenas registrar e devolver 200 — admin revisa via log.
   if (!valid) {
-    return new Response(JSON.stringify({ error: 'invalid signature' }), {
-      status: 401,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+    return ok({ mode: 'logged', warning: 'invalid_signature' })
   }
 
   try {
@@ -85,14 +109,9 @@ Deno.serve(async (req) => {
     const eduzzBuyerId = buyer?.id?.toString() || null
     const invoiceId = data?.id?.toString() || data?.invoice_id?.toString() || null
 
-    if (!email) {
-      return new Response(JSON.stringify({ ok: true, skipped: 'no email' }), {
-        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
-    }
+    if (!email) return ok({ skipped: 'no email' })
 
     if (PAID_EVENTS.has(event)) {
-      // Upsert paid customer
       const { data: existing } = await supabase
         .from('paid_customers')
         .select('id, first_paid_at')
@@ -100,20 +119,22 @@ Deno.serve(async (req) => {
         .maybeSingle()
 
       const nowIso = new Date().toISOString()
-      await supabase.from('paid_customers').upsert({
-        email,
-        name,
-        phone,
-        eduzz_buyer_id: eduzzBuyerId,
-        last_invoice_id: invoiceId,
-        status: 'active',
-        first_paid_at: existing?.first_paid_at || nowIso,
-        last_paid_at: nowIso,
-        revoked_at: null,
-        revoked_reason: null,
-      }, { onConflict: 'email' })
+      await supabase.from('paid_customers').upsert(
+        {
+          email,
+          name,
+          phone,
+          eduzz_buyer_id: eduzzBuyerId,
+          last_invoice_id: invoiceId,
+          status: 'active',
+          first_paid_at: existing?.first_paid_at || nowIso,
+          last_paid_at: nowIso,
+          revoked_at: null,
+          revoked_reason: null,
+        },
+        { onConflict: 'email' },
+      )
 
-      // Create user (ignore "already exists")
       const { error: createErr } = await supabase.auth.admin.createUser({
         email,
         email_confirm: true,
@@ -123,7 +144,6 @@ Deno.serve(async (req) => {
         console.error('createUser error:', createErr.message)
       }
 
-      // Send password setup email (recovery)
       const { error: linkErr } = await supabase.auth.admin.generateLink({
         type: 'recovery',
         email,
@@ -131,13 +151,12 @@ Deno.serve(async (req) => {
       })
       if (linkErr) console.error('generateLink error:', linkErr.message)
 
-      return new Response(JSON.stringify({ ok: true, action: 'granted' }), {
-        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
+      return ok({ action: 'granted' })
     }
 
     if (event in REVOKE_EVENTS) {
-      await supabase.from('paid_customers')
+      await supabase
+        .from('paid_customers')
         .update({
           status: 'revoked',
           revoked_at: new Date().toISOString(),
@@ -145,18 +164,12 @@ Deno.serve(async (req) => {
         })
         .eq('email', email)
 
-      return new Response(JSON.stringify({ ok: true, action: 'revoked' }), {
-        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
+      return ok({ action: 'revoked' })
     }
 
-    return new Response(JSON.stringify({ ok: true, action: 'ignored', event }), {
-      status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+    return ok({ action: 'ignored', event })
   } catch (e) {
     console.error('webhook error:', e)
-    return new Response(JSON.stringify({ ok: true, error: String(e) }), {
-      status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+    return ok({ error: String(e) })
   }
 })

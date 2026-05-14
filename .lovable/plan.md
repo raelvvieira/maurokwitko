@@ -1,88 +1,45 @@
-## Objetivo
+## Novo secret gerado
 
-Liberar o acesso ao Clube de forma mais tolerante, sem depender de API da Eduzz:
+Use este valor (64 caracteres hex, 256 bits de entropia):
 
-1. Considerar **pago** quem teve o último pagamento confirmado há **menos de 35 dias** (cobre o ciclo mensal de 30 dias + 5 de tolerância para a próxima fatura ser gerada/cobrada).
-2. Garantir que **novos assinantes** consigam entrar imediatamente após pagar — mesmo antes do webhook chegar — através de um caminho de fallback.
-
-## Como funciona hoje (resumo do diagnóstico)
-
-- O login (`passwordless-login`) consulta `paid_customers`. Se `status != 'active'` o usuário é bloqueado como **overdue**, sem olhar a data do último pagamento.
-- O webhook da Eduzz (`eduzz-webhook`) é a única fonte que popula `paid_customers`, e hoje a tabela está praticamente vazia (1 evento recebido, com assinatura inválida). Por isso muita gente que paga não entra.
-- Existe a tabela `legacy_active_users` para assinantes antigos do clube anterior — continua valendo.
-
-## O que vai mudar
-
-### 1. Banco de dados
-- Adicionar coluna `last_paid_at timestamptz` em `paid_customers` (data do último pagamento confirmado).
-- Backfill: `last_paid_at = coalesce(first_paid_at, updated_at)` para registros existentes.
-- Índice em `lower(email)` para lookup rápido.
-
-### 2. Webhook Eduzz (`eduzz-webhook`)
-- Em todo evento de pagamento (`invoice_paid`/`invoice_completed`), atualizar `last_paid_at = now()` além de marcar `status='active'`. Isso cria a "régua" de 35 dias automaticamente a cada nova fatura.
-- Continuar revogando em refund/chargeback/cancelamento.
-
-### 3. Lógica de classificação no login (`passwordless-login` + `check-paid-access`)
-Nova ordem de decisão para o e-mail:
-
-```text
-1. admin hard-coded                          → active (admin)
-2. legacy_active_users                       → active (legacy)
-3. paid_customers.status = 'active'          → active
-4. paid_customers existe E
-     last_paid_at >= now() - 35 dias E
-     status NÃO é revoked/canceled/refunded  → active (grace_period)
-5. paid_customers existe E revogado          → revoked
-6. paid_customers existe E vencido (>35d)    → overdue
-7. e-mail não consta em lugar nenhum         → pending_new_subscriber  (ver passo 4)
+```
+1eb55366b12998d48991ac5d5143028d4e013a12689a8c3bf3392c3867e5128f
 ```
 
-A janela de 35 dias é configurável via constante (`GRACE_DAYS = 35`).
+## Onde colar
 
-### 4. Fallback para "novo assinante" (resolve o caso que você levantou)
-Quando o e-mail **não está em nenhuma tabela**, em vez de bloquear na hora:
+### 1. No Eduzz (painel de webhooks)
+- **URL para envio dos dados:**
+  `https://khztwxgobacabfvaeves.supabase.co/functions/v1/eduzz-webhook`
+- **Secret / Chave:** cole o valor acima
+- **Eventos:** `invoice_paid` (e, se quiser revogação automática no futuro: `invoice_refunded`, `invoice_chargeback`, `subscription_canceled`)
 
-- A função tenta um “self-claim” leve antes de barrar:
-  - Procura nos `eduzz_webhook_log` dos últimos 40 dias um payload com aquele e-mail e evento de pagamento. Se encontrar, hidrata `paid_customers` na hora (`last_paid_at = data do evento`) e libera o acesso.
-- Se mesmo assim não achar, retorna um novo status `pending_new_subscriber` com mensagem amigável: “Recebemos seu pagamento? Aguarde alguns minutos para a Eduzz confirmar, ou clique aqui para nos avisar.” Botão envia um e-mail para você (admin) com o e-mail informado, para liberação manual.
-
-Isso cobre os três cenários problemáticos:
-- Usuário acabou de pagar e webhook ainda não processou → entra pelo log.
-- Webhook chegou mas falhou (assinatura) → você vê o pedido manual e libera.
-- Pessoa sem pagamento real → continua bloqueada e direcionada ao checkout.
-
-### 5. UI de login (`Login.tsx`)
-- Novo estado `pending_new_subscriber` com card explicando "Estamos confirmando seu pagamento" + botão **“Já paguei, me avise”** (chama uma função que registra o pedido e notifica o admin por e-mail).
-- Mensagem de **overdue** continua, mas só aparece quando passou de 35 dias.
-
-## Detalhes técnicos
+### 2. No Lovable Cloud
+Atualizar o secret `EDUZZ_WEBHOOK_SECRET` com o mesmo valor acima. Vou abrir o formulário seguro pra você colar — assim que aprovar este plano, faço:
 
 ```text
-paid_customers
-  + last_paid_at timestamptz
-  + idx_paid_customers_email_lower (lower(email))
-
-passwordless-login / check-paid-access
-  GRACE_DAYS = 35
-  active = status='active'
-        OR last_paid_at >= now() - GRACE_DAYS
-  fallback: scanLatestWebhookFor(email) → upsert paid_customers
-  novo status retornado: 'pending_new_subscriber'
-
-eduzz-webhook
-  on PAID:
-    upsert paid_customers SET
-      status='active',
-      last_paid_at = now(),
-      last_invoice_id = invoiceId
+update_secret(EDUZZ_WEBHOOK_SECRET)
 ```
+
+(você cola o valor no campo seguro; eu não armazeno nem mostro o secret depois)
+
+## Como o webhook valida o secret
+
+A função `eduzz-webhook` aceita o secret em qualquer um destes lugares (o Eduzz manda no header):
+- Header `x-eduzz-secret` (padrão Eduzz)
+- Header `x-webhook-secret`, `x-signature` ou `Authorization: Bearer <secret>`
+- Query string `?secret=...`
+- Campo `secret` no JSON do payload
+
+Se o Eduzz mandar o secret correto por qualquer um desses caminhos, o evento é gravado com `signature_valid = true` e o acesso é liberado automaticamente.
+
+## Checklist pós-configuração
+
+1. Salvar a config na Eduzz e clicar em **"Testar webhook"** (se houver) ou fazer uma compra de teste.
+2. Abrir o admin/Logs e confirmar que apareceu uma linha em `eduzz_webhook_log` com `signature_valid = true`.
+3. Confirmar que o e-mail do comprador entrou em `paid_customers` com `status = 'active'` e `last_paid_at` recente.
+4. Tentar logar com o e-mail do comprador no `/login` — deve passar direto.
 
 ## Fora do escopo
-- Integração com API da Eduzz (você confirmou que não existe API adequada).
-- Mudar o fluxo de checkout ou de webhook secret (mantém o atual).
-- Cron de sincronização periódica.
-
-## Resultado esperado
-- Quem pagou nos últimos 35 dias entra, mesmo se o status estiver desatualizado.
-- Quem acabou de assinar entra automaticamente se o webhook já registrou (mesmo com `status` divergente), e tem um caminho claro de pedido manual se ainda não.
-- Quem realmente não pagou continua sendo direcionado ao checkout.
+- Mudar a URL ou a estrutura do webhook (já está estável).
+- Reprocessar pagamentos antigos (esses já estão cobertos por `legacy_active_users` ou pelo fallback de auto-claim no login).

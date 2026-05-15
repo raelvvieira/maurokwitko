@@ -395,6 +395,24 @@ export type Database = {
         }
         Relationships: []
       }
+      eduzz_cart_recovery: {
+        Row: {
+          attempts: number
+          email: string
+          last_sent_at: string
+        }
+        Insert: {
+          attempts?: number
+          email: string
+          last_sent_at?: string
+        }
+        Update: {
+          attempts?: number
+          email?: string
+          last_sent_at?: string
+        }
+        Relationships: []
+      }
       eduzz_webhook_log: {
         Row: {
           event: string | null
@@ -657,11 +675,13 @@ export type Database = {
           last_invoice_id: string | null
           last_paid_at: string | null
           name: string | null
+          overdue_notified_at: string | null
           phone: string | null
           revoked_at: string | null
           revoked_reason: string | null
           status: string
           updated_at: string
+          welcome_sent_at: string | null
         }
         Insert: {
           created_at?: string
@@ -672,11 +692,13 @@ export type Database = {
           last_invoice_id?: string | null
           last_paid_at?: string | null
           name?: string | null
+          overdue_notified_at?: string | null
           phone?: string | null
           revoked_at?: string | null
           revoked_reason?: string | null
           status?: string
           updated_at?: string
+          welcome_sent_at?: string | null
         }
         Update: {
           created_at?: string
@@ -687,11 +709,13 @@ export type Database = {
           last_invoice_id?: string | null
           last_paid_at?: string | null
           name?: string | null
+          overdue_notified_at?: string | null
           phone?: string | null
           revoked_at?: string | null
           revoked_reason?: string | null
           status?: string
           updated_at?: string
+          welcome_sent_at?: string | null
         }
         Relationships: []
       }

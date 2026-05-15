@@ -81,13 +81,13 @@ async function sendEmail(templateName: string, recipientEmail: string, idempoten
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${ANON_KEY}`,
-        apikey: ANON_KEY,
+        Authorization: `Bearer ${ANON_JWT}`,
+        apikey: ANON_JWT,
       },
       body: JSON.stringify({ templateName, recipientEmail, idempotencyKey, templateData }),
     })
     const text = await res.text()
-    console.log(`sendEmail(${templateName} -> ${recipientEmail}) status=${res.status} body=${text} anonLen=${ANON_KEY?.length || 0} anonPrefix=${ANON_KEY?.slice(0, 12)}`)
+    console.log(`sendEmail(${templateName} -> ${recipientEmail}) status=${res.status} body=${text}`)
   } catch (e) {
     console.error(`sendEmail(${templateName}) failed:`, e)
   }

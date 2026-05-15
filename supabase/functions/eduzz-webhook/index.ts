@@ -74,9 +74,17 @@ function isSecretValid(req: Request, body: any): boolean {
 
 async function sendEmail(templateName: string, recipientEmail: string, idempotencyKey: string, templateData?: Record<string, unknown>) {
   try {
-    await supabase.functions.invoke('send-transactional-email', {
-      body: { templateName, recipientEmail, idempotencyKey, templateData },
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/send-transactional-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${SERVICE_ROLE}`,
+        apikey: SERVICE_ROLE,
+      },
+      body: JSON.stringify({ templateName, recipientEmail, idempotencyKey, templateData }),
     })
+    const text = await res.text()
+    console.log(`sendEmail(${templateName} -> ${recipientEmail}) status=${res.status} body=${text}`)
   } catch (e) {
     console.error(`sendEmail(${templateName}) failed:`, e)
   }

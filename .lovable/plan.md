@@ -1,38 +1,77 @@
-## Solução: secret embutido na URL (mais simples)
+## Objetivo
 
-Em vez de cadastrar o secret no painel da Eduzz, vamos colocá-lo **direto na URL**. A edge function já aceita o secret via query string.
+Ligar a Eduzz ao Clube ponta a ponta: pagar libera acesso, primeiro pagamento dispara boas-vindas, atrasos avisam e bloqueiam, carrinho abandonado convida a finalizar, e cancelamento notifica os admins.
 
-### O que você faz na Eduzz
+## O que vai acontecer
 
-Use **exatamente esta URL** no campo "URL para envio dos dados":
+### 1. Quando alguém paga
+- O webhook da Eduzz registra o pagamento e libera o acesso pelo email da pessoa.
+- Se for o **primeiro pagamento**, ela recebe automaticamente o email "Bem-vindo(a) ao Clube" (template `clube-welcome-access` que já existe), explicando como entrar só com o email.
+- Se for renovação, nada de email — só renova o acesso silenciosamente.
+- A pessoa consegue logar imediatamente em https://www.maurokwitko.com.br/login.
 
-```
-https://khztwxgobacabfvaeves.supabase.co/functions/v1/eduzz-webhook?secret=1eb55366b12998d48991ac5d5143028d4e013a12689a8c3bf3392c3867e5128f
-```
+### 2. Quando alguém abre/inicia mas não conclui o pagamento
+- Eduzz envia `invoice_opened` ou `invoice_waiting_payment`.
+- Disparamos um email novo "Finalize sua inscrição no Clube" (template novo `clube-cart-recovery`) com link de checkout.
+- Para não encher de email, esse aviso é enviado **no máximo uma vez a cada 7 dias** por email.
 
-E no campo **Secret** pode deixar como `default` mesmo — a Eduzz vai assinar/enviar do jeito padrão dela, e nós vamos ignorar isso e validar pelo `?secret=` da URL.
+### 3. Mensalidade atrasada (35 dias) e bloqueio (40 dias)
+- Uma rotina diária roda automaticamente:
+  - **35 dias sem novo pagamento** → marca como "atrasado" e dispara email "Sua mensalidade está pendente" (template `clube-payment-overdue` que já existe). Ainda pode acessar.
+  - **40 dias sem novo pagamento** → marca como "bloqueado". Próxima tentativa de login mostra a tela "acesso pendente" e ela é orientada a regularizar (template `clube-access-revoked`).
+- Se a pessoa pagar de novo a qualquer momento, volta automaticamente para "ativo".
 
-### O que eu faço no código
+### 4. Cancelamento, reembolso ou chargeback
+- Acesso é revogado na hora.
+- Você (`raelvvieira@gmail.com`) e `mauroabpr@gmail.com` recebem um email de aviso com o nome, email e motivo (cancelamento / reembolso / chargeback) — template novo `admin-subscription-canceled`.
+- O cliente recebe o email "Acesso encerrado" que já existe.
 
-Mesmo com o secret correto na URL, o botão **"Verificar URL"** da Eduzz manda um **payload de teste vazio** (sem `event`). Hoje a função processa isso e responde 200, mas pode estar acontecendo um caso onde a Eduzz envia o teste **sem** os parâmetros da URL (alguns sistemas removem query string em "ping"). Vou ajustar `supabase/functions/eduzz-webhook/index.ts` para:
+---
 
-1. **Aceitar GET e POST com body vazio como "ping"** → resposta `200 OK {ok:true, mode:"ping"}`, sem exigir secret e sem gravar no log. Isso garante que o "Verificar URL" da Eduzz sempre passe.
-2. **Quando vier um evento real (com `event` no payload):**
-   - Validar secret pelos caminhos atuais (header, query, body).
-   - Se secret válido → processar normalmente (ativar `paid_customers`, criar usuário, etc).
-   - Se secret inválido → ainda retornar **200** (pra Eduzz não desativar o webhook por excesso de erros) e gravar no `eduzz_webhook_log` com `signature_valid=false` pra você revisar no admin.
-3. Manter todo o resto do fluxo (PAID_EVENTS, REVOKE_EVENTS, hidratação de `last_paid_at`) inalterado.
+## Detalhes técnicos (pode ignorar)
 
-### Atualizar o secret no Lovable Cloud
+**1. Corrigir validação de assinatura**
+A Eduzz envia o secret dentro do JSON em `payload.data.producer.originSecret` (não em header, não em `?secret=`). Vou ler dali e comparar com o secret `EDUZZ_ORIGIN_SECRET` que já está configurado. Mantenho o fallback dos headers/query pra não quebrar nada.
 
-Vou pedir pra você colar o mesmo valor (`1eb55366b12998d48991ac5d5143028d4e013a12689a8c3bf3392c3867e5128f`) no secret `EDUZZ_WEBHOOK_SECRET`. Ele tem que ser **idêntico** ao que está na URL.
+**2. Mudanças no banco** (uma migração)
+Adicionar à tabela `paid_customers`:
+- `welcome_sent_at timestamptz` — garante boas-vindas só no primeiro pagamento
+- `overdue_notified_at timestamptz` — evita reenviar aviso de atraso
+- `cart_recovery_sent_at timestamptz` (em uma tabela `eduzz_cart_recovery` por email, pois pode não existir ainda em `paid_customers`)
 
-## Ordem após aprovação
-1. Eu edito o `eduzz-webhook` (ping → 200, deploy automático).
-2. Eu peço pra você colar o secret no Lovable.
-3. Você cola **a URL completa com `?secret=...`** na Eduzz e clica em "Verificar URL" → deve voltar **200 OK**.
-4. Mande um evento de teste; conferimos no `eduzz_webhook_log`.
+Nova tabela `eduzz_cart_recovery (email, last_sent_at)` pra controlar dedup do email de carrinho abandonado.
+
+**3. Mudanças em `eduzz-webhook/index.ts`**
+- `isSecretValid`: ler `body.data.producer.originSecret`, comparar com `EDUZZ_ORIGIN_SECRET` **ou** `EDUZZ_WEBHOOK_SECRET`.
+- Bloquear o valor de teste fixo `originsecrettest` em produção (loga, não processa).
+- PAID events: se `welcome_sent_at` for null → invoca `send-transactional-email` com `clube-welcome-access` e grava `welcome_sent_at`.
+- Eventos `invoice_opened` / `invoice_waiting_payment`: se a pessoa NÃO está em `paid_customers` (ou está mas inativa) e `eduzz_cart_recovery.last_sent_at` > 7 dias → envia `clube-cart-recovery`.
+- REVOKE events (`refunded`, `chargeback`, `subscription_canceled`, `invoice_canceled`): revoga + envia `admin-subscription-canceled` para os 2 admins + envia `clube-access-revoked` pro cliente.
+
+**4. Novo edge function `subscription-lifecycle-cron`**
+Roda 1x ao dia via pg_cron:
+- `paid_customers` com `status='active'` e `last_paid_at < now() - 35 days` e `overdue_notified_at IS NULL` → status='overdue', envia `clube-payment-overdue`, marca `overdue_notified_at`.
+- `paid_customers` com `last_paid_at < now() - 40 days` e `status IN ('active','overdue')` → status='revoked', `revoked_reason='no_payment'`, envia `clube-access-revoked`.
+
+**5. Atualizar `check-paid-access` e `passwordless-login`**
+Reduzir `GRACE_DAYS` de 35 → 40 (bloqueio efetivo). A janela 35–40 continua liberada porque o status ainda é "overdue" ou "active" quando o cron ainda não rodou; o cron passa a ser a fonte da verdade.
+
+**6. Dois novos templates** em `_shared/transactional-email-templates/`:
+- `clube-cart-recovery.tsx` — "Finalize sua inscrição"
+- `admin-subscription-canceled.tsx` — aviso interno (vai para os 2 admins)
+Registrar em `registry.ts` e fazer deploy de `send-transactional-email` + `eduzz-webhook` + novo cron.
+
+---
+
+## Ordem de execução depois da aprovação
+1. Migração: colunas novas + tabela `eduzz_cart_recovery`.
+2. Criar 2 templates novos + atualizar registry.
+3. Reescrever `eduzz-webhook` com validação correta + dispatch de emails.
+4. Criar `subscription-lifecycle-cron` + agendar via pg_cron diário.
+5. Ajustar `check-paid-access` / `passwordless-login` (grace 40 dias).
+6. Deploy de tudo. Você reenvia os eventos de teste pela Eduzz; eu confirmo no log que `signature_valid=true` e que o welcome saiu.
 
 ## Fora do escopo
-- Cadastrar secret no painel da Eduzz (não precisa mais).
-- Mudar a forma como o webhook hidrata `paid_customers` (continua igual).
+- Não vou mexer no visual do login nem no Dashboard.
+- Não vou trocar o provedor de email (continua o do Lovable Cloud).
+- Carrinho abandonado: só os eventos `opened` / `waiting_payment` da Eduzz disparam — não há outra fonte de "intenção de compra".

@@ -12,9 +12,13 @@ export interface TemplateEntry {
 import { template as clubeWelcomeAccess } from './clube-welcome-access.tsx'
 import { template as clubePaymentOverdue } from './clube-payment-overdue.tsx'
 import { template as clubeAccessRevoked } from './clube-access-revoked.tsx'
+import { template as clubeCartRecovery } from './clube-cart-recovery.tsx'
+import { template as adminSubscriptionCanceled } from './admin-subscription-canceled.tsx'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'clube-welcome-access': clubeWelcomeAccess,
   'clube-payment-overdue': clubePaymentOverdue,
   'clube-access-revoked': clubeAccessRevoked,
+  'clube-cart-recovery': clubeCartRecovery,
+  'admin-subscription-canceled': adminSubscriptionCanceled,
 }

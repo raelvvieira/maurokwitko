@@ -8,9 +8,11 @@ const corsHeaders = {
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SERVICE_ROLE = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-const WEBHOOK_SECRET = Deno.env.get('EDUZZ_WEBHOOK_SECRET')!
+const WEBHOOK_SECRET = Deno.env.get('EDUZZ_WEBHOOK_SECRET') || ''
+const ORIGIN_SECRET = Deno.env.get('EDUZZ_ORIGIN_SECRET') || ''
 
-const APP_URL = 'https://maurokwitko.com'
+const ADMIN_EMAILS = ['raelvvieira@gmail.com', 'mauroabpr@gmail.com']
+const CART_RECOVERY_COOLDOWN_DAYS = 7
 
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE, {
   auth: { persistSession: false },
@@ -29,9 +31,18 @@ const REVOKE_EVENTS: Record<string, string> = {
   'invoice_refunded': 'refund',
   'myeduzz.invoice_chargeback': 'chargeback',
   'invoice_chargeback': 'chargeback',
+  'myeduzz.invoice_canceled': 'invoice_canceled',
+  'invoice_canceled': 'invoice_canceled',
   'nutror.subscription_canceled': 'subscription_canceled',
   'subscription_canceled': 'subscription_canceled',
 }
+
+const CART_EVENTS = new Set([
+  'myeduzz.invoice_opened',
+  'invoice_opened',
+  'myeduzz.invoice_waiting_payment',
+  'invoice_waiting_payment',
+])
 
 function ok(extra: Record<string, unknown> = {}) {
   return new Response(JSON.stringify({ ok: true, ...extra }), {
@@ -41,7 +52,9 @@ function ok(extra: Record<string, unknown> = {}) {
 }
 
 function isSecretValid(req: Request, body: any): boolean {
-  // Eduzz can send the secret in different ways. Accept any of these locations.
+  const accepted = [WEBHOOK_SECRET, ORIGIN_SECRET].filter(Boolean)
+  if (!accepted.length) return false
+
   const headerSecret =
     req.headers.get('x-eduzz-secret') ||
     req.headers.get('x-webhook-secret') ||
@@ -51,13 +64,28 @@ function isSecretValid(req: Request, body: any): boolean {
   const url = new URL(req.url)
   const querySecret = url.searchParams.get('secret') || ''
   const bodySecret = body?.secret || body?.api_key || ''
-  return [headerSecret, querySecret, bodySecret].some((s) => s && s === WEBHOOK_SECRET)
+  const producerSecret = body?.data?.producer?.originSecret || ''
+
+  // Block well-known Eduzz test fixture in production
+  const candidates = [headerSecret, querySecret, bodySecret, producerSecret].filter(
+    (s) => s && s !== 'originsecrettest',
+  )
+  return candidates.some((s) => accepted.includes(s))
+}
+
+async function sendEmail(templateName: string, recipientEmail: string, idempotencyKey: string, templateData?: Record<string, unknown>) {
+  try {
+    await supabase.functions.invoke('send-transactional-email', {
+      body: { templateName, recipientEmail, idempotencyKey, templateData },
+    })
+  } catch (e) {
+    console.error(`sendEmail(${templateName}) failed:`, e)
+  }
 }
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
 
-  // GET → friendly health-check (Eduzz "Verificar URL" muitas vezes faz GET)
   if (req.method === 'GET') {
     return ok({ mode: 'health-check', message: 'Eduzz webhook online' })
   }
@@ -74,7 +102,6 @@ Deno.serve(async (req) => {
   const event = body?.event || body?.type || body?.trigger || ''
   const eventId = body?.id || body?.event_id || body?.data?.id?.toString() || null
 
-  // Ping / teste vazio da Eduzz → sempre 200, sem gravar log nem exigir secret
   const isPing =
     !rawText ||
     rawText.length < 5 ||
@@ -86,7 +113,6 @@ Deno.serve(async (req) => {
 
   const valid = isSecretValid(req, body)
 
-  // Sempre logar (eventos reais)
   await supabase.from('eduzz_webhook_log').insert({
     event,
     event_id: eventId,
@@ -94,8 +120,6 @@ Deno.serve(async (req) => {
     signature_valid: valid,
   })
 
-  // Secret inválido: NÃO derrubar com 401 (Eduzz desativa o webhook após algumas falhas).
-  // Apenas registrar e devolver 200 — admin revisa via log.
   if (!valid) {
     return ok({ mode: 'logged', warning: 'invalid_signature' })
   }
@@ -105,20 +129,24 @@ Deno.serve(async (req) => {
     const buyer = data?.buyer || data?.customer || {}
     const email = String(buyer?.email || data?.email || '').trim().toLowerCase()
     const name = buyer?.name || data?.name || null
-    const phone = buyer?.cel || buyer?.phone || data?.phone || null
+    const phone = buyer?.cellphone || buyer?.cel || buyer?.phone || data?.phone || null
     const eduzzBuyerId = buyer?.id?.toString() || null
     const invoiceId = data?.id?.toString() || data?.invoice_id?.toString() || null
 
     if (!email) return ok({ skipped: 'no email' })
 
+    // ─── PAID ───────────────────────────────────────────────
     if (PAID_EVENTS.has(event)) {
       const { data: existing } = await supabase
         .from('paid_customers')
-        .select('id, first_paid_at')
+        .select('id, first_paid_at, welcome_sent_at')
         .eq('email', email)
         .maybeSingle()
 
       const nowIso = new Date().toISOString()
+      const isFirstPayment = !existing
+      const shouldSendWelcome = isFirstPayment || !existing?.welcome_sent_at
+
       await supabase.from('paid_customers').upsert(
         {
           email,
@@ -131,10 +159,13 @@ Deno.serve(async (req) => {
           last_paid_at: nowIso,
           revoked_at: null,
           revoked_reason: null,
+          overdue_notified_at: null,
+          welcome_sent_at: shouldSendWelcome ? nowIso : existing?.welcome_sent_at,
         },
         { onConflict: 'email' },
       )
 
+      // Ensure auth user exists (idempotent)
       const { error: createErr } = await supabase.auth.admin.createUser({
         email,
         email_confirm: true,
@@ -144,27 +175,116 @@ Deno.serve(async (req) => {
         console.error('createUser error:', createErr.message)
       }
 
-      const { error: linkErr } = await supabase.auth.admin.generateLink({
-        type: 'recovery',
-        email,
-        options: { redirectTo: `${APP_URL}/reset-password` },
-      })
-      if (linkErr) console.error('generateLink error:', linkErr.message)
+      if (shouldSendWelcome) {
+        await sendEmail(
+          'clube-welcome-access',
+          email,
+          `clube-welcome-${email}`,
+          { name: name || undefined },
+        )
+      }
 
-      return ok({ action: 'granted' })
+      // Clear any previous cart recovery state — they paid
+      await supabase.from('eduzz_cart_recovery').delete().eq('email', email)
+
+      return ok({ action: 'granted', first_payment: isFirstPayment })
     }
 
+    // ─── REVOKE ─────────────────────────────────────────────
     if (event in REVOKE_EVENTS) {
+      const reason = REVOKE_EVENTS[event]
+      const nowIso = new Date().toISOString()
+
+      const { data: existing } = await supabase
+        .from('paid_customers')
+        .select('name, email')
+        .eq('email', email)
+        .maybeSingle()
+
       await supabase
         .from('paid_customers')
         .update({
           status: 'revoked',
-          revoked_at: new Date().toISOString(),
-          revoked_reason: REVOKE_EVENTS[event],
+          revoked_at: nowIso,
+          revoked_reason: reason,
         })
         .eq('email', email)
 
-      return ok({ action: 'revoked' })
+      // Notify customer (only if they were a paying customer)
+      if (existing) {
+        await sendEmail(
+          'clube-access-revoked',
+          email,
+          `clube-revoked-${email}-${invoiceId || nowIso}`,
+          { name: existing.name || name || undefined },
+        )
+      }
+
+      // Notify admins
+      for (const adminEmail of ADMIN_EMAILS) {
+        await sendEmail(
+          'admin-subscription-canceled',
+          adminEmail,
+          `admin-cancel-${email}-${invoiceId || nowIso}-${adminEmail}`,
+          {
+            customerName: existing?.name || name || undefined,
+            customerEmail: email,
+            reason,
+            invoiceId: invoiceId || undefined,
+            occurredAt: nowIso,
+          },
+        )
+      }
+
+      return ok({ action: 'revoked', reason })
+    }
+
+    // ─── CART RECOVERY ──────────────────────────────────────
+    if (CART_EVENTS.has(event)) {
+      // Skip if person is already a paying customer
+      const { data: paid } = await supabase
+        .from('paid_customers')
+        .select('status')
+        .eq('email', email)
+        .maybeSingle()
+
+      if (paid && paid.status === 'active') {
+        return ok({ action: 'skipped_cart', reason: 'already_active' })
+      }
+
+      // Cooldown check
+      const { data: lastTry } = await supabase
+        .from('eduzz_cart_recovery')
+        .select('last_sent_at, attempts')
+        .eq('email', email)
+        .maybeSingle()
+
+      if (lastTry?.last_sent_at) {
+        const last = new Date(lastTry.last_sent_at).getTime()
+        const cooldownMs = CART_RECOVERY_COOLDOWN_DAYS * 24 * 60 * 60 * 1000
+        if (Date.now() - last < cooldownMs) {
+          return ok({ action: 'skipped_cart', reason: 'cooldown' })
+        }
+      }
+
+      const nowIso = new Date().toISOString()
+      await supabase.from('eduzz_cart_recovery').upsert(
+        {
+          email,
+          last_sent_at: nowIso,
+          attempts: (lastTry?.attempts || 0) + 1,
+        },
+        { onConflict: 'email' },
+      )
+
+      await sendEmail(
+        'clube-cart-recovery',
+        email,
+        `clube-cart-${email}-${nowIso.slice(0, 10)}`,
+        { name: name || undefined },
+      )
+
+      return ok({ action: 'cart_recovery_sent' })
     }
 
     return ok({ action: 'ignored', event })

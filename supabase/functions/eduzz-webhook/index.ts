@@ -79,8 +79,8 @@ async function sendEmail(templateName: string, recipientEmail: string, idempoten
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${SERVICE_ROLE}`,
-        apikey: SERVICE_ROLE,
+        Authorization: `Bearer ${ANON_KEY}`,
+        apikey: ANON_KEY,
       },
       body: JSON.stringify({ templateName, recipientEmail, idempotencyKey, templateData }),
     })

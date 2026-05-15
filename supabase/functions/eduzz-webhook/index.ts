@@ -85,7 +85,7 @@ async function sendEmail(templateName: string, recipientEmail: string, idempoten
       body: JSON.stringify({ templateName, recipientEmail, idempotencyKey, templateData }),
     })
     const text = await res.text()
-    console.log(`sendEmail(${templateName} -> ${recipientEmail}) status=${res.status} body=${text}`)
+    console.log(`sendEmail(${templateName} -> ${recipientEmail}) status=${res.status} body=${text} anonLen=${ANON_KEY?.length || 0} anonPrefix=${ANON_KEY?.slice(0, 12)}`)
   } catch (e) {
     console.error(`sendEmail(${templateName}) failed:`, e)
   }

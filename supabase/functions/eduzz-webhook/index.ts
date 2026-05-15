@@ -8,6 +8,9 @@ const corsHeaders = {
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SERVICE_ROLE = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+// Public anon JWT — required because send-transactional-email has verify_jwt=true
+// and the gateway only accepts JWT-format tokens (not sb_publishable_* keys).
+const ANON_JWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtoenR3eGdvYmFjYWJmdmFldmVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNjgwMTgsImV4cCI6MjA4ODc0NDAxOH0.vrmIDV46w28wH25m7jRIfM6YTVeVbP4j2dWgViZXCjQ'
 const WEBHOOK_SECRET = Deno.env.get('EDUZZ_WEBHOOK_SECRET') || ''
 const ORIGIN_SECRET = Deno.env.get('EDUZZ_ORIGIN_SECRET') || ''
 
@@ -78,8 +81,8 @@ async function sendEmail(templateName: string, recipientEmail: string, idempoten
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${SERVICE_ROLE}`,
-        apikey: SERVICE_ROLE,
+        Authorization: `Bearer ${ANON_JWT}`,
+        apikey: ANON_JWT,
       },
       body: JSON.stringify({ templateName, recipientEmail, idempotencyKey, templateData }),
     })

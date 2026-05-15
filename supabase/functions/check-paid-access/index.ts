@@ -11,7 +11,7 @@ const ADMIN_EMAILS = new Set([
   'mauroabpr@gmail.com',
 ])
 
-const GRACE_DAYS = 35
+const GRACE_DAYS = 40
 const GRACE_MS = GRACE_DAYS * 24 * 60 * 60 * 1000
 const REVOKED_STATUSES = new Set(['revoked', 'canceled', 'cancelled', 'refunded'])
 

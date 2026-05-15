@@ -13,7 +13,7 @@ const ADMIN_EMAILS = new Set([
 
 // Grace window: monthly subscription cycle (30 days) + tolerance for the next
 // invoice to be generated/charged on Eduzz.
-const GRACE_DAYS = 35
+const GRACE_DAYS = 40
 const GRACE_MS = GRACE_DAYS * 24 * 60 * 60 * 1000
 // Look back this many days inside eduzz_webhook_log when self-claiming a new subscriber.
 const WEBHOOK_LOOKBACK_DAYS = 40

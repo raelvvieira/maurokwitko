@@ -143,96 +143,152 @@
   "clube": {
     "hero": {
       "eyebrow": "Comunidade Exclusiva",
-      "titleStart": "Clube de Estudos",
+      "titleStart": "Estude diretamente com",
       "titleAccent": "Dr. Mauro Kwitko",
-      "desc": "Faça parte de uma comunidade viva de psicoterapeutas, médicos e demais profissionais da saúde que buscam aprofundar a reforma íntima, a espiritualidade e a Psicoterapia Reencarnacionista.",
-      "cta": "Assine agora — R$ 29/mês",
-      "cancel": "Cancele quando quiser"
+      "titleEnd": "e aprofunde sua jornada de autoconhecimento",
+      "desc": "Tenha acesso a cursos, livros, encontros exclusivos, comunidade privada e décadas de conhecimento reunidas em um único lugar.",
+      "cta": "Entrar no Clube",
+      "cta2": "Ver o que está incluído",
+      "cancel": "Cancele quando quiser",
+      "stats": [
+        "Mais de 200 horas de conteúdo",
+        "Biblioteca digital completa",
+        "Comunidade exclusiva",
+        "Cancelamento a qualquer momento"
+      ]
     },
-    "benefits": [
-      {
-        "title": "Comunidade ativa",
-        "desc": "Troque ideias com profissionais em busca da reforma íntima."
-      },
-      {
-        "title": "Grupo VIP no WhatsApp",
-        "desc": "Convivência diária e suporte direto."
-      },
-      {
-        "title": "Lives exclusivas",
-        "desc": "Entrevistas em primeira mão com convidados especiais."
-      },
-      {
-        "title": "Acervo completo",
-        "desc": "E-books, aulas, hinos e curso gravado."
-      }
-    ],
-    "perks": {
-      "ebooksTitleA": "Todos os e-books do Dr. Mauro,",
-      "ebooksTitleB": "totalmente gratuitos",
-      "ebooksDesc": "Como membro do Clube, você baixa e lê todos os e-books publicados pelo Dr. Mauro Kwitko sem pagar nada a mais — e os próximos lançamentos chegam primeiro pra você.",
-      "discountTitleA": "20% de desconto",
-      "discountTitleB": "em todos os livros físicos",
-      "discountDesc": "Membros recebem 20% de desconto na compra de qualquer livro físico publicado pelo Dr. Mauro pela editora BesouroBox."
+    "pain": {
+      "title": "Você sente que falta profundidade nos estudos espirituais?",
+      "items": [
+        "Muito conteúdo superficial e desconectado",
+        "Falta de orientação de quem realmente entende",
+        "Dificuldade para encontrar uma comunidade séria",
+        "Pouco espaço para trocar e crescer junto"
+      ],
+      "solutionTitle": "Tudo reunido em um único ambiente",
+      "solutionDesc": "Um ecossistema completo para você estudar, se aprofundar e evoluir — com conteúdo de qualidade, orientação e comunidade."
     },
-    "acervo": {
-      "eyebrow": "Acervo",
-      "title": "Acesse todos os conteúdos do Dr. Mauro",
-      "desc": "E-books, aulas, lives, hinos e curso completo — tudo em um só lugar."
-    },
-    "features": [
-      {
-        "title": "Acesse E-books e Futuros Lançamentos",
-        "desc": "Biblioteca digital crescente com obras do Dr. Mauro Kwitko, lançamentos chegam primeiro para os membros."
-      },
-      {
-        "title": "Lives e Aulas Gravadas",
-        "desc": "Encontros ao vivo com convidados especiais e biblioteca completa de aulas para rever quando quiser."
-      },
-      {
-        "title": "Curso Gravado: A Reforma Íntima",
-        "desc": "Acesso integral ao curso \"A Psicologia da Reencarnação\", com mais de 20 módulos."
-      }
-    ],
-    "hinarios": {
-      "title": "Hinários completos",
-      "desc": "Coletâneas de hinos para meditação, estudo e reflexão — Hinos de Paz, Amor e Fé."
+    "contentCards": {
+      "title": "O que você recebe ao entrar no Clube",
+      "items": [
+        {
+          "title": "Biblioteca Digital",
+          "desc": "Todos os livros digitais do Dr. Mauro e os futuros lançamentos."
+        },
+        {
+          "title": "Curso Reforma Íntima",
+          "desc": "Curso completo com mais de 20 módulos para uma transformação profunda."
+        },
+        {
+          "title": "Lives Exclusivas",
+          "desc": "Encontros ao vivo com Dr. Mauro e convidados especiais."
+        },
+        {
+          "title": "Grupo VIP",
+          "desc": "Comunidade ativa no WhatsApp para troca, apoio e conexão."
+        },
+        {
+          "title": "Hinários Completos",
+          "desc": "Coleções de hinos para meditação, estudo e reflexão."
+        },
+        {
+          "title": "Aulas e Conteúdos",
+          "desc": "Aulas gravadas, entrevistas, artigos e conteúdos exclusivos."
+        }
+      ]
     },
     "community": {
       "eyebrow": "Mais que conteúdo",
-      "title": "Uma comunidade viva",
-      "desc": "O coração do Clube é a troca entre psicoterapeutas, médicos e demais profissionais da saúde que estão buscando aprofundar a reforma íntima, a espiritualidade e a Psicoterapia Reencarnacionista — ao lado de pessoas comuns enriquecendo essa caminhada.",
+      "title": "Uma comunidade de crescimento e apoio",
+      "desc": "No Clube, você não estuda sozinho. Aqui, você encontra pessoas com os mesmos valores e objetivos, compartilha experiências, tira dúvidas e cresce junto.",
       "items": [
-        "Conversar em fóruns internos",
-        "Comentar aulas e relatos clínicos",
-        "Postar suas próprias experiências",
-        "Participar do grupo VIP no WhatsApp",
-        "Receber em primeira mão as lives com entrevistados",
-        "Trocas com profissionais de diversas áreas"
+        "Debates profundos e respeitosos",
+        "Estudos guiados e direcionados",
+        "Casos clínicos e trocas profissionais",
+        "Networking com profissionais",
+        "Apoio e acolhimento contínuo",
+        "Contato direto com Dr. Mauro"
+      ]
+    },
+    "bio": {
+      "title": "Quem é Dr. Mauro Kwitko",
+      "desc": "Psicoterapeuta, escritor e pesquisador com mais de 40 anos dedicados à Psicoterapia Reencarnacionista e à reforma íntima.",
+      "stats": [
+        { "value": "40+", "label": "Anos de experiência" },
+        { "value": "30+", "label": "Livros publicados" },
+        { "value": "100k+", "label": "Alunos e leitores" },
+        { "value": "Referência", "label": "nacional e internacional" }
+      ]
+    },
+    "testimonials": {
+      "title": "O que nossos membros dizem",
+      "items": [
+        {
+          "text": "O Clube mudou minha forma de estudar e de viver. O conteúdo é profundo e único.",
+          "name": "Carla Mendes",
+          "role": "Psicoterapeuta"
+        },
+        {
+          "text": "Ter acesso direto ao Dr. Mauro e trocar com outros profissionais é algo único.",
+          "name": "Ricardo Almeida",
+          "role": "Médico"
+        },
+        {
+          "text": "Os hinários e as lives são lindos e me ajudaram muito na minha caminhada.",
+          "name": "Juliana Sousa",
+          "role": "Estudante"
+        }
+      ]
+    },
+    "acervo": {
+      "eyebrow": "Acesso imediato",
+      "title": "Acesso imediato a todo este acervo",
+      "desc": "Centenas de livros, hinários e conteúdos para você estudar quando e onde quiser."
+    },
+    "comparison": {
+      "title": "Por que entrar no Clube?",
+      "outside": "Fora do Clube",
+      "inside": "Dentro do Clube",
+      "outsideItems": [
+        "Comprar livros separadamente",
+        "Cursos avulsos e caros",
+        "Sem orientação",
+        "Sem comunidade",
+        "Conteúdo fragmentado",
+        "Alto investimento"
+      ],
+      "insideItems": [
+        "Biblioteca completa inclusa",
+        "Cursos e aulas inclusos",
+        "Acompanhamento e direcionamento",
+        "Comunidade exclusiva",
+        "Ecossistema integrado",
+        "Acesso completo por R$ 29/mês"
       ]
     },
     "price": {
       "badge": "Acesso Mensal",
-      "title": "Acesso ao Clube de Estudos",
+      "title": "Clube de Estudos Dr. Mauro Kwitko",
       "perMonth": "/mês",
       "includes": [
-        "Comunidade exclusiva",
+        "Biblioteca completa",
+        "Curso Reforma Íntima",
+        "Lives exclusivas",
         "Grupo VIP no WhatsApp",
-        "Lives com convidados especiais",
-        "Acervo de e-books e aulas",
         "Hinários completos",
-        "Curso A Reforma Íntima",
-        "Cancele quando quiser"
+        "Aulas e conteúdos",
+        "Novos lançamentos",
+        "Cancelamento a qualquer momento"
       ],
-      "cta": "Assinar agora",
-      "note": "Cancele quando quiser, sem multa."
+      "cta": "Quero entrar no Clube",
+      "note": "Ambiente seguro e cancelamento fácil."
     },
     "faq": {
       "eyebrow": "Dúvidas",
       "title": "Perguntas frequentes",
       "items": [
         {
-          "q": "O que recebo ao assinar?",
+          "q": "O que está incluído na assinatura?",
           "a": "Acesso à comunidade, grupo VIP no WhatsApp, lives ao vivo, acervo de e-books, aulas gravadas, hinos e o curso completo \"A Reforma Íntima\"."
         },
         {
@@ -240,19 +296,19 @@
           "a": "Sim. A assinatura é mensal e pode ser cancelada a qualquer momento, sem multas."
         },
         {
-          "q": "Como acesso o conteúdo?",
-          "a": "Após a assinatura, você recebe acesso imediato à plataforma e ao grupo de WhatsApp."
+          "q": "Como funcionam as lives?",
+          "a": "As lives são realizadas ao vivo com Dr. Mauro e convidados especiais. Ficam gravadas na plataforma para rever quando quiser."
         },
         {
-          "q": "Quem pode participar?",
-          "a": "O Clube é aberto a psicoterapeutas, médicos, profissionais de saúde e qualquer pessoa em busca de aprofundar a reforma íntima e a espiritualidade."
+          "q": "O acesso é imediato?",
+          "a": "Sim. Após a assinatura, você recebe acesso imediato à plataforma e ao grupo de WhatsApp."
         }
       ]
     },
     "ctaFinal": {
-      "title": "Sua caminhada começa aqui",
-      "desc": "Junte-se à comunidade do Dr. Mauro Kwitko hoje mesmo.",
-      "button": "Assine por R$ 29/mês"
+      "title": "Sua jornada de transformação começa agora",
+      "desc": "Estude, evolua e faça parte de uma comunidade que transforma vidas.",
+      "button": "Entrar no Clube Agora"
     }
   },
   "hinos": {

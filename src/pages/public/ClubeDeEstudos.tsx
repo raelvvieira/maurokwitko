@@ -3,335 +3,510 @@ import { useTranslation } from 'react-i18next';
 import {
   ArrowRight,
   Check,
-  MessageCircle,
-  Users,
-  Video,
+  X,
+  Clock,
   BookOpen,
+  Users,
+  Headphones,
+  MessageCircle,
   Music,
-  GraduationCap,
-  Sparkles,
-  Heart,
-  Gift,
-  Tag,
+  Video,
+  Quote,
 } from 'lucide-react';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import Marquee from '@/components/public/Marquee';
 import { getArrayTranslation } from '@/i18n';
 
-const HINOS_COVERS = [
+const CHECKOUT_URL = 'https://chk.eduzz.com/2445141';
+
+const CARD_IMAGES = [
+  'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80',
+  'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80',
+  'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=600&q=80',
+  'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80',
   'https://i.ibb.co/v6fpPVzb/HINOS-DE-PAZ-2.png',
-  'https://i.ibb.co/q3GHxr4p/HINOS-DE-AMOR-2.png',
-  'https://i.ibb.co/TDs4sdxQ/HINOS-DE-F-2-2.png',
+  'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80',
 ];
 
-const BENEFIT_ICONS = [Users, MessageCircle, Video, BookOpen];
-const FEATURE_ICONS = [BookOpen, Video, GraduationCap];
-const FEATURE_COVERS = [
-  'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=900&q=80',
-  'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=900&q=80',
-  'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=900&q=80',
-];
+const CARD_ICONS = [BookOpen, Video, Headphones, MessageCircle, Music, BookOpen];
+
+const HERO_STATS_ICONS = [Clock, BookOpen, Users, Check];
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55 } },
+};
 
 const ClubeDeEstudos = () => {
   const { t } = useTranslation();
   const { ebooks } = useEbooks();
   const ebookCovers = ebooks.filter((e) => e.cover_url);
 
-  const benefits = getArrayTranslation<{ title: string; desc: string }>(t('clube.benefits', { returnObjects: true }));
-  const features = getArrayTranslation<{ title: string; desc: string }>(t('clube.features', { returnObjects: true }));
-  const priceIncludes = getArrayTranslation<string>(t('clube.price.includes', { returnObjects: true }));
+  const heroStats = getArrayTranslation<string>(t('clube.hero.stats', { returnObjects: true }));
+  const painItems = getArrayTranslation<string>(t('clube.pain.items', { returnObjects: true }));
+  const contentCards = getArrayTranslation<{ title: string; desc: string }>(
+    t('clube.contentCards.items', { returnObjects: true })
+  );
   const communityItems = getArrayTranslation<string>(t('clube.community.items', { returnObjects: true }));
+  const bioStats = getArrayTranslation<{ value: string; label: string }>(
+    t('clube.bio.stats', { returnObjects: true })
+  );
+  const testimonials = getArrayTranslation<{ text: string; name: string; role: string }>(
+    t('clube.testimonials.items', { returnObjects: true })
+  );
+  const outsideItems = getArrayTranslation<string>(t('clube.comparison.outsideItems', { returnObjects: true }));
+  const insideItems = getArrayTranslation<string>(t('clube.comparison.insideItems', { returnObjects: true }));
+  const priceIncludes = getArrayTranslation<string>(t('clube.price.includes', { returnObjects: true }));
   const faq = getArrayTranslation<{ q: string; a: string }>(t('clube.faq.items', { returnObjects: true }));
 
   return (
-    <div className="pt-24 md:pt-32 pb-16 overflow-hidden">
-      {/* HERO */}
-      <section className="max-w-7xl mx-auto px-5 md:px-6 grid md:grid-cols-2 gap-10 items-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="space-y-6"
-        >
-          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('clube.hero.eyebrow')}</span>
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight">
-            {t('clube.hero.titleStart')} <br />
-            <span className="italic font-serif text-primary">{t('clube.hero.titleAccent')}</span>
-          </h1>
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-            {t('clube.hero.desc')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-            <motion.div
-              animate={{ scale: [1, 1.03, 1] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <a
-                href="https://chk.eduzz.com/2445141"
+    <div className="overflow-hidden">
+      {/* ── HERO ── */}
+      <section className="bg-[#0d1a11] text-white pt-24 md:pt-28 pb-0">
+        <div className="max-w-7xl mx-auto px-5 md:px-8 grid md:grid-cols-2 gap-10 items-end">
+          {/* left */}
+          <motion.div
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            className="space-y-6 pb-12 md:pb-20"
+          >
+            <span className="inline-block text-[11px] font-bold tracking-[0.2em] text-emerald-400 uppercase border border-emerald-400/40 rounded-full px-3 py-1">
+              {t('clube.hero.eyebrow')}
+            </span>
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight tracking-tight">
+              {t('clube.hero.titleStart')}{' '}
+              <span className="text-[#c9a84c] italic font-serif">{t('clube.hero.titleAccent')}</span>{' '}
+              {t('clube.hero.titleEnd')}
+            </h1>
+            <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-lg">
+              {t('clube.hero.desc')}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 items-start">
+              <motion.a
+                href={CHECKOUT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-emerald-600 text-white text-sm md:text-base font-bold hover:bg-emerald-700 transition-colors shadow-lg"
+                animate={{ scale: [1, 1.03, 1] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-500 transition-colors shadow-lg"
               >
                 {t('clube.hero.cta')} <ArrowRight className="w-4 h-4" />
+              </motion.a>
+              <a
+                href="#o-que-recebe"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-white/30 text-white text-sm font-semibold hover:border-white/60 transition-colors"
+              >
+                {t('clube.hero.cta2')}
               </a>
-            </motion.div>
-            <span className="text-xs text-muted-foreground">{t('clube.hero.cancel')}</span>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7 }}
-          className="relative"
-        >
-          <div className="absolute -inset-6 bg-gradient-to-br from-primary/30 to-accent/20 rounded-[2rem] blur-2xl" />
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl ring-1 ring-border/40">
+            </div>
+            {/* trust strip */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+              {heroStats.map((s, i) => {
+                const Icon = HERO_STATS_ICONS[i % HERO_STATS_ICONS.length];
+                return (
+                  <div key={i} className="flex items-center gap-2 text-xs text-white/60">
+                    <Icon className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>{s}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
+          {/* right — photo flush to bottom */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7 }}
+            className="relative flex items-end justify-center md:justify-end"
+          >
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[110%] h-[70%] bg-emerald-900/30 blur-3xl rounded-full" />
             <img
               src="https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg"
               alt="Dr. Mauro Kwitko"
-              className="w-full aspect-[4/5] object-cover"
+              className="relative w-full max-w-sm md:max-w-none md:w-[92%] object-cover object-top rounded-t-3xl"
+              style={{ maxHeight: 560 }}
             />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── DOR ── */}
+      <section className="max-w-7xl mx-auto px-5 md:px-8 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
+        {/* left */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-60px' }}
+          variants={fadeUp}
+        >
+          <div className="relative rounded-3xl overflow-hidden shadow-xl mb-8 md:mb-0">
+            <img
+              src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80"
+              alt="Estudante refletindo"
+              className="w-full aspect-[4/3] object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+          </div>
+        </motion.div>
+        {/* right */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-60px' }}
+          variants={fadeUp}
+          className="space-y-6"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-snug">
+            {t('clube.pain.title')}
+          </h2>
+          <ul className="space-y-3">
+            {painItems.map((item) => (
+              <li key={item} className="flex items-start gap-3 text-muted-foreground text-sm">
+                <Check className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8 border-t border-border/60 pt-8 space-y-3">
+            <h3 className="text-xl md:text-2xl font-bold">{t('clube.pain.solutionTitle')}</h3>
+            <p className="text-muted-foreground leading-relaxed text-sm">{t('clube.pain.solutionDesc')}</p>
           </div>
         </motion.div>
       </section>
 
-      {/* BENEFITS STRIP */}
-      <section className="max-w-6xl mx-auto px-5 md:px-6 mt-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {benefits.map((b, i) => {
-            const Icon = BENEFIT_ICONS[i % BENEFIT_ICONS.length];
-            const palettes = [
-              { ring: 'ring-primary/30', grad: 'from-primary/15 via-primary/5 to-transparent', icon: 'bg-primary/15 text-primary', title: 'text-primary' },
-              { ring: 'ring-emerald-500/30', grad: 'from-emerald-500/15 via-emerald-500/5 to-transparent', icon: 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-400', title: 'text-emerald-700 dark:text-emerald-400' },
-              { ring: 'ring-amber-500/30', grad: 'from-amber-500/15 via-amber-500/5 to-transparent', icon: 'bg-amber-500/20 text-amber-700 dark:text-amber-400', title: 'text-amber-700 dark:text-amber-400' },
-              { ring: 'ring-accent/40', grad: 'from-accent/20 via-accent/5 to-transparent', icon: 'bg-accent/20 text-accent-foreground', title: 'text-foreground' },
-            ];
-            const p = palettes[i % palettes.length];
-            return (
+      {/* ── O QUE VOCÊ RECEBE ── */}
+      <section id="o-que-recebe" className="bg-secondary/30 py-20 md:py-28">
+        <div className="max-w-7xl mx-auto px-5 md:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="text-center mb-12"
+          >
+            <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
+              {t('clube.contentCards.title')}
+            </h2>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {contentCards.map((card, i) => {
+              const Icon = CARD_ICONS[i % CARD_ICONS.length];
+              return (
+                <motion.div
+                  key={i}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
+                  variants={{ ...fadeUp, show: { ...fadeUp.show, transition: { duration: 0.45, delay: i * 0.07 } } }}
+                  className="bg-background rounded-2xl overflow-hidden shadow-md ring-1 ring-border/40 hover:shadow-lg transition-shadow"
+                >
+                  <div className="relative h-44 overflow-hidden">
+                    <img
+                      src={CARD_IMAGES[i]}
+                      alt={card.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute bottom-3 left-3 w-9 h-9 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-white" />
+                    </div>
+                  </div>
+                  <div className="p-5 space-y-1.5">
+                    <h3 className="font-bold text-base">{card.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── COMUNIDADE ── */}
+      <section className="relative py-20 md:py-28 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1400&q=80')" }}
+        />
+        <div className="absolute inset-0 bg-[#0d1a11]/85" />
+        <div className="relative max-w-6xl mx-auto px-5 md:px-8 text-white">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="max-w-3xl space-y-6"
+          >
+            <span className="inline-block text-[11px] font-bold tracking-[0.2em] text-emerald-400 uppercase border border-emerald-400/40 rounded-full px-3 py-1">
+              {t('clube.community.eyebrow')}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">
+              {t('clube.community.title')}
+            </h2>
+            <p className="text-white/70 text-base md:text-lg leading-relaxed">
+              {t('clube.community.desc')}
+            </p>
+            <ul className="grid sm:grid-cols-2 gap-3 mt-4">
+              {communityItems.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm text-white/80">
+                  <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── BIO + TESTIMONIALS ── */}
+      <section className="max-w-7xl mx-auto px-5 md:px-8 py-20 md:py-28">
+        <div className="grid md:grid-cols-2 gap-12 items-start">
+          {/* bio left */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="space-y-6"
+          >
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{t('clube.bio.title')}</h2>
+            <div className="relative rounded-3xl overflow-hidden shadow-xl">
+              <img
+                src="https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg"
+                alt="Dr. Mauro Kwitko"
+                className="w-full aspect-[3/4] object-cover object-top"
+              />
+            </div>
+            <p className="text-muted-foreground leading-relaxed">{t('clube.bio.desc')}</p>
+            <div className="grid grid-cols-2 gap-4">
+              {bioStats.map((s, i) => (
+                <div key={i} className="rounded-2xl p-4 bg-secondary/50 border border-border/50">
+                  <div className="text-2xl font-bold text-primary">{s.value}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+          {/* testimonials right */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="space-y-5 md:pt-12"
+          >
+            <h3 className="text-xl font-bold">{t('clube.testimonials.title')}</h3>
+            {testimonials.map((t_item, i) => (
               <div
                 key={i}
-                className={`rounded-3xl p-6 md:p-7 bg-gradient-to-br ${p.grad} ring-1 ${p.ring} shadow-md hover:shadow-lg transition-shadow`}
+                className="rounded-2xl p-6 bg-secondary/40 border border-border/50 space-y-3"
               >
-                <div className={`w-12 h-12 rounded-2xl ${p.icon} flex items-center justify-center mb-4`}>
-                  <Icon className="w-6 h-6" />
+                <Quote className="w-5 h-5 text-primary/50" />
+                <p className="text-sm text-foreground/85 leading-relaxed italic">"{t_item.text}"</p>
+                <div className="flex items-center gap-3 pt-1">
+                  <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-sm">
+                    {t_item.name[0]}
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold">{t_item.name}</div>
+                    <div className="text-xs text-muted-foreground">{t_item.role}</div>
+                  </div>
                 </div>
-                <h3 className={`text-lg md:text-xl font-bold tracking-tight ${p.title}`}>{b.title}</h3>
-                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{b.desc}</p>
               </div>
-            );
-          })}
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* PERKS */}
-      <section className="max-w-5xl mx-auto px-5 md:px-6 mt-20">
-        <div className="grid md:grid-cols-2 gap-5">
-          <div className="rounded-3xl p-6 md:p-8 bg-gradient-to-br from-emerald-500/15 via-emerald-500/5 to-transparent ring-1 ring-emerald-500/30 shadow-md">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 flex items-center justify-center mb-4">
-              <Gift className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl md:text-2xl font-bold tracking-tight">
-              {t('clube.perks.ebooksTitleA')} <span className="text-emerald-700 dark:text-emerald-400">{t('clube.perks.ebooksTitleB')}</span>
-            </h3>
-            <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
-              {t('clube.perks.ebooksDesc')}
+      {/* ── ACERVO ── */}
+      <section className="py-16 bg-secondary/20">
+        <div className="max-w-6xl mx-auto px-5 md:px-8 text-center mb-10">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+          >
+            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
+              {t('clube.acervo.eyebrow')}
+            </span>
+            <h2 className="text-2xl md:text-4xl font-bold tracking-tight mt-3">
+              {t('clube.acervo.title')}
+            </h2>
+            <p className="text-muted-foreground mt-3 max-w-xl mx-auto text-sm">
+              {t('clube.acervo.desc')}
             </p>
-          </div>
-          <div className="rounded-3xl p-6 md:p-8 bg-gradient-to-br from-primary/15 via-primary/5 to-transparent ring-1 ring-primary/30 shadow-md">
-            <div className="w-12 h-12 rounded-2xl bg-primary/15 text-primary flex items-center justify-center mb-4">
-              <Tag className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl md:text-2xl font-bold tracking-tight">
-              <span className="text-primary">{t('clube.perks.discountTitleA')}</span> {t('clube.perks.discountTitleB')}
-            </h3>
-            <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
-              {t('clube.perks.discountDesc')}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ACERVO */}
-      <section className="mt-24">
-        <div className="max-w-6xl mx-auto px-5 md:px-6 text-center mb-10">
-          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('clube.acervo.eyebrow')}</span>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">
-            {t('clube.acervo.title')}
-          </h2>
-          <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-            {t('clube.acervo.desc')}
-          </p>
+          </motion.div>
         </div>
         {ebookCovers.length > 0 && (
           <Marquee
             items={ebookCovers}
             duration={Math.max(40, ebookCovers.length * 8)}
             renderItem={(e) => (
-              <div className="block w-[160px] h-[226px] md:w-[200px] md:h-[283px] rounded-xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 relative">
-                <img src={e.cover_url ?? ''} alt={e.title} className="absolute inset-0 w-full h-full object-cover" />
+              <div className="block w-[140px] h-[200px] md:w-[170px] md:h-[240px] rounded-xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 relative">
+                <img
+                  src={e.cover_url ?? ''}
+                  alt={e.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
               </div>
             )}
           />
         )}
-      </section>
-
-      {/* FEATURES */}
-      <section className="max-w-6xl mx-auto px-5 md:px-6 mt-24 space-y-16">
-        {features.map((f, idx) => {
-          const Icon = FEATURE_ICONS[idx % FEATURE_ICONS.length];
-          return (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.5 }}
-              className={`grid md:grid-cols-2 gap-10 items-center ${idx % 2 === 1 ? 'md:[&>div:first-child]:order-2' : ''}`}
-            >
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                  <Icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-2xl md:text-3xl font-bold tracking-tight">{f.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{f.desc}</p>
-              </div>
-              <div className="rounded-3xl overflow-hidden shadow-lg ring-1 ring-border/40">
-                <img src={FEATURE_COVERS[idx]} alt={f.title} loading="lazy" className="w-full aspect-[4/3] object-cover" />
-              </div>
-            </motion.div>
-          );
-        })}
-
-        {/* Hinários */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="grid md:grid-cols-2 gap-10 items-center"
-        >
-          <div className="space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-              <Music className="w-6 h-6" />
-            </div>
-            <h3 className="text-2xl md:text-3xl font-bold tracking-tight">{t('clube.hinarios.title')}</h3>
-            <p className="text-muted-foreground leading-relaxed">
-              {t('clube.hinarios.desc')}
-            </p>
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            {HINOS_COVERS.map((c) => (
-              <div key={c} className="rounded-xl overflow-hidden ring-1 ring-border/40 shadow-md aspect-square">
-                <img src={c} alt="Hinário" loading="lazy" className="w-full h-full object-cover" />
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* COMMUNITY */}
-      <section className="max-w-5xl mx-auto px-5 md:px-6 mt-24">
-        <div className="rounded-3xl p-8 md:p-12 bg-gradient-to-br from-primary/10 via-background to-accent/10 ring-1 ring-border/40 shadow-md">
-          <div className="flex items-center gap-3 mb-4">
-            <Heart className="w-6 h-6 text-primary" />
-            <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('clube.community.eyebrow')}</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{t('clube.community.title')}</h2>
-          <p className="text-muted-foreground mt-4 leading-relaxed text-base md:text-lg">
-            {t('clube.community.desc')}
-          </p>
-          <ul className="grid sm:grid-cols-2 gap-3 mt-6">
-            {communityItems.map((i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-foreground/85">
-                <Check className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
-                <span>{i}</span>
-              </li>
-            ))}
-          </ul>
+        <div className="text-center mt-8">
+          <a
+            href={CHECKOUT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-border text-sm font-semibold hover:bg-secondary transition-colors"
+          >
+            Ver biblioteca completa
+          </a>
         </div>
       </section>
 
-      {/* PRICE */}
-      <section className="max-w-xl mx-auto px-5 md:px-6 mt-24">
+      {/* ── COMPARISON + PRICE ── */}
+      <section className="max-w-7xl mx-auto px-5 md:px-8 py-20 md:py-28">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          whileInView="show"
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="rounded-3xl p-8 md:p-10 bg-background ring-2 ring-primary shadow-2xl text-center"
+          variants={fadeUp}
+          className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold tracking-wider uppercase mb-5">
-            <Sparkles className="w-3.5 h-3.5" /> {t('clube.price.badge')}
-          </div>
-          <h3 className="text-xl font-bold">{t('clube.price.title')}</h3>
-          <div className="mt-5 flex items-end justify-center gap-1">
-            <span className="text-2xl font-bold text-muted-foreground">R$</span>
-            <span className="text-6xl font-bold tracking-tight">29</span>
-            <span className="text-base text-muted-foreground mb-2">{t('clube.price.perMonth')}</span>
-          </div>
-          <ul className="mt-7 space-y-3 text-left">
-            {priceIncludes.map((i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-foreground/85">
-                <Check className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
-                <span>{i}</span>
-              </li>
-            ))}
-          </ul>
+          <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
+            {t('clube.comparison.title')}
+          </h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          {/* comparison table */}
           <motion.div
-            animate={{ scale: [1, 1.03, 1] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-            className="mt-8"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="rounded-3xl border border-border/60 overflow-hidden"
           >
-            <a
-              href="https://chk.eduzz.com/2445141"
+            <div className="grid grid-cols-2">
+              <div className="p-5 bg-secondary/40 border-b border-r border-border/60">
+                <span className="text-sm font-bold text-muted-foreground">{t('clube.comparison.outside')}</span>
+              </div>
+              <div className="p-5 bg-primary/10 border-b border-border/60">
+                <span className="text-sm font-bold text-primary">{t('clube.comparison.inside')}</span>
+              </div>
+            </div>
+            {outsideItems.map((out, i) => (
+              <div key={i} className={`grid grid-cols-2 ${i < outsideItems.length - 1 ? 'border-b border-border/40' : ''}`}>
+                <div className="p-4 flex items-start gap-2 bg-secondary/20 border-r border-border/40">
+                  <X className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
+                  <span className="text-xs text-muted-foreground">{out}</span>
+                </div>
+                <div className="p-4 flex items-start gap-2">
+                  <Check className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
+                  <span className="text-xs text-foreground/85">{insideItems[i]}</span>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+          {/* price card */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="rounded-3xl p-8 md:p-10 bg-[#0d1a11] text-white shadow-2xl"
+          >
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[11px] font-bold tracking-wider uppercase mb-5">
+              {t('clube.price.badge')}
+            </div>
+            <h3 className="text-lg font-bold">{t('clube.price.title')}</h3>
+            <div className="mt-5 flex items-end gap-1">
+              <span className="text-xl font-bold text-white/60">R$</span>
+              <span className="text-6xl font-bold tracking-tight">29</span>
+              <span className="text-base text-white/60 mb-2">{t('clube.price.perMonth')}</span>
+            </div>
+            <ul className="mt-6 space-y-2.5 grid grid-cols-2 gap-x-4">
+              {priceIncludes.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm text-white/80">
+                  <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <motion.a
+              href={CHECKOUT_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full px-6 py-4 rounded-full bg-emerald-600 text-white text-base font-bold hover:bg-emerald-700 transition-colors shadow-lg"
+              animate={{ scale: [1, 1.03, 1] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+              className="mt-8 block w-full text-center px-6 py-4 rounded-full bg-emerald-600 text-white font-bold hover:bg-emerald-500 transition-colors shadow-lg"
             >
               {t('clube.price.cta')}
-            </a>
+            </motion.a>
+            <p className="text-xs text-white/40 mt-3 text-center">{t('clube.price.note')}</p>
           </motion.div>
-          <p className="text-xs text-muted-foreground mt-3">{t('clube.price.note')}</p>
-        </motion.div>
+        </div>
       </section>
 
-      {/* FAQ */}
-      <section className="max-w-3xl mx-auto px-5 md:px-6 mt-24">
-        <div className="text-center mb-10">
-          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">{t('clube.faq.eyebrow')}</span>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-3">{t('clube.faq.title')}</h2>
-        </div>
-        <div className="space-y-3">
-          {faq.map((f) => (
-            <div
-              key={f.q}
-              className="rounded-2xl p-5 bg-gradient-to-br from-background to-secondary/40 border border-border/60 ring-1 ring-border/40"
+      {/* ── FAQ ── */}
+      <section className="max-w-3xl mx-auto px-5 md:px-8 pb-20">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          className="text-center mb-10"
+        >
+          <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
+            {t('clube.faq.eyebrow')}
+          </span>
+          <h2 className="text-2xl md:text-4xl font-bold tracking-tight mt-3">
+            {t('clube.faq.title')}
+          </h2>
+        </motion.div>
+        <div className="grid sm:grid-cols-2 gap-4">
+          {faq.map((f, i) => (
+            <motion.div
+              key={i}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={{ ...fadeUp, show: { ...fadeUp.show, transition: { duration: 0.4, delay: i * 0.08 } } }}
+              className="rounded-2xl p-5 border border-border/60 bg-secondary/20"
             >
-              <h3 className="font-bold text-base">{f.q}</h3>
-              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{f.a}</p>
-            </div>
+              <h3 className="font-bold text-sm">{f.q}</h3>
+              <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{f.a}</p>
+            </motion.div>
           ))}
         </div>
       </section>
 
-      {/* CTA FINAL */}
-      <section className="max-w-3xl mx-auto px-5 md:px-6 mt-20 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{t('clube.ctaFinal.title')}</h2>
-        <p className="text-muted-foreground mt-4">{t('clube.ctaFinal.desc')}</p>
+      {/* ── FOOTER CTA ── */}
+      <section className="bg-[#0d1a11] text-white py-20 md:py-28 text-center">
         <motion.div
-          animate={{ scale: [1, 1.03, 1] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-          className="mt-7 inline-block"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          className="max-w-2xl mx-auto px-5 space-y-6"
         >
-          <a
-            href="https://chk.eduzz.com/2445141"
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+            {t('clube.ctaFinal.title')}
+          </h2>
+          <p className="text-white/65 text-base">{t('clube.ctaFinal.desc')}</p>
+          <motion.a
+            href={CHECKOUT_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-emerald-600 text-white text-base font-bold hover:bg-emerald-700 transition-colors shadow-lg"
+            animate={{ scale: [1, 1.03, 1] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+            className="inline-flex items-center gap-2 px-9 py-4 rounded-full bg-emerald-600 text-white font-bold hover:bg-emerald-500 transition-colors shadow-xl text-base"
           >
             {t('clube.ctaFinal.button')} <ArrowRight className="w-5 h-5" />
-          </a>
+          </motion.a>
+          <p className="text-white/35 text-xs">Ambiente seguro e cancelamento fácil.</p>
         </motion.div>
       </section>
     </div>

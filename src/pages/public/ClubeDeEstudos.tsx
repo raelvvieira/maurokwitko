@@ -272,13 +272,6 @@ const ClubeDeEstudos = () => {
             className="space-y-6"
           >
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{t('clube.bio.title')}</h2>
-            <div className="relative rounded-3xl overflow-hidden shadow-xl">
-              <img
-                src="https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg"
-                alt="Dr. Mauro Kwitko"
-                className="w-full aspect-[3/4] object-cover object-top"
-              />
-            </div>
             <p className="text-muted-foreground leading-relaxed">{t('clube.bio.desc')}</p>
             <div className="grid grid-cols-2 gap-4">
               {bioStats.map((s, i) => (
@@ -289,19 +282,26 @@ const ClubeDeEstudos = () => {
               ))}
             </div>
           </motion.div>
-          {/* testimonials right */}
+          {/* photo + testimonials right */}
           <motion.div
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="space-y-5 md:pt-12"
+            className="space-y-5"
           >
-            <h3 className="text-xl font-bold">{t('clube.testimonials.title')}</h3>
+            <div className="relative rounded-3xl overflow-hidden shadow-xl">
+              <img
+                src="https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg"
+                alt="Dr. Mauro Kwitko"
+                className="w-full aspect-[4/3] object-cover object-top"
+              />
+            </div>
+            <h3 className="text-xl font-bold pt-2">{t('clube.testimonials.title')}</h3>
             {testimonials.map((t_item, i) => (
               <div
                 key={i}
-                className="rounded-2xl p-6 bg-secondary/40 border border-border/50 space-y-3"
+                className="rounded-2xl p-5 bg-secondary/40 border border-border/50 space-y-3"
               >
                 <Quote className="w-5 h-5 text-primary/50" />
                 <p className="text-sm text-foreground/85 leading-relaxed italic">"{t_item.text}"</p>

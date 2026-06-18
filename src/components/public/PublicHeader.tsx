@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,8 @@ import LanguageSwitcher from './LanguageSwitcher';
 const PublicHeader = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isDarkHero = location.pathname === '/clube-de-estudos';
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -144,6 +146,8 @@ const PublicHeader = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm'
+          : isDarkHero
+          ? 'bg-[#0d1a11]/70 backdrop-blur-sm'
           : 'bg-transparent'
       }`}
     >
@@ -167,7 +171,7 @@ const PublicHeader = () => {
               >
                 <button
                   onClick={() => setOpenMenu((v) => (v === item.label ? null : item.label))}
-                  className="inline-flex items-center gap-1 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors whitespace-nowrap"
+                  className={`inline-flex items-center gap-1 text-sm font-medium transition-colors whitespace-nowrap ${!scrolled && isDarkHero ? 'text-white/80 hover:text-white' : 'text-foreground/70 hover:text-foreground'}`}
                 >
                   {item.label}
                   <ChevronDown className={`w-3.5 h-3.5 transition-transform ${openMenu === item.label ? 'rotate-180' : ''}`} />
@@ -201,7 +205,7 @@ const PublicHeader = () => {
               <Link
                 key={item.label}
                 to={item.href!}
-                className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors whitespace-nowrap"
+                className={`text-sm font-medium transition-colors whitespace-nowrap ${!scrolled && isDarkHero ? 'text-white/80 hover:text-white' : 'text-foreground/70 hover:text-foreground'}`}
               >
                 {item.label}
               </Link>

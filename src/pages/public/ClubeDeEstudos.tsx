@@ -62,7 +62,7 @@ const ClubeDeEstudos = () => {
   return (
     <div className="overflow-hidden">
       {/* ── HERO ── */}
-      <section className="bg-[#0d1a11] text-white pt-24 md:pt-28 pb-0">
+      <section className="bg-[#0d1a11] text-white pt-32 md:pt-36 pb-0">
         <div className="max-w-7xl mx-auto px-5 md:px-8 grid md:grid-cols-2 gap-10 items-end">
           {/* left */}
           <motion.div

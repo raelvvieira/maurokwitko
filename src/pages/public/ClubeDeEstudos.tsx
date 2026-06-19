@@ -10,9 +10,9 @@ const CHECKOUT_URL = 'https://chk.eduzz.com/2445141';
 
 // imagens geradas com Magnif para a seção Aprendizados
 const APRENDIZADOS_IMAGES = [
-  'https://pikaso.cdnpk.net/private/production/4642693844/render.jpg?token=exp=1782259200~hmac=ec8384e8d2bd11300eb3ff728a763051d7139ec15db2f359500907a677da93ae',
-  'https://pikaso.cdnpk.net/private/production/4642693561/render.jpg?token=exp=1782259200~hmac=59721a878b7640ac42cf927ca18502569a7b0077b5525ec49c62c9d6605a1449',
-  'https://pikaso.cdnpk.net/private/production/4642693325/render.jpg?token=exp=1782259200~hmac=b57f6a27b685f68bda5cf623d0e198b5564afe3a20804c3ffbdf691bfb4d4067',
+  'https://pikaso.cdnpk.net/private/production/4642740342/render.jpg?token=exp=1782259200~hmac=8ea9010de069794eee20d467cdd696349d2027b91480fff79cbd8f3496e27dcb',
+  'https://pikaso.cdnpk.net/private/production/4642740762/render.jpg?token=exp=1782259200~hmac=3d57901bc3533351889958868c520f57fa20e11efea535fe32a342b5cfb531b7',
+  'https://pikaso.cdnpk.net/private/production/4642741318/render.jpg?token=exp=1782259200~hmac=872e2473d9581af2659a3bac1e6a29f57da716c6b0fbb5fc3b81e1f5d23c7dd7',
   'https://pikaso.cdnpk.net/private/production/4642693801/render.jpg?token=exp=1782259200~hmac=5d6dc27b4017d081c0502e87b0462cfb78e494e71e0ce2d54398e16539b31495',
   'https://pikaso.cdnpk.net/private/production/4642694314/render.jpg?token=exp=1782259200~hmac=f36978a576665f0334902999faf7dc607682f6b4e49ec58b098fc004654f169f',
   'https://pikaso.cdnpk.net/private/production/4642694195/render.jpg?token=exp=1782259200~hmac=e7968d4264e9e549482d5091c637a9e698fccee11e1e60aa6d4aa62b3e22151d',

@@ -47,7 +47,7 @@ const COMMUNITY_ICONS = [HeartHandshake, Users, MessageCircle, Sparkles, BookOpe
 const EXTRAS_ICONS = [Music, PlayCircle, FileText, Gift];
 const BIBLIOTECA_ICONS = [BookMarked, BookOpen, ScrollText, FileText, Sparkles, BadgeCheck];
 
-const fadeUp = {
+const fadeUp: import('framer-motion').Variants = {
   hidden: { opacity: 0, y: 22 },
   show: (i = 0) => ({
     opacity: 1,

@@ -283,7 +283,7 @@ const ClubeDeEstudos = () => {
             className="rounded-3xl overflow-hidden shadow-xl"
           >
             <img
-              src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
+              src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=800&q=80"
               alt="Comunidade"
               className="w-full aspect-[4/3] object-cover"
               loading="lazy"

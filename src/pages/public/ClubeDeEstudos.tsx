@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, Check, ChevronDown, Lock } from 'lucide-react';
+import {
+  ArrowRight, Check, ChevronDown, Lock,
+  ArrowLeftRight, Users, MessageCircle, Sparkles, BookOpen, Lightbulb,
+  Music, Video, FileText, Gift,
+} from 'lucide-react';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import Marquee from '@/components/public/Marquee';
 import { getArrayTranslation } from '@/i18n';
@@ -20,7 +24,8 @@ const APRENDIZADOS_IMAGES = [
   'https://pikaso.cdnpk.net/private/production/4642694688/render.jpg?token=exp=1782259200~hmac=206d1b3b63ba7e26ffe2047979d89e15f39152448188ae43f5fd16f7ba2a6fcf',
 ];
 
-const COMMUNITY_ICONS = ['↔', '🤝', '💬', '✨', '📖', '🪞'];
+const COMMUNITY_ICONS = [ArrowLeftRight, Users, MessageCircle, Sparkles, BookOpen, Lightbulb];
+const EXTRAS_ICONS = [Music, Video, FileText, Gift];
 
 const glass = 'bg-white/75 backdrop-blur-2xl border border-black/[0.06] shadow-sm';
 
@@ -97,13 +102,13 @@ const ClubeDeEstudos = () => {
     <div className="bg-[#FAF8F5] min-h-screen overflow-x-hidden" style={{ fontFamily: 'Inter, SF Pro Display, sans-serif' }}>
 
       {/* ── HERO ── */}
-      <section className="relative min-h-[90vh] max-w-7xl mx-auto px-5 md:px-10 pt-28 md:pt-32 pb-0 grid md:grid-cols-[60fr_40fr] gap-8 md:gap-0 items-end">
+      <section className="relative min-h-[80vh] max-w-7xl mx-auto px-5 md:px-10 pt-20 md:pt-24 pb-0 grid md:grid-cols-[60fr_40fr] gap-8 md:gap-0 items-end">
         {/* text */}
         <motion.div
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="pb-14 md:pb-20 space-y-8 z-10"
+          className="pb-10 md:pb-16 space-y-6 z-10"
         >
           <span className="text-xs font-semibold tracking-[0.2em] text-[#4F8F87] uppercase">
             {t('clube.hero.eyebrow')}
@@ -151,18 +156,18 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* ── APRENDIZADOS ── */}
-      <section className="py-24 md:py-32">
+      <section className="py-14 md:py-20">
         <motion.div
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
           variants={fadeUp}
-          className="max-w-5xl mx-auto px-5 md:px-10 text-center mb-14"
+          className="max-w-5xl mx-auto px-5 md:px-10 text-center mb-10"
         >
-          <h2 className="font-bold text-[#141414] mb-4" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3rem)' }}>
+          <h2 className="font-bold text-[#141414] mb-3" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.6rem)' }}>
             {t('clube.aprendizados.title')}
           </h2>
-          <p className="text-[#5F5F5F] text-lg">{t('clube.aprendizados.subtitle')}</p>
+          <p className="text-[#5F5F5F] text-base">{t('clube.aprendizados.subtitle')}</p>
         </motion.div>
 
         {/* horizontal scroll carousel */}
@@ -196,9 +201,9 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* ── BIBLIOTECA ── */}
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-white py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-5 md:px-10">
-          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start mb-16">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-14 items-start mb-12">
             <motion.div
               initial="hidden"
               whileInView="show"
@@ -267,7 +272,7 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* ── COMUNIDADE ── */}
-      <section className="py-24 md:py-32" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F6F7F8 100%)' }}>
+      <section className="py-14 md:py-20" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F6F7F8 100%)' }}>
         <div className="max-w-6xl mx-auto px-5 md:px-10 grid md:grid-cols-2 gap-12 items-center">
           {/* photo */}
           <motion.div
@@ -297,52 +302,63 @@ const ClubeDeEstudos = () => {
               {t('clube.community.title')}
             </h2>
             <p className="text-[#5F5F5F] leading-relaxed text-base">{t('clube.community.desc')}</p>
-            <div className="grid grid-cols-2 gap-3">
-              {communityItems.map((item, i) => (
-                <div key={i} className={`${glass} rounded-2xl px-4 py-3.5 flex items-center gap-2`}>
-                  <span className="text-[#4F8F87] text-base">{COMMUNITY_ICONS[i % COMMUNITY_ICONS.length]}</span>
-                  <span className="text-sm font-semibold text-[#141414]">{item.title}</span>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 gap-2.5">
+              {communityItems.map((item, i) => {
+                const Icon = COMMUNITY_ICONS[i % COMMUNITY_ICONS.length];
+                return (
+                  <div key={i} className={`${glass} rounded-2xl px-4 py-3 flex items-center gap-2.5`}>
+                    <div className="w-7 h-7 rounded-lg bg-[#4F8F87]/10 flex items-center justify-center shrink-0">
+                      <Icon className="w-3.5 h-3.5 text-[#4F8F87]" />
+                    </div>
+                    <span className="text-sm font-semibold text-[#141414]">{item.title}</span>
+                  </div>
+                );
+              })}
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* ── EXTRAS ── */}
-      <section className="bg-[#FAF8F5] py-24 md:py-32">
+      <section className="bg-[#FAF8F5] py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-5 md:px-10">
           <motion.h2
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="font-bold text-[#141414] text-center mb-12"
-            style={{ fontSize: 'clamp(1.6rem, 3vw, 3rem)' }}
+            className="font-bold text-[#141414] text-center mb-10"
+            style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)' }}
           >
             {t('clube.extras.title')}
           </motion.h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {extras.map((item, i) => (
-              <motion.div
-                key={i}
-                custom={i}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                className={`${glass} rounded-3xl p-6 space-y-2 hover:-translate-y-1.5 hover:scale-[1.01] transition-all duration-300`}
-              >
-                <h3 className="font-bold text-[#141414] text-base">{item.title}</h3>
-                <p className="text-[#5F5F5F] text-sm leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            {extras.map((item, i) => {
+              const Icon = EXTRAS_ICONS[i % EXTRAS_ICONS.length];
+              return (
+                <motion.div
+                  key={i}
+                  custom={i}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
+                  variants={fadeUp}
+                  className={`${glass} rounded-2xl p-5 space-y-3 hover:-translate-y-1 hover:scale-[1.01] transition-all duration-300`}
+                >
+                  <div className="w-9 h-9 rounded-xl bg-[#4F8F87]/10 flex items-center justify-center">
+                    <Icon className="w-4.5 h-4.5 text-[#4F8F87]" style={{ width: 18, height: 18 }} />
+                  </div>
+                  <h3 className="font-bold text-[#141414] text-sm">{item.title}</h3>
+                  <p className="text-[#5F5F5F] text-xs leading-relaxed">{item.desc}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* ── BIO ── */}
-      <section className="bg-[#FAF8F5] pb-24 md:pb-32">
+      <section className="bg-[#FAF8F5] pb-14 md:pb-20">
         <div className="max-w-6xl mx-auto px-5 md:px-10 grid md:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -382,15 +398,15 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* ── ANCORAGEM DE PREÇO ── */}
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-white py-14 md:py-20">
         <div className="max-w-3xl mx-auto px-5 md:px-10">
           <motion.h2
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="font-bold text-[#141414] text-center mb-12"
-            style={{ fontSize: 'clamp(1.6rem, 3vw, 2.8rem)' }}
+            className="font-bold text-[#141414] text-center mb-10"
+            style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)' }}
           >
             {t('clube.ancoragem.title')}
           </motion.h2>
@@ -425,7 +441,7 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* ── OFERTA / PRICE ── */}
-      <section className="bg-[#FAF8F5] py-24 md:py-32">
+      <section className="bg-[#FAF8F5] py-14 md:py-20">
         <div className="max-w-2xl mx-auto px-5 md:px-10">
           <motion.div
             initial="hidden"
@@ -473,7 +489,7 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* ── PARA QUEM É ── */}
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-white py-14 md:py-20">
         <div className="max-w-5xl mx-auto px-5 md:px-10">
           <motion.div
             initial="hidden"
@@ -482,7 +498,7 @@ const ClubeDeEstudos = () => {
             variants={fadeUp}
             className="mb-12"
           >
-            <h2 className="font-bold text-[#141414] mb-3" style={{ fontSize: 'clamp(1.6rem, 3vw, 3rem)' }}>
+            <h2 className="font-bold text-[#141414] mb-3" style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)' }}>
               {t('clube.paraQuem.title')}
             </h2>
             <p className="text-[#5F5F5F] text-base">{t('clube.paraQuem.desc')}</p>
@@ -507,15 +523,15 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="bg-[#FAF8F5] py-24 md:py-32">
+      <section className="bg-[#FAF8F5] py-14 md:py-20">
         <div className="max-w-3xl mx-auto px-5 md:px-10">
           <motion.h2
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="font-bold text-[#141414] text-center mb-10"
-            style={{ fontSize: 'clamp(1.6rem, 3vw, 3rem)' }}
+            className="font-bold text-[#141414] text-center mb-8"
+            style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)' }}
           >
             {t('clube.faq.title')}
           </motion.h2>
@@ -537,7 +553,7 @@ const ClubeDeEstudos = () => {
       </section>
 
       {/* ── CTA FINAL ── */}
-      <section className="bg-white py-28 md:py-40 text-center">
+      <section className="bg-white py-16 md:py-24 text-center">
         <motion.div
           initial="hidden"
           whileInView="show"

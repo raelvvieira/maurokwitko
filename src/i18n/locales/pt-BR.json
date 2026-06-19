@@ -143,142 +143,132 @@
   "clube": {
     "hero": {
       "eyebrow": "Comunidade Exclusiva",
-      "titleStart": "Estude diretamente com",
-      "titleAccent": "Dr. Mauro Kwitko",
-      "titleEnd": "e aprofunde sua jornada de autoconhecimento",
-      "desc": "Tenha acesso a cursos, livros, encontros exclusivos, comunidade privada e décadas de conhecimento reunidas em um único lugar.",
-      "cta": "Entrar no Clube",
-      "cta2": "Ver o que está incluído",
-      "cancel": "Cancele quando quiser",
-      "stats": [
-        "Mais de 200 horas de conteúdo",
-        "Biblioteca digital completa",
-        "Comunidade exclusiva",
-        "Cancelamento a qualquer momento"
+      "title": "30 anos de estudos sobre Reencarnação, Reforma Íntima e Psicoterapia Reencarnacionista reunidos em um único lugar.",
+      "desc": "Para você estudar, compreender seus desafios atuais e aprender a viver melhor esta sua encarnação.",
+      "cta": "Quero fazer parte do clube",
+      "cta2": "Ver o que está incluído"
+    },
+    "aprendizados": {
+      "title": "Aqui você vai aprender sobre",
+      "subtitle": "Conhecimentos desenvolvidos ao longo de décadas de estudo.",
+      "items": [
+        { "title": "O Mapa do Ego", "desc": "Entenda como sua personalidade influencia seus pensamentos, emoções e escolhas." },
+        { "title": "Personalidade Congênita", "desc": "Descubra características, tendências e desafios que fazem parte da sua jornada evolutiva." },
+        { "title": "Reforma Íntima", "desc": "Aprenda a identificar padrões repetitivos e de medo, culpa e sofrimento que impedem uma transformação verdadeira." },
+        { "title": "Investigação do Inconsciente", "desc": "Compreenda a origem de medos, conflitos e sofrimentos que parecem não ter explicação." },
+        { "title": "Relações Kármicas", "desc": "Entenda os vínculos que continuam e os aprendizados presentes em cada relacionamento." },
+        { "title": "Projeto Reencarnatório", "desc": "Descubra como enxergar sua vida sob a ótica do projeto evolutivo da Psicoterapia Reencarnacionista." },
+        { "title": "Ansiedade e Sofrimento", "desc": "Compreenda os desafios emocionais através da Psicoterapia Reencarnacionista." },
+        { "title": "A Morte Não Existe", "desc": "Reflexões profundas sobre a continuidade da vida, consciência e evolução espiritual." }
       ]
     },
-    "pain": {
-      "title": "Você sente que falta profundidade nos estudos espirituais?",
-      "items": [
-        "Muito conteúdo superficial e desconectado",
-        "Falta de orientação de quem realmente entende",
-        "Dificuldade para encontrar uma comunidade séria",
-        "Pouco espaço para trocar e crescer junto"
-      ],
-      "solutionTitle": "Tudo reunido em um único ambiente",
-      "solutionDesc": "Um ecossistema completo para você estudar, se aprofundar e evoluir — com conteúdo de qualidade, orientação e comunidade."
-    },
-    "contentCards": {
-      "title": "O que você recebe ao entrar no Clube",
-      "items": [
-        {
-          "title": "Biblioteca Digital",
-          "desc": "Todos os livros digitais do Dr. Mauro e os futuros lançamentos."
-        },
-        {
-          "title": "Curso Reforma Íntima",
-          "desc": "Curso completo com mais de 20 módulos para uma transformação profunda."
-        },
-        {
-          "title": "Lives Exclusivas",
-          "desc": "Encontros ao vivo com Dr. Mauro e convidados especiais."
-        },
-        {
-          "title": "Grupo VIP",
-          "desc": "Comunidade ativa no WhatsApp para troca, apoio e conexão."
-        },
-        {
-          "title": "Hinários Completos",
-          "desc": "Coleções de hinos para meditação, estudo e reflexão."
-        },
-        {
-          "title": "Aulas e Conteúdos",
-          "desc": "Aulas gravadas, entrevistas, artigos e conteúdos exclusivos."
-        }
+    "biblioteca": {
+      "title": "Além disso, você terá acesso a um acervo completo de estudos",
+      "desc": "Décadas de conhecimento organizadas para você estudar quando e onde quiser. Livros digitais, materiais de apoio, conteúdos exclusivos e novos materiais adicionados regularmente.",
+      "cta": "Ver biblioteca completa",
+      "grid": [
+        { "title": "Livros Digitais" },
+        { "title": "E-books" },
+        { "title": "Apostilas" },
+        { "title": "Materiais de Estudo" },
+        { "title": "Conteúdos Especiais" },
+        { "title": "Novos Lançamentos" }
       ]
     },
     "community": {
-      "eyebrow": "Mais que conteúdo",
-      "title": "Uma comunidade de crescimento e apoio",
-      "desc": "No Clube, você não estuda sozinho. Aqui, você encontra pessoas com os mesmos valores e objetivos, compartilha experiências, tira dúvidas e cresce junto.",
+      "title": "Uma comunidade para quem busca evoluir através do conhecimento",
+      "desc": "Você não precisa estudar sozinho. Participe de um grupo exclusivo onde todos compartilham dos mesmos objetivos.",
       "items": [
-        "Debates profundos e respeitosos",
-        "Estudos guiados e direcionados",
-        "Casos clínicos e trocas profissionais",
-        "Networking com profissionais",
-        "Apoio e acolhimento contínuo",
-        "Contato direto com Dr. Mauro"
+        { "title": "Troca de experiências" },
+        { "title": "Networking" },
+        { "title": "Discussões" },
+        { "title": "Novidades" },
+        { "title": "Aprendizados" },
+        { "title": "Reflexões" }
+      ]
+    },
+    "extras": {
+      "title": "Leve também",
+      "items": [
+        { "title": "Hinários", "desc": "Coletâneas completas de hinos para meditação e reflexão." },
+        { "title": "Lives Exclusivas", "desc": "Encontros ao vivo com Dr. Mauro e convidados especiais." },
+        { "title": "Materiais Complementares", "desc": "Apostilas, PDFs e materiais de apoio para cada curso." },
+        { "title": "Benefícios Exclusivos", "desc": "Descontos em livros físicos, acesso antecipado e muito mais." }
       ]
     },
     "bio": {
       "title": "Quem é Dr. Mauro Kwitko",
-      "desc": "Psicoterapeuta, escritor e pesquisador com mais de 40 anos dedicados à Psicoterapia Reencarnacionista e à reforma íntima.",
+      "desc": "Psiquiatra, psicoterapeuta, escritor e criador da Psicoterapia Reencarnacionista. Há mais de quatro décadas dedica sua vida ao estudo da consciência, do desenvolvimento dos processos de evolução da alma.",
       "stats": [
         { "value": "40+", "label": "Anos de experiência" },
         { "value": "30+", "label": "Livros publicados" },
-        { "value": "100k+", "label": "Alunos e leitores" },
+        { "value": "Milhares", "label": "de alunos e leitores" },
         { "value": "Referência", "label": "nacional e internacional" }
       ]
     },
-    "testimonials": {
-      "title": "O que nossos membros dizem",
+    "ancoragem": {
+      "title": "Quanto custaria acessar tudo isso separadamente?",
       "items": [
-        {
-          "text": "O Clube mudou minha forma de estudar e de viver. O conteúdo é profundo e único.",
-          "name": "Carla Mendes",
-          "role": "Psicoterapeuta"
-        },
-        {
-          "text": "Ter acesso direto ao Dr. Mauro e trocar com outros profissionais é algo único.",
-          "name": "Ricardo Almeida",
-          "role": "Médico"
-        },
-        {
-          "text": "Os hinários e as lives são lindos e me ajudaram muito na minha caminhada.",
-          "name": "Juliana Sousa",
-          "role": "Estudante"
-        }
-      ]
-    },
-    "acervo": {
-      "eyebrow": "Acesso imediato",
-      "title": "Acesso imediato a todo este acervo",
-      "desc": "Centenas de livros, hinários e conteúdos para você estudar quando e onde quiser."
-    },
-    "comparison": {
-      "title": "Por que entrar no Clube?",
-      "outside": "Fora do Clube",
-      "inside": "Dentro do Clube",
-      "outsideItems": [
-        "Comprar livros separadamente",
-        "Cursos avulsos e caros",
-        "Sem orientação",
-        "Sem comunidade",
-        "Conteúdo fragmentado",
-        "Alto investimento"
+        { "label": "Curso Reforma Íntima", "value": "R$ 697" },
+        { "label": "Biblioteca Digital", "value": "R$ 497" },
+        { "label": "Comunidade Exclusiva", "value": "R$ 297" },
+        { "label": "Hinários", "value": "R$ 197" },
+        { "label": "Lives e Conteúdos Extras", "value": "R$ 397" }
       ],
-      "insideItems": [
-        "Biblioteca completa inclusa",
-        "Cursos e aulas inclusos",
-        "Acompanhamento e direcionamento",
-        "Comunidade exclusiva",
-        "Ecossistema integrado",
-        "Acesso completo por R$ 29/mês"
-      ]
+      "totalLabel": "Valor total estimado",
+      "totalValue": "R$ 2.085",
+      "totalNote": "Você não precisa adquirir cada conteúdo individualmente."
     },
     "price": {
-      "badge": "Acesso Mensal",
-      "title": "Clube de Estudos Dr. Mauro Kwitko",
+      "title": "Tenha acesso a tudo por apenas",
+      "badge": "Plano mensal",
       "perMonth": "/mês",
+      "badgeBottom1": "Sem fidelidade",
+      "badgeBottom2": "Cancele quando quiser",
       "includes": [
-        "Biblioteca completa",
         "Curso Reforma Íntima",
-        "Lives exclusivas",
-        "Grupo VIP no WhatsApp",
-        "Hinários completos",
-        "Aulas e conteúdos",
-        "Novos lançamentos",
-        "Cancelamento a qualquer momento"
+        "Biblioteca completa",
+        "Comunidade exclusiva",
+        "Hinários",
+        "Lives especiais",
+        "Materiais complementares",
+        "Novos conteúdos",
+        "Atualizações constantes",
+        "Acesso imediato"
+      ],
+      "cta": "Quero entrar no clube",
+      "note": "Ambiente seguro e cancelamento fácil."
+    },
+    "paraQuem": {
+      "title": "Para quem é este Clube",
+      "desc": "Este espaço foi criado para pessoas que desejam estudar, compreender e evoluir:",
+      "items": [
+        "Busca compreender melhor sua própria vida",
+        "Quer aprofundar seus conhecimentos sobre reencarnação",
+        "Quer realizar uma verdadeira reforma íntima",
+        "Procura respostas para seus desafios emocionais",
+        "Busca um caminho espiritual mais consciente",
+        "Deseja aprender diretamente com Dr. Mauro Kwitko",
+        "Valoriza conhecimento sério e aprofundado",
+        "Gosta de estudar em comunidade"
+      ]
+    },
+    "faq": {
+      "title": "Perguntas Frequentes",
+      "items": [
+        { "q": "Preciso ter conhecimento prévio?", "a": "Não. O Clube foi pensado para atender tanto iniciantes quanto pessoas com experiência em psicoterapia e espiritualidade." },
+        { "q": "O acesso é imediato?", "a": "Sim. Após a assinatura, você recebe acesso imediato a todo o conteúdo da plataforma." },
+        { "q": "Posso cancelar quando quiser?", "a": "Sim. A assinatura é mensal e pode ser cancelada a qualquer momento, sem multas ou burocracia." },
+        { "q": "Novos conteúdos são adicionados?", "a": "Sim. Novos materiais, aulas e conteúdos são adicionados regularmente ao acervo do Clube." }
+      ]
+    },
+    "ctaFinal": {
+      "quote": "A encarnação não é um acaso. É uma oportunidade de evolução.",
+      "quoteAuthor": "Dr. Mauro Kwitko",
+      "title": "Comece hoje sua jornada.",
+      "button": "Quero fazer parte do clube"
+    }
+  },
       ],
       "cta": "Quero entrar no Clube",
       "note": "Ambiente seguro e cancelamento fácil."
@@ -305,11 +295,6 @@
         }
       ]
     },
-    "ctaFinal": {
-      "title": "Sua jornada de transformação começa agora",
-      "desc": "Estude, evolua e faça parte de uma comunidade que transforma vidas.",
-      "button": "Entrar no Clube Agora"
-    }
   },
   "hinos": {
     "eyebrow": "Música & Espiritualidade",

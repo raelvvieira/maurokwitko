@@ -143,96 +143,152 @@
   "clube": {
     "hero": {
       "eyebrow": "Exclusive Community",
-      "titleStart": "Study Club",
+      "titleStart": "Study directly with",
       "titleAccent": "Dr. Mauro Kwitko",
-      "desc": "Join a vibrant community of psychotherapists, physicians and other health professionals seeking to deepen inner reform, spirituality and Reincarnationist Psychotherapy.",
-      "cta": "Subscribe now — R$ 29/month",
-      "cancel": "Cancel anytime"
+      "titleEnd": "and deepen your journey of self-knowledge",
+      "desc": "Get access to courses, books, exclusive meetings, a private community and decades of knowledge — all in one place.",
+      "cta": "Join the Club",
+      "cta2": "See what's included",
+      "cancel": "Cancel anytime",
+      "stats": [
+        "Over 200 hours of content",
+        "Complete digital library",
+        "Exclusive community",
+        "Cancel anytime"
+      ]
     },
-    "benefits": [
-      {
-        "title": "Active community",
-        "desc": "Exchange ideas with professionals pursuing inner reform."
-      },
-      {
-        "title": "VIP WhatsApp group",
-        "desc": "Daily interaction and direct support."
-      },
-      {
-        "title": "Exclusive lives",
-        "desc": "First-hand interviews with special guests."
-      },
-      {
-        "title": "Complete library",
-        "desc": "E-books, classes, hymns and recorded course."
-      }
-    ],
-    "perks": {
-      "ebooksTitleA": "All of Dr. Mauro's e-books,",
-      "ebooksTitleB": "completely free",
-      "ebooksDesc": "As a Club member you download and read every e-book published by Dr. Mauro Kwitko at no extra cost — and upcoming releases reach you first.",
-      "discountTitleA": "20% discount",
-      "discountTitleB": "on all physical books",
-      "discountDesc": "Members get 20% off any physical book published by Dr. Mauro through the BesouroBox publishing house."
+    "pain": {
+      "title": "Do you feel a lack of depth in your spiritual studies?",
+      "items": [
+        "Too much superficial and disconnected content",
+        "Lack of guidance from someone who truly understands",
+        "Hard to find a serious community",
+        "Little space to exchange and grow together"
+      ],
+      "solutionTitle": "Everything in one environment",
+      "solutionDesc": "A complete ecosystem for you to study, deepen and evolve — with quality content, guidance and community."
     },
-    "acervo": {
-      "eyebrow": "Library",
-      "title": "Access all of Dr. Mauro's content",
-      "desc": "E-books, classes, lives, hymns and the complete course — all in one place."
-    },
-    "features": [
-      {
-        "title": "Access E-books and Future Releases",
-        "desc": "Growing digital library of Dr. Mauro Kwitko's works; new releases reach members first."
-      },
-      {
-        "title": "Lives and Recorded Classes",
-        "desc": "Live meetings with special guests and a complete library of classes to revisit anytime."
-      },
-      {
-        "title": "Recorded Course: Inner Reform",
-        "desc": "Full access to the course \"The Psychology of Reincarnation\", with over 20 modules."
-      }
-    ],
-    "hinarios": {
-      "title": "Complete hymnals",
-      "desc": "Hymn collections for meditation, study and reflection — Hymns of Peace, Love and Faith."
+    "contentCards": {
+      "title": "What you get when you join the Club",
+      "items": [
+        {
+          "title": "Digital Library",
+          "desc": "All of Dr. Mauro's digital books and future releases."
+        },
+        {
+          "title": "Inner Reform Course",
+          "desc": "Complete course with over 20 modules for a profound transformation."
+        },
+        {
+          "title": "Exclusive Lives",
+          "desc": "Live meetings with Dr. Mauro and special guests."
+        },
+        {
+          "title": "VIP Group",
+          "desc": "Active WhatsApp community for exchange, support and connection."
+        },
+        {
+          "title": "Complete Hymnals",
+          "desc": "Hymn collections for meditation, study and reflection."
+        },
+        {
+          "title": "Classes & Content",
+          "desc": "Recorded classes, interviews, articles and exclusive content."
+        }
+      ]
     },
     "community": {
       "eyebrow": "More than content",
-      "title": "A living community",
-      "desc": "The heart of the Club is the exchange between psychotherapists, physicians and other health professionals seeking to deepen inner reform, spirituality and Reincarnationist Psychotherapy — alongside ordinary people enriching this journey.",
+      "title": "A community of growth and support",
+      "desc": "In the Club, you don't study alone. Here you find people with the same values and goals, share experiences, ask questions and grow together.",
       "items": [
-        "Talk in internal forums",
-        "Comment on classes and clinical reports",
-        "Post your own experiences",
-        "Join the VIP WhatsApp group",
-        "Get first access to lives with guests",
-        "Exchange with professionals from many fields"
+        "Deep and respectful debates",
+        "Guided and directed studies",
+        "Clinical cases and professional exchanges",
+        "Networking with professionals",
+        "Continuous support and care",
+        "Direct contact with Dr. Mauro"
+      ]
+    },
+    "bio": {
+      "title": "Who is Dr. Mauro Kwitko",
+      "desc": "Psychotherapist, writer and researcher with over 40 years dedicated to Reincarnationist Psychotherapy and inner reform.",
+      "stats": [
+        { "value": "40+", "label": "Years of experience" },
+        { "value": "30+", "label": "Books published" },
+        { "value": "100k+", "label": "Students and readers" },
+        { "value": "Reference", "label": "national and international" }
+      ]
+    },
+    "testimonials": {
+      "title": "What our members say",
+      "items": [
+        {
+          "text": "The Club changed the way I study and live. The content is deep and unique.",
+          "name": "Carla Mendes",
+          "role": "Psychotherapist"
+        },
+        {
+          "text": "Having direct access to Dr. Mauro and exchanging with other professionals is truly unique.",
+          "name": "Ricardo Almeida",
+          "role": "Physician"
+        },
+        {
+          "text": "The hymnals and lives are beautiful and helped me a lot on my journey.",
+          "name": "Juliana Sousa",
+          "role": "Student"
+        }
+      ]
+    },
+    "acervo": {
+      "eyebrow": "Immediate access",
+      "title": "Immediate access to this entire library",
+      "desc": "Hundreds of books, hymnals and content for you to study whenever and wherever you want."
+    },
+    "comparison": {
+      "title": "Why join the Club?",
+      "outside": "Outside the Club",
+      "inside": "Inside the Club",
+      "outsideItems": [
+        "Buy books separately",
+        "Individual expensive courses",
+        "No guidance",
+        "No community",
+        "Fragmented content",
+        "High investment"
+      ],
+      "insideItems": [
+        "Complete library included",
+        "Courses and classes included",
+        "Guidance and direction",
+        "Exclusive community",
+        "Integrated ecosystem",
+        "Full access for R$ 29/month"
       ]
     },
     "price": {
       "badge": "Monthly Access",
-      "title": "Access to the Study Club",
+      "title": "Dr. Mauro Kwitko Study Club",
       "perMonth": "/month",
       "includes": [
-        "Exclusive community",
-        "VIP WhatsApp group",
-        "Lives with special guests",
-        "Library of e-books and classes",
-        "Complete hymnals",
+        "Complete library",
         "Inner Reform course",
+        "Exclusive lives",
+        "VIP WhatsApp group",
+        "Complete hymnals",
+        "Classes and content",
+        "New releases",
         "Cancel anytime"
       ],
-      "cta": "Subscribe now",
-      "note": "Cancel anytime, no penalty."
+      "cta": "I want to join the Club",
+      "note": "Safe environment and easy cancellation."
     },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Frequently asked questions",
       "items": [
         {
-          "q": "What do I get when I subscribe?",
+          "q": "What is included in the subscription?",
           "a": "Access to the community, VIP WhatsApp group, live sessions, e-book library, recorded classes, hymns and the complete \"Inner Reform\" course."
         },
         {
@@ -240,19 +296,19 @@
           "a": "Yes. The subscription is monthly and can be canceled at any time, with no penalty."
         },
         {
-          "q": "How do I access the content?",
-          "a": "After subscribing you receive immediate access to the platform and the WhatsApp group."
+          "q": "How do the lives work?",
+          "a": "Lives are held live with Dr. Mauro and special guests. They stay recorded on the platform to revisit anytime."
         },
         {
-          "q": "Who can join?",
-          "a": "The Club is open to psychotherapists, physicians, health professionals and anyone seeking to deepen inner reform and spirituality."
+          "q": "Is access immediate?",
+          "a": "Yes. After subscribing you receive immediate access to the platform and the WhatsApp group."
         }
       ]
     },
     "ctaFinal": {
-      "title": "Your journey begins here",
-      "desc": "Join Dr. Mauro Kwitko's community today.",
-      "button": "Subscribe for R$ 29/month"
+      "title": "Your transformation journey starts now",
+      "desc": "Study, evolve and be part of a community that transforms lives.",
+      "button": "Join the Club Now"
     }
   },
   "hinos": {

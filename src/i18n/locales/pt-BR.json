@@ -143,18 +143,16 @@
   "clube": {
     "hero": {
       "eyebrow": "Comunidade Exclusiva",
-      "titleStart": "Estude diretamente com",
-      "titleAccent": "Dr. Mauro Kwitko",
-      "titleEnd": "e aprofunde sua jornada de autoconhecimento",
-      "desc": "Tenha acesso a cursos, livros, encontros exclusivos, comunidade privada e décadas de conhecimento reunidas em um único lugar.",
+      "title": "Conhecimento que transforma. Comunidade que te impulsiona.",
+      "desc": "Estude diretamente com Dr. Mauro Kwitko e tenha acesso a todo o conhecimento, orientação e comunidade que transformarão sua vida.",
       "cta": "Entrar no Clube",
       "cta2": "Ver o que está incluído",
-      "cancel": "Cancele quando quiser",
+      "socialProof": "Milhares de membros transformando suas vidas",
       "stats": [
-        "Mais de 200 horas de conteúdo",
-        "Biblioteca digital completa",
+        "+200h de conteúdo",
+        "Biblioteca completa",
         "Comunidade exclusiva",
-        "Cancelamento a qualquer momento"
+        "Cancelamento quando quiser"
       ]
     },
     "pain": {
@@ -169,15 +167,15 @@
       "solutionDesc": "Um ecossistema completo para você estudar, se aprofundar e evoluir — com conteúdo de qualidade, orientação e comunidade."
     },
     "contentCards": {
-      "title": "O que você recebe ao entrar no Clube",
+      "title": "Tudo em um só lugar",
       "items": [
         {
           "title": "Biblioteca Digital",
           "desc": "Todos os livros digitais do Dr. Mauro e os futuros lançamentos."
         },
         {
-          "title": "Curso Reforma Íntima",
-          "desc": "Curso completo com mais de 20 módulos para uma transformação profunda."
+          "title": "Cursos Completos",
+          "desc": "Cursos completos para uma transformação profunda."
         },
         {
           "title": "Lives Exclusivas",
@@ -199,15 +197,12 @@
     },
     "community": {
       "eyebrow": "Mais que conteúdo",
-      "title": "Uma comunidade de crescimento e apoio",
-      "desc": "No Clube, você não estuda sozinho. Aqui, você encontra pessoas com os mesmos valores e objetivos, compartilha experiências, tira dúvidas e cresce junto.",
+      "title": "Você não estuda sozinho.",
+      "desc": "Uma comunidade acolhedora, com pessoas que compartilham os mesmos valores e caminham com você.",
       "items": [
-        "Debates profundos e respeitosos",
         "Estudos guiados e direcionados",
-        "Casos clínicos e trocas profissionais",
-        "Networking com profissionais",
-        "Apoio e acolhimento contínuo",
-        "Contato direto com Dr. Mauro"
+        "Debates respeitosos e profundos",
+        "Apoio, acolhimento e networking"
       ]
     },
     "bio": {
@@ -241,9 +236,9 @@
       ]
     },
     "acervo": {
-      "eyebrow": "Acesso imediato",
-      "title": "Acesso imediato a todo este acervo",
-      "desc": "Centenas de livros, hinários e conteúdos para você estudar quando e onde quiser."
+      "eyebrow": "Acervo",
+      "title": "Um acervo completo para sua jornada",
+      "desc": "Todo o conhecimento do Dr. Mauro reunido em um único lugar."
     },
     "comparison": {
       "title": "Por que entrar no Clube?",
@@ -267,18 +262,14 @@
       ]
     },
     "price": {
-      "badge": "Acesso Mensal",
-      "title": "Clube de Estudos Dr. Mauro Kwitko",
+      "badge": "Plano mensal",
+      "title": "Acesso completo ao Clube de Estudos",
+      "desc": "Todo o conteúdo, comunidade e acompanhamento por um valor acessível.",
       "perMonth": "/mês",
       "includes": [
-        "Biblioteca completa",
-        "Curso Reforma Íntima",
-        "Lives exclusivas",
-        "Grupo VIP no WhatsApp",
-        "Hinários completos",
-        "Aulas e conteúdos",
-        "Novos lançamentos",
-        "Cancelamento a qualquer momento"
+        "Acesso imediato",
+        "Todos os conteúdos inclusos",
+        "Cancelamento quando quiser"
       ],
       "cta": "Quero entrar no Clube",
       "note": "Ambiente seguro e cancelamento fácil."
@@ -305,6 +296,12 @@
         }
       ]
     },
+    "footerStrip": [
+      "Estude no seu tempo",
+      "Acesse onde estiver",
+      "Conteúdo de qualidade",
+      "Crescimento contínuo"
+    ],
     "ctaFinal": {
       "title": "Sua jornada de transformação começa agora",
       "desc": "Estude, evolua e faça parte de uma comunidade que transforma vidas.",

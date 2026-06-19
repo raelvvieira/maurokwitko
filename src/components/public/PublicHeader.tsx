@@ -11,7 +11,7 @@ const PublicHeader = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const isDarkHero = location.pathname === '/clube-de-estudos';
+  const isDarkHero = false; // clube-de-estudos agora usa fundo claro
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);

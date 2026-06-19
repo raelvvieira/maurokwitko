@@ -1,35 +1,63 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import {
-  ArrowRight,
-  Check,
-  Clock,
-  BookOpen,
-  Users,
-  Shield,
-  GraduationCap,
-  Radio,
-  Music,
-  Video,
-  Lock,
-  Star,
-  Sparkles,
-} from 'lucide-react';
+import { ArrowRight, Check, ChevronDown, Lock } from 'lucide-react';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import Marquee from '@/components/public/Marquee';
 import { getArrayTranslation } from '@/i18n';
 
 const CHECKOUT_URL = 'https://chk.eduzz.com/2445141';
 
-const STAT_ICONS = [Clock, BookOpen, Users, Shield];
+// imagens geradas com Magnif para a seção Aprendizados
+const APRENDIZADOS_IMAGES = [
+  'https://pikaso.cdnpk.net/private/production/4642693844/render.jpg?token=exp=1782259200~hmac=ec8384e8d2bd11300eb3ff728a763051d7139ec15db2f359500907a677da93ae',
+  'https://pikaso.cdnpk.net/private/production/4642693561/render.jpg?token=exp=1782259200~hmac=59721a878b7640ac42cf927ca18502569a7b0077b5525ec49c62c9d6605a1449',
+  'https://pikaso.cdnpk.net/private/production/4642693325/render.jpg?token=exp=1782259200~hmac=b57f6a27b685f68bda5cf623d0e198b5564afe3a20804c3ffbdf691bfb4d4067',
+  'https://pikaso.cdnpk.net/private/production/4642693801/render.jpg?token=exp=1782259200~hmac=5d6dc27b4017d081c0502e87b0462cfb78e494e71e0ce2d54398e16539b31495',
+  'https://pikaso.cdnpk.net/private/production/4642694314/render.jpg?token=exp=1782259200~hmac=f36978a576665f0334902999faf7dc607682f6b4e49ec58b098fc004654f169f',
+  'https://pikaso.cdnpk.net/private/production/4642694195/render.jpg?token=exp=1782259200~hmac=e7968d4264e9e549482d5091c637a9e698fccee11e1e60aa6d4aa62b3e22151d',
+  'https://pikaso.cdnpk.net/private/production/4642694326/render.jpg?token=exp=1782259200~hmac=7214c2832c5306f03be45a2b182cea7546cd4f9baf0cbf15b77e40e6c8bb7e08',
+  'https://pikaso.cdnpk.net/private/production/4642694688/render.jpg?token=exp=1782259200~hmac=206d1b3b63ba7e26ffe2047979d89e15f39152448188ae43f5fd16f7ba2a6fcf',
+];
 
-const CARD_ICONS = [BookOpen, GraduationCap, Radio, Users, Music, Video];
+const COMMUNITY_ICONS = ['↔', '🤝', '💬', '✨', '📖', '🪞'];
 
-const FOOTER_STRIP_ICONS = [Star, Sparkles, BookOpen, GraduationCap];
+const glass = 'bg-white/75 backdrop-blur-2xl border border-black/[0.06] shadow-sm';
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, y: 24 },
+  show: (i = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.07 } }),
+};
+
+// ── FAQ item ──
+const FaqItem = ({ q, a }: { q: string; a: string }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={`${glass} rounded-2xl overflow-hidden`}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-6 py-5 text-left"
+      >
+        <span className="font-semibold text-[#141414] text-base pr-4">{q}</span>
+        <ChevronDown
+          className={`w-5 h-5 text-[#5F5F5F] shrink-0 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+        />
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="overflow-hidden"
+          >
+            <p className="px-6 pb-5 text-[#5F5F5F] text-base leading-relaxed">{a}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 };
 
 const ClubeDeEstudos = () => {
@@ -37,36 +65,56 @@ const ClubeDeEstudos = () => {
   const { ebooks } = useEbooks();
   const ebookCovers = ebooks.filter((e) => e.cover_url);
 
-  const heroStats = getArrayTranslation<string>(t('clube.hero.stats', { returnObjects: true }));
-  const contentCards = getArrayTranslation<{ title: string; desc: string }>(
-    t('clube.contentCards.items', { returnObjects: true })
+  const aprendizados = getArrayTranslation<{ title: string; desc: string }>(
+    t('clube.aprendizados.items', { returnObjects: true })
   );
-  const communityItems = getArrayTranslation<string>(t('clube.community.items', { returnObjects: true }));
-  const testimonials = getArrayTranslation<{ text: string; name: string; role: string }>(
-    t('clube.testimonials.items', { returnObjects: true })
+  const bibliotecaGrid = getArrayTranslation<{ title: string }>(
+    t('clube.biblioteca.grid', { returnObjects: true })
   );
-  const priceIncludes = getArrayTranslation<string>(t('clube.price.includes', { returnObjects: true }));
-  const footerStrip = getArrayTranslation<string>(t('clube.footerStrip', { returnObjects: true }));
+  const communityItems = getArrayTranslation<{ title: string }>(
+    t('clube.community.items', { returnObjects: true })
+  );
+  const extras = getArrayTranslation<{ title: string; desc: string }>(
+    t('clube.extras.items', { returnObjects: true })
+  );
+  const bioStats = getArrayTranslation<{ value: string; label: string }>(
+    t('clube.bio.stats', { returnObjects: true })
+  );
+  const ancoragemItems = getArrayTranslation<{ label: string; value: string }>(
+    t('clube.ancoragem.items', { returnObjects: true })
+  );
+  const priceIncludes = getArrayTranslation<string>(
+    t('clube.price.includes', { returnObjects: true })
+  );
+  const paraQuemItems = getArrayTranslation<string>(
+    t('clube.paraQuem.items', { returnObjects: true })
+  );
+  const faq = getArrayTranslation<{ q: string; a: string }>(
+    t('clube.faq.items', { returnObjects: true })
+  );
 
   return (
-    <div className="bg-[#f5f2ed] min-h-screen overflow-hidden">
+    <div className="bg-[#FAF8F5] min-h-screen overflow-x-hidden" style={{ fontFamily: 'Inter, SF Pro Display, sans-serif' }}>
 
       {/* ── HERO ── */}
-      <section className="max-w-7xl mx-auto px-5 md:px-8 pt-36 md:pt-40 pb-0 grid md:grid-cols-[1fr_1.1fr] gap-8 md:gap-0 items-end">
-        {/* left */}
+      <section className="relative min-h-[90vh] max-w-7xl mx-auto px-5 md:px-10 pt-28 md:pt-32 pb-0 grid md:grid-cols-[60fr_40fr] gap-8 md:gap-0 items-end">
+        {/* text */}
         <motion.div
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="space-y-6 pb-10 md:pb-16 z-10"
+          className="pb-14 md:pb-20 space-y-8 z-10"
         >
-          <span className="text-[11px] font-bold tracking-[0.2em] text-amber-700 uppercase">
+          <span className="text-xs font-semibold tracking-[0.2em] text-[#4F8F87] uppercase">
             {t('clube.hero.eyebrow')}
           </span>
-          <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight text-slate-900">
+          <h1
+            className="font-bold leading-[1.05] tracking-tight text-[#141414]"
+            style={{ fontSize: 'clamp(2.4rem, 5vw, 4.5rem)', maxWidth: 900 }}
+          >
             {t('clube.hero.title')}
           </h1>
-          <p className="text-slate-600 text-base md:text-lg leading-relaxed max-w-md">
+          <p className="text-[#5F5F5F] leading-[1.6]" style={{ fontSize: 'clamp(1rem, 2vw, 1.5rem)', maxWidth: 700 }}>
             {t('clube.hero.desc')}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 items-start">
@@ -74,274 +122,451 @@ const ClubeDeEstudos = () => {
               href={CHECKOUT_URL}
               target="_blank"
               rel="noopener noreferrer"
-              animate={{ scale: [1, 1.03, 1] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-amber-700 text-white text-sm font-bold hover:bg-amber-800 transition-colors shadow-md"
+              animate={{ scale: [1, 1.025, 1] }}
+              transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+              className="inline-flex items-center gap-2 px-7 font-semibold text-white rounded-2xl bg-[#4F8F87] hover:bg-[#3C726B] transition-colors shadow-md"
+              style={{ height: 56, fontSize: 16 }}
             >
               {t('clube.hero.cta')} <ArrowRight className="w-4 h-4" />
             </motion.a>
-            <a
-              href="#tudo-em-um-lugar"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-slate-300 text-slate-700 text-sm font-semibold hover:border-slate-400 hover:bg-white/60 transition-colors"
-            >
-              {t('clube.hero.cta2')}
-            </a>
-          </div>
-          {/* social proof pill */}
-          <div className="inline-flex items-center gap-3 bg-white/80 border border-slate-200 rounded-full px-4 py-2 shadow-sm">
-            <div className="flex -space-x-2">
-              {['#a78bfa','#60a5fa','#34d399'].map((c, i) => (
-                <div key={i} className="w-7 h-7 rounded-full border-2 border-white" style={{ backgroundColor: c }} />
-              ))}
-            </div>
-            <span className="text-xs text-slate-600 font-medium">{t('clube.hero.socialProof')}</span>
           </div>
         </motion.div>
 
-        {/* right — photo */}
+        {/* photo */}
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
-          className="relative flex justify-end items-end"
+          className="relative flex justify-end items-end self-end"
         >
-          <div className="w-full max-w-md md:max-w-none rounded-t-3xl overflow-hidden shadow-2xl">
+          <div className="w-full rounded-t-[2rem] overflow-hidden shadow-2xl">
             <img
               src="https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg"
               alt="Dr. Mauro Kwitko"
               className="w-full object-cover object-top"
-              style={{ maxHeight: 520 }}
+              style={{ maxHeight: 580 }}
             />
           </div>
         </motion.div>
       </section>
 
-      {/* ── TRUST STRIP ── */}
-      <section className="bg-white border-y border-slate-200/80 py-5">
-        <div className="max-w-4xl mx-auto px-5 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {heroStats.map((s, i) => {
-            const Icon = STAT_ICONS[i % STAT_ICONS.length];
-            return (
-              <div key={i} className="flex items-center gap-2.5">
-                <Icon className="w-4 h-4 text-amber-700 shrink-0" />
-                <span className="text-xs text-slate-600 font-medium">{s}</span>
+      {/* ── APRENDIZADOS ── */}
+      <section className="py-24 md:py-32">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          className="max-w-5xl mx-auto px-5 md:px-10 text-center mb-14"
+        >
+          <h2 className="font-bold text-[#141414] mb-4" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3rem)' }}>
+            {t('clube.aprendizados.title')}
+          </h2>
+          <p className="text-[#5F5F5F] text-lg">{t('clube.aprendizados.subtitle')}</p>
+        </motion.div>
+
+        {/* horizontal scroll carousel */}
+        <div className="relative overflow-hidden">
+          <motion.div
+            className="flex gap-5 px-5 md:px-10"
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+            style={{ width: 'max-content' }}
+          >
+            {[...aprendizados, ...aprendizados].map((item, i) => (
+              <div
+                key={i}
+                className={`relative rounded-3xl overflow-hidden shrink-0 group hover:-translate-y-1.5 hover:scale-[1.01] transition-all duration-300 cursor-default`}
+                style={{ width: 280, height: 380 }}
+              >
+                <img
+                  src={APRENDIZADOS_IMAGES[i % APRENDIZADOS_IMAGES.length]}
+                  alt={item.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-5">
+                  <h3 className="text-white font-bold text-base mb-1.5">{item.title}</h3>
+                  <p className="text-white/70 text-xs leading-relaxed line-clamp-3">{item.desc}</p>
+                </div>
               </div>
-            );
-          })}
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* ── TUDO EM UM SÓ LUGAR ── */}
-      <section id="tudo-em-um-lugar" className="py-20 md:py-24">
-        <div className="max-w-6xl mx-auto px-5 md:px-8">
-          <motion.h2
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className="text-2xl md:text-3xl font-bold text-slate-900 text-center mb-12"
-          >
-            {t('clube.contentCards.title')}
-          </motion.h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {contentCards.map((card, i) => {
-              const Icon = CARD_ICONS[i % CARD_ICONS.length];
-              return (
-                <motion.div
-                  key={i}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true }}
-                  variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.4, delay: i * 0.06 } } }}
-                  className="bg-white rounded-2xl p-5 text-center shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-3">
-                    <Icon className="w-5 h-5 text-amber-700" />
+      {/* ── BIBLIOTECA ── */}
+      <section className="bg-white py-24 md:py-32">
+        <div className="max-w-6xl mx-auto px-5 md:px-10">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start mb-16">
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={fadeUp}
+            >
+              <h2 className="font-bold text-[#141414] leading-tight" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.5rem)' }}>
+                {t('clube.biblioteca.title')}
+              </h2>
+            </motion.div>
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="space-y-5"
+            >
+              <p className="text-[#5F5F5F] leading-relaxed text-base">
+                {t('clube.biblioteca.desc')}
+              </p>
+              <a
+                href={CHECKOUT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#4F8F87] hover:text-[#3C726B] transition-colors"
+              >
+                {t('clube.biblioteca.cta')} <ArrowRight className="w-4 h-4" />
+              </a>
+            </motion.div>
+          </div>
+
+          {/* book marquee */}
+          {ebookCovers.length > 0 && (
+            <div className="mb-10 -mx-5 md:-mx-10">
+              <Marquee
+                items={ebookCovers}
+                duration={Math.max(40, ebookCovers.length * 8)}
+                renderItem={(e) => (
+                  <div
+                    className="block w-[120px] h-[170px] rounded-xl overflow-hidden shadow-md border border-black/[0.06] relative shrink-0 hover:scale-105 transition-transform duration-300"
+                  >
+                    <img src={e.cover_url ?? ''} alt={e.title} className="absolute inset-0 w-full h-full object-cover" />
                   </div>
-                  <h3 className="font-bold text-sm text-slate-900 leading-tight mb-1.5">{card.title}</h3>
-                  <p className="text-[11px] text-slate-500 leading-snug">{card.desc}</p>
-                </motion.div>
-              );
-            })}
+                )}
+              />
+            </div>
+          )}
+
+          {/* grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {bibliotecaGrid.map((item, i) => (
+              <motion.div
+                key={i}
+                custom={i}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                className={`${glass} rounded-2xl px-5 py-4 hover:-translate-y-1 hover:scale-[1.01] transition-all duration-300`}
+              >
+                <span className="text-sm font-semibold text-[#141414]">{item.title}</span>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ── COMUNIDADE ── */}
-      <section className="max-w-6xl mx-auto px-5 md:px-8 pb-20 md:pb-24">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          {/* left — text */}
+      <section className="py-24 md:py-32" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F6F7F8 100%)' }}>
+        <div className="max-w-6xl mx-auto px-5 md:px-10 grid md:grid-cols-2 gap-12 items-center">
+          {/* photo */}
           <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className="space-y-5"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
-              {t('clube.community.title')}
-            </h2>
-            <p className="text-slate-600 leading-relaxed">
-              {t('clube.community.desc')}
-            </p>
-            <ul className="space-y-3">
-              {communityItems.map((item) => (
-                <li key={item} className="flex items-center gap-3 text-slate-700 text-sm">
-                  <Check className="w-4 h-4 text-amber-700 shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* right — photo + testimonial overlay */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative"
+            className="rounded-3xl overflow-hidden shadow-xl"
           >
-            <div className="rounded-3xl overflow-hidden shadow-xl">
-              <img
-                src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
-                alt="Comunidade"
-                className="w-full aspect-[4/3] object-cover"
-                loading="lazy"
-              />
-            </div>
-            {/* testimonial card overlay */}
-            {testimonials[0] && (
-              <div className="absolute bottom-5 left-5 right-10 bg-white rounded-2xl p-4 shadow-lg border border-slate-100">
-                <p className="text-xs text-slate-600 italic leading-relaxed mb-3">
-                  "{testimonials[0].text}"
-                </p>
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-full bg-amber-100 flex items-center justify-center text-amber-800 font-bold text-xs shrink-0">
-                    {testimonials[0].name[0]}
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold text-slate-900">{testimonials[0].name}</div>
-                    <div className="text-[10px] text-slate-500">{testimonials[0].role}</div>
-                  </div>
-                </div>
-              </div>
-            )}
+            <img
+              src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
+              alt="Comunidade"
+              className="w-full aspect-[4/3] object-cover"
+              loading="lazy"
+            />
           </motion.div>
-        </div>
-      </section>
 
-      {/* ── ACERVO ── */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 text-center mb-10">
+          {/* text */}
           <motion.div
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
             variants={fadeUp}
+            className="space-y-7"
           >
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
-              {t('clube.acervo.title')}
+            <h2 className="font-bold text-[#141414] leading-tight" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.5rem)' }}>
+              {t('clube.community.title')}
             </h2>
+            <p className="text-[#5F5F5F] leading-relaxed text-base">{t('clube.community.desc')}</p>
+            <div className="grid grid-cols-2 gap-3">
+              {communityItems.map((item, i) => (
+                <div key={i} className={`${glass} rounded-2xl px-4 py-3.5 flex items-center gap-2`}>
+                  <span className="text-[#4F8F87] text-base">{COMMUNITY_ICONS[i % COMMUNITY_ICONS.length]}</span>
+                  <span className="text-sm font-semibold text-[#141414]">{item.title}</span>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
-        {ebookCovers.length > 0 && (
-          <Marquee
-            items={ebookCovers}
-            duration={Math.max(40, ebookCovers.length * 8)}
-            renderItem={(e) => (
-              <div className="block w-[120px] h-[170px] md:w-[150px] md:h-[212px] rounded-xl overflow-hidden shadow-md ring-1 ring-slate-200 relative shrink-0">
-                <img
-                  src={e.cover_url ?? ''}
-                  alt={e.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
+      </section>
+
+      {/* ── EXTRAS ── */}
+      <section className="bg-[#FAF8F5] py-24 md:py-32">
+        <div className="max-w-6xl mx-auto px-5 md:px-10">
+          <motion.h2
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="font-bold text-[#141414] text-center mb-12"
+            style={{ fontSize: 'clamp(1.6rem, 3vw, 3rem)' }}
+          >
+            {t('clube.extras.title')}
+          </motion.h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {extras.map((item, i) => (
+              <motion.div
+                key={i}
+                custom={i}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                className={`${glass} rounded-3xl p-6 space-y-2 hover:-translate-y-1.5 hover:scale-[1.01] transition-all duration-300`}
+              >
+                <h3 className="font-bold text-[#141414] text-base">{item.title}</h3>
+                <p className="text-[#5F5F5F] text-sm leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── BIO ── */}
+      <section className="bg-[#FAF8F5] pb-24 md:pb-32">
+        <div className="max-w-6xl mx-auto px-5 md:px-10 grid md:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="rounded-3xl overflow-hidden shadow-xl"
+          >
+            <img
+              src="https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg"
+              alt="Dr. Mauro Kwitko"
+              className="w-full aspect-[3/4] object-cover object-top"
+              loading="lazy"
+            />
+          </motion.div>
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="space-y-6"
+          >
+            <h2 className="font-bold text-[#141414]" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.5rem)' }}>
+              {t('clube.bio.title')}
+            </h2>
+            <p className="text-[#5F5F5F] leading-relaxed text-base">{t('clube.bio.desc')}</p>
+            <div className="grid grid-cols-2 gap-3">
+              {bioStats.map((s, i) => (
+                <div key={i} className={`${glass} rounded-2xl p-5`}>
+                  <div className="text-2xl font-bold text-[#141414]">{s.value}</div>
+                  <div className="text-xs text-[#5F5F5F] mt-1">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── ANCORAGEM DE PREÇO ── */}
+      <section className="bg-white py-24 md:py-32">
+        <div className="max-w-3xl mx-auto px-5 md:px-10">
+          <motion.h2
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="font-bold text-[#141414] text-center mb-12"
+            style={{ fontSize: 'clamp(1.6rem, 3vw, 2.8rem)' }}
+          >
+            {t('clube.ancoragem.title')}
+          </motion.h2>
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="space-y-3"
+          >
+            {ancoragemItems.map((item, i) => (
+              <div
+                key={i}
+                className={`${glass} rounded-2xl px-6 py-4 flex items-center justify-between`}
+              >
+                <span className="text-[#141414] font-medium text-sm md:text-base">{item.label}</span>
+                <span className="text-[#5F5F5F] font-semibold text-sm md:text-base">{item.value}</span>
               </div>
-            )}
-          />
-        )}
-        <div className="text-center mt-8">
-          <a
+            ))}
+            <div className="h-px bg-black/[0.08] my-6" />
+            <div className={`${glass} rounded-2xl px-6 py-5 flex items-center justify-between`}>
+              <div>
+                <div className="text-xs text-[#5F5F5F] font-medium mb-0.5">{t('clube.ancoragem.totalLabel')}</div>
+                <div className="text-3xl md:text-4xl font-bold text-[#141414]">{t('clube.ancoragem.totalValue')}</div>
+              </div>
+              <div className="text-right max-w-[160px]">
+                <p className="text-xs text-[#5F5F5F] leading-snug">{t('clube.ancoragem.totalNote')}</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── OFERTA / PRICE ── */}
+      <section className="bg-[#FAF8F5] py-24 md:py-32">
+        <div className="max-w-2xl mx-auto px-5 md:px-10">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className={`${glass} rounded-3xl p-8 md:p-12 shadow-xl`}
+          >
+            <h2 className="font-bold text-[#141414] text-xl md:text-2xl mb-6">
+              {t('clube.price.title')}
+            </h2>
+            <div className="flex items-end gap-1 mb-6">
+              <span className="text-[#5F5F5F] text-xl font-semibold mb-1">R$</span>
+              <span className="text-7xl font-bold text-[#141414] leading-none">29</span>
+              <span className="text-[#5F5F5F] mb-2">/mês</span>
+            </div>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-3 mb-8">
+              {priceIncludes.map((item) => (
+                <div key={item} className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-[#4F8F87] shrink-0" />
+                  <span className="text-sm text-[#141414] font-medium">{item}</span>
+                </div>
+              ))}
+            </div>
+            <motion.a
+              href={CHECKOUT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              animate={{ scale: [1, 1.025, 1] }}
+              transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+              className="flex items-center justify-center gap-2 w-full text-white font-bold rounded-[18px] bg-[#4F8F87] hover:bg-[#3C726B] transition-colors shadow-md"
+              style={{ height: 64, fontSize: 16 }}
+            >
+              {t('clube.price.cta')} <ArrowRight className="w-5 h-5" />
+            </motion.a>
+            <div className="flex items-center justify-center gap-6 mt-4">
+              <div className="flex items-center gap-1.5 text-xs text-[#5F5F5F]">
+                <Lock className="w-3 h-3" />
+                {t('clube.price.badgeBottom1')}
+              </div>
+              <div className="text-xs text-[#5F5F5F]">{t('clube.price.badgeBottom2')}</div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── PARA QUEM É ── */}
+      <section className="bg-white py-24 md:py-32">
+        <div className="max-w-5xl mx-auto px-5 md:px-10">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="mb-12"
+          >
+            <h2 className="font-bold text-[#141414] mb-3" style={{ fontSize: 'clamp(1.6rem, 3vw, 3rem)' }}>
+              {t('clube.paraQuem.title')}
+            </h2>
+            <p className="text-[#5F5F5F] text-base">{t('clube.paraQuem.desc')}</p>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {paraQuemItems.map((item, i) => (
+              <motion.div
+                key={i}
+                custom={i}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                className={`${glass} rounded-2xl px-5 py-4 flex items-start gap-3`}
+              >
+                <Check className="w-4 h-4 text-[#4F8F87] mt-0.5 shrink-0" />
+                <span className="text-sm text-[#141414] font-medium leading-snug">{item}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="bg-[#FAF8F5] py-24 md:py-32">
+        <div className="max-w-3xl mx-auto px-5 md:px-10">
+          <motion.h2
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="font-bold text-[#141414] text-center mb-10"
+            style={{ fontSize: 'clamp(1.6rem, 3vw, 3rem)' }}
+          >
+            {t('clube.faq.title')}
+          </motion.h2>
+          <div className="space-y-3">
+            {faq.map((f, i) => (
+              <motion.div
+                key={i}
+                custom={i}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                variants={fadeUp}
+              >
+                <FaqItem q={f.q} a={f.a} />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA FINAL ── */}
+      <section className="bg-white py-28 md:py-40 text-center">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          className="max-w-2xl mx-auto px-5 space-y-8"
+        >
+          <div className="space-y-2">
+            <p className="text-3xl md:text-4xl font-bold text-[#141414] leading-tight italic">
+              "{t('clube.ctaFinal.quote')}"
+            </p>
+            <p className="text-[#5F5F5F] text-sm font-medium">— {t('clube.ctaFinal.quoteAuthor')}</p>
+          </div>
+          <div className="h-px bg-black/[0.06] max-w-xs mx-auto" />
+          <h2 className="text-2xl md:text-3xl font-bold text-[#141414]">
+            {t('clube.ctaFinal.title')}
+          </h2>
+          <motion.a
             href={CHECKOUT_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-amber-700 transition-colors"
+            animate={{ scale: [1, 1.025, 1] }}
+            transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+            className="inline-flex items-center gap-2 px-9 font-bold text-white rounded-2xl bg-[#4F8F87] hover:bg-[#3C726B] transition-colors shadow-md"
+            style={{ height: 56, fontSize: 16 }}
           >
-            Ver biblioteca completa <ArrowRight className="w-4 h-4" />
-          </a>
-        </div>
-      </section>
-
-      {/* ── PRICING ── */}
-      <section className="py-16 md:py-24 bg-[#f5f2ed]">
-        <div className="max-w-5xl mx-auto px-5 md:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className="bg-slate-50 border border-slate-200 rounded-3xl p-8 md:p-10 grid md:grid-cols-3 gap-8 items-center shadow-sm"
-          >
-            {/* left — description */}
-            <div className="space-y-4 md:col-span-1">
-              <h3 className="text-xl font-bold text-slate-900">{t('clube.price.title')}</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">{t('clube.price.desc')}</p>
-              <ul className="space-y-2">
-                {priceIncludes.map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-sm text-slate-700">
-                    <div className="w-4 h-4 rounded-full border border-amber-700/40 flex items-center justify-center shrink-0">
-                      <Check className="w-2.5 h-2.5 text-amber-700" />
-                    </div>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* center — price */}
-            <div className="text-center md:border-x border-slate-200 md:px-8">
-              <span className="text-sm text-slate-500 font-medium">R$</span>
-              <div className="text-7xl font-bold text-slate-900 leading-none my-1">29</div>
-              <span className="text-slate-500 text-sm">/mês</span>
-              <div className="mt-3 inline-block text-[11px] font-medium text-slate-400 bg-slate-100 rounded-full px-3 py-1">
-                {t('clube.price.badge')}
-              </div>
-            </div>
-
-            {/* right — CTA */}
-            <div className="flex flex-col items-center gap-3">
-              <motion.a
-                href={CHECKOUT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                animate={{ scale: [1, 1.03, 1] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-                className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-amber-700 text-white font-bold text-sm hover:bg-amber-800 transition-colors shadow-md"
-              >
-                {t('clube.price.cta')} <ArrowRight className="w-4 h-4" />
-              </motion.a>
-              <div className="flex items-center gap-1.5 text-xs text-slate-400">
-                <Lock className="w-3 h-3" />
-                {t('clube.price.note')}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── FOOTER STRIP ── */}
-      <section className="bg-white border-t border-slate-200 py-5">
-        <div className="max-w-4xl mx-auto px-5 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {footerStrip.map((s, i) => {
-            const Icon = FOOTER_STRIP_ICONS[i % FOOTER_STRIP_ICONS.length];
-            return (
-              <div key={i} className="flex items-center gap-2.5 justify-center md:justify-start">
-                <Icon className="w-4 h-4 text-amber-700 shrink-0" />
-                <span className="text-xs text-slate-600">{s}</span>
-              </div>
-            );
-          })}
-        </div>
+            {t('clube.ctaFinal.button')} <ArrowRight className="w-4 h-4" />
+          </motion.a>
+        </motion.div>
       </section>
     </div>
   );

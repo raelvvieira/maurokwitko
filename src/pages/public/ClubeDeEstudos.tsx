@@ -387,6 +387,15 @@ const styles = `
   from { transform: translateX(0); }
   to { transform: translateX(calc(-50% - 8px)); }
 }
+@keyframes clubeGoldShine {
+  0% { left: -60%; }
+  60% { left: 120%; }
+  100% { left: 120%; }
+}
+@keyframes clubeGoldText {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .clube-page *, .clube-page *::before, .clube-page *::after {

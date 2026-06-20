@@ -104,10 +104,14 @@ const styles = `
   margin: 20px 0 18px; max-width: 680px;
   font-size: clamp(1.75rem, 3vw, 2.1rem); line-height: 1.28;
 }
-.clube-page .hero h1 span {
+.clube-page .hero h1 span.gold-glow {
   color: transparent;
-  background: linear-gradient(135deg, #142b54, #1d6ee3 58%, #ba8a47);
+  background: linear-gradient(135deg, #b8860b 0%, #d4af37 30%, #f5d77a 50%, #d4af37 70%, #b8860b 100%);
+  background-size: 200% 100%;
   -webkit-background-clip: text; background-clip: text;
+  filter: drop-shadow(0 0 16px rgba(212, 175, 55, .35));
+  animation: clubeGoldText 5s ease-in-out infinite;
+  font-weight: 600;
 }
 .clube-page .lead {
   max-width: 610px; color: var(--muted);

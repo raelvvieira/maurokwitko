@@ -643,7 +643,7 @@ const ClubeDeEstudos = () => {
             <article className="pricing-card" aria-label="Plano do Clube de Estudos">
               <div className="pricing-top">
                 <span className="plan-label">Assinatura</span>
-                <span className="popular-pill">Mais escolhido</span>
+                <span className="popular-pill">Acesso Imediato</span>
               </div>
               <div className="price"><sup>R$</sup>29<small>/mês</small></div>
               <p className="price-note">Acesso imediato. Sem fidelidade. Cancele quando quiser.</p>

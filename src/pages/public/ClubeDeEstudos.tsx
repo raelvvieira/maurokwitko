@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import heroMauro from '@/assets/clube/generated-hero-mauro.png.asset.json';
 import communityMauro from '@/assets/clube/generated-community-mauro.png.asset.json';
 import mentorStudio from '@/assets/clube/mentor-studio-crossed.png.asset.json';
-import laptopMockup from '@/assets/clube/platform-laptop-mockup.png.asset.json';
+import platformScreen from '@/assets/clube/platform-screen.png.asset.json';
 import finalBg from '@/assets/clube/final-cta-background.png.asset.json';
 import topicEgo from '@/assets/clube/generated-topic-ego.png.asset.json';
 import topicPersonalidade from '@/assets/clube/generated-topic-personalidade.png.asset.json';
@@ -17,6 +19,7 @@ import bookNossoLar from '@/assets/clube/book-nosso-lar.png.asset.json';
 import bookMecanismos from '@/assets/clube/book-mecanismos.png.asset.json';
 import bookObsessao from '@/assets/clube/book-obsessao.png.asset.json';
 import bookDialogos from '@/assets/clube/book-dialogos.png.asset.json';
+import { useEbooks } from '@/hooks/useSupabaseData';
 
 const CHECKOUT_URL = 'https://chk.eduzz.com/2445141';
 
@@ -31,7 +34,7 @@ const TOPICS = [
   { img: topicMorte.url, title: 'A Morte Não Existe' },
 ];
 
-const BOOKS = [
+const FALLBACK_BOOKS = [
   { img: bookReforma.url, alt: 'Livro A Reforma Íntima' },
   { img: bookEgo.url, alt: 'Livro Ego: Inimigo ou Aliado?' },
   { img: bookNossoLar.url, alt: 'Livro Nosso Lar' },
@@ -92,6 +95,7 @@ const styles = `
   border: 1px solid rgba(202, 164, 106, .32); background: rgba(255, 255, 255, .6);
   color: #7a653e; font-size: .77rem; font-weight: 500;
   text-transform: uppercase; letter-spacing: .12em; backdrop-filter: blur(14px);
+  margin-bottom: 18px;
 }
 .clube-page .hero h1 {
   margin: 20px 0 18px; max-width: 680px;
@@ -117,10 +121,11 @@ const styles = `
 }
 .clube-page .portrait-card img { width: 100%; height: 100%; min-height: inherit; object-fit: cover; }
 
-.clube-page .section { padding: 68px 0; }
-.clube-page .section-head { display: block; margin-bottom: 24px; text-align: center; }
-.clube-page .section-head p { margin: 10px auto 0; max-width: 760px; color: var(--muted); line-height: 1.7; }
+.clube-page .section { padding: 72px 0; }
+.clube-page .section-head { display: block; margin-bottom: 28px; text-align: center; }
+.clube-page .section-head p { margin: 12px auto 0; max-width: 760px; color: var(--muted); line-height: 1.7; }
 .clube-page h2 { font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.22; }
+.clube-page h2 + p, .clube-page h2 + .plain-copy { margin-top: 16px; }
 .clube-page .plain-copy { color: var(--muted); line-height: 1.7; margin: 0; }
 
 .clube-page .topics-carousel {
@@ -158,18 +163,18 @@ const styles = `
 }
 .clube-page .book-track {
   display: flex; width: max-content; gap: 18px;
-  animation: clubeMarquee 52s linear infinite; will-change: transform;
+  animation: clubeMarquee 46s linear infinite; will-change: transform;
 }
 .clube-page .book-card {
-  width: clamp(118px, 13vw, 168px); aspect-ratio: 67/133; flex: 0 0 auto;
+  width: clamp(118px, 13vw, 168px); aspect-ratio: 2/3; flex: 0 0 auto;
   overflow: hidden; border-radius: 12px; background: rgba(255,255,255,.72);
   border: 1px solid rgba(255,255,255,.72);
   box-shadow: 0 20px 42px rgba(16,36,72,.16);
 }
 .clube-page .book-card img { width: 100%; height: 100%; object-fit: cover; }
 
-.clube-page .library-section h2 { text-align: center; margin-bottom: 24px; }
-.clube-page .library-subtitle { max-width: 760px; margin: -12px auto 28px; text-align: center; color: var(--muted); line-height: 1.7; }
+.clube-page .library-section h2 { text-align: center; margin-bottom: 14px; }
+.clube-page .library-subtitle { max-width: 760px; margin: 0 auto 28px; text-align: center; color: var(--muted); line-height: 1.7; }
 
 .clube-page .panel {
   border-radius: var(--radius); padding: clamp(22px, 3vw, 34px);
@@ -179,7 +184,7 @@ const styles = `
 
 .clube-page .feature-grid {
   display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
-  gap: 12px; margin-top: 26px;
+  gap: 14px; margin-top: 26px;
 }
 .clube-page .feature {
   border: 1px solid var(--line); border-radius: 14px; padding: 16px;
@@ -203,14 +208,18 @@ const styles = `
 }
 
 .clube-page .platform-card {
-  display: grid; grid-template-columns: minmax(260px,.74fr) minmax(360px,1.26fr);
+  display: grid; grid-template-columns: minmax(260px,.78fr) minmax(360px,1.22fr);
   gap: clamp(26px, 5vw, 56px); align-items: center; overflow: hidden;
   background:
     radial-gradient(circle at 76% 18%, rgba(202,164,106,.22), transparent 18rem),
     linear-gradient(135deg, rgba(255,255,255,.78), rgba(235,246,255,.64));
 }
-.clube-page .laptop-scene { perspective: 1200px; min-height: 360px; padding: 26px 38px 14px; display: grid; place-items: center; }
-.clube-page .laptop-image { width: min(100%, 650px); height: auto; margin-inline: auto; }
+.clube-page .platform-screen-wrap { display: grid; place-items: center; }
+.clube-page .platform-screen-wrap img {
+  width: 100%; max-width: 720px; height: auto;
+  border-radius: 18px; box-shadow: var(--shadow);
+  border: 1px solid var(--line);
+}
 
 .clube-page .community {
   display: grid; grid-template-columns: 1fr .9fr; gap: clamp(32px, 6vw, 72px);
@@ -222,12 +231,14 @@ const styles = `
 }
 .clube-page .community .feature-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
 
+.clube-page .mentor-wrap { max-width: 880px; margin-inline: auto; }
 .clube-page .mentor-card {
-  display: grid; grid-template-columns: minmax(170px,260px) 1fr;
-  gap: clamp(22px, 4vw, 42px); align-items: center;
+  display: grid; grid-template-columns: minmax(180px, 240px) 1fr;
+  gap: clamp(22px, 4vw, 36px); align-items: center;
+  padding: clamp(22px, 3vw, 30px);
 }
 .clube-page .mentor-card img {
-  border-radius: 18px; width: 100%; height: 320px; object-fit: cover; background: #edf5fe;
+  border-radius: 18px; width: 100%; height: 280px; object-fit: cover; background: #edf5fe;
 }
 .clube-page .mentor-note { margin-top: 12px; }
 .clube-page .stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 20px; }
@@ -367,7 +378,6 @@ const styles = `
   .clube-page .hero { min-height: auto; padding-top: 56px; }
   .clube-page .portrait-card { min-height: 360px; }
   .clube-page .feature-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-  .clube-page .laptop-scene { min-height: 330px; }
 }
 
 @media (max-width: 640px) {
@@ -375,11 +385,34 @@ const styles = `
   .clube-page .hero { padding-top: 42px; gap: 26px; }
   .clube-page .feature-grid, .clube-page .stat-row, .clube-page .audience-list { grid-template-columns: 1fr; }
   .clube-page .topic { width: min(48vw, 180px); }
-  .clube-page .section { padding: 34px 0; }
+  .clube-page .section { padding: 40px 0; }
   .clube-page .mentor-card { grid-template-columns: 1fr; }
-  .clube-page .mentor-card img { width: 100%; height: 300px; object-position: top; }
+  .clube-page .mentor-card img { width: 100%; height: 280px; object-position: top; }
   .clube-page .button { width: 100%; padding-inline: 18px; }
 }
+
+/* Header toggle (apenas nesta página) */
+body.clube-hide-header header {
+  transform: translateY(-110%);
+  transition: transform .35s cubic-bezier(.4,.0,.2,1);
+}
+body.clube-hide-header.clube-show-header header {
+  transform: translateY(0);
+}
+.clube-header-toggle {
+  position: fixed; top: 8px; left: 50%; transform: translateX(-50%);
+  z-index: 70; width: 44px; height: 28px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(29,71,133,.18);
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 28px rgba(22,66,120,.14);
+  color: #29456f; cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+.clube-header-toggle:hover { background: rgba(255,255,255,.95); }
+.clube-header-toggle svg { transition: transform .3s ease; }
+body.clube-show-header .clube-header-toggle svg { transform: rotate(180deg); }
 `;
 
 const Icon = ({ d }: { d: string }) => (
@@ -389,9 +422,29 @@ const Icon = ({ d }: { d: string }) => (
 );
 
 const ClubeDeEstudos = () => {
-  // Duplicate the lists so the marquee loops seamlessly
+  const { ebooks } = useEbooks();
+  const [headerOpen, setHeaderOpen] = useState(false);
+
+  const realBooks = (ebooks ?? [])
+    .filter((e: any) => e?.cover_url)
+    .map((e: any) => ({ img: e.cover_url as string, alt: e.title as string }));
+  const BOOKS = realBooks.length >= 3 ? realBooks : FALLBACK_BOOKS;
+
   const topicsLoop = [...TOPICS, ...TOPICS];
   const booksLoop = [...BOOKS, ...BOOKS];
+
+  // Hide global header on this page; show only via toggle
+  useEffect(() => {
+    document.body.classList.add('clube-hide-header');
+    return () => {
+      document.body.classList.remove('clube-hide-header');
+      document.body.classList.remove('clube-show-header');
+    };
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle('clube-show-header', headerOpen);
+  }, [headerOpen]);
 
   return (
     <>
@@ -399,6 +452,16 @@ const ClubeDeEstudos = () => {
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
       <style dangerouslySetInnerHTML={{ __html: styles }} />
+
+      <button
+        type="button"
+        aria-label={headerOpen ? 'Ocultar menu' : 'Mostrar menu'}
+        aria-expanded={headerOpen}
+        onClick={() => setHeaderOpen((v) => !v)}
+        className="clube-header-toggle"
+      >
+        <ChevronDown size={18} />
+      </button>
 
       <div className="clube-page">
         <main id="top" className="page">
@@ -484,12 +547,12 @@ const ClubeDeEstudos = () => {
             <div>
               <p className="eyebrow">Plataforma do clube</p>
               <h2>Uma plataforma para fácil acesso aos conteúdos</h2>
-              <p className="plain-copy" style={{ maxWidth: 540, marginTop: 14 }}>
+              <p className="plain-copy" style={{ maxWidth: 540 }}>
                 Tudo organizado em um ambiente simples para você estudar no seu ritmo, voltar aos conteúdos e acompanhar tudo com clareza.
               </p>
             </div>
-            <div className="laptop-scene" aria-label="Mockup da plataforma do clube em um notebook">
-              <img className="laptop-image" src={laptopMockup.url} alt="Notebook prateado exibindo a plataforma do Clube de Estudos" />
+            <div className="platform-screen-wrap" aria-label="Tela da plataforma do clube">
+              <img src={platformScreen.url} alt="Tela da plataforma do Clube de Estudos" />
             </div>
           </section>
 
@@ -510,23 +573,25 @@ const ClubeDeEstudos = () => {
 
           {/* Mentor */}
           <section className="section">
-            <article className="mentor-card">
-              <img src={mentorStudio.url} alt="Retrato do Dr. Mauro Kiwitko" />
-              <div>
-                <h2>Olá, sou Dr. Mauro</h2>
-                <p className="plain-copy">
-                  Há cerca de 30 anos me dedico a orientar pessoas, no consultório, nas palestras e nos cursos, a recordarem que somos Espíritos encarnados, com finalidades próprias nesta jornada.
-                </p>
-                <p className="plain-copy mentor-note">
-                  Fundador e patrono da Associação Brasileira de Psicoterapia Reencarnacionista (ABPR), com mais de 10.000 Investigações do Inconsciente realizadas, mais de 70 turmas formadas e 25 livros publicados entre físicos e e-books.
-                </p>
-                <div className="stat-row">
-                  <div className="stat"><strong>10k+</strong><small>atendimentos</small></div>
-                  <div className="stat"><strong>25</strong><small>livros</small></div>
-                  <div className="stat"><strong>70+</strong><small>turmas</small></div>
+            <div className="mentor-wrap">
+              <article className="mentor-card panel">
+                <img src={mentorStudio.url} alt="Retrato do Dr. Mauro Kiwitko" />
+                <div>
+                  <h2>Olá, sou Dr. Mauro</h2>
+                  <p className="plain-copy">
+                    Há cerca de 30 anos me dedico a orientar pessoas, no consultório, nas palestras e nos cursos, a recordarem que somos Espíritos encarnados, com finalidades próprias nesta jornada.
+                  </p>
+                  <p className="plain-copy mentor-note">
+                    Fundador e patrono da Associação Brasileira de Psicoterapia Reencarnacionista (ABPR), com mais de 10.000 Investigações do Inconsciente realizadas, mais de 70 turmas formadas e 25 livros publicados entre físicos e e-books.
+                  </p>
+                  <div className="stat-row">
+                    <div className="stat"><strong>10k+</strong><small>atendimentos</small></div>
+                    <div className="stat"><strong>25</strong><small>livros</small></div>
+                    <div className="stat"><strong>70+</strong><small>turmas</small></div>
+                  </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            </div>
           </section>
 
           {/* Pricing */}

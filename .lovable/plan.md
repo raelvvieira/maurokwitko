@@ -1,44 +1,38 @@
-# Ajustes da página /clube-de-estudos
+# Ajustes finais na página /clube-de-estudos
 
-Edita apenas `src/pages/public/ClubeDeEstudos.tsx` (e cria 1 novo asset de imagem).
+Edita apenas `src/pages/public/ClubeDeEstudos.tsx`. Sem mudanças em rotas, backend ou `PublicHeader`.
 
-## 1. Carrossel do acervo com e-books reais do Dr. Mauro
-- Trocar o array `BOOKS` (capas fictícias) por dados reais via `useEbooks()` do `useSupabaseData`.
-- Mapear `ebooks` → `{ img: cover_url, alt: title }`, manter loop duplicado.
-- Igualar a velocidade ao carrossel de tópicos (mesma `animation duration`, 46s).
-- Fallback (enquanto carrega ou se vazio): manter as 6 capas atuais para não quebrar visual.
-- Remover os imports `book-*.png.asset.json` se ficarem só de fallback opcional — vou manter como fallback.
+## 1. Card de preço mais chamativo — dourado + brilho
+- Trocar a borda azul atual por borda dourada com gradiente: `border: 1px solid rgba(201,168,76,.55)` + glow `box-shadow: 0 30px 80px -30px rgba(201,168,76,.55), 0 0 0 1px rgba(201,168,76,.25) inset`.
+- Fundo do card: gradiente sutil `linear-gradient(180deg, #fffaf0 0%, #ffffff 55%, #f7f1e1 100%)`.
+- "ASSINATURA" eyebrow em dourado (`#b8902f`).
+- Preço `R$ 29` com gradiente dourado (`linear-gradient(135deg, #d4af37, #f5d77a, #b8860b)` via `background-clip: text`) e leve `drop-shadow` âmbar.
+- Badge "Mais escolhido" em dourado sólido (fundo `#e9c97a`, texto escuro).
+- Divisor com gradiente dourado.
+- Animação `@keyframes goldShine` aplicada ao card (overlay `::after` com gradiente translúcido que cruza a cada 6s) — efeito de brilho discreto.
 
-## 2. Bloco "Olá, sou Dr. Mauro" menos largo
-- Reduzir largura máxima da `mentor-card`: envolver em wrapper `max-width: 880px; margin-inline: auto`.
-- Ajustar grid para `minmax(180px, 240px) 1fr` e padding interno mais contido.
+## 2. CTAs em verde WhatsApp
+- Adicionar variável `--wa: #25D366` e `--wa-dark: #128C7E`.
+- Substituir o gradiente azul de `.button.primary` (Hero, CTA final e pricing) por gradiente verde WhatsApp `linear-gradient(135deg, #25D366, #128C7E)` com hover `#20bd5a → #0e6b5e` e sombra `0 18px 40px -16px rgba(37,211,102,.55)`.
 
-## 3. Espaçamento harmônico entre cards/seções
-- Padronizar `.section` para `padding: 72px 0` (desktop) e `40px 0` (mobile).
-- Padronizar `gap` dos grids de features para `14px`.
-- Aumentar `margin-top` consistente entre `eyebrow` → `h2` (ver item 4) e entre `h2` → parágrafo (`16px`).
-- Uniformizar `border-radius` dos panels em `var(--radius)` (20px).
+## 3. Seta do header fixa no topo
+- A `.clube-header-toggle` já é `position: fixed`. Garantir `top: 8px; left: 50%; transform: translateX(-50%); z-index: 70;` e remover qualquer regra que dependa de scroll. Confirmar que nenhum ancestral cria contexto que a torna `absolute`.
 
-## 4. Eyebrows (PERGUNTAS FREQUENTES, PARA QUEM É) com respiro
-- Adicionar `margin-bottom: 18px` no `.eyebrow` quando seguido de `h2`.
-- Nas seções audience-section e faq-section, garantir gap visual: `h2 { margin-top: 14px }`.
+## 4. Copy do hero
+- Substituir headline atual por:
+  > "30 anos de estudos sobre Reencarnação, Reforma Íntima e Psicoterapia Reencarnacionista reunidos em um único lugar."
+- Evitar que "lugar" caia sozinho na última linha: envolver `reunidos em um único lugar` em `<span style={{ whiteSpace: 'nowrap' }}>` apenas nas palavras finais `um único lugar` (`&nbsp;` entre "um", "único" e "lugar") para forçar quebra antes.
 
-## 5. Header fixo + oculto com seta toggle (somente nesta página)
-- O `PublicHeader` é `fixed` globalmente; nesta página ele precisa ficar **oculto por padrão** e revelado por uma setinha centralizada no topo.
-- Implementação local (sem alterar `PublicHeader`):
-  - Adicionar `useEffect` que injeta `<style>` global escopado por `body.clube-hide-header header` → `transform: translateY(-100%); transition: transform .3s ease;` e adiciona a classe `clube-hide-header` no `body` ao montar; remove ao desmontar.
-  - Renderizar um botão `fixed top-0 left-1/2 -translate-x-1/2 z-[60]` com ícone `ChevronDown`/`ChevronUp` (lucide-react) que alterna a classe `clube-show-header` no body. Quando presente, regra CSS aplica `transform: translateY(0)` ao header.
-  - Botão pequeno, glassmorphism leve, centralizado, sempre visível; gira a seta 180° quando o header está aberto.
+## 5. Brilho dourado leve no headline
+- Adicionar `.clube-page .hero-title .gold-glow` com:
+  - `background: linear-gradient(135deg, #c9a84c 0%, #f5d77a 50%, #b8860b 100%); -webkit-background-clip: text; color: transparent;`
+  - `text-shadow: 0 0 24px rgba(212,175,55,.25);`
+  - animação `goldShimmer` 4s ease-in-out infinite (alterna brightness 1 → 1.15).
+- Aplicar à palavra-chave "Reforma Íntima" dentro do headline para destaque sem poluir.
 
-## 6. Remover mockup de notebook — usar só a tela
-- Fazer upload do screenshot do dashboard (anexo "image-75.png") como novo asset:
-  `lovable-assets create --file /mnt/user-uploads/image-75.png --filename platform-screen.png > src/assets/clube/platform-screen.png.asset.json`
-- Substituir `laptopMockup` por `platformScreen` na seção "Plataforma".
-- Remover wrapper `.laptop-scene` (perspective/min-height) — usar `img` direta com `border-radius: 18px; box-shadow: var(--shadow); width: 100%; max-width: 720px;`.
-- Deletar asset `platform-laptop-mockup.png.asset.json` com `assets--delete_asset` (não é mais usado).
+## 6. Pixel + UTM nesta página
+- Verificado: `index.html` já carrega o Facebook Pixel global (`fbq('init', '2180807806070529')` + PageView) e o script que anexa UTM em qualquer link `https://chk.eduzz.com/...`. Como o CTA do pricing usa exatamente `https://chk.eduzz.com/2445141`, **ambos já funcionam nesta página** — nada a alterar. Vou apenas confirmar isso na resposta após o build.
 
 ## Resumo técnico
-- Arquivo principal: `src/pages/public/ClubeDeEstudos.tsx`
-- Novo asset: `src/assets/clube/platform-screen.png.asset.json`
-- Asset removido: `src/assets/clube/platform-laptop-mockup.png.asset.json`
-- Sem mudanças em `PublicHeader.tsx`, rotas, backend ou i18n.
+- Arquivo: `src/pages/public/ClubeDeEstudos.tsx` (CSS scoped + JSX do hero/pricing/CTAs).
+- Nenhum asset novo, nenhuma dependência nova.

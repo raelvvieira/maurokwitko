@@ -77,13 +77,16 @@ const styles = `
 .clube-page .button {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   min-height: 48px; padding: 0 24px; border: 0; border-radius: 10px;
-  background: linear-gradient(135deg, var(--blue), var(--blue-deep));
-  color: #fff; font-weight: 500;
-  box-shadow: 0 18px 34px rgba(20, 105, 217, .25);
-  transition: transform .2s ease, box-shadow .2s ease;
+  background: linear-gradient(135deg, #25D366 0%, #1ebe57 55%, #128C7E 100%);
+  color: #fff; font-weight: 600;
+  box-shadow: 0 18px 34px rgba(18, 140, 126, .32);
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
   cursor: pointer;
 }
-.clube-page .button:hover { transform: translateY(-2px); box-shadow: 0 22px 44px rgba(20, 105, 217, .32); }
+.clube-page .button:hover {
+  transform: translateY(-2px); filter: brightness(1.05);
+  box-shadow: 0 22px 44px rgba(18, 140, 126, .42);
+}
 
 .clube-page .hero {
   min-height: 560px; display: grid; grid-template-columns: .98fr .9fr;

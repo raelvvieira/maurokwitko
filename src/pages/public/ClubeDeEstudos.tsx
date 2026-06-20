@@ -104,6 +104,18 @@ const styles = `
   margin: 20px 0 18px; max-width: 680px;
   font-size: clamp(1.75rem, 3vw, 2.1rem); line-height: 1.28;
 }
+.clube-page .hero h1 .grad-blue {
+  color: transparent;
+  background: linear-gradient(135deg, #1469d9 0%, #5aa3ff 100%);
+  -webkit-background-clip: text; background-clip: text;
+  font-weight: 500;
+}
+.clube-page .hero h1 .grad-gold {
+  color: transparent;
+  background: linear-gradient(135deg, #c9a84c 0%, #e8c987 100%);
+  -webkit-background-clip: text; background-clip: text;
+  font-weight: 500;
+}
 .clube-page .lead {
   max-width: 610px; color: var(--muted);
   font-size: clamp(.95rem, 1vw, 1.05rem); line-height: 1.68; margin: 0 0 28px;
@@ -380,14 +392,31 @@ const styles = `
 }
 
 @media (max-width: 640px) {
-  .clube-page .page { width: min(100% - 24px, 1180px); }
+  .clube-page .page { width: min(100% - 32px, 1180px); }
   .clube-page .hero { padding-top: 42px; gap: 26px; }
-  .clube-page .feature-grid, .clube-page .stat-row, .clube-page .audience-list { grid-template-columns: 1fr; }
+  .clube-page .hero h1 { font-size: clamp(2rem, 7vw, 2.4rem); line-height: 1.2; }
+  .clube-page .lead { font-size: 1rem; }
+  .clube-page h2 { font-size: 1.65rem; line-height: 1.25; }
+  .clube-page .plain-copy, .clube-page .library-subtitle { font-size: 1rem; }
+  .clube-page .section-head p { font-size: 1rem; }
+  .clube-page .feature-grid, .clube-page .audience-list { grid-template-columns: 1fr; }
   .clube-page .topic { width: min(48vw, 180px); }
   .clube-page .section { padding: 40px 0; }
-  .clube-page .mentor-card { grid-template-columns: 1fr; }
-  .clube-page .mentor-card img { width: 100%; height: 280px; object-position: top; }
+  .clube-page .panel { padding: 24px 20px; }
+  .clube-page .platform-card { padding: 24px 20px; }
+  .clube-page .mentor-card { grid-template-columns: 1fr; padding: 24px 20px; }
+  .clube-page .mentor-card img { width: 100%; height: 220px; object-position: top; }
+  .clube-page .pricing-card { padding: 26px 20px; }
+  .clube-page .price-anchor { padding: 26px 20px; }
+  .clube-page .faq-section.panel { padding: 24px 20px; }
+  .clube-page details { padding: 16px; }
+  .clube-page summary { padding-right: 4px; gap: 12px; }
+  .clube-page .community > img { min-height: 280px; }
+  .clube-page .stat strong { font-size: .95rem; }
+  .clube-page .stat small { font-size: .72rem; }
+  .clube-page .feature { font-size: .95rem; line-height: 1.4; }
   .clube-page .button { width: 100%; padding-inline: 18px; }
+  .clube-page .final { padding: 28px 20px; }
 }
 
 /* Header toggle (apenas nesta página) */
@@ -468,7 +497,7 @@ const ClubeDeEstudos = () => {
           <section className="hero">
             <div>
               <h1>
-                30 anos de estudos sobre Reencarnação, Reforma Íntima e Psicoterapia Reencarnacionista reunidos em um&nbsp;único&nbsp;lugar.
+                30 anos de estudos sobre <span className="grad-blue">Reencarnação</span>, <span className="grad-blue">Reforma Íntima</span> e <span className="grad-gold">Psicoterapia Reencarnacionista</span> reunidos em um&nbsp;único&nbsp;lugar.
               </h1>
               <p className="lead">
                 Para você estudar, compreender seus desafios atuais e aprender a viver melhor esta sua encarnação.

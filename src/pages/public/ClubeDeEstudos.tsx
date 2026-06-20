@@ -104,15 +104,6 @@ const styles = `
   margin: 20px 0 18px; max-width: 680px;
   font-size: clamp(1.75rem, 3vw, 2.1rem); line-height: 1.28;
 }
-.clube-page .hero h1 span.gold-glow {
-  color: transparent;
-  background: linear-gradient(135deg, #b8860b 0%, #d4af37 30%, #f5d77a 50%, #d4af37 70%, #b8860b 100%);
-  background-size: 200% 100%;
-  -webkit-background-clip: text; background-clip: text;
-  filter: drop-shadow(0 0 16px rgba(212, 175, 55, .35));
-  animation: clubeGoldText 5s ease-in-out infinite;
-  font-weight: 600;
-}
 .clube-page .lead {
   max-width: 610px; color: var(--muted);
   font-size: clamp(.95rem, 1vw, 1.05rem); line-height: 1.68; margin: 0 0 28px;
@@ -291,32 +282,13 @@ const styles = `
 .clube-page .pricing-card {
   position: relative; overflow: hidden; border-radius: 28px;
   padding: clamp(24px, 4vw, 34px);
-  border: 1px solid rgba(201, 168, 76, .55);
-  background:
-    linear-gradient(180deg, #fffaf0 0%, #ffffff 55%, #f7f1e1 100%),
-    radial-gradient(circle at 82% 0%, rgba(223,185,111,.42), transparent 18rem);
+  border: 1px solid rgba(201, 168, 76, .45);
+  background: rgba(255, 255, 255, .78);
   backdrop-filter: blur(22px);
   box-shadow:
-    0 30px 80px -20px rgba(201, 168, 76, .45),
-    0 18px 54px rgba(202, 164, 106, .18),
-    0 0 0 1px rgba(201, 168, 76, .22) inset;
+    0 24px 60px rgba(22, 66, 120, .12),
+    0 0 0 1px rgba(201, 168, 76, .18) inset;
 }
-.clube-page .pricing-card::before {
-  content: ""; position: absolute; inset: 10px; border-radius: 22px;
-  border: 1px solid rgba(201, 168, 76, .35); pointer-events: none; z-index: 1;
-}
-.clube-page .pricing-card::after {
-  content: ""; position: absolute; top: 0; left: -60%; width: 60%; height: 100%;
-  background: linear-gradient(115deg,
-    transparent 0%,
-    rgba(255, 233, 170, .0) 30%,
-    rgba(255, 233, 170, .55) 50%,
-    rgba(255, 233, 170, .0) 70%,
-    transparent 100%);
-  transform: skewX(-18deg); pointer-events: none; z-index: 2;
-  animation: clubeGoldShine 6s ease-in-out infinite;
-}
-.clube-page .pricing-card > * { position: relative; z-index: 3; }
 .clube-page .pricing-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
 .clube-page .plan-label { color: #b8902f; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
 .clube-page .popular-pill {
@@ -327,26 +299,20 @@ const styles = `
 }
 .clube-page .price {
   font-size: clamp(3.25rem, 6vw, 4.5rem); line-height: .88;
-  color: transparent;
-  background: linear-gradient(135deg, #b8860b 0%, #d4af37 35%, #f5d77a 55%, #d4af37 75%, #b8860b 100%);
-  background-size: 200% 100%;
-  -webkit-background-clip: text; background-clip: text;
-  font-weight: 700;
-  filter: drop-shadow(0 2px 8px rgba(212, 175, 55, .35));
-  animation: clubeGoldText 5s ease-in-out infinite;
+  color: var(--ink); font-weight: 700;
 }
-.clube-page .price sup { font-size: 1.25rem; font-weight: 500; color: #b8902f; -webkit-text-fill-color: #b8902f; }
-.clube-page .price small { font-size: 1rem; color: var(--muted); -webkit-text-fill-color: var(--muted); }
+.clube-page .price sup { font-size: 1.25rem; font-weight: 500; color: var(--muted); }
+.clube-page .price small { font-size: 1rem; color: var(--muted); }
 .clube-page .price-note { margin: 12px 0 22px; color: var(--muted); line-height: 1.6; }
 .clube-page .pricing-divider {
   height: 1px; margin: 20px 0;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, .65), rgba(201, 168, 76, .35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, .55), rgba(201, 168, 76, .25), transparent);
 }
 .clube-page .included { display: grid; gap: 13px; margin-bottom: 26px; }
 .clube-page .benefit { display: flex; gap: 10px; align-items: flex-start; color: #29456f; line-height: 1.45; font-size: .95rem; }
 .clube-page .check {
   width: 22px; height: 22px; flex: 0 0 auto; border-radius: 50%;
-  background: rgba(212, 175, 55, .15); color: #b8902f;
+  background: rgba(20,105,217,.08); color: var(--blue);
   display: grid; place-items: center; font-size: .85rem;
 }
 .clube-page .pricing-card .button {
@@ -502,9 +468,7 @@ const ClubeDeEstudos = () => {
           <section className="hero">
             <div>
               <h1>
-                30 anos de estudos sobre{' '}
-                <span className="gold-glow">Reencarnação, Reforma Íntima e Psicoterapia Reencarnacionista</span>{' '}
-                reunidos em um&nbsp;único&nbsp;lugar.
+                30 anos de estudos sobre Reencarnação, Reforma Íntima e Psicoterapia Reencarnacionista reunidos em um&nbsp;único&nbsp;lugar.
               </h1>
               <p className="lead">
                 Para você estudar, compreender seus desafios atuais e aprender a viver melhor esta sua encarnação.

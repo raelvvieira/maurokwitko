@@ -77,13 +77,16 @@ const styles = `
 .clube-page .button {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   min-height: 48px; padding: 0 24px; border: 0; border-radius: 10px;
-  background: linear-gradient(135deg, var(--blue), var(--blue-deep));
-  color: #fff; font-weight: 500;
-  box-shadow: 0 18px 34px rgba(20, 105, 217, .25);
-  transition: transform .2s ease, box-shadow .2s ease;
+  background: linear-gradient(135deg, #25D366 0%, #1ebe57 55%, #128C7E 100%);
+  color: #fff; font-weight: 600;
+  box-shadow: 0 18px 34px rgba(18, 140, 126, .32);
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
   cursor: pointer;
 }
-.clube-page .button:hover { transform: translateY(-2px); box-shadow: 0 22px 44px rgba(20, 105, 217, .32); }
+.clube-page .button:hover {
+  transform: translateY(-2px); filter: brightness(1.05);
+  box-shadow: 0 22px 44px rgba(18, 140, 126, .42);
+}
 
 .clube-page .hero {
   min-height: 560px; display: grid; grid-template-columns: .98fr .9fr;
@@ -101,10 +104,14 @@ const styles = `
   margin: 20px 0 18px; max-width: 680px;
   font-size: clamp(1.75rem, 3vw, 2.1rem); line-height: 1.28;
 }
-.clube-page .hero h1 span {
+.clube-page .hero h1 span.gold-glow {
   color: transparent;
-  background: linear-gradient(135deg, #142b54, #1d6ee3 58%, #ba8a47);
+  background: linear-gradient(135deg, #b8860b 0%, #d4af37 30%, #f5d77a 50%, #d4af37 70%, #b8860b 100%);
+  background-size: 200% 100%;
   -webkit-background-clip: text; background-clip: text;
+  filter: drop-shadow(0 0 16px rgba(212, 175, 55, .35));
+  animation: clubeGoldText 5s ease-in-out infinite;
+  font-weight: 600;
 }
 .clube-page .lead {
   max-width: 610px; color: var(--muted);
@@ -284,51 +291,68 @@ const styles = `
 .clube-page .pricing-card {
   position: relative; overflow: hidden; border-radius: 28px;
   padding: clamp(24px, 4vw, 34px);
-  border: 1px solid rgba(202,164,106,.34);
+  border: 1px solid rgba(201, 168, 76, .55);
   background:
-    linear-gradient(145deg, rgba(255,255,255,.92), rgba(246,251,255,.84) 52%, rgba(255,247,229,.74)),
-    radial-gradient(circle at 82% 0%, rgba(223,185,111,.42), transparent 18rem),
-    radial-gradient(circle at 0% 100%, rgba(20,105,217,.12), transparent 17rem);
+    linear-gradient(180deg, #fffaf0 0%, #ffffff 55%, #f7f1e1 100%),
+    radial-gradient(circle at 82% 0%, rgba(223,185,111,.42), transparent 18rem);
   backdrop-filter: blur(22px);
-  box-shadow: 0 30px 90px rgba(16,53,105,.16), 0 18px 54px rgba(202,164,106,.16);
+  box-shadow:
+    0 30px 80px -20px rgba(201, 168, 76, .45),
+    0 18px 54px rgba(202, 164, 106, .18),
+    0 0 0 1px rgba(201, 168, 76, .22) inset;
 }
 .clube-page .pricing-card::before {
   content: ""; position: absolute; inset: 10px; border-radius: 22px;
-  border: 1px solid rgba(202,164,106,.24); pointer-events: none;
+  border: 1px solid rgba(201, 168, 76, .35); pointer-events: none; z-index: 1;
 }
-.clube-page .pricing-card > * { position: relative; z-index: 1; }
+.clube-page .pricing-card::after {
+  content: ""; position: absolute; top: 0; left: -60%; width: 60%; height: 100%;
+  background: linear-gradient(115deg,
+    transparent 0%,
+    rgba(255, 233, 170, .0) 30%,
+    rgba(255, 233, 170, .55) 50%,
+    rgba(255, 233, 170, .0) 70%,
+    transparent 100%);
+  transform: skewX(-18deg); pointer-events: none; z-index: 2;
+  animation: clubeGoldShine 6s ease-in-out infinite;
+}
+.clube-page .pricing-card > * { position: relative; z-index: 3; }
 .clube-page .pricing-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
-.clube-page .plan-label { color: #745b32; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
+.clube-page .plan-label { color: #b8902f; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
 .clube-page .popular-pill {
   padding: 8px 14px; border-radius: 999px;
-  background: linear-gradient(135deg, rgba(245,232,205,.98), rgba(225,193,128,.45));
-  color: #745b32; font-size: .82rem; font-weight: 500; white-space: nowrap;
+  background: linear-gradient(135deg, #f5d77a, #d4af37);
+  color: #5a3f0a; font-size: .82rem; font-weight: 600; white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(201, 168, 76, .35);
 }
 .clube-page .price {
   font-size: clamp(3.25rem, 6vw, 4.5rem); line-height: .88;
   color: transparent;
-  background: linear-gradient(105deg, var(--blue-deep) 12%, var(--blue) 48%, #caa46a 92%);
+  background: linear-gradient(135deg, #b8860b 0%, #d4af37 35%, #f5d77a 55%, #d4af37 75%, #b8860b 100%);
+  background-size: 200% 100%;
   -webkit-background-clip: text; background-clip: text;
-  font-weight: 500;
+  font-weight: 700;
+  filter: drop-shadow(0 2px 8px rgba(212, 175, 55, .35));
+  animation: clubeGoldText 5s ease-in-out infinite;
 }
-.clube-page .price sup { font-size: 1.25rem; font-weight: 400; color: var(--ink); }
-.clube-page .price small { font-size: 1rem; color: var(--muted); }
+.clube-page .price sup { font-size: 1.25rem; font-weight: 500; color: #b8902f; -webkit-text-fill-color: #b8902f; }
+.clube-page .price small { font-size: 1rem; color: var(--muted); -webkit-text-fill-color: var(--muted); }
 .clube-page .price-note { margin: 12px 0 22px; color: var(--muted); line-height: 1.6; }
 .clube-page .pricing-divider {
   height: 1px; margin: 20px 0;
-  background: linear-gradient(90deg, transparent, rgba(202,164,106,.5), rgba(29,71,133,.18), transparent);
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, .65), rgba(201, 168, 76, .35), transparent);
 }
 .clube-page .included { display: grid; gap: 13px; margin-bottom: 26px; }
 .clube-page .benefit { display: flex; gap: 10px; align-items: flex-start; color: #29456f; line-height: 1.45; font-size: .95rem; }
 .clube-page .check {
   width: 22px; height: 22px; flex: 0 0 auto; border-radius: 50%;
-  background: rgba(20,105,217,.1); color: var(--blue);
+  background: rgba(212, 175, 55, .15); color: #b8902f;
   display: grid; place-items: center; font-size: .85rem;
 }
 .clube-page .pricing-card .button {
   width: 100%; min-height: 58px; border-radius: 14px;
-  background: linear-gradient(115deg, var(--blue) 0%, #1455b2 56%, #caa46a 140%);
-  box-shadow: 0 22px 44px rgba(20,105,217,.24), 0 14px 38px rgba(202,164,106,.18);
+  background: linear-gradient(135deg, #25D366 0%, #1ebe57 55%, #128C7E 100%);
+  box-shadow: 0 22px 44px rgba(37, 211, 102, .35), 0 14px 38px rgba(18, 140, 126, .28);
 }
 
 .clube-page .audience-section { max-width: 880px; margin-inline: auto; }
@@ -362,6 +386,15 @@ const styles = `
 @keyframes clubeMarquee {
   from { transform: translateX(0); }
   to { transform: translateX(calc(-50% - 8px)); }
+}
+@keyframes clubeGoldShine {
+  0% { left: -60%; }
+  60% { left: 120%; }
+  100% { left: 120%; }
+}
+@keyframes clubeGoldText {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -470,8 +503,8 @@ const ClubeDeEstudos = () => {
             <div>
               <h1>
                 30 anos de estudos sobre{' '}
-                <span>Reencarnação, Reforma Íntima e Psicoterapia Reencarnacionista</span>{' '}
-                reunidos em um único lugar.
+                <span className="gold-glow">Reencarnação, Reforma Íntima e Psicoterapia Reencarnacionista</span>{' '}
+                reunidos em um&nbsp;único&nbsp;lugar.
               </h1>
               <p className="lead">
                 Para você estudar, compreender seus desafios atuais e aprender a viver melhor esta sua encarnação.

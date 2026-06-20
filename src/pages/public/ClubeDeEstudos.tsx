@@ -1,552 +1,618 @@
-import { useState, type ReactNode } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import {
-  ArrowRight,
-  BadgeCheck,
-  BookMarked,
-  BookOpen,
-  Check,
-  ChevronDown,
-  CircleDollarSign,
-  FileText,
-  Gift,
-  HeartHandshake,
-  Lightbulb,
-  Lock,
-  MessageCircle,
-  Music,
-  PlayCircle,
-  ScrollText,
-  ShieldCheck,
-  Sparkles,
-  Users,
-} from 'lucide-react';
-import { useEbooks } from '@/hooks/useSupabaseData';
-import Marquee from '@/components/public/Marquee';
-import { getArrayTranslation } from '@/i18n';
+import heroMauro from '@/assets/clube/generated-hero-mauro.png.asset.json';
+import communityMauro from '@/assets/clube/generated-community-mauro.png.asset.json';
+import mentorStudio from '@/assets/clube/mentor-studio-crossed.png.asset.json';
+import laptopMockup from '@/assets/clube/platform-laptop-mockup.png.asset.json';
+import finalBg from '@/assets/clube/final-cta-background.png.asset.json';
+import topicEgo from '@/assets/clube/generated-topic-ego.png.asset.json';
+import topicPersonalidade from '@/assets/clube/generated-topic-personalidade.png.asset.json';
+import topicReforma from '@/assets/clube/generated-topic-reforma.png.asset.json';
+import topicInconsciente from '@/assets/clube/generated-topic-inconsciente.png.asset.json';
+import topicRelacoes from '@/assets/clube/generated-topic-relacoes.png.asset.json';
+import topicProjecoes from '@/assets/clube/generated-topic-projecoes.png.asset.json';
+import topicAnsiedade from '@/assets/clube/generated-topic-ansiedade.png.asset.json';
+import topicMorte from '@/assets/clube/generated-topic-morte.png.asset.json';
+import bookReforma from '@/assets/clube/book-reforma-intima.png.asset.json';
+import bookEgo from '@/assets/clube/book-ego-aliado.png.asset.json';
+import bookNossoLar from '@/assets/clube/book-nosso-lar.png.asset.json';
+import bookMecanismos from '@/assets/clube/book-mecanismos.png.asset.json';
+import bookObsessao from '@/assets/clube/book-obsessao.png.asset.json';
+import bookDialogos from '@/assets/clube/book-dialogos.png.asset.json';
 
 const CHECKOUT_URL = 'https://chk.eduzz.com/2445141';
 
-const APRENDIZADOS_IMAGES = [
-  'https://pikaso.cdnpk.net/private/production/4642693844/render.jpg?token=exp=1782259200~hmac=ec8384e8d2bd11300eb3ff728a763051d7139ec15db2f359500907a677da93ae',
-  'https://pikaso.cdnpk.net/private/production/4642693561/render.jpg?token=exp=1782259200~hmac=59721a878b7640ac42cf927ca18502569a7b0077b5525ec49c62c9d6605a1449',
-  'https://pikaso.cdnpk.net/private/production/4642693325/render.jpg?token=exp=1782259200~hmac=b57f6a27b685f68bda5cf623d0e198b5564afe3a20804c3ffbdf691bfb4d4067',
-  'https://pikaso.cdnpk.net/private/production/4642693801/render.jpg?token=exp=1782259200~hmac=5d6dc27b4017d081c0502e87b0462cfb78e494e71e0ce2d54398e16539b31495',
-  'https://pikaso.cdnpk.net/private/production/4642694314/render.jpg?token=exp=1782259200~hmac=f36978a576665f0334902999faf7dc607682f6b4e49ec58b098fc004654f169f',
-  'https://pikaso.cdnpk.net/private/production/4642694195/render.jpg?token=exp=1782259200~hmac=e7968d4264e9e549482d5091c637a9e698fccee11e1e60aa6d4aa62b3e22151d',
-  'https://pikaso.cdnpk.net/private/production/4642694326/render.jpg?token=exp=1782259200~hmac=7214c2832c5306f03be45a2b182cea7546cd4f9baf0cbf15b77e40e6c8bb7e08',
-  'https://pikaso.cdnpk.net/private/production/4642694688/render.jpg?token=exp=1782259200~hmac=206d1b3b63ba7e26ffe2047979d89e15f39152448188ae43f5fd16f7ba2a6fcf',
+const TOPICS = [
+  { img: topicEgo.url, title: 'O Mapa do Ego' },
+  { img: topicPersonalidade.url, title: 'Personalidade Congênita' },
+  { img: topicReforma.url, title: 'Reforma Íntima' },
+  { img: topicInconsciente.url, title: 'Investigação do Inconsciente' },
+  { img: topicRelacoes.url, title: 'Relações Kármicas' },
+  { img: topicProjecoes.url, title: 'Projeções Reencarnatórias' },
+  { img: topicAnsiedade.url, title: 'Ansiedade e Sofrimento' },
+  { img: topicMorte.url, title: 'A Morte Não Existe' },
 ];
 
-const HERO_IMAGE = 'https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg';
-const COMMUNITY_IMAGE =
-  'https://pikaso.cdnpk.net/private/production/4647065620/render.jpg?token=exp=1782259200~hmac=404c1dbc351fd1fb6e158256035fe73b5d1757665a82248cbea0cde7561afdd9';
+const BOOKS = [
+  { img: bookReforma.url, alt: 'Livro A Reforma Íntima' },
+  { img: bookEgo.url, alt: 'Livro Ego: Inimigo ou Aliado?' },
+  { img: bookNossoLar.url, alt: 'Livro Nosso Lar' },
+  { img: bookMecanismos.url, alt: 'Livro Mecanismos da Mediunidade' },
+  { img: bookObsessao.url, alt: 'Livro Obsessão e Desobsessão' },
+  { img: bookDialogos.url, alt: 'Livro Diálogos da Alma' },
+];
 
-const COMMUNITY_ICONS = [HeartHandshake, Users, MessageCircle, Sparkles, BookOpen, Lightbulb];
-const EXTRAS_ICONS = [Music, PlayCircle, FileText, Gift];
-const BIBLIOTECA_ICONS = [BookMarked, BookOpen, ScrollText, FileText, Sparkles, BadgeCheck];
+const styles = `
+.clube-page {
+  --paper: #f7fbff;
+  --mist: #eaf4ff;
+  --ink: #102448;
+  --muted: #5d6f8e;
+  --line: rgba(29, 71, 133, .13);
+  --blue: #1469d9;
+  --blue-deep: #0f4fb0;
+  --gold: #caa46a;
+  --white: rgba(255, 255, 255, .74);
+  --shadow: 0 24px 70px rgba(22, 66, 120, .12);
+  --radius: 20px;
+  font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(212, 231, 255, .95), transparent 34rem),
+    radial-gradient(circle at 88% 16%, rgba(255, 255, 255, .9), transparent 24rem),
+    linear-gradient(180deg, #fbfdff 0%, var(--paper) 46%, #eef7ff 100%);
+  min-height: 100vh;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.clube-page * { box-sizing: border-box; font-weight: 400; }
+.clube-page strong { font-weight: 500; }
+.clube-page a { color: inherit; text-decoration: none; }
+.clube-page img { max-width: 100%; display: block; }
+.clube-page h1, .clube-page h2, .clube-page h3 { font-weight: 400; margin: 0; }
 
-const fadeUp: import('framer-motion').Variants = {
-  hidden: { opacity: 0, y: 22 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.52, delay: i * 0.055, ease: 'easeOut' },
-  }),
-};
+.clube-page .page { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
 
-const sectionTitle =
-  'text-balance font-serif text-[1.9rem] leading-[1.06] tracking-tight text-[#1B120D] sm:text-4xl md:text-5xl';
-const mutedText = 'text-[15px] leading-7 text-[#6E5E54] md:text-base';
-const shell = 'border border-[#E9DED0] bg-[#FFFDFC]/85 shadow-[0_18px_55px_rgba(67,43,27,0.08)]';
-const darkShell = 'border border-white/10 bg-white/[0.075] shadow-[0_24px_70px_rgba(0,0,0,0.28)]';
+.clube-page .button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 0 24px; border: 0; border-radius: 10px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-deep));
+  color: #fff; font-weight: 500;
+  box-shadow: 0 18px 34px rgba(20, 105, 217, .25);
+  transition: transform .2s ease, box-shadow .2s ease;
+  cursor: pointer;
+}
+.clube-page .button:hover { transform: translateY(-2px); box-shadow: 0 22px 44px rgba(20, 105, 217, .32); }
 
-const IconSeal = ({
-  children,
-  dark = false,
-}: {
-  children: ReactNode;
-  dark?: boolean;
-}) => (
-  <div
-    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl ${
-      dark ? 'bg-[#D6A96B]/14 text-[#F0D3A5]' : 'bg-[#7A3F24]/10 text-[#7A3F24]'
-    }`}
-  >
-    {children}
-  </div>
+.clube-page .hero {
+  min-height: 560px; display: grid; grid-template-columns: .98fr .9fr;
+  align-items: center; gap: 42px; padding: 58px 0 38px; position: relative;
+}
+.clube-page .eyebrow {
+  display: inline-flex; align-items: center; gap: 8px; width: fit-content;
+  padding: 7px 11px; border-radius: 999px;
+  border: 1px solid rgba(202, 164, 106, .32); background: rgba(255, 255, 255, .6);
+  color: #7a653e; font-size: .77rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .12em; backdrop-filter: blur(14px);
+}
+.clube-page .hero h1 {
+  margin: 20px 0 18px; max-width: 680px;
+  font-size: clamp(1.75rem, 3vw, 2.1rem); line-height: 1.28;
+}
+.clube-page .hero h1 span {
+  color: transparent;
+  background: linear-gradient(135deg, #142b54, #1d6ee3 58%, #ba8a47);
+  -webkit-background-clip: text; background-clip: text;
+}
+.clube-page .lead {
+  max-width: 610px; color: var(--muted);
+  font-size: clamp(.95rem, 1vw, 1.05rem); line-height: 1.68; margin: 0 0 28px;
+}
+.clube-page .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+.clube-page .portrait-card {
+  position: relative; overflow: hidden; border-radius: 34px;
+  border: 1px solid rgba(255, 255, 255, .78);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .42), rgba(255, 255, 255, .9));
+  box-shadow: 0 30px 80px rgba(33, 72, 122, .18);
+  min-height: 410px;
+}
+.clube-page .portrait-card img { width: 100%; height: 100%; min-height: inherit; object-fit: cover; }
+
+.clube-page .section { padding: 68px 0; }
+.clube-page .section-head { display: block; margin-bottom: 24px; text-align: center; }
+.clube-page .section-head p { margin: 10px auto 0; max-width: 760px; color: var(--muted); line-height: 1.7; }
+.clube-page h2 { font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.22; }
+.clube-page .plain-copy { color: var(--muted); line-height: 1.7; margin: 0; }
+
+.clube-page .topics-carousel {
+  position: relative; display: grid; gap: 16px; overflow: hidden; padding: 8px 0 18px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.clube-page .topic-lane { overflow: hidden; }
+.clube-page .topic-track {
+  display: flex; width: max-content; gap: 16px;
+  animation: clubeMarquee 46s linear infinite; will-change: transform;
+}
+.clube-page .topic {
+  width: clamp(155px, 17vw, 220px); aspect-ratio: 3/4; overflow: hidden;
+  border-radius: var(--radius); position: relative; flex: 0 0 auto;
+  transition: transform .2s ease; isolation: isolate;
+  border: 1px solid var(--line); background: var(--white);
+}
+.clube-page .topic:hover { transform: translateY(-4px); }
+.clube-page .topic img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.03); }
+.clube-page .topic::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(7,24,52,0) 48%, rgba(7,24,52,.68) 100%); z-index: 1;
+}
+.clube-page .topic h3 {
+  position: absolute; left: 14px; right: 14px; bottom: 14px; z-index: 2;
+  color: #fff; font-size: 1rem; line-height: 1.18;
+  text-shadow: 0 2px 14px rgba(0,0,0,.32);
+}
+
+.clube-page .book-carousel {
+  position: relative; overflow: hidden; margin-top: 28px; padding: 4px 0 18px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.clube-page .book-track {
+  display: flex; width: max-content; gap: 18px;
+  animation: clubeMarquee 52s linear infinite; will-change: transform;
+}
+.clube-page .book-card {
+  width: clamp(118px, 13vw, 168px); aspect-ratio: 67/133; flex: 0 0 auto;
+  overflow: hidden; border-radius: 12px; background: rgba(255,255,255,.72);
+  border: 1px solid rgba(255,255,255,.72);
+  box-shadow: 0 20px 42px rgba(16,36,72,.16);
+}
+.clube-page .book-card img { width: 100%; height: 100%; object-fit: cover; }
+
+.clube-page .library-section h2 { text-align: center; margin-bottom: 24px; }
+.clube-page .library-subtitle { max-width: 760px; margin: -12px auto 28px; text-align: center; color: var(--muted); line-height: 1.7; }
+
+.clube-page .panel {
+  border-radius: var(--radius); padding: clamp(22px, 3vw, 34px);
+  border: 1px solid var(--line); background: rgba(255,255,255,.68);
+  backdrop-filter: blur(22px); box-shadow: var(--shadow);
+}
+
+.clube-page .feature-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px; margin-top: 26px;
+}
+.clube-page .feature {
+  border: 1px solid var(--line); border-radius: 14px; padding: 16px;
+  background: rgba(255,255,255,.5); color: #23436f;
+  display: flex; align-items: center; gap: 10px;
+}
+.clube-page .feature-icon {
+  width: 32px; height: 32px; flex: 0 0 auto; display: grid; place-items: center;
+  border-radius: 10px; color: var(--blue);
+  background: rgba(20,105,217,.08); border: 1px solid rgba(20,105,217,.12);
+  font-size: 1.1rem;
+}
+.clube-page .feature.discount-feature {
+  grid-column: 1 / -1; justify-content: center;
+  border-color: rgba(202,164,106,.48);
+  background: linear-gradient(135deg, rgba(255,255,255,.76), rgba(255,248,234,.82));
+  color: #765a2c; box-shadow: 0 18px 46px rgba(202,164,106,.12);
+}
+.clube-page .feature.discount-feature .feature-icon {
+  color: #8a672d; background: rgba(202,164,106,.14); border-color: rgba(202,164,106,.22);
+}
+
+.clube-page .platform-card {
+  display: grid; grid-template-columns: minmax(260px,.74fr) minmax(360px,1.26fr);
+  gap: clamp(26px, 5vw, 56px); align-items: center; overflow: hidden;
+  background:
+    radial-gradient(circle at 76% 18%, rgba(202,164,106,.22), transparent 18rem),
+    linear-gradient(135deg, rgba(255,255,255,.78), rgba(235,246,255,.64));
+}
+.clube-page .laptop-scene { perspective: 1200px; min-height: 360px; padding: 26px 38px 14px; display: grid; place-items: center; }
+.clube-page .laptop-image { width: min(100%, 650px); height: auto; margin-inline: auto; }
+
+.clube-page .community {
+  display: grid; grid-template-columns: 1fr .9fr; gap: clamp(32px, 6vw, 72px);
+  align-items: center;
+}
+.clube-page .community > img {
+  width: 100%; min-height: 360px; object-fit: cover;
+  border-radius: 22px; box-shadow: var(--shadow);
+}
+.clube-page .community .feature-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+
+.clube-page .mentor-card {
+  display: grid; grid-template-columns: minmax(170px,260px) 1fr;
+  gap: clamp(22px, 4vw, 42px); align-items: center;
+}
+.clube-page .mentor-card img {
+  border-radius: 18px; width: 100%; height: 320px; object-fit: cover; background: #edf5fe;
+}
+.clube-page .mentor-note { margin-top: 12px; }
+.clube-page .stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 20px; }
+.clube-page .stat {
+  border: 1px solid var(--line); border-radius: 14px; padding: 14px 10px;
+  text-align: center; background: rgba(255,255,255,.5);
+}
+.clube-page .stat strong { display: block; color: var(--blue-deep); font-size: 1.05rem; }
+.clube-page .stat small { color: var(--muted); font-size: .8rem; }
+
+.clube-page .price-band {
+  display: grid; grid-template-columns: minmax(280px,560px); justify-content: center;
+  gap: 26px; align-items: center; padding: 18px 0 58px; text-align: center;
+}
+.clube-page .price-anchor {
+  border-radius: 24px; padding: clamp(28px, 5vw, 54px);
+  border: 1px solid rgba(20,105,217,.16);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.84), rgba(230,243,255,.72)),
+    radial-gradient(circle at 90% 10%, rgba(202,164,106,.18), transparent 18rem);
+  box-shadow: var(--shadow);
+  display: grid; align-content: center; justify-items: center;
+}
+.clube-page .price-anchor h2 { max-width: 720px; margin-bottom: 16px; }
+.clube-page .anchor-list { display: grid; gap: 11px; margin-top: 24px; max-width: 520px; width: 100%; }
+.clube-page .anchor-line {
+  display: flex; justify-content: space-between; gap: 18px; padding-bottom: 10px;
+  border-bottom: 1px solid rgba(29,71,133,.12); color: #29456f;
+}
+.clube-page .anchor-line strong { color: var(--ink); white-space: nowrap; }
+.clube-page .anchor-line s { text-decoration-thickness: 1px; text-decoration-color: rgba(16,36,72,.62); }
+
+.clube-page .outside-value-note {
+  width: min(100%, 820px); margin: 4px auto; padding: 16px 22px; text-align: center;
+  border-radius: 999px; border: 1px solid rgba(202,164,106,.28);
+  color: #5b6681;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.78), rgba(255,248,232,.54)),
+    radial-gradient(circle at 50% 0%, rgba(202,164,106,.22), transparent 18rem);
+  box-shadow: 0 20px 60px rgba(16,53,105,.08);
+}
+
+.clube-page .pricing-card {
+  position: relative; overflow: hidden; border-radius: 28px;
+  padding: clamp(24px, 4vw, 34px);
+  border: 1px solid rgba(202,164,106,.34);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.92), rgba(246,251,255,.84) 52%, rgba(255,247,229,.74)),
+    radial-gradient(circle at 82% 0%, rgba(223,185,111,.42), transparent 18rem),
+    radial-gradient(circle at 0% 100%, rgba(20,105,217,.12), transparent 17rem);
+  backdrop-filter: blur(22px);
+  box-shadow: 0 30px 90px rgba(16,53,105,.16), 0 18px 54px rgba(202,164,106,.16);
+}
+.clube-page .pricing-card::before {
+  content: ""; position: absolute; inset: 10px; border-radius: 22px;
+  border: 1px solid rgba(202,164,106,.24); pointer-events: none;
+}
+.clube-page .pricing-card > * { position: relative; z-index: 1; }
+.clube-page .pricing-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
+.clube-page .plan-label { color: #745b32; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
+.clube-page .popular-pill {
+  padding: 8px 14px; border-radius: 999px;
+  background: linear-gradient(135deg, rgba(245,232,205,.98), rgba(225,193,128,.45));
+  color: #745b32; font-size: .82rem; font-weight: 500; white-space: nowrap;
+}
+.clube-page .price {
+  font-size: clamp(3.25rem, 6vw, 4.5rem); line-height: .88;
+  color: transparent;
+  background: linear-gradient(105deg, var(--blue-deep) 12%, var(--blue) 48%, #caa46a 92%);
+  -webkit-background-clip: text; background-clip: text;
+  font-weight: 500;
+}
+.clube-page .price sup { font-size: 1.25rem; font-weight: 400; color: var(--ink); }
+.clube-page .price small { font-size: 1rem; color: var(--muted); }
+.clube-page .price-note { margin: 12px 0 22px; color: var(--muted); line-height: 1.6; }
+.clube-page .pricing-divider {
+  height: 1px; margin: 20px 0;
+  background: linear-gradient(90deg, transparent, rgba(202,164,106,.5), rgba(29,71,133,.18), transparent);
+}
+.clube-page .included { display: grid; gap: 13px; margin-bottom: 26px; }
+.clube-page .benefit { display: flex; gap: 10px; align-items: flex-start; color: #29456f; line-height: 1.45; font-size: .95rem; }
+.clube-page .check {
+  width: 22px; height: 22px; flex: 0 0 auto; border-radius: 50%;
+  background: rgba(20,105,217,.1); color: var(--blue);
+  display: grid; place-items: center; font-size: .85rem;
+}
+.clube-page .pricing-card .button {
+  width: 100%; min-height: 58px; border-radius: 14px;
+  background: linear-gradient(115deg, var(--blue) 0%, #1455b2 56%, #caa46a 140%);
+  box-shadow: 0 22px 44px rgba(20,105,217,.24), 0 14px 38px rgba(202,164,106,.18);
+}
+
+.clube-page .audience-section { max-width: 880px; margin-inline: auto; }
+.clube-page .audience-list { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; margin-top: 22px; }
+
+.clube-page .faq-section { max-width: 880px; margin-inline: auto; }
+.clube-page details {
+  border: 1px solid var(--line); border-radius: 14px;
+  background: rgba(255,255,255,.58); padding: 17px 18px;
+}
+.clube-page details + details { margin-top: 10px; }
+.clube-page summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.clube-page summary::-webkit-details-marker { display: none; }
+.clube-page summary::after { content: "+"; color: var(--blue); font-size: 1.15rem; }
+.clube-page details[open] summary::after { content: "-"; }
+.clube-page details p { margin: 14px 0 0; color: var(--muted); line-height: 1.65; }
+
+.clube-page .final {
+  max-width: 1040px; min-height: 330px; margin: 52px auto 34px;
+  overflow: hidden; display: grid; grid-template-columns: minmax(280px,560px) 1fr;
+  gap: 24px; align-items: center; padding: clamp(30px, 5vw, 58px);
+  border-radius: 28px;
+  background:
+    linear-gradient(90deg, rgba(242,249,255,.96) 0%, rgba(255,255,255,.82) 48%, rgba(255,255,255,.16) 100%),
+    url(${JSON.stringify(finalBg.url)}) center / cover no-repeat;
+  border: 1px solid var(--line); box-shadow: var(--shadow);
+}
+.clube-page .final > div { max-width: 560px; justify-self: center; }
+.clube-page .final blockquote { margin: 0 0 24px; font-size: clamp(1.3rem, 2vw, 1.9rem); line-height: 1.16; }
+
+@keyframes clubeMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - 8px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clube-page *, .clube-page *::before, .clube-page *::after {
+    animation: none !important; transition: none !important;
+  }
+}
+
+@media (max-width: 960px) {
+  .clube-page .hero, .clube-page .platform-card, .clube-page .community,
+  .clube-page .price-band, .clube-page .final {
+    grid-template-columns: 1fr;
+  }
+  .clube-page .hero { min-height: auto; padding-top: 56px; }
+  .clube-page .portrait-card { min-height: 360px; }
+  .clube-page .feature-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .clube-page .laptop-scene { min-height: 330px; }
+}
+
+@media (max-width: 640px) {
+  .clube-page .page { width: min(100% - 24px, 1180px); }
+  .clube-page .hero { padding-top: 42px; gap: 26px; }
+  .clube-page .feature-grid, .clube-page .stat-row, .clube-page .audience-list { grid-template-columns: 1fr; }
+  .clube-page .topic { width: min(48vw, 180px); }
+  .clube-page .section { padding: 34px 0; }
+  .clube-page .mentor-card { grid-template-columns: 1fr; }
+  .clube-page .mentor-card img { width: 100%; height: 300px; object-position: top; }
+  .clube-page .button { width: 100%; padding-inline: 18px; }
+}
+`;
+
+const Icon = ({ d }: { d: string }) => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d={d} />
+  </svg>
 );
-
-const CtaButton = ({
-  children,
-  className = '',
-}: {
-  children: ReactNode;
-  className?: string;
-}) => (
-  <motion.a
-    href={CHECKOUT_URL}
-    target="_blank"
-    rel="noopener noreferrer"
-    whileHover={{ y: -2 }}
-    whileTap={{ scale: 0.98 }}
-    className={`inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#7A3F24] px-6 text-center text-[15px] font-bold text-white shadow-[0_16px_34px_rgba(122,63,36,0.28)] transition-colors hover:bg-[#65321C] focus:outline-none focus:ring-4 focus:ring-[#D6A96B]/35 ${className}`}
-  >
-    {children}
-  </motion.a>
-);
-
-const FaqItem = ({ q, a }: { q: string; a: string }) => {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div className={`${shell} overflow-hidden rounded-[1.4rem]`}>
-      <button
-        onClick={() => setOpen((value) => !value)}
-        className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left md:px-6"
-      >
-        <span className="text-[15px] font-bold leading-snug text-[#1B120D] md:text-base">{q}</span>
-        <ChevronDown
-          className={`h-5 w-5 shrink-0 text-[#7A3F24] transition-transform duration-300 ${
-            open ? 'rotate-180' : ''
-          }`}
-        />
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="overflow-hidden"
-          >
-            <p className="px-5 pb-5 text-[15px] leading-7 text-[#6E5E54] md:px-6">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
 
 const ClubeDeEstudos = () => {
-  const { t } = useTranslation();
-  const { ebooks } = useEbooks();
-  const ebookCovers = ebooks.filter((ebook) => ebook.cover_url);
-
-  const aprendizados = getArrayTranslation<{ title: string; desc: string }>(
-    t('clube.aprendizados.items', { returnObjects: true })
-  );
-  const bibliotecaGrid = getArrayTranslation<{ title: string }>(
-    t('clube.biblioteca.grid', { returnObjects: true })
-  );
-  const communityItems = getArrayTranslation<{ title: string }>(
-    t('clube.community.items', { returnObjects: true })
-  );
-  const extras = getArrayTranslation<{ title: string; desc: string }>(
-    t('clube.extras.items', { returnObjects: true })
-  );
-  const bioStats = getArrayTranslation<{ value: string; label: string }>(
-    t('clube.bio.stats', { returnObjects: true })
-  );
-  const ancoragemItems = getArrayTranslation<{ label: string; value: string }>(
-    t('clube.ancoragem.items', { returnObjects: true })
-  );
-  const priceIncludes = getArrayTranslation<string>(
-    t('clube.price.includes', { returnObjects: true })
-  );
-  const paraQuemItems = getArrayTranslation<string>(
-    t('clube.paraQuem.items', { returnObjects: true })
-  );
-  const faq = getArrayTranslation<{ q: string; a: string }>(
-    t('clube.faq.items', { returnObjects: true })
-  );
+  // Duplicate the lists so the marquee loops seamlessly
+  const topicsLoop = [...TOPICS, ...TOPICS];
+  const booksLoop = [...BOOKS, ...BOOKS];
 
   return (
-    <div
-      className="min-h-screen overflow-x-hidden bg-[#F8F2EA] text-[#1B120D]"
-      style={{ fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif' }}
-    >
-      <section className="relative isolate overflow-hidden bg-[#2A1A13] pt-24 text-white md:pt-32">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_12%,rgba(214,169,107,0.22),transparent_30%),linear-gradient(135deg,#2A1A13_0%,#463020_56%,#1C120D_100%)]" />
-        <div className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-[#F8F2EA] to-transparent" />
+    <>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+      <style dangerouslySetInnerHTML={{ __html: styles }} />
 
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 pb-12 sm:px-6 md:grid-cols-[1.03fr_0.97fr] md:items-end md:px-10 md:pb-16">
-          <motion.div initial="hidden" animate="show" variants={fadeUp} className="space-y-6 pb-2 md:pb-12">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/8 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-[#F0D3A5] backdrop-blur">
-              <Sparkles className="h-3.5 w-3.5" />
-              {t('clube.hero.eyebrow')}
-            </div>
-            <h1 className="text-balance font-serif text-[2.45rem] font-bold leading-[0.98] tracking-tight sm:text-6xl md:max-w-3xl md:text-7xl">
-              {t('clube.hero.title')}
-            </h1>
-            <p className="max-w-2xl text-[1.02rem] leading-8 text-[#E8D8C6]/86 md:text-xl">
-              {t('clube.hero.desc')}
-            </p>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <CtaButton className="w-full bg-[#D6A96B] text-[#24150E] hover:bg-[#E0B879] sm:w-auto">
-                {t('clube.hero.cta')} <ArrowRight className="h-4 w-4" />
-              </CtaButton>
-              <div className="flex items-center justify-center gap-2 text-xs font-semibold text-[#E8D8C6]/78 sm:justify-start">
-                <Lock className="h-3.5 w-3.5" />
-                {t('clube.price.badgeBottom1')} | {t('clube.price.badgeBottom2')}
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, ease: 'easeOut' }}
-            className="relative mx-auto w-full max-w-[430px] md:max-w-none"
-          >
-            <div className="absolute -left-3 top-8 z-10 rounded-2xl border border-white/12 bg-[#150D09]/72 px-4 py-3 text-white shadow-2xl backdrop-blur md:-left-8">
-              <div className="text-3xl font-black leading-none">R$29</div>
-              <div className="mt-1 text-[11px] font-semibold text-[#E8D8C6]/74">{t('clube.price.perMonth')}</div>
-            </div>
-            <div className="overflow-hidden rounded-t-[2.3rem] border border-white/10 bg-white/10 shadow-[0_32px_90px_rgba(0,0,0,0.38)]">
-              <img src={HERO_IMAGE} alt="Dr. Mauro Kwitko" className="h-[440px] w-full object-cover object-top md:h-[610px]" />
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="bg-[#F8F2EA] py-12 md:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-10">
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className="mb-8 max-w-3xl md:mb-12"
-          >
-            <h2 className={sectionTitle}>{t('clube.aprendizados.title')}</h2>
-            <p className={`${mutedText} mt-4`}>{t('clube.aprendizados.subtitle')}</p>
-          </motion.div>
-        </div>
-        <div className="overflow-hidden">
-          <motion.div
-            className="flex w-max gap-4 px-4 sm:px-6 md:gap-5 md:px-10"
-            animate={{ x: ['0%', '-50%'] }}
-            transition={{ duration: 44, repeat: Infinity, ease: 'linear' }}
-          >
-            {[...aprendizados, ...aprendizados].map((item, index) => (
-              <article
-                key={`${item.title}-${index}`}
-                className="group relative h-[360px] w-[245px] shrink-0 overflow-hidden rounded-[1.7rem] bg-[#2A1A13] shadow-[0_22px_55px_rgba(67,43,27,0.16)] md:h-[410px] md:w-[300px]"
-              >
-                <img
-                  src={APRENDIZADOS_IMAGES[index % APRENDIZADOS_IMAGES.length]}
-                  alt={item.title}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#17100C] via-[#17100C]/45 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
-                  <div className="mb-4 h-px w-12 bg-[#D6A96B]" />
-                  <h3 className="text-lg font-black leading-tight text-white">{item.title}</h3>
-                  <p className="mt-2 line-clamp-4 text-sm leading-6 text-white/72">{item.desc}</p>
-                </div>
-              </article>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="bg-[#FFFDFC] py-12 md:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-10">
-          <div className="grid gap-8 md:grid-cols-[0.9fr_1.1fr] md:items-start">
-            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
-              <h2 className={sectionTitle}>{t('clube.biblioteca.title')}</h2>
-            </motion.div>
-            <motion.div
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              className={`${shell} rounded-[1.8rem] p-5 md:p-7`}
-            >
-              <p className={mutedText}>{t('clube.biblioteca.desc')}</p>
-              <a
-                href={CHECKOUT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 text-sm font-black text-[#7A3F24] hover:text-[#65321C]"
-              >
-                {t('clube.biblioteca.cta')} <ArrowRight className="h-4 w-4" />
-              </a>
-            </motion.div>
-          </div>
-
-          {ebookCovers.length > 0 && (
-            <div className="my-10 -mx-4 overflow-hidden sm:-mx-6 md:-mx-10 md:my-14">
-              <Marquee
-                items={ebookCovers}
-                duration={Math.max(40, ebookCovers.length * 8)}
-                renderItem={(ebook) => (
-                  <div className="relative h-[158px] w-[112px] shrink-0 overflow-hidden rounded-xl border border-[#E9DED0] shadow-[0_16px_35px_rgba(67,43,27,0.12)] md:h-[190px] md:w-[134px]">
-                    <img src={ebook.cover_url ?? ''} alt={ebook.title} className="absolute inset-0 h-full w-full object-cover" />
-                  </div>
-                )}
-              />
-            </div>
-          )}
-
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
-            {bibliotecaGrid.map((item, index) => {
-              const Icon = BIBLIOTECA_ICONS[index % BIBLIOTECA_ICONS.length];
-              return (
-                <motion.div
-                  key={item.title}
-                  custom={index}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true }}
-                  variants={fadeUp}
-                  className={`${shell} rounded-[1.35rem] p-4 md:p-5`}
-                >
-                  <IconSeal>
-                    <Icon className="h-5 w-5" />
-                  </IconSeal>
-                  <span className="mt-4 block text-sm font-black leading-snug text-[#1B120D] md:text-base">{item.title}</span>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-[#2A1A13] py-12 text-white md:py-20">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 md:grid-cols-[0.95fr_1.05fr] md:items-center md:px-10">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
-            className="overflow-hidden rounded-[2rem] border border-white/10"
-          >
-            <img src={COMMUNITY_IMAGE} alt="Comunidade" className="aspect-[4/3] w-full object-cover" loading="lazy" />
-          </motion.div>
-
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp} className="space-y-6">
-            <h2 className="text-balance font-serif text-[1.9rem] leading-[1.06] tracking-tight text-white sm:text-4xl md:text-5xl">
-              {t('clube.community.title')}
-            </h2>
-            <p className="text-[15px] leading-7 text-[#E8D8C6]/78 md:text-base">{t('clube.community.desc')}</p>
-            <div className="grid grid-cols-2 gap-3">
-              {communityItems.map((item, index) => {
-                const Icon = COMMUNITY_ICONS[index % COMMUNITY_ICONS.length];
-                return (
-                  <div key={item.title} className={`${darkShell} rounded-[1.25rem] p-3 md:p-4`}>
-                    <IconSeal dark>
-                      <Icon className="h-5 w-5" />
-                    </IconSeal>
-                    <span className="mt-3 block text-sm font-bold leading-snug text-white">{item.title}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="bg-[#F8F2EA] py-12 md:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-10">
-          <motion.h2
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className={`${sectionTitle} mx-auto mb-8 max-w-3xl text-center md:mb-10`}
-          >
-            {t('clube.extras.title')}
-          </motion.h2>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {extras.map((item, index) => {
-              const Icon = EXTRAS_ICONS[index % EXTRAS_ICONS.length];
-              return (
-                <motion.article
-                  key={item.title}
-                  custom={index}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true }}
-                  variants={fadeUp}
-                  className={`${shell} rounded-[1.45rem] p-5`}
-                >
-                  <IconSeal>
-                    <Icon className="h-5 w-5" />
-                  </IconSeal>
-                  <h3 className="mt-5 text-base font-black leading-tight text-[#1B120D]">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-[#6E5E54]">{item.desc}</p>
-                </motion.article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-[#FFFDFC] py-12 md:py-20">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 md:grid-cols-[0.85fr_1.15fr] md:items-center md:px-10">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
-            className="mx-auto w-full max-w-[390px] overflow-hidden rounded-[2rem] border border-[#E9DED0] bg-[#F8F2EA] shadow-[0_24px_65px_rgba(67,43,27,0.12)]"
-          >
-            <img src={HERO_IMAGE} alt="Dr. Mauro Kwitko" className="aspect-[3/4] w-full object-cover object-top" loading="lazy" />
-          </motion.div>
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp} className="space-y-6">
-            <h2 className={sectionTitle}>{t('clube.bio.title')}</h2>
-            <p className={mutedText}>{t('clube.bio.desc')}</p>
-            <div className="grid grid-cols-2 gap-3">
-              {bioStats.map((stat) => (
-                <div key={`${stat.value}-${stat.label}`} className={`${shell} rounded-[1.35rem] p-4 md:p-5`}>
-                  <div className="font-serif text-3xl font-bold leading-none text-[#7A3F24] md:text-4xl">{stat.value}</div>
-                  <div className="mt-2 text-xs font-semibold leading-snug text-[#6E5E54] md:text-sm">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="bg-[#F8F2EA] py-12 md:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-10">
-          <div className="grid gap-8 lg:grid-cols-[1fr_0.92fr] lg:items-start">
+      <div className="clube-page">
+        <main id="top" className="page">
+          {/* Hero */}
+          <section className="hero">
             <div>
-              <motion.h2
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                className={`${sectionTitle} mb-8`}
-              >
-                {t('clube.ancoragem.title')}
-              </motion.h2>
-              <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp} className="space-y-3">
-                {ancoragemItems.map((item) => (
-                  <div key={item.label} className={`${shell} flex items-center justify-between gap-5 rounded-[1.2rem] px-4 py-4 md:px-5`}>
-                    <span className="text-sm font-bold leading-snug text-[#1B120D] md:text-base">{item.label}</span>
-                    <span className="shrink-0 text-sm font-black text-[#7A3F24] md:text-base">{item.value}</span>
-                  </div>
-                ))}
-                <div className={`${shell} mt-5 rounded-[1.5rem] bg-[#1F140F] p-5 text-white md:p-6`}>
-                  <div className="text-xs font-bold uppercase tracking-[0.18em] text-[#D6A96B]">{t('clube.ancoragem.totalLabel')}</div>
-                  <div className="mt-2 font-serif text-5xl font-bold leading-none md:text-6xl">{t('clube.ancoragem.totalValue')}</div>
-                  <p className="mt-3 max-w-sm text-sm leading-6 text-[#E8D8C6]/78">{t('clube.ancoragem.totalNote')}</p>
+              <h1>
+                30 anos de estudos sobre{' '}
+                <span>Reencarnação, Reforma Íntima e Psicoterapia Reencarnacionista</span>{' '}
+                reunidos em um único lugar.
+              </h1>
+              <p className="lead">
+                Para você estudar, compreender seus desafios atuais e aprender a viver melhor esta sua encarnação.
+              </p>
+              <div className="hero-actions">
+                <a className="button" href="#assinatura">Quero fazer parte do clube →</a>
+              </div>
+            </div>
+            <div className="hero-visual">
+              <div className="portrait-card">
+                <img src={heroMauro.url} alt="Dr. Mauro Kiwitko em estúdio claro" />
+              </div>
+            </div>
+          </section>
+
+          {/* Topics */}
+          <section id="conteudos" className="section">
+            <div className="section-head">
+              <h2>Aqui você vai aprender sobre</h2>
+              <p>Conhecimentos desenvolvidos ao longo de décadas de estudo.</p>
+            </div>
+            <div className="topics-carousel" aria-label="Temas de estudo em carrossel">
+              <div className="topic-lane">
+                <div className="topic-track">
+                  {topicsLoop.map((t, i) => (
+                    <article className="topic" key={i}>
+                      <img src={t.img} alt={i < TOPICS.length ? t.title : ''} aria-hidden={i >= TOPICS.length || undefined} />
+                      <h3>{t.title}</h3>
+                    </article>
+                  ))}
                 </div>
-              </motion.div>
+              </div>
+            </div>
+          </section>
+
+          {/* Library */}
+          <section id="biblioteca" className="section library-section">
+            <h2>Além disso, você terá acesso a um acervo completo de estudos</h2>
+            <p className="library-subtitle">
+              Todos meus Livros Digitais disponíveis para leitura e Vídeo Aulas em Alta Resolução
+            </p>
+            <div className="book-carousel" aria-label="Livros disponíveis no acervo">
+              <div className="book-track">
+                {booksLoop.map((b, i) => (
+                  <article className="book-card" key={i}>
+                    <img src={b.img} alt={i < BOOKS.length ? b.alt : ''} aria-hidden={i >= BOOKS.length || undefined} />
+                  </article>
+                ))}
+              </div>
+            </div>
+            <div className="feature-grid">
+              <div className="feature">
+                <span className="feature-icon"><Icon d="M4 19.5V5.7A2.7 2.7 0 0 1 6.7 3H20v16H6.7A2.7 2.7 0 0 0 4 21.7M8 7h8M8 11h6" /></span>
+                Todos meus Livros Digitais
+              </div>
+              <div className="feature">
+                <span className="feature-icon"><Icon d="M5 5h14v10H5zM8 19h8M12 15v4M9 9l3 2 3-2" /></span>
+                LIVES Gravadas
+              </div>
+              <div className="feature">
+                <span className="feature-icon"><Icon d="M4 6h16M4 12h16M4 18h10M7 3v18" /></span>
+                Materiais de Estudo
+              </div>
+              <div className="feature discount-feature">
+                <span className="feature-icon"><Icon d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7M2 7h20v5H2zM12 22V7" /></span>
+                20% de desconto em todos meus Livros Físicos
+              </div>
+            </div>
+          </section>
+
+          {/* Platform */}
+          <section className="section platform-card panel">
+            <div>
+              <p className="eyebrow">Plataforma do clube</p>
+              <h2>Uma plataforma para fácil acesso aos conteúdos</h2>
+              <p className="plain-copy" style={{ maxWidth: 540, marginTop: 14 }}>
+                Tudo organizado em um ambiente simples para você estudar no seu ritmo, voltar aos conteúdos e acompanhar tudo com clareza.
+              </p>
+            </div>
+            <div className="laptop-scene" aria-label="Mockup da plataforma do clube em um notebook">
+              <img className="laptop-image" src={laptopMockup.url} alt="Notebook prateado exibindo a plataforma do Clube de Estudos" />
+            </div>
+          </section>
+
+          {/* Community */}
+          <section id="comunidade" className="section community">
+            <img src={communityMauro.url} alt="Dr. Mauro Kiwitko conversando com uma roda de estudos" />
+            <div>
+              <h2>Comunidade para quem busca evoluir através do conhecimento</h2>
+              <p className="plain-copy">Grupo exclusivo onde todos compartilham dos mesmos objetivos.</p>
+              <div className="feature-grid">
+                <div className="feature"><span className="feature-icon"><Icon d="M7 11a4 4 0 1 1 8 0M3 21a8 8 0 0 1 16 0" /></span>Troca de experiências</div>
+                <div className="feature"><span className="feature-icon"><Icon d="M7 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM17 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM17 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM7 8l10 8M17 8l-10 8" /></span>Networking</div>
+                <div className="feature"><span className="feature-icon"><Icon d="M4 19V5l8-3 8 3v14l-8 3z" /></span>Aprendizados Novos</div>
+                <div className="feature"><span className="feature-icon"><Icon d="M12 3a7 7 0 0 0-4 12.7V19h8v-3.3A7 7 0 0 0 12 3zM9 22h6M10 19h4" /></span>Reflexões Compartilhadas</div>
+              </div>
+            </div>
+          </section>
+
+          {/* Mentor */}
+          <section className="section">
+            <article className="mentor-card">
+              <img src={mentorStudio.url} alt="Retrato do Dr. Mauro Kiwitko" />
+              <div>
+                <h2>Olá, sou Dr. Mauro</h2>
+                <p className="plain-copy">
+                  Há cerca de 30 anos me dedico a orientar pessoas, no consultório, nas palestras e nos cursos, a recordarem que somos Espíritos encarnados, com finalidades próprias nesta jornada.
+                </p>
+                <p className="plain-copy mentor-note">
+                  Fundador e patrono da Associação Brasileira de Psicoterapia Reencarnacionista (ABPR), com mais de 10.000 Investigações do Inconsciente realizadas, mais de 70 turmas formadas e 25 livros publicados entre físicos e e-books.
+                </p>
+                <div className="stat-row">
+                  <div className="stat"><strong>10k+</strong><small>atendimentos</small></div>
+                  <div className="stat"><strong>25</strong><small>livros</small></div>
+                  <div className="stat"><strong>70+</strong><small>turmas</small></div>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          {/* Pricing */}
+          <section id="assinatura" className="section price-band">
+            <div className="price-anchor">
+              <p className="eyebrow">Resumo</p>
+              <h2>Todo o clube por menos do que um livro por mês.</h2>
+              <p className="plain-copy">
+                Ao invés de comprar cursos, livros e encontros separadamente, você entra em um ambiente contínuo de estudo por uma assinatura simples.
+              </p>
+              <div className="anchor-list" aria-label="Comparação de valor">
+                <div className="anchor-line"><span>Curso Reforma Íntima</span><strong><s>R$ 249</s></strong></div>
+                <div className="anchor-line"><span>Biblioteca Digital Completa</span><strong><s>R$ 497</s></strong></div>
+                <div className="anchor-line"><span>Lives e Conteúdos Extras</span><strong><s>R$ 197</s></strong></div>
+                <div className="anchor-line"><span>Valor total separado</span><strong><s>R$ 943</s></strong></div>
+              </div>
             </div>
 
-            <motion.div
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              className="sticky top-24 rounded-[2rem] border border-[#7A3F24]/18 bg-[#FFFDFC] p-5 shadow-[0_30px_80px_rgba(67,43,27,0.16)] md:p-7"
-            >
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#7A3F24]/10 px-3 py-2 text-xs font-black text-[#7A3F24]">
-                <CircleDollarSign className="h-4 w-4" />
-                {t('clube.price.badge')}
-              </div>
-              <h2 className="mt-5 text-xl font-black leading-tight text-[#1B120D] md:text-2xl">{t('clube.price.title')}</h2>
-              <div className="mt-5 flex items-end gap-1">
-                <span className="mb-2 text-xl font-bold text-[#6E5E54]">R$</span>
-                <span className="font-serif text-7xl font-bold leading-none text-[#1B120D] md:text-8xl">29</span>
-                <span className="mb-3 text-sm font-bold text-[#6E5E54]">{t('clube.price.perMonth')}</span>
-              </div>
-              <div className="mt-7 grid gap-3">
-                {priceIncludes.map((item) => (
-                  <div key={item} className="flex items-start gap-3">
-                    <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#7A3F24] text-white">
-                      <Check className="h-3.5 w-3.5" />
-                    </div>
-                    <span className="text-sm font-semibold leading-6 text-[#1B120D]">{item}</span>
-                  </div>
-                ))}
-              </div>
-              <CtaButton className="mt-7 w-full">
-                {t('clube.price.cta')} <ArrowRight className="h-5 w-5" />
-              </CtaButton>
-              <div className="mt-4 grid grid-cols-2 gap-2 text-center text-[11px] font-bold text-[#6E5E54]">
-                <div className="rounded-2xl bg-[#F8F2EA] px-3 py-3">
-                  <Lock className="mx-auto mb-1 h-3.5 w-3.5" />
-                  {t('clube.price.badgeBottom1')}
-                </div>
-                <div className="rounded-2xl bg-[#F8F2EA] px-3 py-3">
-                  <ShieldCheck className="mx-auto mb-1 h-3.5 w-3.5" />
-                  {t('clube.price.badgeBottom2')}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+            <p className="plain-copy outside-value-note">
+              No clube, você acessa tudo por uma assinatura mensal simples.
+            </p>
 
-      <section className="bg-[#FFFDFC] py-12 md:py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-10">
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp} className="mb-8 max-w-3xl">
-            <h2 className={sectionTitle}>{t('clube.paraQuem.title')}</h2>
-            <p className={`${mutedText} mt-4`}>{t('clube.paraQuem.desc')}</p>
-          </motion.div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {paraQuemItems.map((item, index) => (
-              <motion.div
-                key={item}
-                custom={index}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                className={`${shell} flex items-start gap-3 rounded-[1.25rem] p-4 md:p-5`}
-              >
-                <IconSeal>
-                  <Check className="h-5 w-5" />
-                </IconSeal>
-                <span className="pt-2 text-sm font-bold leading-6 text-[#1B120D] md:text-[15px]">{item}</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+            <article className="pricing-card" aria-label="Plano do Clube de Estudos">
+              <div className="pricing-top">
+                <span className="plan-label">Assinatura</span>
+                <span className="popular-pill">Mais escolhido</span>
+              </div>
+              <div className="price"><sup>R$</sup>29<small>/mês</small></div>
+              <p className="price-note">Acesso imediato. Sem fidelidade. Cancele quando quiser.</p>
+              <div className="pricing-divider" />
+              <div className="included">
+                <div className="benefit"><span className="check">✓</span>Curso Reforma Íntima</div>
+                <div className="benefit"><span className="check">✓</span>Todos meus Livros Digitais</div>
+                <div className="benefit"><span className="check">✓</span>LIVES Gravadas</div>
+                <div className="benefit"><span className="check">✓</span>Materiais de Estudo</div>
+                <div className="benefit"><span className="check">✓</span>20% de desconto em Livros Físicos</div>
+                <div className="benefit"><span className="check">✓</span>Acesso imediato</div>
+              </div>
+              <a className="button" href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer">
+                Quero entrar agora →
+              </a>
+            </article>
+          </section>
 
-      <section className="bg-[#F8F2EA] py-12 md:py-20">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 md:px-10">
-          <motion.h2
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className={`${sectionTitle} mb-8 text-center`}
-          >
-            {t('clube.faq.title')}
-          </motion.h2>
-          <div className="space-y-3">
-            {faq.map((item, index) => (
-              <motion.div key={item.q} custom={index} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
-                <FaqItem q={item.q} a={item.a} />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+          {/* Audience */}
+          <section className="section audience-section">
+            <p className="eyebrow">Para quem é</p>
+            <h2>Um clube para quem quer estudar com seriedade.</h2>
+            <div className="audience-list">
+              <div className="benefit"><span className="check">✓</span>Busca compreender melhor a própria vida</div>
+              <div className="benefit"><span className="check">✓</span>Deseja aprofundar reencarnação</div>
+              <div className="benefit"><span className="check">✓</span>Quer aplicar reforma íntima no dia a dia</div>
+              <div className="benefit"><span className="check">✓</span>Gosta de estudar em comunidade</div>
+            </div>
+          </section>
 
-      <section className="bg-[#2A1A13] px-4 py-14 text-center text-white sm:px-6 md:py-24">
-        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp} className="mx-auto max-w-3xl">
-          <p className="font-serif text-3xl font-bold italic leading-tight text-[#F0D3A5] md:text-5xl">
-            "{t('clube.ctaFinal.quote')}"
-          </p>
-          <p className="mt-4 text-sm font-bold text-[#E8D8C6]/70">- {t('clube.ctaFinal.quoteAuthor')}</p>
-          <div className="mx-auto my-8 h-px max-w-xs bg-white/12" />
-          <h2 className="text-3xl font-black leading-tight md:text-4xl">{t('clube.ctaFinal.title')}</h2>
-          <CtaButton className="mt-7 w-full bg-[#D6A96B] text-[#24150E] hover:bg-[#E0B879] sm:w-auto">
-            {t('clube.ctaFinal.button')} <ArrowRight className="h-4 w-4" />
-          </CtaButton>
-        </motion.div>
-      </section>
-    </div>
+          {/* Final CTA */}
+          <section className="final">
+            <div>
+              <blockquote>
+                Comece hoje uma jornada de estudo com profundidade, acolhimento e direção.
+              </blockquote>
+              <a className="button" href="#assinatura">Fazer parte do clube →</a>
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section className="section faq-section panel">
+            <p className="eyebrow">Perguntas frequentes</p>
+            <h2>Dúvidas comuns</h2>
+            <details>
+              <summary>Preciso ter conhecimento prévio?</summary>
+              <p>Não. Os conteúdos foram organizados para acolher iniciantes e também quem já estuda o tema.</p>
+            </details>
+            <details>
+              <summary>O acesso é imediato?</summary>
+              <p>Sim. Após a entrada no clube, você recebe acesso aos conteúdos e pode começar pelo tema que fizer mais sentido.</p>
+            </details>
+            <details>
+              <summary>Posso cancelar quando quiser?</summary>
+              <p>Sim. A assinatura é mensal e sem fidelidade.</p>
+            </details>
+          </section>
+        </main>
+      </div>
+    </>
   );
 };
 

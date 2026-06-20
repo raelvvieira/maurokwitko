@@ -503,8 +503,8 @@ const ClubeDeEstudos = () => {
             <div>
               <h1>
                 30 anos de estudos sobre{' '}
-                <span>Reencarnação, Reforma Íntima e Psicoterapia Reencarnacionista</span>{' '}
-                reunidos em um único lugar.
+                <span className="gold-glow">Reencarnação, Reforma Íntima e Psicoterapia Reencarnacionista</span>{' '}
+                reunidos em um&nbsp;único&nbsp;lugar.
               </h1>
               <p className="lead">
                 Para você estudar, compreender seus desafios atuais e aprender a viver melhor esta sua encarnação.

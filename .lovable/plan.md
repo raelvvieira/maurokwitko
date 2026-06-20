@@ -1,47 +1,44 @@
-# Reconstruir a página `/clube-de-estudos`
+# Ajustes da página /clube-de-estudos
 
-Vou usar o `index.html` do zip como blueprint visual/textual e reescrever a rota existente `src/pages/public/ClubeDeEstudos.tsx` como um componente React, preservando 100% da copy e a ordem das 11 seções listadas no `lovable-import.md`.
+Edita apenas `src/pages/public/ClubeDeEstudos.tsx` (e cria 1 novo asset de imagem).
 
-## Etapas
+## 1. Carrossel do acervo com e-books reais do Dr. Mauro
+- Trocar o array `BOOKS` (capas fictícias) por dados reais via `useEbooks()` do `useSupabaseData`.
+- Mapear `ebooks` → `{ img: cover_url, alt: title }`, manter loop duplicado.
+- Igualar a velocidade ao carrossel de tópicos (mesma `animation duration`, 46s).
+- Fallback (enquanto carrega ou se vazio): manter as 6 capas atuais para não quebrar visual.
+- Remover os imports `book-*.png.asset.json` se ficarem só de fallback opcional — vou manter como fallback.
 
-1. **Upload dos assets para a CDN do Lovable** (sem versionar binários no repo).
-   - Todos os 20 arquivos de `/tmp/clube/assets/` (hero, comunidade, mentor, laptop, CTA final, 8 cards de tópicos, 6 capas de livros) são enviados via `lovable-assets create` e gravados como `src/assets/clube/<nome>.png.asset.json`.
-   - Cada pointer JSON é importado no componente e referenciado por `.url`.
+## 2. Bloco "Olá, sou Dr. Mauro" menos largo
+- Reduzir largura máxima da `mentor-card`: envolver em wrapper `max-width: 880px; margin-inline: auto`.
+- Ajustar grid para `minmax(180px, 240px) 1fr` e padding interno mais contido.
 
-2. **Reescrever `src/pages/public/ClubeDeEstudos.tsx`** como uma única página com as seções na ordem do brief:
-   1. Hero (headline, subtítulo, CTA, retrato Dr. Mauro)
-   2. "Aqui você vai aprender sobre" — carrossel horizontal de cards 3:4 com títulos sobrepostos (8 tópicos)
-   3. Acervo — carrossel de livros + benefícios
-   4. Plataforma — mockup de notebook + copy curta
-   5. Comunidade — imagem + cards de benefícios
-   6. "Olá, sou Dr. Mauro" — retrato + estatísticas
-   7. Bloco de resumo / ancoragem de valor
-   8. Card de assinatura (preço + benefícios) com CTA para `https://chk.eduzz.com/2445141`
-   9. "Para quem é"
-   10. CTA final com `final-cta-background.png` cobrindo toda a largura do card
-   11. FAQ (accordion)
-   - Toda copy copiada literalmente do `index.html` do zip.
-   - Sem texto dentro de imagens.
+## 3. Espaçamento harmônico entre cards/seções
+- Padronizar `.section` para `padding: 72px 0` (desktop) e `40px 0` (mobile).
+- Padronizar `gap` dos grids de features para `14px`.
+- Aumentar `margin-top` consistente entre `eyebrow` → `h2` (ver item 4) e entre `h2` → parágrafo (`16px`).
+- Uniformizar `border-radius` dos panels em `var(--radius)` (20px).
 
-3. **Estilo**
-   - Paleta clara, azul suave + dourado discreto, glassmorphism leve (já alinhado com tokens existentes `--primary`, `--accent`, `.glass*` em `src/index.css`).
-   - Fonte: adicionar Poppins no `<link>` do Google Fonts dentro do componente (via `<style>` inline ou import no head) ou usar a família `font-sans` atual — manterei Plus Jakarta Sans do projeto como body e aplicarei Poppins via classe utilitária na própria página (`font-['Poppins']`) carregando-a em `index.css` com `@import`. Sem trocar a fonte global do app.
-   - Cores e sombras via tokens semânticos do `index.css`; nada hardcoded fora do necessário para casar com o mock.
+## 4. Eyebrows (PERGUNTAS FREQUENTES, PARA QUEM É) com respiro
+- Adicionar `margin-bottom: 18px` no `.eyebrow` quando seguido de `h2`.
+- Nas seções audience-section e faq-section, garantir gap visual: `h2 { margin-top: 14px }`.
 
-4. **Rota** — `App.tsx` já aponta `/clube-de-estudos` para o componente; nada muda lá.
+## 5. Header fixo + oculto com seta toggle (somente nesta página)
+- O `PublicHeader` é `fixed` globalmente; nesta página ele precisa ficar **oculto por padrão** e revelado por uma setinha centralizada no topo.
+- Implementação local (sem alterar `PublicHeader`):
+  - Adicionar `useEffect` que injeta `<style>` global escopado por `body.clube-hide-header header` → `transform: translateY(-100%); transition: transform .3s ease;` e adiciona a classe `clube-hide-header` no `body` ao montar; remove ao desmontar.
+  - Renderizar um botão `fixed top-0 left-1/2 -translate-x-1/2 z-[60]` com ícone `ChevronDown`/`ChevronUp` (lucide-react) que alterna a classe `clube-show-header` no body. Quando presente, regra CSS aplica `transform: translateY(0)` ao header.
+  - Botão pequeno, glassmorphism leve, centralizado, sempre visível; gira a seta 180° quando o header está aberto.
 
-5. **Verificação** — build + `browser--view_preview` em `/clube-de-estudos` para conferir layout e ausência de erros.
+## 6. Remover mockup de notebook — usar só a tela
+- Fazer upload do screenshot do dashboard (anexo "image-75.png") como novo asset:
+  `lovable-assets create --file /mnt/user-uploads/image-75.png --filename platform-screen.png > src/assets/clube/platform-screen.png.asset.json`
+- Substituir `laptopMockup` por `platformScreen` na seção "Plataforma".
+- Remover wrapper `.laptop-scene` (perspective/min-height) — usar `img` direta com `border-radius: 18px; box-shadow: var(--shadow); width: 100%; max-width: 720px;`.
+- Deletar asset `platform-laptop-mockup.png.asset.json` com `assets--delete_asset` (não é mais usado).
 
-## Detalhes técnicos
-
-- Assets via `lovable-assets create --file /tmp/clube/assets/<x>.png > src/assets/clube/<x>.png.asset.json`, importados como `import hero from "@/assets/clube/generated-hero-mauro.png.asset.json"` e usados como `src={hero.url}`.
-- Animações com `framer-motion` (já no projeto), reutilizando o padrão `Variants` que já está tipado no arquivo atual.
-- Carrosséis horizontais: `overflow-x-auto snap-x` simples (mais leve que o `Marquee`, que rola infinito; o brief pede carrossel horizontal navegável).
-- FAQ: `@/components/ui/accordion` (shadcn já instalado).
-- CTA Eduzz mantém `https://chk.eduzz.com/2445141` (mesma URL do componente atual), preservando o forwarding de UTM já configurado em `index.html`.
-- Nada é alterado em `i18n/locales/*.json`; toda a copy fica embutida no componente em pt-BR conforme o `index.html` enviado.
-
-## Fora de escopo
-
-- Não mexer em `App.tsx`, header/footer, outras páginas, backend ou config.
-- Não adicionar suporte a outros idiomas nesta página (o `index.html` enviado é só pt-BR).
+## Resumo técnico
+- Arquivo principal: `src/pages/public/ClubeDeEstudos.tsx`
+- Novo asset: `src/assets/clube/platform-screen.png.asset.json`
+- Asset removido: `src/assets/clube/platform-laptop-mockup.png.asset.json`
+- Sem mudanças em `PublicHeader.tsx`, rotas, backend ou i18n.

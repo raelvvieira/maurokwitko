@@ -493,7 +493,7 @@ const Home = () => {
               <Mail className="w-4 h-4" /> {t('home.contact.email')}
             </a>
             <a
-              href="https://wa.me/5551999999999"
+              href="https://wa.me/5551926345354?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es..."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-success text-success-foreground text-sm font-semibold hover:bg-success/90 transition-colors"

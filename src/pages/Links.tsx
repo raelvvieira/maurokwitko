@@ -224,7 +224,7 @@ export default function Links() {
     {
       title: "CONTATO",
       links: [
-        { id: "wpp", label: "Whatsapp", url: "https://wa.me/555191135137?text=Ol%C3%A1%20Dr.%20Mauro!%20Encontrei%20seu%20contato%20atrav%C3%A9s%20do%20link%20da%20bio%20do%20instagram...", variant: "green", icon: "whatsapp" },
+        { id: "wpp", label: "Whatsapp", url: "https://wa.me/5551926345354?text=Ol%C3%A1%21%20Vim%20pelo%20Instagram%20e%20preciso%20de%20um%20atendimento...", variant: "green", icon: "whatsapp" },
         { id: "site", label: "Meu Site", url: "https://www.maurokwitko.com.br/", variant: "cyan" },
       ],
     },

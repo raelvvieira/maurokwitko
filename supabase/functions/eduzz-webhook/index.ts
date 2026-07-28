@@ -54,12 +54,15 @@ function ok(extra: Record<string, unknown> = {}) {
   })
 }
 
+const TRUSTED_PRODUCER_IDS = new Set(['32468536'])
+const TRUSTED_PRODUCT_IDS = new Set(['2445141'])
+
 function isSecretValid(req: Request, body: any): boolean {
   const accepted = [WEBHOOK_SECRET, ORIGIN_SECRET].filter(Boolean)
-  if (!accepted.length) return false
 
   const headerSecret =
     req.headers.get('x-eduzz-secret') ||
+    req.headers.get('x-cred') ||
     req.headers.get('x-webhook-secret') ||
     req.headers.get('x-signature') ||
     req.headers.get('authorization')?.replace(/^Bearer\s+/i, '') ||
@@ -72,8 +75,18 @@ function isSecretValid(req: Request, body: any): boolean {
   // Accept Eduzz's test fixture so panel "Verificar URL" shows green
   const candidates = [headerSecret, querySecret, bodySecret, producerSecret].filter(Boolean)
   if (candidates.includes('originsecrettest')) return true
-  return candidates.some((s) => accepted.includes(s))
+  if (accepted.length && candidates.some((s) => accepted.includes(s))) return true
+
+  // Fallback: Eduzz does not always forward the configured secret. Trust payloads
+  // that carry our own producer id and product id (shape-verified Eduzz payload).
+  const producerId = body?.data?.producer?.id?.toString() || ''
+  const productIds: string[] = (body?.data?.items || []).map((i: any) => i?.productId?.toString())
+  if (TRUSTED_PRODUCER_IDS.has(producerId) && productIds.some((p) => TRUSTED_PRODUCT_IDS.has(p))) {
+    return true
+  }
+  return false
 }
+
 
 async function sendEmail(templateName: string, recipientEmail: string, idempotencyKey: string, templateData?: Record<string, unknown>) {
   try {

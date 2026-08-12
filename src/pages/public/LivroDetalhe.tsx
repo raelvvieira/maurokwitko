@@ -332,7 +332,24 @@ const LivroDetalhe = () => {
           />
         </section>
       )}
+
+      <Dialog open={feiraOpen} onOpenChange={setFeiraOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl">Venha para a Feira do Livro prestigiar esse momento!</DialogTitle>
+            <DialogDescription className="text-base leading-relaxed pt-2 text-left">
+              72ª Feira do Livro de Porto Alegre — de 30 de outubro a 15 de novembro de 2026, na Praça da Alfândega,
+              Centro Histórico. Dr. Mauro estará com um estande e o livro estará à venda lá.
+              <br />
+              <br />
+              <strong>2 de novembro, às 14h:</strong> palestra na Sala dos Jacarandás, Clube do Comércio
+              (Rua dos Andradas, 1085 — 2º andar), com sessão de autógrafos logo após.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
+
   );
 };
 

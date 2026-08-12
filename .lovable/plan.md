@@ -1,28 +1,24 @@
-Ajustes mobile no `/clube-de-estudos` (arquivo `src/pages/public/ClubeDeEstudos.tsx`):
+# Capa do "Autismo e Reencarnação" + destaque Feira do Livro no "E Putin Reencarnou Ucraniano"
 
-1. **Hierarquia tipográfica no mobile** (em `@media (max-width: 640px)`):
-   - `h1` da hero: aumentar para `clamp(2rem, 7vw, 2.4rem)` com line-height 1.2.
-   - `h2` das seções: aumentar para `1.65rem` (vs `~1.4rem` atual) com line-height 1.25.
-   - `.lead`, `.plain-copy`, `.library-subtitle`: manter em `1rem` para criar contraste claro com h2.
-   - `.eyebrow`: manter pequeno (0.75rem).
+## 1. Nova capa do e-book "Autismo e Reencarnação"
+- Enviar a imagem enviada no chat para o storage de capas de e-books e atualizar o registro do e-book para apontar para ela.
+- A imagem tem proporção próxima de 2:3, a mesma usada por todas as outras capas do catálogo, então ela aparece no mesmo tamanho e enquadramento dos demais livros (grade, carrossel e página de detalhe) sem ajuste extra.
 
-2. **Padding interno dos cards/panels no mobile** (evitar texto colado nas bordas):
-   - `.panel`, `.platform-card`, `.faq-section.panel`, `.mentor-card`, `.pricing-card`, `.price-anchor`: forçar `padding: 22px 20px` em telas ≤640px (hoje o `clamp` mínimo 22px é aplicado ao padding total via shorthand, mas o `padding-inline` em alguns blocos fica apertado).
-   - `.faq-section` (painel): adicionar `padding: 24px 20px` no mobile e dar `margin-inline` interno aos `<details>` (`padding: 16px`).
-   - `details summary`: garantir `padding-right: 8px` para que o "+" não cole na borda.
+## 2. Página do e-book "E Putin Reencarnou Ucraniano"
+Alterações aplicadas apenas neste livro (identificado pelo seu id), sem afetar os demais:
 
-3. **Largura da página no mobile**: aumentar a folga lateral para `width: min(100% - 32px, 1180px)` (hoje 24px) para respirar mais.
+- **Novo card no lugar de "Comentário do autor"** (o vídeo hoje é só um placeholder nessa página), com texto enxuto:
+  - Título: "Dr. Mauro na Feira do Livro de Porto Alegre"
+  - Corpo: 72ª Feira do Livro — 30 de outubro a 15 de novembro de 2026, Praça da Alfândega, Centro Histórico. Dr. Mauro estará com um estande.
+  - Destaque: 2/11, 14h — Palestra na Sala dos Jacarandás, Clube do Comércio (Andradas, 1085 — 2º andar), com sessão de autógrafos logo após.
+  - Visual: card em tom âmbar/dourado suave, com ícone de calendário, alinhado ao estilo dos outros cards da página.
 
-4. **Gradiente dourado/azul nas palavras da hero (estilo da imagem anexada)**:
-   - Reintroduzir spans coloridos nas palavras-chave do h1:
-     - "Reencarnação" e "Reforma Íntima" com gradiente azul → `linear-gradient(135deg, #1469d9, #5aa3ff)`.
-     - "Psicoterapia Reencarnacionista" com gradiente dourado suave → `linear-gradient(135deg, #c9a84c, #e8c987)`.
-   - Aplicado via `background-clip: text` sem animação, sem glow forte — apenas o degradê estático como na referência enviada.
+- **Botão principal**: passa de "Comprar" (verde) para **"Comprar na Feira do Livro de Porto Alegre"**, em amarelo/âmbar com texto escuro, sombra e leve destaque, ficando o CTA mais chamativo da página.
 
-5. **Outros pequenos ajustes mobile**:
-   - `.community > img`: `min-height: 280px` no mobile (hoje 360px ocupa demais).
-   - `.mentor-card img`: reduzir altura no mobile para `220px`.
-   - `.stat-row`: manter em 3 colunas no mobile (já está), mas reduzir `font-size` do `strong` para caber.
-   - `.feature`: garantir `font-size: .95rem` e `line-height: 1.4` para não estourar.
+- **Ao clicar**: em vez de abrir link externo, abre um pop-up (modal) com a mensagem: "Venha para a Feira do Livro prestigiar esse momento!" seguida das datas (30/10 a 15/11/2026, Praça da Alfândega) e do destaque da palestra + autógrafos em 2/11 às 14h, com botão de fechar.
 
-Sem mudanças de lógica/dados — apenas CSS dentro do bloco `styles` e o JSX do `<h1>` da hero.
+- Os demais botões da página ("Adquirir Gratuitamente" e o card do Clube) permanecem como estão.
+
+## Detalhes técnicos
+- `src/pages/public/LivroDetalhe.tsx`: constante com o id do e-book do Putin; renderização condicional do card da Feira no lugar do bloco de comentário do autor e do CTA amarelo; modal via componente `Dialog` do shadcn já presente no projeto.
+- Capa: upload no bucket `ebooks` (pasta `covers`) + update de `cover_url` na tabela `ebooks` para o registro "Autismo e Reencarnação".

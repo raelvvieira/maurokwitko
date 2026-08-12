@@ -173,8 +173,9 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
                         <img
                           src={slide.image}
                           alt={slide.imageAlt}
-                          className="w-full h-full object-cover"
+                          className={slide.isFeira ? 'w-full h-full object-contain' : 'w-full h-full object-cover'}
                         />
+
                         {slide.isFeira && (
                           <div className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-400 text-amber-950 text-xs font-bold shadow-md">
                             <CalendarDays className="w-3.5 h-3.5" />

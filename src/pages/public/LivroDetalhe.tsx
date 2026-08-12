@@ -23,8 +23,11 @@ const LivroDetalhe = () => {
   const { t } = useTranslation();
   const { tipo, id } = useParams<{ tipo: string; id: string }>();
   const { ebooks } = useEbooks();
+  const [feiraOpen, setFeiraOpen] = useState(false);
+  const isFeira = tipo === 'ebook' && id === PUTIN_EBOOK_ID;
 
   if (tipo !== 'fisico' && tipo !== 'ebook') return <Navigate to="/livros-e-ebooks" replace />;
+
 
   let titulo = '';
   let autor = 'Dr. Mauro Kwitko';

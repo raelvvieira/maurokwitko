@@ -151,7 +151,11 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
                           animate={{ scale: [1, 1.03, 1] }}
                           transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
                           onClick={() => navigate(slide.ctaHref)}
-                          className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-md"
+                          className={`inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-colors shadow-md ${
+                            slide.isFeira
+                              ? 'bg-amber-400 text-amber-950 hover:bg-amber-300 shadow-amber-400/40'
+                              : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                          }`}
                         >
                           {slide.ctaLabel} <ArrowRight className="w-4 h-4" />
                         </motion.button>
@@ -159,12 +163,24 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
                     </div>
 
                     <div className="relative">
-                      <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-lg ring-1 ring-border/40">
+                      <div
+                        className={`relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-lg ${
+                          slide.isFeira
+                            ? 'ring-[3px] ring-amber-400 shadow-xl shadow-amber-400/20'
+                            : 'ring-1 ring-border/40'
+                        }`}
+                      >
                         <img
                           src={slide.image}
                           alt={slide.imageAlt}
                           className="w-full h-full object-cover"
                         />
+                        {slide.isFeira && (
+                          <div className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-400 text-amber-950 text-xs font-bold shadow-md">
+                            <CalendarDays className="w-3.5 h-3.5" />
+                            Feira do Livro
+                          </div>
+                        )}
                       </div>
                       <p className="mt-5 text-center text-sm md:text-base font-medium text-foreground/70 tracking-wide">
                         {slide.caption}

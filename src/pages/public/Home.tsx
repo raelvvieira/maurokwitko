@@ -54,10 +54,10 @@ type Slide = {
 const PUTIN_EBOOK_ID = '6c60c3e2-087e-437c-899e-cbb2fae624a4';
 
 const SLIDE_IMAGES: { ctaHref: string; image: string; imageAlt: string; isFeira?: boolean }[] = [
+  { ctaHref: `/livros-e-ebooks/ebook/${PUTIN_EBOOK_ID}`, image: 'https://khztwxgobacabfvaeves.supabase.co/storage/v1/object/public/ebooks/covers/e_putin_reencarnou_ucraniano.jpg', imageAlt: 'Capa do e-book E Putin Reencarnou Ucraniano', isFeira: true },
   { ctaHref: '/formacao', image: 'https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg', imageAlt: 'Dr. Mauro Kwitko' },
   { ctaHref: '/clube-de-estudos', image: 'https://i.ibb.co/HDQbPzRX/AULAS-PR-TICAS.jpg', imageAlt: 'Clube de Estudos' },
   { ctaHref: '/curso-online', image: 'https://i.ibb.co/MDJBY2J0/AULAS-TE-RICAS.jpg', imageAlt: 'Curso Online' },
-  { ctaHref: `/livros-e-ebooks/ebook/${PUTIN_EBOOK_ID}`, image: 'https://khztwxgobacabfvaeves.supabase.co/storage/v1/object/public/ebooks/covers/e_putin_reencarnou_ucraniano.jpg', imageAlt: 'Capa do e-book E Putin Reencarnou Ucraniano', isFeira: true },
 ];
 
 const useHeroSlides = (): Slide[] => {

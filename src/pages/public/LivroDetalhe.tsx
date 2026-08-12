@@ -1,18 +1,23 @@
+import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ShoppingCart, Gift, Tag, Sparkles, BookOpen, Video } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Gift, Tag, Sparkles, BookOpen, Video, CalendarDays } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { BOOKS } from '@/data/books';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import Marquee from '@/components/public/Marquee';
 import ExpandableSynopsis from '@/components/public/ExpandableSynopsis';
 import BookReviews from '@/components/public/BookReviews';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+
+const PUTIN_EBOOK_ID = '6c60c3e2-087e-437c-899e-cbb2fae624a4';
 
 const youtubeEmbed = (url?: string) => {
   if (!url) return null;
   const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{11})/);
   return m ? `https://www.youtube.com/embed/${m[1]}` : null;
 };
+
 
 const LivroDetalhe = () => {
   const { t } = useTranslation();

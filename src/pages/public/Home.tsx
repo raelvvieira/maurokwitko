@@ -164,10 +164,10 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
 
                     <div className="relative">
                       <div
-                        className={`relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-lg ${
+                        className={`relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-lg ${
                           slide.isFeira
-                            ? 'ring-[3px] ring-amber-400 shadow-xl shadow-amber-400/20'
-                            : 'ring-1 ring-border/40'
+                            ? 'bg-[#0b0f14] ring-[3px] ring-amber-400 shadow-xl shadow-amber-400/20'
+                            : 'bg-secondary ring-1 ring-border/40'
                         }`}
                       >
                         <img

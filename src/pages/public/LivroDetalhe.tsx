@@ -1,12 +1,16 @@
+import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ShoppingCart, Gift, Tag, Sparkles, BookOpen, Video } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Gift, Tag, Sparkles, BookOpen, Video, CalendarDays } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { BOOKS } from '@/data/books';
 import { useEbooks } from '@/hooks/useSupabaseData';
 import Marquee from '@/components/public/Marquee';
 import ExpandableSynopsis from '@/components/public/ExpandableSynopsis';
 import BookReviews from '@/components/public/BookReviews';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+
+const PUTIN_EBOOK_ID = '6c60c3e2-087e-437c-899e-cbb2fae624a4';
 
 const youtubeEmbed = (url?: string) => {
   if (!url) return null;
@@ -14,12 +18,16 @@ const youtubeEmbed = (url?: string) => {
   return m ? `https://www.youtube.com/embed/${m[1]}` : null;
 };
 
+
 const LivroDetalhe = () => {
   const { t } = useTranslation();
   const { tipo, id } = useParams<{ tipo: string; id: string }>();
   const { ebooks } = useEbooks();
+  const [feiraOpen, setFeiraOpen] = useState(false);
+  const isFeira = tipo === 'ebook' && id === PUTIN_EBOOK_ID;
 
   if (tipo !== 'fisico' && tipo !== 'ebook') return <Navigate to="/livros-e-ebooks" replace />;
+
 
   let titulo = '';
   let autor = 'Dr. Mauro Kwitko';
@@ -141,30 +149,51 @@ const LivroDetalhe = () => {
                 <ExpandableSynopsis text={synopsis} />
               </div>
 
-              {/* Comentário do Autor */}
-              <div className="rounded-2xl border border-border/60 bg-secondary/40 p-5 md:p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <Video className="w-4 h-4 text-primary" />
-                  <h3 className="text-sm font-semibold tracking-[0.18em] text-foreground/70 uppercase">
-                    {t('livroDetalhe.authorComment')}
-                  </h3>
+              {isFeira ? (
+                /* Feira do Livro de Porto Alegre */
+                <div className="rounded-2xl border border-amber-300 bg-amber-50 p-5 md:p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <CalendarDays className="w-4 h-4 text-amber-700" />
+                    <h3 className="text-sm font-semibold tracking-[0.18em] text-amber-800 uppercase">
+                      Dr. Mauro na Feira do Livro
+                    </h3>
+                  </div>
+                  <p className="text-sm md:text-base text-amber-900/85 leading-relaxed">
+                    Dr. Mauro estará com um estande na <strong>72ª Feira do Livro de Porto Alegre</strong>,
+                    de <strong>30 de outubro a 15 de novembro de 2026</strong>, na Praça da Alfândega, no Centro Histórico.
+                  </p>
+                  <p className="text-sm md:text-base text-amber-900/85 leading-relaxed mt-3">
+                    <strong>2 de novembro, às 14h</strong> — palestra na Sala dos Jacarandás, Clube do Comércio
+                    (Rua dos Andradas, 1085 — 2º andar), com sessão de autógrafos logo após.
+                  </p>
                 </div>
-                {embed ? (
-                  <div className="aspect-video rounded-xl overflow-hidden bg-black">
-                    <iframe
-                      src={embed}
-                      title={titulo}
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
+              ) : (
+                /* Comentário do Autor */
+                <div className="rounded-2xl border border-border/60 bg-secondary/40 p-5 md:p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Video className="w-4 h-4 text-primary" />
+                    <h3 className="text-sm font-semibold tracking-[0.18em] text-foreground/70 uppercase">
+                      {t('livroDetalhe.authorComment')}
+                    </h3>
                   </div>
-                ) : (
-                  <div className="aspect-video rounded-xl bg-background/60 border border-dashed border-border flex items-center justify-center text-sm text-muted-foreground">
-                    {t('livroDetalhe.videoSoon')}
-                  </div>
-                )}
-              </div>
+                  {embed ? (
+                    <div className="aspect-video rounded-xl overflow-hidden bg-black">
+                      <iframe
+                        src={embed}
+                        title={titulo}
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  ) : (
+                    <div className="aspect-video rounded-xl bg-background/60 border border-dashed border-border flex items-center justify-center text-sm text-muted-foreground">
+                      {t('livroDetalhe.videoSoon')}
+                    </div>
+                  )}
+                </div>
+              )}
+
 
               {/* CTAs */}
               {tipo === 'fisico' ? (
@@ -212,14 +241,25 @@ const LivroDetalhe = () => {
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
-                  <a
-                    href={comprarLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl"
-                  >
-                    <ShoppingCart className="w-5 h-5" /> {t('livroDetalhe.buy')}
-                  </a>
+                  {isFeira ? (
+                    <button
+                      type="button"
+                      onClick={() => setFeiraOpen(true)}
+                      className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-amber-400 text-amber-950 font-bold hover:bg-amber-300 transition-all shadow-lg shadow-amber-400/40 hover:shadow-xl ring-2 ring-amber-500/40 text-center"
+                    >
+                      <ShoppingCart className="w-5 h-5 shrink-0" /> Comprar na Feira do Livro de Porto Alegre
+                    </button>
+                  ) : (
+                    <a
+                      href={comprarLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl"
+                    >
+                      <ShoppingCart className="w-5 h-5" /> {t('livroDetalhe.buy')}
+                    </a>
+                  )}
+
                   <motion.div
                     animate={{ scale: [1, 1.03, 1] }}
                     transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
@@ -292,7 +332,24 @@ const LivroDetalhe = () => {
           />
         </section>
       )}
+
+      <Dialog open={feiraOpen} onOpenChange={setFeiraOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl">Venha para a Feira do Livro prestigiar esse momento!</DialogTitle>
+            <DialogDescription className="text-base leading-relaxed pt-2 text-left">
+              72ª Feira do Livro de Porto Alegre — de 30 de outubro a 15 de novembro de 2026, na Praça da Alfândega,
+              Centro Histórico. Dr. Mauro estará com um estande e o livro estará à venda lá.
+              <br />
+              <br />
+              <strong>2 de novembro, às 14h:</strong> palestra na Sala dos Jacarandás, Clube do Comércio
+              (Rua dos Andradas, 1085 — 2º andar), com sessão de autógrafos logo após.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
+
   );
 };
 

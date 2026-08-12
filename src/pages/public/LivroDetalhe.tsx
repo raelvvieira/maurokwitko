@@ -149,30 +149,51 @@ const LivroDetalhe = () => {
                 <ExpandableSynopsis text={synopsis} />
               </div>
 
-              {/* Comentário do Autor */}
-              <div className="rounded-2xl border border-border/60 bg-secondary/40 p-5 md:p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <Video className="w-4 h-4 text-primary" />
-                  <h3 className="text-sm font-semibold tracking-[0.18em] text-foreground/70 uppercase">
-                    {t('livroDetalhe.authorComment')}
-                  </h3>
+              {isFeira ? (
+                /* Feira do Livro de Porto Alegre */
+                <div className="rounded-2xl border border-amber-300 bg-amber-50 p-5 md:p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <CalendarDays className="w-4 h-4 text-amber-700" />
+                    <h3 className="text-sm font-semibold tracking-[0.18em] text-amber-800 uppercase">
+                      Dr. Mauro na Feira do Livro
+                    </h3>
+                  </div>
+                  <p className="text-sm md:text-base text-amber-900/85 leading-relaxed">
+                    Dr. Mauro estará com um estande na <strong>72ª Feira do Livro de Porto Alegre</strong>,
+                    de <strong>30 de outubro a 15 de novembro de 2026</strong>, na Praça da Alfândega, no Centro Histórico.
+                  </p>
+                  <p className="text-sm md:text-base text-amber-900/85 leading-relaxed mt-3">
+                    <strong>2 de novembro, às 14h</strong> — palestra na Sala dos Jacarandás, Clube do Comércio
+                    (Rua dos Andradas, 1085 — 2º andar), com sessão de autógrafos logo após.
+                  </p>
                 </div>
-                {embed ? (
-                  <div className="aspect-video rounded-xl overflow-hidden bg-black">
-                    <iframe
-                      src={embed}
-                      title={titulo}
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
+              ) : (
+                /* Comentário do Autor */
+                <div className="rounded-2xl border border-border/60 bg-secondary/40 p-5 md:p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Video className="w-4 h-4 text-primary" />
+                    <h3 className="text-sm font-semibold tracking-[0.18em] text-foreground/70 uppercase">
+                      {t('livroDetalhe.authorComment')}
+                    </h3>
                   </div>
-                ) : (
-                  <div className="aspect-video rounded-xl bg-background/60 border border-dashed border-border flex items-center justify-center text-sm text-muted-foreground">
-                    {t('livroDetalhe.videoSoon')}
-                  </div>
-                )}
-              </div>
+                  {embed ? (
+                    <div className="aspect-video rounded-xl overflow-hidden bg-black">
+                      <iframe
+                        src={embed}
+                        title={titulo}
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  ) : (
+                    <div className="aspect-video rounded-xl bg-background/60 border border-dashed border-border flex items-center justify-center text-sm text-muted-foreground">
+                      {t('livroDetalhe.videoSoon')}
+                    </div>
+                  )}
+                </div>
+              )}
+
 
               {/* CTAs */}
               {tipo === 'fisico' ? (

@@ -241,14 +241,25 @@ const LivroDetalhe = () => {
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
-                  <a
-                    href={comprarLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl"
-                  >
-                    <ShoppingCart className="w-5 h-5" /> {t('livroDetalhe.buy')}
-                  </a>
+                  {isFeira ? (
+                    <button
+                      type="button"
+                      onClick={() => setFeiraOpen(true)}
+                      className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-amber-400 text-amber-950 font-bold hover:bg-amber-300 transition-all shadow-lg shadow-amber-400/40 hover:shadow-xl ring-2 ring-amber-500/40 text-center"
+                    >
+                      <ShoppingCart className="w-5 h-5 shrink-0" /> Comprar na Feira do Livro de Porto Alegre
+                    </button>
+                  ) : (
+                    <a
+                      href={comprarLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl"
+                    >
+                      <ShoppingCart className="w-5 h-5" /> {t('livroDetalhe.buy')}
+                    </a>
+                  )}
+
                   <motion.div
                     animate={{ scale: [1, 1.03, 1] }}
                     transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}

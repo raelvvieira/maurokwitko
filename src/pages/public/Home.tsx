@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, Check, Quote, Mail, MessageCircle } from 'lucide-react';
+import { ArrowRight, Check, Quote, Mail, MessageCircle, CalendarDays } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
@@ -48,17 +48,37 @@ type Slide = {
   image: string;
   imageAlt: string;
   caption: string;
+  isFeira?: boolean;
 };
 
-const SLIDE_IMAGES: { ctaHref: string; image: string; imageAlt: string }[] = [
+const PUTIN_EBOOK_ID = '6c60c3e2-087e-437c-899e-cbb2fae624a4';
+
+const SLIDE_IMAGES: { ctaHref: string; image: string; imageAlt: string; isFeira?: boolean }[] = [
   { ctaHref: '/formacao', image: 'https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg', imageAlt: 'Dr. Mauro Kwitko' },
   { ctaHref: '/clube-de-estudos', image: 'https://i.ibb.co/HDQbPzRX/AULAS-PR-TICAS.jpg', imageAlt: 'Clube de Estudos' },
   { ctaHref: '/curso-online', image: 'https://i.ibb.co/MDJBY2J0/AULAS-TE-RICAS.jpg', imageAlt: 'Curso Online' },
+  { ctaHref: `/livros-e-ebooks/ebook/${PUTIN_EBOOK_ID}`, image: 'https://khztwxgobacabfvaeves.supabase.co/storage/v1/object/public/ebooks/covers/e_putin_reencarnou_ucraniano.jpg', imageAlt: 'Capa do e-book E Putin Reencarnou Ucraniano', isFeira: true },
 ];
 
 const useHeroSlides = (): Slide[] => {
   const { t } = useTranslation();
   return SLIDE_IMAGES.map((s, i) => {
+    if (s.isFeira) {
+      return {
+        eyebrow: 'Feira do Livro de Porto Alegre',
+        titleStart: 'Dr. Mauro na ',
+        titleAccent: '72ª Feira do Livro',
+        titleEnd: '',
+        description:
+          'De 30 de outubro a 15 de novembro de 2026, na Praça da Alfândega, Centro Histórico. Dia 2/11, às 14h, palestra na Sala dos Jacarandás do Clube do Comércio (Andradas, 1085 — 2º andar), com sessão de autógrafos logo após.',
+        ctaLabel: 'Comprar na Feira do Livro',
+        ctaHref: s.ctaHref,
+        image: s.image,
+        imageAlt: s.imageAlt,
+        caption: 'E Putin Reencarnou Ucraniano',
+        isFeira: true,
+      };
+    }
     const k = `home.slides.${i + 1}`;
     return {
       eyebrow: t(`${k}.eyebrow`),
@@ -131,7 +151,11 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
                           animate={{ scale: [1, 1.03, 1] }}
                           transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
                           onClick={() => navigate(slide.ctaHref)}
-                          className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-md"
+                          className={`inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-colors shadow-md ${
+                            slide.isFeira
+                              ? 'bg-amber-400 text-amber-950 hover:bg-amber-300 shadow-amber-400/40'
+                              : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                          }`}
                         >
                           {slide.ctaLabel} <ArrowRight className="w-4 h-4" />
                         </motion.button>
@@ -139,12 +163,24 @@ const HeroCarousel = ({ navigate }: { navigate: (path: string) => void }) => {
                     </div>
 
                     <div className="relative">
-                      <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-lg ring-1 ring-border/40">
+                      <div
+                        className={`relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-secondary shadow-lg ${
+                          slide.isFeira
+                            ? 'ring-[3px] ring-amber-400 shadow-xl shadow-amber-400/20'
+                            : 'ring-1 ring-border/40'
+                        }`}
+                      >
                         <img
                           src={slide.image}
                           alt={slide.imageAlt}
                           className="w-full h-full object-cover"
                         />
+                        {slide.isFeira && (
+                          <div className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-400 text-amber-950 text-xs font-bold shadow-md">
+                            <CalendarDays className="w-3.5 h-3.5" />
+                            Feira do Livro
+                          </div>
+                        )}
                       </div>
                       <p className="mt-5 text-center text-sm md:text-base font-medium text-foreground/70 tracking-wide">
                         {slide.caption}

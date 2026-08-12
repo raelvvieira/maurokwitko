@@ -63,6 +63,22 @@ const SLIDE_IMAGES: { ctaHref: string; image: string; imageAlt: string; isFeira?
 const useHeroSlides = (): Slide[] => {
   const { t } = useTranslation();
   return SLIDE_IMAGES.map((s, i) => {
+    if (s.isFeira) {
+      return {
+        eyebrow: 'Feira do Livro de Porto Alegre',
+        titleStart: 'Dr. Mauro na ',
+        titleAccent: '72ª Feira do Livro',
+        titleEnd: '',
+        description:
+          'De 30 de outubro a 15 de novembro de 2026, na Praça da Alfândega, Centro Histórico. Dia 2/11, às 14h, palestra na Sala dos Jacarandás do Clube do Comércio (Andradas, 1085 — 2º andar), com sessão de autógrafos logo após.',
+        ctaLabel: 'Comprar na Feira do Livro',
+        ctaHref: s.ctaHref,
+        image: s.image,
+        imageAlt: s.imageAlt,
+        caption: 'E Putin Reencarnou Ucraniano',
+        isFeira: true,
+      };
+    }
     const k = `home.slides.${i + 1}`;
     return {
       eyebrow: t(`${k}.eyebrow`),

@@ -11,6 +11,7 @@ import { getArticleImage } from '@/data/articleImages';
 import { supabase } from '@/integrations/supabase/client';
 import { Marquee } from '@/components/public/Marquee';
 import { getArrayTranslation } from '@/i18n';
+import putinCoverFeira from '@/assets/feira/putin-cover-feira.jpg.asset.json';
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },

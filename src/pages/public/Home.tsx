@@ -54,8 +54,6 @@ type Slide = {
 
 const PUTIN_EBOOK_ID = '6c60c3e2-087e-437c-899e-cbb2fae624a4';
 
-import putinCoverFeira from '@/assets/feira/putin-cover-feira.jpg.asset.json';
-
 const SLIDE_IMAGES: { ctaHref: string; image: string; imageAlt: string; isFeira?: boolean; tKey?: number }[] = [
   { ctaHref: `/livros-e-ebooks/ebook/${PUTIN_EBOOK_ID}`, image: putinCoverFeira.url, imageAlt: 'Capa do e-book E Putin Reencarnou Ucraniano', isFeira: true },
   { ctaHref: '/formacao', tKey: 1, image: 'https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg', imageAlt: 'Dr. Mauro Kwitko' },

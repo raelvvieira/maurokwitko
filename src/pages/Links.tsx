@@ -213,6 +213,17 @@ export default function Links() {
       ],
     },
     {
+      title: "NOVAS TURMAS DO CURSO DE FORMAÇÃO",
+      links: [
+        { id: "t0", label: "Salvador/BA", url: "https://chat.whatsapp.com/DPnvhog8cfz5fwnzjsiucu", variant: "green", icon: "whatsapp" },
+        { id: "t1", label: "Belo Horizonte/MG", url: "https://chat.whatsapp.com/HgFWrXebFeb1XTIWVNj72V", variant: "green", icon: "whatsapp" },
+        { id: "t2", label: "Teresina/PI", url: "https://chat.whatsapp.com/Ip2QzsjSCC68Rvi4Dl9pRH", variant: "green", icon: "whatsapp" },
+        { id: "t3", label: "Vitória/ES", url: "https://chat.whatsapp.com/EaqYefZWs9xG2Oc0TubzG8", variant: "green", icon: "whatsapp" },
+        { id: "t4", label: "Campo Grande/MS", url: "https://chat.whatsapp.com/HCsR6XVAnyM1cjjzE008mH", variant: "green", icon: "whatsapp" },
+        { id: "t5", label: "Cuiabá/MT", url: "https://chat.whatsapp.com/FCdVYDY47kPLPpvtLbgCrU", variant: "green", icon: "whatsapp" },
+      ],
+    },
+    {
       title: "CONTEÚDO E PRODUTOS",
       links: [
         { id: "ebooks", label: "Meus E-books", url: "https://www.maurokwitko.com.br/livros-e-ebooks", variant: "dark" },

@@ -19,6 +19,15 @@ const WhatsAppIcon = ({ className = 'w-6 h-6' }: { className?: string }) => (
   </svg>
 );
 
+const NOVAS_TURMAS = [
+  { cidade: 'Salvador/BA', url: 'https://chat.whatsapp.com/DPnvhog8cfz5fwnzjsiucu' },
+  { cidade: 'Belo Horizonte/MG', url: 'https://chat.whatsapp.com/HgFWrXebFeb1XTIWVNj72V' },
+  { cidade: 'Teresina/PI', url: 'https://chat.whatsapp.com/Ip2QzsjSCC68Rvi4Dl9pRH' },
+  { cidade: 'Vitória/ES', url: 'https://chat.whatsapp.com/EaqYefZWs9xG2Oc0TubzG8' },
+  { cidade: 'Campo Grande/MS', url: 'https://chat.whatsapp.com/HCsR6XVAnyM1cjjzE008mH' },
+  { cidade: 'Cuiabá/MT', url: 'https://chat.whatsapp.com/FCdVYDY47kPLPpvtLbgCrU' },
+];
+
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -224,6 +233,37 @@ const Formacao = () => {
                 <h3 className="font-semibold text-base mb-2">{c.titulo}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Novas Turmas por cidade */}
+      <section className="py-16 md:py-24 px-5 md:px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div {...fadeUp} className="text-center mb-10">
+            <span className="inline-block text-xs font-semibold tracking-[0.2em] text-primary uppercase mb-3">
+              Novas Turmas
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+              Curso de Formação em 6 cidades
+            </h2>
+            <p className="text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+              Novas turmas serão ministradas por Ministrantes da ABPR. Entre no grupo de WhatsApp da sua cidade para receber as informações.
+            </p>
+          </motion.div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {NOVAS_TURMAS.map((t2) => (
+              <a
+                key={t2.cidade}
+                href={t2.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-3 rounded-2xl bg-[#25D366] text-white px-6 py-5 font-semibold text-lg shadow-md hover:shadow-xl hover:brightness-95 transition-all"
+              >
+                <span>{t2.cidade}</span>
+                <WhatsAppIcon className="w-6 h-6 shrink-0" />
+              </a>
             ))}
           </div>
         </div>

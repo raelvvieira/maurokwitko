@@ -1,23 +1,30 @@
-project_id = "khztwxgobacabfvaeves"
+project_id = "epxuiqeauqraihrqfnkx"
 
-[functions]
-  [functions.auth-email-hook]
-    verify_jwt = false
-  [functions.process-email-queue]
-    verify_jwt = true
-  [functions.eduzz-webhook]
-    verify_jwt = false
-  [functions.check-paid-access]
-    verify_jwt = false
-  [functions.passwordless-login]
-    verify_jwt = false
-  [functions.send-transactional-email]
-    verify_jwt = true
-  [functions.preview-transactional-email]
-    verify_jwt = false
-  [functions.handle-email-unsubscribe]
-    verify_jwt = false
-  [functions.handle-email-suppression]
-    verify_jwt = false
-  [functions.translate-article]
-    verify_jwt = true
+[functions.auth-email-hook]
+verify_jwt = false
+[functions.process-email-queue]
+verify_jwt = true
+[functions.eduzz-webhook]
+verify_jwt = false
+[functions.check-paid-access]
+verify_jwt = false
+[functions.passwordless-login]
+verify_jwt = false
+[functions.send-transactional-email]
+verify_jwt = true
+[functions.handle-email-unsubscribe]
+verify_jwt = false
+[functions.handle-email-suppression]
+verify_jwt = false
+[functions.translate-article]
+verify_jwt = true
+[functions.send-notification]
+verify_jwt = true
+# Opened as plain links (<a href>, fetch without auth header)
+[functions.ebook-download]
+verify_jwt = false
+[functions.ebook-redirect]
+verify_jwt = false
+# Called by pg_cron with only the apikey header
+[functions.subscription-lifecycle-cron]
+verify_jwt = false

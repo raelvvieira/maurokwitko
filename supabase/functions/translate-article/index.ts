@@ -7,7 +7,8 @@ const corsHeaders = {
 };
 
 const ADMIN_EMAILS = new Set(['mauroabpr@gmail.com', 'raelvvieira@gmail.com']);
-const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY')!;
+const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY')!;
+const OPENAI_MODEL = Deno.env.get('OPENAI_MODEL') ?? 'gpt-4o-mini';
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -29,14 +30,14 @@ Strict rules:
 - For "__QUOTE__" strings, parts are separated by "||" — translate each part, keep "||".
 - Keep punctuation, line breaks (\\n) and formatting. Do NOT add commentary.`;
 
-  const resp = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+  const resp = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${LOVABLE_API_KEY}`,
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'google/gemini-2.5-flash',
+      model: OPENAI_MODEL,
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: JSON.stringify(strings) },
@@ -64,7 +65,7 @@ Strict rules:
 
   if (!resp.ok) {
     const txt = await resp.text();
-    throw new Error(`AI gateway ${resp.status}: ${txt}`);
+    throw new Error(`OpenAI ${resp.status}: ${txt}`);
   }
 
   const data = await resp.json();

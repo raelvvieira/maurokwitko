@@ -12,6 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Marquee } from '@/components/public/Marquee';
 import { getArrayTranslation } from '@/i18n';
 import putinCoverFeira from '@/assets/feira/putin-cover-feira.jpg.asset.json';
+import { isHiddenEbook } from '@/data/hiddenBooks';
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -54,8 +55,19 @@ type Slide = {
 
 const PUTIN_EBOOK_ID = '6c60c3e2-087e-437c-899e-cbb2fae624a4';
 
+// Slide da Feira do Livro (livro do Putin) — tirado do ar por enquanto,
+// mas continua guardado aqui. Para voltar a exibi-lo, mude para true.
+const SHOW_FEIRA_SLIDE = false;
+
+const FEIRA_SLIDE = {
+  ctaHref: `/livros-e-ebooks/ebook/${PUTIN_EBOOK_ID}`,
+  image: putinCoverFeira.url,
+  imageAlt: 'Capa do e-book E Putin Reencarnou Ucraniano',
+  isFeira: true,
+};
+
 const SLIDE_IMAGES: { ctaHref: string; image: string; imageAlt: string; isFeira?: boolean; tKey?: number }[] = [
-  { ctaHref: `/livros-e-ebooks/ebook/${PUTIN_EBOOK_ID}`, image: putinCoverFeira.url, imageAlt: 'Capa do e-book E Putin Reencarnou Ucraniano', isFeira: true },
+  ...(SHOW_FEIRA_SLIDE ? [FEIRA_SLIDE] : []),
   { ctaHref: '/formacao', tKey: 1, image: 'https://i.ibb.co/mCWzv6QL/39854-adfff7a290f852480e5d85a937447885.jpg', imageAlt: 'Dr. Mauro Kwitko' },
   { ctaHref: '/clube-de-estudos', tKey: 2, image: 'https://i.ibb.co/HDQbPzRX/AULAS-PR-TICAS.jpg', imageAlt: 'Clube de Estudos' },
   { ctaHref: '/curso-online', tKey: 3, image: 'https://i.ibb.co/MDJBY2J0/AULAS-TE-RICAS.jpg', imageAlt: 'Curso Online' },
@@ -227,7 +239,7 @@ const Home = () => {
       .not('cover_url', 'is', null)
       .limit(20)
       .then(({ data }) => {
-        if (data) setEbooks(data as Ebook[]);
+        if (data) setEbooks((data as Ebook[]).filter((eb) => !isHiddenEbook(eb.id)));
       });
   }, []);
 

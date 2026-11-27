@@ -20,6 +20,7 @@ import bookMecanismos from '@/assets/clube/book-mecanismos.png.asset.json';
 import bookObsessao from '@/assets/clube/book-obsessao.png.asset.json';
 import bookDialogos from '@/assets/clube/book-dialogos.png.asset.json';
 import { useEbooks } from '@/hooks/useSupabaseData';
+import { isHiddenEbook } from '@/data/hiddenBooks';
 
 const CHECKOUT_URL = 'https://chk.eduzz.com/2445141';
 
@@ -454,7 +455,7 @@ const ClubeDeEstudos = () => {
   const [headerOpen, setHeaderOpen] = useState(false);
 
   const realBooks = (ebooks ?? [])
-    .filter((e: any) => e?.cover_url)
+    .filter((e: any) => e?.cover_url && !isHiddenEbook(e?.id))
     .map((e: any) => ({ img: e.cover_url as string, alt: e.title as string }));
   const BOOKS = realBooks.length >= 3 ? realBooks : FALLBACK_BOOKS;
 

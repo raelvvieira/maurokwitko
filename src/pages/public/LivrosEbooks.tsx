@@ -4,6 +4,7 @@ import { BookOpen, ArrowRight, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { BOOKS } from '@/data/books';
 import { useEbooks } from '@/hooks/useSupabaseData';
+import { isHiddenEbook } from '@/data/hiddenBooks';
 import Marquee from '@/components/public/Marquee';
 import amazonIcon from '@/assets/amazon-icon.png';
 
@@ -18,9 +19,12 @@ const LivrosEbooks = () => {
   const { t } = useTranslation();
   const { ebooks } = useEbooks();
 
+  // E-books temporariamente fora da lista (continuam salvos no banco).
+  const visibleEbooks = ebooks.filter((e) => !isHiddenEbook(e.id));
+
   const carouselItems = [
     ...BOOKS.map((b) => ({ key: 'f-' + b.slug, cover: b.cover, title: b.title, to: `/livros-e-ebooks/fisico/${b.slug}`, coverScale: b.coverScale })),
-    ...ebooks.map((e) => ({ key: 'e-' + e.id, cover: e.cover_url || '', title: e.title, to: `/livros-e-ebooks/ebook/${e.id}`, coverScale: undefined as number | undefined })),
+    ...visibleEbooks.map((e) => ({ key: 'e-' + e.id, cover: e.cover_url || '', title: e.title, to: `/livros-e-ebooks/ebook/${e.id}`, coverScale: undefined as number | undefined })),
   ].filter((i) => i.cover);
 
   return (
@@ -127,11 +131,11 @@ const LivrosEbooks = () => {
             </div>
           </motion.div>
 
-          {ebooks.length === 0 ? (
+          {visibleEbooks.length === 0 ? (
             <p className="text-center text-muted-foreground py-12">{t('livros.empty')}</p>
           ) : (
             <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-              {ebooks.map((e, i) => (
+              {visibleEbooks.map((e, i) => (
                 <motion.div
                   key={e.id}
                   {...fadeUp}
